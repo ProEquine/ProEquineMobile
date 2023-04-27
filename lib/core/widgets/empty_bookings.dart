@@ -14,6 +14,7 @@ class EmptyBookingsWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 50,),
           Center(
             child: SizedBox(
               height: 40.0.h,
