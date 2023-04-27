@@ -11,8 +11,8 @@ class CustomLogoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       // padding: const EdgeInsets.symmetric(vertical: kPadding),
-      height: 40.h,
-      child: Image.asset(AppImages.logo,scale: 0.5,),
+      height: 30.h,
+      child: Image.asset(AppImages.logo,scale: 1,),
     );
   }
 }

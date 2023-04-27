@@ -20,6 +20,8 @@ class AppImages {
   static const summary = "assets/images/summary.png";
   static const submit = "assets/images/submit.png";
   static const greyTrans = "assets/images/Group 244 (1).png";
+  static const regHeader = "assets/images/reg-header.png";
+  static const emptyBookings = "assets/images/empty_bookings.png";
 }
 
 class AppIcons {

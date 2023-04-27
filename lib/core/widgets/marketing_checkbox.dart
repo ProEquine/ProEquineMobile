@@ -46,7 +46,7 @@ class PrivacyAndMarketingCheckBox extends StatelessWidget {
             primaryColor: AppColors.formsBackground,
           ),
           child: Transform.scale(
-            scale: 1.5,
+            scale: 1.2,
             child: Checkbox(
               key: key,
               checkColor: Colors.white,

@@ -32,7 +32,7 @@ _showDatePicker(BuildContext context,Function setValue) {
             ));
       },
       initialDate: DateTime.now(),
-      firstDate: DateTime(2023),
+      firstDate: DateTime(1950),
       lastDate: DateTime(2025))
       .then((value) {
  setValue(value);

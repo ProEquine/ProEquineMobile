@@ -3,9 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
-import 'package:proequine/core/widgets/confirm_screen.dart';
-import 'package:proequine/core/widgets/registration_header.dart';
-import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
@@ -15,11 +12,10 @@ import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_logo_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
+import '../../../user/presentation/widgets/register_header.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
-
-
-   ResetPasswordScreen({super.key});
+  ResetPasswordScreen({super.key});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _oldPassword = TextEditingController();
@@ -36,8 +32,10 @@ class ResetPasswordScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const RegistrationHeader(),
-                const Center(child: CustomLogoWidget(),),
+                RegistrationHeader(),
+                const Center(
+                  child: CustomLogoWidget(),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: kPadding),
                   child: Column(
@@ -64,8 +62,7 @@ class ResetPasswordScreen extends StatelessWidget {
                           controller: _oldPassword,
                           keyboardType: TextInputType.visiblePassword,
                           textInputAction: TextInputAction.done,
-                          autoValidateMode:
-                          AutovalidateMode.onUserInteraction,
+                          autoValidateMode: AutovalidateMode.onUserInteraction,
                           isOptional: false,
                           color: AppColors.formsLabel,
                           readOnly: false,
@@ -85,8 +82,7 @@ class ResetPasswordScreen extends StatelessWidget {
                           controller: _newPassword,
                           keyboardType: TextInputType.visiblePassword,
                           textInputAction: TextInputAction.done,
-                          autoValidateMode:
-                          AutovalidateMode.onUserInteraction,
+                          autoValidateMode: AutovalidateMode.onUserInteraction,
                           isOptional: false,
                           color: AppColors.formsLabel,
                           readOnly: false,
@@ -106,8 +102,7 @@ class ResetPasswordScreen extends StatelessWidget {
                           controller: _confirmNewPassword,
                           keyboardType: TextInputType.visiblePassword,
                           textInputAction: TextInputAction.done,
-                          autoValidateMode:
-                          AutovalidateMode.onUserInteraction,
+                          autoValidateMode: AutovalidateMode.onUserInteraction,
                           isOptional: false,
                           color: AppColors.formsLabel,
                           readOnly: false,
@@ -131,16 +126,19 @@ class ResetPasswordScreen extends StatelessWidget {
                       RebiButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                           RebiMessage.success(msg: "Password updated successfully".tra);
-                           Timer(const Duration(seconds: 2), (){
-                             Navigator.pop(context);
-                           });
+                            RebiMessage.success(
+                                msg: "Password updated successfully".tra);
+                            Timer(const Duration(seconds: 2), () {
+                              Navigator.pop(context);
+                            });
                           } else {}
                         },
                         backgroundColor: AppColors.white,
                         child: Text("Send"),
                       ),
-                      const SizedBox(height: 30,),
+                      const SizedBox(
+                        height: 30,
+                      ),
                       RebiButton(
                         onPressed: () {
                           Navigator.pop(context);
@@ -149,7 +147,9 @@ class ResetPasswordScreen extends StatelessWidget {
                         isBackButton: true,
                         child: Text("Back to login"),
                       ),
-                      const SizedBox(height: 30,),
+                      const SizedBox(
+                        height: 30,
+                      ),
                     ],
                   ),
                 ),

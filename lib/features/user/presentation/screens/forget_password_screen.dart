@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:proequine/core/utils/extensions.dart';
-import 'package:proequine/core/widgets/registration_header.dart';
 import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
 import 'package:sizer/sizer.dart';
 
@@ -11,6 +10,7 @@ import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_logo_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
+import '../widgets/register_header.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -28,7 +28,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const RegistrationHeader(),
+                 RegistrationHeader(),
                 const Center(child:CustomLogoWidget()),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: kPadding),

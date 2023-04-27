@@ -25,5 +25,5 @@ const NOTIFICATIONS_CHANNEL_ID = 'global-channel';
 const NOTIFICATIONS_CHANNEL_TITLE = 'Global';
 const NOTIFICATIONS_CHANNEL_DESCRIPTION = 'Global Channel';
 
-const kPadding = 23.0;
+const kPadding = 15.0;
 const kAnimationDuration = Duration(milliseconds: 600);

@@ -45,7 +45,7 @@ class AppStyles {
   static final registrationTitle = TextStyle(
     fontSize: 20.sp,
     fontFamily: "notosan",
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w500,
   );
 
   static final descriptions = TextStyle(

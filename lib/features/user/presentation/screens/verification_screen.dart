@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
-import 'package:proequine/core/widgets/registration_header.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui' as ui;
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../core/constants/images/app_images.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/constants/thems/pin_put_theme.dart';
-import '../../../../core/widgets/custom_logo_widget.dart';
+import '../../../../core/utils/Printer.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
+import '../widgets/register_header.dart';
 
 class VerificationScreen extends StatelessWidget {
   final String? email;
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _pinPutController = TextEditingController();
-  final FocusNode _pinPutFocusNode = FocusNode();
 
-  VerificationScreen({super.key,this.email});
+  VerificationScreen({super.key, this.email});
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _pinPutController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,83 +31,165 @@ class VerificationScreen extends StatelessWidget {
             key: _formKey,
             child: Column(
               children: [
-                const RegistrationHeader(),
-                const Center(child:CustomLogoWidget()),
+                RegistrationHeader(isThereBackButton: true),
+                Transform.translate(
+                    offset: const Offset(0.0, -35.0),
+                    child: SizedBox(
+                      // padding: const EdgeInsets.symmetric(vertical: kPadding),
+                      height: 25.h,
+                      child: Image.asset(
+                        AppImages.logo,
+                        scale: 1,
+                      ),
+                    )),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: kPadding),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Check your Email",
+                  child: Transform.translate(
+                    offset: const Offset(0.0, -35.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Confirm your number",
                             style: AppStyles.registrationTitle),
-
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      Text(
-                        "we have sent an email with 4 digit code to $email",
-                        style: AppStyles.descriptions,
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                     Center(child: Directionality(
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        Text(
+                          "A 6 digit verification code has been sent to your registered phone number.",
+                          style: AppStyles.descriptions,
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        Center(
+                          child: Directionality(
                             textDirection: ui.TextDirection.ltr,
-                              child: Pinput(
-                                androidSmsAutofillMethod:  AndroidSmsAutofillMethod.smsUserConsentApi,
-                                length: 4,
-                                closeKeyboardWhenCompleted: true,
-
-                                focusNode: _pinPutFocusNode,
-                                controller: _pinPutController,
-                                defaultPinTheme: PinThemeConst.defaultPinTheme,
-                                focusedPinTheme: PinThemeConst.focusedPinTheme,
-                                submittedPinTheme:
-                                PinThemeConst.submittedPinTheme,
-                                pinAnimationType: PinAnimationType.rotation,
-                                pinputAutovalidateMode:
-                                PinputAutovalidateMode.onSubmit,
-                                forceErrorState: true,
-                                validator: (value) {
-                                  if (value!.isEmpty || value.length < 3) {
-                                    return 'please enter your code';
-                                  } else {
-                                    return null;
-                                  }
-                                },
+                            child: Pinput(
+                              preFilledWidget: Container(
+                                width: 30,
+                                height: 20,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                        width: 2.0, color: AppColors.white),
+                                  ),
+                                  color: AppColors.formsBackground,
+                                ),
+                              ),
+                              androidSmsAutofillMethod:
+                                  AndroidSmsAutofillMethod.smsUserConsentApi,
+                              length: 6,
+                              closeKeyboardWhenCompleted: true,
+                              isCursorAnimationEnabled: true,
+                              controller: _pinPutController,
+                              defaultPinTheme: PinThemeConst.defaultPinTheme,
+                              focusedPinTheme: PinThemeConst.focusedPinTheme,
+                              submittedPinTheme:
+                                  PinThemeConst.submittedPinTheme,
+                              pinAnimationType: PinAnimationType.rotation,
+                              pinputAutovalidateMode:
+                                  PinputAutovalidateMode.onSubmit,
+                              validator: (value) {
+                                if (value!.isEmpty || value.length < 6) {
+                                  return 'please enter your code';
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Center(
+                          child: Text(
+                            "Haven’t received a code?",
+                            style: TextStyle(
+                                color: AppColors.white,
+                                fontSize: 14.0,
+                                fontFamily: 'notosan',
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Divider(
+                          height: 10,
+                          thickness: 3,
+                          color: Color(0XFF36393D),
+                          endIndent: 30.0,
+                          indent: 30.0,
+                        ),
+                       const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 25.0.w),
+                          child: InkWell(
+                            onTap: () {
+                              Print("resend the code");
+                              // Navigator.push(context,
+                              //     MaterialPageRoute(builder: (context) => LoginScreen()));
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 25, vertical: 7),
+                              decoration: BoxDecoration(
+                                color: const Color(0xff161616),
+                                borderRadius: BorderRadius.circular(8.0),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Colors.white, spreadRadius: 1),
+                                ],
+                              ),
+                              child: Center(
+                                child: Row(
+                                  children: const [
+                                    Text(
+                                      "Resend Code",
+                                      style: TextStyle(
+                                          color: AppColors.white,
+                                          fontFamily: "notosan"),
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Icon(
+                                      Icons.refresh,
+                                      color: AppColors.white,
+                                      size: 20,
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                     ),
-
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      RebiButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const BottomNavigation()));
-                          } else {}
-                        },
-                        backgroundColor: AppColors.white,
-                        child: const Text("Send"),
-                      ),
-                    const  SizedBox(
-                        height: 20,
-                      ),
-                      RebiButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        backgroundColor: AppColors.backgroundColor,
-                        isBackButton: true,
-                        child: const Text("Back to login"),
-                      ),
-                      const SizedBox(height: 30,),
-                    ],
+                          ),
+                        ),
+                       const SizedBox(
+                          height: 30,
+                        ),
+                        RebiButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const BottomNavigation()));
+                            } else {}
+                          },
+                          backgroundColor: AppColors.white,
+                          child: const Text("Sign up"),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

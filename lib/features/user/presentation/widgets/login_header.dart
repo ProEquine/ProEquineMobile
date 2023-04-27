@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
 
-class RegistrationHeader extends StatelessWidget {
-  const RegistrationHeader({super.key});
+class LoginHeader extends StatelessWidget {
+  const LoginHeader({super.key});
 
   @override
   Widget build(BuildContext context) {

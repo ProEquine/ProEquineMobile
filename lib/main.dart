@@ -6,11 +6,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/StartUp/StartUp.dart';
-import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
+import 'package:proequine/core/widgets/empty_bookings.dart';
 import 'package:proequine/features/events/domain/event_cubit.dart';
-
-import 'package:proequine/features/splash/presentation/screens/splash_screen.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:sizer/sizer.dart';
 
@@ -112,7 +110,7 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: navigatorKey,
       theme: AppStyles().mainTheme,
       title: 'Pro Equine',
-      home: const SplashScreen(),
+      home: const EmptyBookingsWidget(),
       routes: {
         loginRoute: (context) => const LoginScreen(),
         registerRoute: (context) => const RegisterScreen(),
@@ -120,9 +118,6 @@ class _MyAppState extends State<MyApp> {
         transportRoute: (context) => const BookTransport(),
         eventRoute: ((context) => const BookEvent()),
         '/confirm': ((context) => const ConfirmScreen()),
-        // '/postmain': ((context) => const PostMain()),
-
-        // EventSummary.routeName: ((context) => EventSummary()),
       },
     );
   }

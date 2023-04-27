@@ -8,9 +8,9 @@ import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/widgets/custom_logo_widget.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:proequine/core/widgets/rebi_input.dart';
-import 'package:proequine/core/widgets/registration_header.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/forget_password_screen.dart';
+import 'package:proequine/features/user/presentation/widgets/login_header.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/routes/routes.dart';
@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
             key: _formKey,
             child: Column(
               children: [
-                const RegistrationHeader(),
+                const LoginHeader(),
                 const CustomLogoWidget(),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: kPadding),

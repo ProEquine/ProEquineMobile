@@ -39,10 +39,11 @@ dependencies:
   awesome_dialog: ^3.0.2
   webview_flutter: ^3.0.4
   jwt_decode: ^0.3.1
-  pinput: ^2.2.16
+  pinput: ^2.2.31
   pull_to_refresh: ^2.0.0
   grouped_list: ^5.1.2
   auto_size_text:
+  country_code_picker: ^3.0.0
 
   #firebase
   flutter_local_notifications: ^12.0.4

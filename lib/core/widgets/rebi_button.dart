@@ -11,7 +11,7 @@ class RebiButton extends StatefulWidget {
     this.isLoading = false,
     this.backgroundColor = AppColors.white,
     this.width,
-    this.height = 60,
+    this.height = 50,
     this.elevation = 0,
     this.shadowColor = AppColors.buttonShadow,
     this.radius = 10.0,
