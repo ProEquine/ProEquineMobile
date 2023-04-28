@@ -12,7 +12,7 @@ class StartUp
     //await LocalNotification.initializeLocalNotification();
 
 
-   await Messaging.initFCM();
+   // await Messaging.initFCM();
 
   }
 }

@@ -1,14 +1,15 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/StartUp/StartUp.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/core/widgets/empty_bookings.dart';
 import 'package:proequine/features/events/domain/event_cubit.dart';
+import 'package:proequine/features/splash/presentation/screens/splash_screen.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:sizer/sizer.dart';
 
@@ -28,7 +29,7 @@ import 'features/user/presentation/screens/register_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppSharedPreferences.init();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   StartUp.setup();
   String? defaultLocale = Platform.localeName;
   if (defaultLocale.substring(0, 2) == 'en') {
@@ -94,11 +95,11 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    FirebaseMessaging.instance.getToken().then((fcmToken) {
-      Print("FCm Token$fcmToken");
-      AppSharedPreferences.deviceId=fcmToken!;
-      Print(fcmToken);
-    });
+    // FirebaseMessaging.instance.getToken().then((fcmToken) {
+    //   Print("FCm Token$fcmToken");
+    //   AppSharedPreferences.deviceId=fcmToken!;
+    //   Print(fcmToken);
+    // });
 
   }
   static final GlobalKey<NavigatorState> navigatorKey =
@@ -110,7 +111,7 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: navigatorKey,
       theme: AppStyles().mainTheme,
       title: 'Pro Equine',
-      home: const EmptyBookingsWidget(),
+      home: const SplashScreen(),
       routes: {
         loginRoute: (context) => const LoginScreen(),
         registerRoute: (context) => const RegisterScreen(),
