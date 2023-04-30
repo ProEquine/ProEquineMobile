@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:proequine/core/utils/Printer.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
@@ -20,6 +22,7 @@ class InterestsScreen extends StatefulWidget {
 class _InterestsScreenState extends State<InterestsScreen> {
   final List<bool> _isSelected = [false, false, false, false];
   String? interest;
+
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +102,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
             const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: kPadding,
+                horizontal: 20,
               ),
               child: RebiButton(
                 backgroundColor: interest!=null?AppColors.white:AppColors.formsLabel,

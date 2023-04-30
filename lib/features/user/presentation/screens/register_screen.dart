@@ -6,18 +6,14 @@ import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/widgets/marketing_checkbox.dart';
-import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
-import 'package:sizer/sizer.dart';
-
+import 'package:proequine/features/user/presentation/screens/signup_screen.dart';
 import '../../../../core/constants/colors/app_colors.dart';
-import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/global_functions/date_time_picker.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_logo_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../widgets/register_header.dart';
-import 'interests_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen
@@ -151,7 +147,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 if (_formKey.currentState!.validate()) {
                                   Navigator.push(context, MaterialPageRoute(
                                       builder: (context) =>
-                                          const InterestsScreen()));
+                                          const SignUpScreen()));
                                 } else {}
                               },
                               backgroundColor: AppColors.white,

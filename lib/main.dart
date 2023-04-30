@@ -11,6 +11,8 @@ import 'package:proequine/core/widgets/empty_bookings.dart';
 import 'package:proequine/features/events/domain/event_cubit.dart';
 import 'package:proequine/features/splash/presentation/screens/splash_screen.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
+import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
+import 'package:proequine/features/user/presentation/screens/verify_phone_screen.dart';
 import 'package:sizer/sizer.dart';
 
 import 'core/constants/constants.dart';
@@ -111,7 +113,7 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: navigatorKey,
       theme: AppStyles().mainTheme,
       title: 'Pro Equine',
-      home: const SplashScreen(),
+      home:  SplashScreen(),
       routes: {
         loginRoute: (context) => const LoginScreen(),
         registerRoute: (context) => const RegisterScreen(),

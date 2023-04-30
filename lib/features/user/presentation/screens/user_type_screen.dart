@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:proequine/core/utils/Printer.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
-import 'package:proequine/features/user/presentation/screens/email_phone_screen.dart';
+import 'package:proequine/features/user/presentation/screens/signup_screen.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/widgets/custom_logo_widget.dart';
+import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
 import '../widgets/register_header.dart';
 import '../widgets/selectable_type_container.dart';
 
@@ -99,13 +100,13 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
             const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: kPadding,
+                horizontal: 20,
               ),
               child: RebiButton(
                   backgroundColor: userType!=null?AppColors.white:AppColors.formsLabel,
                   onPressed: () {
                     if (userType != null) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>EmailAndPhoneScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNavigation()));
                     } else {
                       RebiMessage.error(msg: 'Please select your type');
                     }

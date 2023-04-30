@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
+import 'package:proequine/features/user/presentation/screens/interests_screen.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui' as ui;
 
@@ -13,14 +16,43 @@ import '../../../../core/widgets/rebi_button.dart';
 import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
 import '../widgets/register_header.dart';
 
-class VerificationScreen extends StatelessWidget {
+class VerificationScreen extends StatefulWidget {
   final String? email;
 
   VerificationScreen({super.key, this.email});
 
+  @override
+  State<VerificationScreen> createState() => _VerificationScreenState();
+}
+
+class _VerificationScreenState extends State<VerificationScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _pinPutController = TextEditingController();
+  int _secondsLeft = 60;
+  bool isResendCode = false;
+  late Timer _timer;
+
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_secondsLeft > 0) {
+          _secondsLeft--;
+        } else {
+          _timer.cancel();
+          isResendCode = false;
+          _secondsLeft = 60;
+        }
+      });
+    });
+  }
+
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String minutes = twoDigits(duration.inMinutes.remainder(60));
+    String seconds = twoDigits(duration.inSeconds.remainder(60));
+    return "$minutes:$seconds";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,52 +156,68 @@ class VerificationScreen extends StatelessWidget {
                           endIndent: 30.0,
                           indent: 30.0,
                         ),
-                       const SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 25.0.w),
-                          child: InkWell(
-                            onTap: () {
-                              Print("resend the code");
-                              // Navigator.push(context,
-                              //     MaterialPageRoute(builder: (context) => LoginScreen()));
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 25, vertical: 7),
-                              decoration: BoxDecoration(
-                                color: const Color(0xff161616),
-                                borderRadius: BorderRadius.circular(8.0),
-                                boxShadow: const [
-                                  BoxShadow(
-                                      color: Colors.white, spreadRadius: 1),
-                                ],
-                              ),
-                              child: Center(
-                                child: Row(
-                                  children: const [
-                                    Text(
-                                      "Resend Code",
-                                      style: TextStyle(
-                                          color: AppColors.white,
-                                          fontFamily: "notosan"),
+                        isResendCode
+                            ? Center(
+                                child: Text(
+                                _formatDuration(Duration(seconds: _secondsLeft))
+                                    .toString(),
+                                style: const TextStyle(
+                                    color: AppColors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700),
+                              ))
+                            : Padding(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: 25.0.w),
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      isResendCode = true;
+                                    });
+
+                                    _startTimer();
+                                    // Navigator.push(context,
+                                    //     MaterialPageRoute(builder: (context) => LoginScreen()));
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 25, vertical: 7),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xff161616),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                            color: Colors.white,
+                                            spreadRadius: 1),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      width: 4,
+                                    child: Center(
+                                      child: Row(
+                                        children: const [
+                                          Text(
+                                            "Resend Code",
+                                            style: TextStyle(
+                                                color: AppColors.white,
+                                                fontFamily: "notosan"),
+                                          ),
+                                          SizedBox(
+                                            width: 4,
+                                          ),
+                                          Icon(
+                                            Icons.refresh,
+                                            color: AppColors.white,
+                                            size: 20,
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                    Icon(
-                                      Icons.refresh,
-                                      color: AppColors.white,
-                                      size: 20,
-                                    )
-                                  ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
-                       const SizedBox(
+                        const SizedBox(
                           height: 30,
                         ),
                         RebiButton(
@@ -179,7 +227,7 @@ class VerificationScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const BottomNavigation()));
+                                          const InterestsScreen()));
                             } else {}
                           },
                           backgroundColor: AppColors.white,
