@@ -8,116 +8,98 @@ import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/images/app_images.dart';
 
 class HistoryWidget extends StatelessWidget {
-  String? imageUrl;
+  String? statusImg;
   String? transport;
+  String? refnumber;
   String? title;
-  String? date;
   String? horsesCount;
-  String? from;
-  String? to;
 
-  HistoryWidget(
-      {super.key,
-      this.title,
-      this.date,
-      this.imageUrl,
-      this.transport,
-      this.horsesCount,
-      this.from,
-      this.to});
+  HistoryWidget({
+    super.key,
+    this.title,
+    this.refnumber,
+    this.statusImg,
+    this.transport,
+    this.horsesCount,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 25.0.h,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppColors.formsBackground,
+        color: Color.fromRGBO(25, 25, 25, 1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.only(left: 10,right: 10,top: 10),
-            height: 15.0.h,
-            child: Row(children: [
-              Expanded(
-                flex: 6,
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      image: DecorationImage(
-                          // TODO : Change this asset to network image
-                          image: AssetImage(imageUrl!),
-                          fit: BoxFit.fill)),
+            padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+            child: Row(
+              children: [
+                SvgPicture.asset(statusImg!),
+                const SizedBox(
+                  width: 5,
                 ),
-              ),
-              const Spacer(
-                flex: 1,
-              ),
+                Text(
+                  title!,
+                  textAlign: TextAlign.left,
+                  style: const TextStyle(
+                      color: AppColors.titleColor,
+                      fontSize: 14,
+                      fontFamily: 'notosan',
+                      fontWeight: FontWeight.w500),
+                ),
+                Spacer(
+                  flex: 1,
+                ),
+                Text(
+                  refnumber!,
+                  textAlign: TextAlign.left,
+                  style: const TextStyle(
+                      color: AppColors.titleColor,
+                      fontSize: 14,
+                      fontFamily: 'notosan',
+                      fontWeight: FontWeight.w500),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding:
+                const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+            child: Row(children: [
               Expanded(
                 flex: 14,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      title!,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                          color: AppColors.titleColor,
-                          fontSize: 14,
-                          fontFamily: 'notosan',
-                          fontWeight: FontWeight.w500),
-                    ),
-                    Spacer(
-                      flex: 1,
-                    ),
                     Row(
                       children: [
                         Image.asset(
                           AppImages.transport,
-
                         ),
                         const SizedBox(
                           width: 5,
                         ),
-                        Flexible(child:Container(child: Text(
-                          transport!,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              color: AppColors.textColor,
-                              fontSize: 12,
-                              fontFamily: 'notosan',
-                              fontWeight: FontWeight.w400),
-                        ),
-                       ),
-                        ),
-                      ],
-                    ),
-                    Spacer(
-                      flex: 1,
-                    ),
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          AppIcons.date,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          date!,
-                          style: const TextStyle(
-                              color: AppColors.textColor,
-                              fontSize: 12,
-                              fontFamily: 'notosan',
-                              fontWeight: FontWeight.w400),
+                        Flexible(
+                          child: Container(
+                            child: Text(
+                              transport!,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  color: AppColors.textColor,
+                                  fontSize: 12,
+                                  fontFamily: 'notosan',
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                    Spacer(
-                      flex: 1,
+                    SizedBox(
+                      height: 10,
                     ),
                     Row(
                       children: [
@@ -142,47 +124,6 @@ class HistoryWidget extends StatelessWidget {
               ),
             ]),
           ),
-          SizedBox(
-            height: 10.0.h,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      SvgPicture.asset(AppIcons.location2),
-                      EllipsesWidget(),
-                      const SizedBox(width: 5,),
-                      Text(
-                        from!,
-                        style: const TextStyle(
-                            color: AppColors.textColor,
-                            fontSize: 12,
-                            fontFamily: 'notosan',
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      EllipsesWidget(),
-                      SvgPicture.asset(AppIcons.location2),
-                      const SizedBox(width: 5,),
-                      Text(
-                        to!,
-                        style: const TextStyle(
-                            color: AppColors.textColor,
-                            fontSize: 12,
-                            fontFamily: 'notosan',
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          )
         ],
       ),
     );

@@ -14,7 +14,7 @@ class SplashRepository{
    data: refreshRequestModel.toJson(),
         withAuthentication: true,
         thereDeviceId: true,
-        url: 'ApiURLs.getNewToken');
+        url: ApiURLs.getNewToken);
   }
 
   // static Future<BaseResultModel?> versionModel() async {

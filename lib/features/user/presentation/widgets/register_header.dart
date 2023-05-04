@@ -13,66 +13,57 @@ class RegistrationHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: Stack(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: kPadding,vertical: kPadding),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Image.asset(
-            AppImages.regHeader,
-            fit: BoxFit.cover,
-          ),
-          Positioned(
-            top: 30,
-            right: kPadding,
-            child: InkWell(
+          isThereBackButton?
+          Transform(
+            // alignment: Alignment.center,
+            transform: Directionality.of(context) == TextDirection.rtl
+            ? Matrix4.rotationY(math.pi)
+            : Matrix4.rotationY(0),
+            child:  Container(
+            padding: const EdgeInsets.all(8),
+            decoration:const  BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.formsBackground,
+            ),
+            child:InkWell(
+
+              child:const Icon(
+                Icons.arrow_back,
+                color: AppColors.white,
+              ),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()));
+                     Navigator.pop(context);
               },
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 25, vertical: 7),
-                decoration: BoxDecoration(
-                  color: const Color(0xff161616),
-                  borderRadius: BorderRadius.circular(8.0),
-                  boxShadow: const [
-                    BoxShadow(color: Colors.white, spreadRadius: 1),
-                  ],
-                ),
-                child: const Text(
-                  "Sign In",
-                  style:
-                      TextStyle(color: AppColors.white, fontFamily: "notosan"),
-                ),
+            )),
+          ):
+              Container(),
+          InkWell(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()));
+            },
+            child: Container(
+              padding:
+              const EdgeInsets.symmetric(horizontal: 25, vertical: 7),
+              decoration: BoxDecoration(
+                color: const Color(0xff161616),
+                borderRadius: BorderRadius.circular(8.0),
+                boxShadow: const [
+                  BoxShadow(color: Colors.white, spreadRadius: 1),
+                ],
+              ),
+              child: const Text(
+                "Sign In",
+                style:
+                TextStyle(color: AppColors.white, fontFamily: "notosan"),
               ),
             ),
           ),
-          isThereBackButton?
-          Positioned(
-              top: 25,child:Transform(
-            // alignment: Alignment.center,
-            transform: Directionality.of(context) == TextDirection.rtl
-                ? Matrix4.rotationY(math.pi)
-                : Matrix4.rotationY(0),
-            child:  Container(
-                padding: const EdgeInsets.all(8),
-                decoration:const  BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.formsBackground,
-                ),
-                child:InkWell(
-
-                  child:const Icon(
-                    Icons.arrow_back,
-                    color: AppColors.white,
-                  ),
-                  onTap: () {
-                         Navigator.pop(context);
-                  },
-                )),
-          ),
-          ):
-              Container()
 
         ],
       ),

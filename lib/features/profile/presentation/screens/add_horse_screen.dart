@@ -19,6 +19,8 @@ import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/rebi_button.dart';
 
 class AddHorseScreen extends StatefulWidget {
+  const AddHorseScreen({super.key});
+
   @override
   _AddHorseScreenState createState() => _AddHorseScreenState();
 }
@@ -101,7 +103,7 @@ class _AddHorseScreenState extends State<AddHorseScreen> {
                       ),
                     ),
                   ),
-                  child: Container(
+                  child: SizedBox(
                     height: 100,
                     width: 100,
                     child: child!,
@@ -224,14 +226,7 @@ class _AddHorseScreenState extends State<AddHorseScreen> {
                                     btnCancelText: "Gallery")
                                 .show();
                           },
-                          // child: Container(
-                          //   // width: 5.0.w,
-                          //   padding: EdgeInsets.all(1.0.w),
-                          //   decoration: BoxDecoration(
-                          //       color: AppColors.white,
-                          //       borderRadius:
-                          //       BorderRadius.circular(2.0.w)),
-                          child: Icon(
+                          child: const Icon(
                             Icons.camera_alt,
                             size: 30,
                           ),
@@ -309,7 +304,6 @@ class _AddHorseScreenState extends State<AddHorseScreen> {
                   items: gender,
                   selected: selectedGender,
                   validator: (value) {
-                    //  return Validator.requiredValidator(selectedGender);
                   },
                   hint: 'Gender',
                 ),

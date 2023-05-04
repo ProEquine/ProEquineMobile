@@ -19,7 +19,20 @@ class Validator {
   static String? phoneValidator(String? value) {
     if (value != null ) {
       if (!RegExp(
-        r"(?:[ +0][1-9])?",
+        r'(^(?:[+0]9)?[0-9]{9,12}$)',
+      ).hasMatch(value.trim())) {
+        return 'Please enter a valid phone number'.tra;
+      }
+      if(value.isEmpty){
+        return 'Please enter a valid phone number'.tra;
+      }
+    }
+    return null;
+  }
+  static String? countryCodeValidator(String? value) {
+    if (value != null ) {
+      if (!RegExp(
+        r'^\+(?:[0-9] ?){0,2}[0-9]$',
       ).hasMatch(value.trim())) {
         return 'Please enter a valid phone number'.tra;
       }
@@ -39,15 +52,15 @@ class Validator {
     return null;
   }
   static String? passwordValidator(String? value) {
-    if (value == null) {
-      return 'Please enter your password'.tra;
-    }
-
-    if (value.trim().isEmpty) {
-      return 'Please enter your password'.tra;
-    }
-    if (value.length < 5) {
-      return 'Must contain at least 5 or more characters'.tra;
+    if (value != null ) {
+      if (!RegExp(
+          r'^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
+      ).hasMatch(value.trim())) {
+        return 'Password must include numbers, capital letters, and symbols.'.tra;
+      }
+      if(value.isEmpty){
+        return 'Please enter your password'.tra;
+      }
     }
     return null;
   }

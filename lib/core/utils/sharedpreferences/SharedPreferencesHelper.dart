@@ -23,6 +23,8 @@ class AppSharedPreferences {
 
   static clearForLogOut() {
     removeAccessToken();
+    removeRefreshToken();
+    removeUserId();
     removeAccessTokenFirebase();
   }
 
@@ -35,6 +37,7 @@ class AppSharedPreferences {
   static bool get hasAccessToken => _pref?.contains(keyAccessToken) ?? false;
 
   static removeAccessToken() => _pref?.remove(keyAccessToken);
+
 
   /// User Id
   static String get userId => _pref?.read(keyUserId) ?? '';

@@ -1,31 +1,21 @@
 import 'package:proequine/core/CoreModels/base_result_model.dart';
 
-class LoginResponseModel extends BaseResultModel {
-  bool? isEmailVerified;
-  bool? isPhoneNumberVerified;
+class RegisterResponseModel extends BaseResultModel{
   String? accessToken;
   RefreshToken? refreshToken;
 
-  LoginResponseModel(
-      {this.isEmailVerified,
-        this.isPhoneNumberVerified,
-        this.accessToken,
-        this.refreshToken});
+  RegisterResponseModel({this.accessToken, this.refreshToken});
 
-  LoginResponseModel.fromJson(Map<String, dynamic> json) {
-    isEmailVerified = json['isEmailVerified'];
-    isPhoneNumberVerified = json['isPhoneNumberVerified'];
+  RegisterResponseModel.fromJson(Map<String, dynamic> json) {
     accessToken = json['accessToken'];
     refreshToken = json['refreshToken'] != null
-        ? RefreshToken.fromJson(json['refreshToken'])
+        ?  RefreshToken.fromJson(json['refreshToken'])
         : null;
   }
 
   @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['isEmailVerified'] = isEmailVerified;
-    data['isPhoneNumberVerified'] = isPhoneNumberVerified;
     data['accessToken'] = accessToken;
     if (refreshToken != null) {
       data['refreshToken'] = refreshToken!.toJson();
@@ -42,13 +32,12 @@ class RefreshToken {
   bool? isExpired;
   bool? isActive;
 
-  RefreshToken(
-      {this.id,
-        this.userId,
-        this.token,
-        this.expires,
-        this.isExpired,
-        this.isActive});
+  RefreshToken({this.id,
+    this.userId,
+    this.token,
+    this.expires,
+    this.isExpired,
+    this.isActive});
 
   RefreshToken.fromJson(Map<String, dynamic> json) {
     id = json['id'];

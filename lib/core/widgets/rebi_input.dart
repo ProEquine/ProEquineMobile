@@ -27,6 +27,7 @@ class RebiInput extends StatefulWidget {
     this.suffixIcon,
     this.contentPadding =
         const EdgeInsets.symmetric(vertical: 13.0, horizontal: 4.0),
+    this.scrollPadding=const EdgeInsets.only(bottom: 40),
     this.borderSide =
         const BorderSide(color: AppColors.backgroundColor, width: 0.0),
     this.controller,
@@ -57,6 +58,7 @@ class RebiInput extends StatefulWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final EdgeInsetsGeometry? contentPadding;
+  final EdgeInsets scrollPadding;
   final BorderSide borderSide;
   final TextEditingController? controller;
   final bool readOnly;
@@ -95,6 +97,7 @@ class _RebiInputState extends State<RebiInput> {
       mainAxisSize: MainAxisSize.min,
       children: [
         TextFormField(
+          scrollPadding: widget.scrollPadding,
           focusNode: focusNode,
           autofocus: widget.autofocus,
           enableSuggestions: false,
@@ -148,7 +151,7 @@ class _RebiInputState extends State<RebiInput> {
           obscureText: showPassword,
           decoration: InputDecoration(
             labelText: widget.labelText,
-            errorStyle: const TextStyle(color: AppColors.darkRed),
+            errorStyle: const TextStyle(color: AppColors.darkRed,fontSize: 11),
             errorBorder: OutlineInputBorder(
               borderSide:
                   const BorderSide(color: AppColors.darkRed, width: 1.0),

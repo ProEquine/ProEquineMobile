@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late final TextEditingController _email;
   late final TextEditingController _password;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final UserCubit cubit =UserCubit();
+  final UserCubit cubit = UserCubit();
 
   @override
   void initState() {
@@ -49,127 +49,314 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // return Scaffold(
+    //   body: SafeArea(
+    //     child: LayoutBuilder(builder: (context, constraint) {
+    //       return Form(
+    //           key: _formKey,
+    //           child: ConstrainedBox(
+    //             constraints: BoxConstraints(minHeight: constraint.maxHeight),
+    //             child: IntrinsicHeight(
+    //               child: SingleChildScrollView(
+    //                 child: Column(
+    //                   children: [
+    //                     Spacer(flex: 1,),
+    //                     const CustomLogoWidget(),
+    //                     Spacer(flex: 3,),
+    //                     Padding(
+    //                       padding:
+    //                           const EdgeInsets.symmetric(horizontal: kPadding),
+    //                       child: Column(
+    //                         children: [
+    //                           Align(
+    //                             alignment: Alignment.centerLeft,
+    //                             child: Text(
+    //                               'Login',
+    //                               style: AppStyles.registrationTitle,
+    //                             ),
+    //                           ),
+    //                           SizedBox(
+    //                             height: 2.h,
+    //                           ),
+    //                           Padding(
+    //                             padding:
+    //                                 const EdgeInsets.symmetric(vertical: 10),
+    //                             child: RebiInput(
+    //                               labelText: 'Email'.tra,
+    //                               controller: _email,
+    //                               scrollPadding:
+    //                                   const EdgeInsets.only(bottom: 100),
+    //                               keyboardType: TextInputType.emailAddress,
+    //                               textInputAction: TextInputAction.done,
+    //                               autoValidateMode:
+    //                                   AutovalidateMode.onUserInteraction,
+    //                               isOptional: false,
+    //                               color: AppColors.formsLabel,
+    //                               readOnly: false,
+    //                               contentPadding: const EdgeInsets.symmetric(
+    //                                   horizontal: 20, vertical: 13),
+    //                               obscureText: false,
+    //                               validator: (value) {
+    //                                 return Validator.emailValidator(
+    //                                     _email.text);
+    //                               },
+    //                             ),
+    //                           ),
+    //                           Padding(
+    //                             padding:
+    //                                 const EdgeInsets.symmetric(vertical: 10),
+    //                             child: RebiInput(
+    //                               labelText: 'Password'.tra,
+    //                               controller: _password,
+    //                               keyboardType: TextInputType.visiblePassword,
+    //                               textInputAction: TextInputAction.done,
+    //                               autoValidateMode:
+    //                                   AutovalidateMode.onUserInteraction,
+    //                               scrollPadding:
+    //                                   const EdgeInsets.only(bottom: 100),
+    //                               isOptional: false,
+    //                               color: AppColors.formsLabel,
+    //                               readOnly: false,
+    //                               contentPadding: const EdgeInsets.symmetric(
+    //                                   horizontal: 20, vertical: 13),
+    //                               obscureText: true,
+    //                               validator: (value) {
+    //                                 return Validator.passwordValidator(
+    //                                     _password.text);
+    //                               },
+    //                             ),
+    //                           ),
+    //                           const SizedBox(
+    //                             height: 5,
+    //                           ),
+    //                           Align(
+    //                             alignment: Alignment.bottomCenter,
+    //                             child: Padding(
+    //                               padding:
+    //                                   const EdgeInsets.symmetric(vertical: 10),
+    //                               child: _buildLoginConsumer(),
+    //                             ),
+    //                           ),
+    //                           Align(
+    //                             alignment: Alignment.centerLeft,
+    //                             child: TextButton(
+    //                               style: TextButton.styleFrom(
+    //                                   tapTargetSize:
+    //                                       MaterialTapTargetSize.shrinkWrap,
+    //                                   alignment: Alignment.centerLeft),
+    //                               onPressed: () {
+    //                                 Navigator.push(
+    //                                     context,
+    //                                     MaterialPageRoute(
+    //                                         builder: (context) =>
+    //                                             ForgotPasswordScreen()));
+    //                               },
+    //                               child: const Text(
+    //                                 style: TextStyle(
+    //                                     fontSize: 14, color: Colors.white),
+    //                                 "Forget your password?",
+    //                               ),
+    //                             ),
+    //                           ),
+    //                           const SizedBox(
+    //                             height: 20,
+    //                           ),
+    //                           Align(
+    //                             alignment: Alignment.center,
+    //                             child: RichText(
+    //                               text: TextSpan(children: <TextSpan>[
+    //                                 TextSpan(
+    //                                   text: "New to ProEquine? ".tra,
+    //                                   style: const TextStyle(
+    //                                       color: AppColors.white, fontSize: 18),
+    //                                 ),
+    //                                 TextSpan(
+    //                                     text: "Sign up".tra,
+    //                                     style: const TextStyle(
+    //                                         color: AppColors.gold,
+    //                                         fontSize: 18,
+    //                                         decoration:
+    //                                             TextDecoration.underline),
+    //                                     recognizer: TapGestureRecognizer()
+    //                                       ..onTap = () {
+    //                                         Navigator.pushNamed(
+    //                                             context, registerRoute);
+    //                                       }),
+    //                               ]),
+    //                             ),
+    //                           ),
+    //                           const SizedBox(
+    //                             height: 20,
+    //                           ),
+    //                         ],
+    //                       ),
+    //                     )
+    //                   ],
+    //                 ),
+    //               ),
+    //             ),
+    //           ));
+    //     }),
+    //   ),
+    // );
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                const LoginHeader(),
-                const CustomLogoWidget(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: kPadding),
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Login',
-                          style: AppStyles.registrationTitle,
+        child: LayoutBuilder(
+          builder: (context, constraint) {
+            return Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraint.maxHeight),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      children: [
+                        const Spacer(
+                          flex: 1,
                         ),
-                      ),
-                      SizedBox(
-                        height: 3.h,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: RebiInput(
-                          labelText: 'Email'.tra,
-                          controller: _email,
-                          keyboardType: TextInputType.emailAddress,
-                          textInputAction: TextInputAction.done,
-                          autoValidateMode: AutovalidateMode.onUserInteraction,
-                          isOptional: false,
-                          color: AppColors.formsLabel,
-                          readOnly: false,
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 13),
-                          obscureText: false,
-                          validator: (value) {
-                            return Validator.emailValidator(_email.text);
-                          },
+                        const CustomLogoWidget(),
+                        const Spacer(
+                          flex: 3,
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: RebiInput(
-                          labelText: 'Password'.tra,
-                          controller: _password,
-                          keyboardType: TextInputType.visiblePassword,
-                          textInputAction: TextInputAction.done,
-                          autoValidateMode: AutovalidateMode.onUserInteraction,
-                          isOptional: false,
-                          color: AppColors.formsLabel,
-                          readOnly: false,
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 13),
-                          obscureText: true,
-                          validator: (value) {
-                            return Validator.passwordValidator(_password.text);
-                          },
-                        ),
-                      ),
-                    const  SizedBox(
-                        height: 5,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: _buildLoginConsumer(),
-                      ),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              alignment: Alignment.centerLeft),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ForgotPasswordScreen()));
-                          },
-                          child: const Text(
-                            style: TextStyle(fontSize: 14, color: Colors.white),
-                            "Forget your password?",
+                        Padding(
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: kPadding),
+                          child: Column(
+                            children: [
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Login',
+                                  style: AppStyles.registrationTitle,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 2.h,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: RebiInput(
+                                  labelText: 'Email'.tra,
+                                  controller: _email,
+                                  scrollPadding:
+                                      const EdgeInsets.only(bottom: 100),
+                                  keyboardType: TextInputType.emailAddress,
+                                  textInputAction: TextInputAction.done,
+                                  autoValidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  isOptional: false,
+                                  color: AppColors.formsLabel,
+                                  readOnly: false,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 13),
+                                  obscureText: false,
+                                  validator: (value) {
+                                    return Validator.emailValidator(
+                                        _email.text);
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: RebiInput(
+                                  labelText: 'Password'.tra,
+                                  controller: _password,
+                                  keyboardType: TextInputType.visiblePassword,
+                                  textInputAction: TextInputAction.done,
+                                  autoValidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  scrollPadding:
+                                      const EdgeInsets.only(bottom: 100),
+                                  isOptional: false,
+                                  color: AppColors.formsLabel,
+                                  readOnly: false,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 13),
+                                  obscureText: true,
+                                  validator: (value) {
+                                    return Validator.passwordValidator(
+                                        _password.text);
+                                  },
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: _buildLoginConsumer(),
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: TextButton(
+                                  style: TextButton.styleFrom(
+                                      tapTargetSize:
+                                          MaterialTapTargetSize.shrinkWrap,
+                                      alignment: Alignment.centerLeft),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ForgotPasswordScreen()));
+                                  },
+                                  child: const Text(
+                                    style: TextStyle(
+                                        fontSize: 14, color: Colors.white,fontWeight: FontWeight.w700),
+                                    "Forget your password?",
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: RichText(
+                                  text: TextSpan(children: <TextSpan>[
+                                    TextSpan(
+                                      text: "New to ProEquine? ".tra,
+                                      style: const TextStyle(
+                                          color: AppColors.white, fontSize: 18),
+                                    ),
+                                    TextSpan(
+                                        text: "Sign up".tra,
+                                        style: const TextStyle(
+                                            color: AppColors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: 'notosan',
+
+                                            decoration:
+                                                TextDecoration.underline),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            Navigator.pushNamed(
+                                                context, registerRoute);
+                                          }),
+                                  ]),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 40,
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: RichText(
-                          text: TextSpan(children: <TextSpan>[
-                            TextSpan(
-                              text: "New to ProEquine? ".tra,
-                              style: const TextStyle(
-                                  color: AppColors.white, fontSize: 18),
-                            ),
-                            TextSpan(
-                                text: "Sign up".tra,
-                                style: const TextStyle(
-                                    color: AppColors.gold,
-                                    fontSize: 18,
-                                    decoration: TextDecoration.underline),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.pushNamed(context, registerRoute);
-                                  }),
-                          ]),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                    ],
+                        )
+                      ],
+                    ),
                   ),
-                )
-              ],
-            ),
-          ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -181,26 +368,26 @@ class _LoginScreenState extends State<LoginScreen> {
         builder: (context, state) {
           if (state is LoginLoading) {
             return LoadingCircularWidget();
-          } else {
+          } else if(state is LoginError){
+            RebiMessage.error(msg: state.message!);
+          }{
             return RebiButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                   _onPressLogin();
-                  } else {
-                  }
+                    _onPressLogin();
+                  } else {}
                 },
                 backgroundColor: AppColors.white,
-                child: Text("Login"));
+                child: const Text("Sign in"));
           }
         },
         listener: (context, state) {
           if (state is LoginSuccessful) {
             RebiMessage.success(msg: state.message!);
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>const  BottomNavigation()));
-
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const BottomNavigation()));
           } else if (state is LoginError) {
             RebiMessage.error(msg: state.message!);
           }

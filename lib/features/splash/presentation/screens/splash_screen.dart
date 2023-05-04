@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:proequine/features/splash/data/refresh_request_model.dart';
+import 'package:proequine/features/splash/domain/splash_cubit.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,7 +23,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
- final String _appUrl = Platform.isAndroid
+  final String _appUrl = Platform.isAndroid
       ? 'https://play.google.com/store/apps/details?id=com.findyourteam.mobile'
       : 'https://apps.apple.com/us/app/fyt-find-your-team/id1644097919';
   String version = '';
@@ -31,6 +33,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void updateApp() async {
     if (!await launch(_appUrl)) throw 'Could not launch $_appUrl';
   }
+
+  SplashCubit splashCubit = SplashCubit();
 
   // getVersion() async {
   //   PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -46,16 +50,16 @@ class _SplashScreenState extends State<SplashScreen> {
     if (AppSharedPreferences.getFirstTime!) {
       if (AppSharedPreferences.accessToken.isNotEmpty) {
         Print("token${AppSharedPreferences.accessToken}");
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const BottomNavigation()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const BottomNavigation()));
       } else {
         /// edited from login to testPage
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()));
       }
     } else {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const VideoPlayerScreen()));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const VideoPlayerScreen()));
     }
   }
 
@@ -69,7 +73,9 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     startTimer();
     // getVersion();
-    // refreshTokenRequest();
+    splashCubit.refreshToken(RefreshRequestModel(
+        refreshToken: AppSharedPreferences.refreshToken,
+        userId: AppSharedPreferences.userId));
     super.initState();
   }
 
@@ -82,11 +88,11 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           //
           // buildDialogForUpdate(),
-         // const BackgroundImage(),
+          // const BackgroundImage(),
           Transform.translate(
-            offset: Offset(0.0, -10.0.h),
+            offset: const Offset(0.0,-30.0),
             child: Center(
-              child: Image.asset(AppImages.logo),
+              child: Image.asset(AppImages.logo,scale: 3,),
             ),
           ),
         ],

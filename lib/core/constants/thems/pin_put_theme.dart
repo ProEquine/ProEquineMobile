@@ -10,7 +10,7 @@ class PinThemeConst {
     height: 52,
     margin: const EdgeInsets.symmetric(horizontal: 5),
     textStyle: TextStyle(
-        fontSize: 14.sp, color: AppColors.white, fontWeight: FontWeight.w600),
+        fontSize: 14.sp, color: AppColors.white, fontWeight: FontWeight.w600,fontFamily: 'hemiHead'),
     decoration: const BoxDecoration(
       border: Border(
         bottom: BorderSide(
@@ -27,7 +27,7 @@ class PinThemeConst {
     height: 63,
     margin: const EdgeInsets.symmetric(horizontal: 5),
     textStyle: TextStyle(
-        fontSize: 14.sp, color: AppColors.white, fontWeight: FontWeight.w600),
+        fontSize: 14.sp, color: AppColors.white, fontWeight: FontWeight.w600,fontFamily: 'hemiHead'),
     decoration: const BoxDecoration(
       border: Border(
         left: BorderSide(
@@ -56,7 +56,7 @@ class PinThemeConst {
     height: 63,
     margin: const EdgeInsets.symmetric(horizontal: 5),
     textStyle: TextStyle(
-        fontSize: 14.sp, color: AppColors.white, fontWeight: FontWeight.w600),
+        fontSize: 14.sp, color: AppColors.white, fontWeight: FontWeight.w600,fontFamily: 'hemiHead'),
     decoration: const BoxDecoration(
       border: Border(
         bottom: BorderSide(

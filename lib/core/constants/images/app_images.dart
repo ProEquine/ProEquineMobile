@@ -1,6 +1,6 @@
 class AppImages {
   AppImages._();
-  static const logo = "assets/images/logo.png";
+  static const logo = "assets/images/PE primary logo.png";
   static const error = "assets/images/404.png";
   static const shape = "assets/images/shapelogin.png";
   static const upComingEvent = "assets/images/upcoming-events.png";
@@ -22,6 +22,7 @@ class AppImages {
   static const greyTrans = "assets/images/Group 244 (1).png";
   static const regHeader = "assets/images/reg-header.png";
   static const emptyBookings = "assets/images/empty_bookings.png";
+  static const supportThanks = "assets/images/supportThank.png";
 }
 
 class AppIcons {
@@ -45,4 +46,3 @@ class AppIcons {
   static const inbox = 'assets/icons/inbox.svg';
   static const transportType = 'assets/icons/transType.svg';
 }
-

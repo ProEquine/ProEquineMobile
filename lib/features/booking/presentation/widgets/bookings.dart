@@ -103,10 +103,6 @@ class Booking extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            TitleBar('Bookings'),
-            const SizedBox(
-              height: 22,
-            ),
             GroupedListView<dynamic, String>(
               elements: elements,
               shrinkWrap: true,

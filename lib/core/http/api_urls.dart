@@ -6,7 +6,9 @@ class ApiURLs {
   static const String basicApiUrl = "$baseUrl/api";
 
   /// Auth URLs
-  static const String loginUSER = "$basicApiUrl/token";
+  static const String loginUSER = "$basicApiUrl/Auth/login";
+  static const String registerUSER = "$basicApiUrl/Auth/register";
+  static const String getNewToken = "$basicApiUrl/Auth/refresh";
 
 
   /// Events URLs

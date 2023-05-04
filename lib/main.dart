@@ -1,13 +1,10 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/StartUp/StartUp.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
-import 'package:proequine/core/widgets/empty_bookings.dart';
 import 'package:proequine/features/events/domain/event_cubit.dart';
 import 'package:proequine/features/splash/presentation/screens/splash_screen.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
@@ -17,7 +14,6 @@ import 'package:sizer/sizer.dart';
 
 import 'core/constants/constants.dart';
 import 'core/constants/routes/routes.dart';
-import 'core/utils/Printer.dart';
 import 'core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'core/widgets/confirm_screen.dart';
 import 'features/booking/presentation/screens/book_transport.dart';
@@ -113,7 +109,7 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: navigatorKey,
       theme: AppStyles().mainTheme,
       title: 'Pro Equine',
-      home:  SplashScreen(),
+      home:const SplashScreen(),
       routes: {
         loginRoute: (context) => const LoginScreen(),
         registerRoute: (context) => const RegisterScreen(),

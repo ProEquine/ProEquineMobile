@@ -26,7 +26,8 @@ class SplashCubit extends Cubit<SplashState> {
     var response = await SplashRepository.refreshToken(requestModel);
     if (response is RefreshTokenResponse) {
       AppSharedPreferences.accessToken = response.accessToken!;
-      AppSharedPreferences.refreshToken = response.refreshToken;
+      AppSharedPreferences.refreshToken = response.refreshToken!.token!;
+      AppSharedPreferences.userId = response.refreshToken!.userId!;
       if (response is RefreshSuccessfully) {
         Print(response);
       }

@@ -21,6 +21,7 @@ class ForgotPasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Form(
@@ -83,7 +84,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                           } else {}
                         },
                         backgroundColor: AppColors.white,
-                        child: Text("Send"),
+                        child: const Text("Send"),
                       ),
                       const SizedBox(
                         height: 20,
@@ -94,7 +95,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                         },
                         backgroundColor: AppColors.backgroundColor,
                         isBackButton: true,
-                        child: Text("Back to login"),
+                        child: const Text("Back to login"),
                       ),
                       const SizedBox(
                         height: 30,

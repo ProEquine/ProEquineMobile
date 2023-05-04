@@ -2,30 +2,28 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
+import 'package:proequine/core/widgets/success_state_widget.dart';
 import 'package:proequine/features/user/presentation/screens/interests_screen.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui' as ui;
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../core/constants/images/app_images.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/constants/thems/pin_put_theme.dart';
-import '../../../../core/utils/Printer.dart';
+import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/rebi_button.dart';
-import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
-import '../widgets/register_header.dart';
 
-class VerificationScreen extends StatefulWidget {
+class VerifyEmailScreen extends StatefulWidget {
   final String? email;
 
-  VerificationScreen({super.key, this.email});
+  const VerifyEmailScreen({super.key, this.email});
 
   @override
-  State<VerificationScreen> createState() => _VerificationScreenState();
+  State<VerifyEmailScreen> createState() => _VerifyEmailScreenState();
 }
 
-class _VerificationScreenState extends State<VerificationScreen> {
+class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _pinPutController = TextEditingController();
@@ -34,7 +32,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   late Timer _timer;
 
   void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         if (_secondsLeft > 0) {
           _secondsLeft--;
@@ -57,7 +55,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(20.0.h),
+        child: CustomHeader(
+          title: "",
+          isThereBackButton: true,
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Form(
@@ -65,28 +69,18 @@ class _VerificationScreenState extends State<VerificationScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                RegistrationHeader(isThereBackButton: true),
-                SizedBox(
-                  // padding: const EdgeInsets.symmetric(vertical: kPadding),
-                  height: 15.h,
-                  child: Image.asset(
-                    AppImages.logo,
-                    scale: 1,
-                  ),
-                ),
-                SizedBox(height: 20,),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: kPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Confirm your number",
+                      Text("Confirm your Email",
                           style: AppStyles.registrationTitle),
                       SizedBox(
                         height: 1.h,
                       ),
                       Text(
-                        "A 6 digit verification code has been sent to your registered phone number.",
+                        "A 6 digit verification code has been sent to your registered email.",
                         style: AppStyles.descriptions,
                       ),
                       const SizedBox(
@@ -96,12 +90,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         child: Directionality(
                           textDirection: ui.TextDirection.ltr,
                           child: Pinput(
-                            scrollPadding: EdgeInsets.only(bottom: 60.h),
                             preFilledWidget: Container(
                               width: 30,
                               height: 20,
                               margin:
-                                  const EdgeInsets.symmetric(horizontal: 15),
+                              const EdgeInsets.symmetric(horizontal: 15),
                               decoration: const BoxDecoration(
                                 border: Border(
                                   bottom: BorderSide(
@@ -111,7 +104,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                               ),
                             ),
                             androidSmsAutofillMethod:
-                                AndroidSmsAutofillMethod.smsUserConsentApi,
+                            AndroidSmsAutofillMethod.smsUserConsentApi,
                             length: 6,
                             closeKeyboardWhenCompleted: true,
                             isCursorAnimationEnabled: true,
@@ -119,10 +112,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             defaultPinTheme: PinThemeConst.defaultPinTheme,
                             focusedPinTheme: PinThemeConst.focusedPinTheme,
                             submittedPinTheme:
-                                PinThemeConst.submittedPinTheme,
+                            PinThemeConst.submittedPinTheme,
                             pinAnimationType: PinAnimationType.rotation,
                             pinputAutovalidateMode:
-                                PinputAutovalidateMode.onSubmit,
+                            PinputAutovalidateMode.onSubmit,
                             validator: (value) {
                               if (value!.isEmpty || value.length < 6) {
                                 return 'please enter your code';
@@ -161,74 +154,75 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       ),
                       isResendCode
                           ? Center(
-                              child: Text(
-                              _formatDuration(Duration(seconds: _secondsLeft))
-                                  .toString(),
-                              style: const TextStyle(
-                                  color: AppColors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700),
-                            ))
+                          child: Text(
+                            _formatDuration(Duration(seconds: _secondsLeft))
+                                .toString(),
+                            style: const TextStyle(
+                                color: AppColors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700),
+                          ))
                           : Center(
-                            child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  isResendCode = true;
-                                });
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              isResendCode = true;
+                            });
 
-                                _startTimer();
-                                // Navigator.push(context,
-                                //     MaterialPageRoute(builder: (context) => LoginScreen()));
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 25, vertical: 7),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xff161616),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color: Colors.white,
-                                        spreadRadius: 1),
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: const [
-                                    Text(
-                                      "Resend Code",
-                                      style: TextStyle(
-                                          color: AppColors.white,
-                                          fontFamily: "notosan"),
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Icon(
-                                      Icons.refresh,
+                            _startTimer();
+                            // Navigator.push(context,
+                            //     MaterialPageRoute(builder: (context) => LoginScreen()));
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 25, vertical: 7),
+                            decoration: BoxDecoration(
+                              color: const Color(0xff161616),
+                              borderRadius: BorderRadius.circular(8.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                    color: Colors.white,
+                                    spreadRadius: 1),
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: const [
+                                Text(
+                                  "Resend Code",
+                                  style: TextStyle(
                                       color: AppColors.white,
-                                      size: 20,
-                                    )
-                                  ],
+                                      fontFamily: "notosan"),
                                 ),
-                              ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Icon(
+                                  Icons.refresh,
+                                  color: AppColors.white,
+                                  size: 20,
+                                )
+                              ],
                             ),
                           ),
+                        ),
+                      ),
                       const SizedBox(
                         height: 30,
                       ),
                       RebiButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const InterestsScreen()));
+                                     SuccessStateScreen(title: "Email Updated Successfully",)));
+
                           } else {}
                         },
                         backgroundColor: AppColors.white,
-                        child: const Text("Verify"),
+                        child: const Text("Confirm"),
                       ),
                       const SizedBox(
                         height: 20,

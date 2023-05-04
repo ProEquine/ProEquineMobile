@@ -6,8 +6,8 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../core/widgets/custom_header.dart';
 
-class PrivacyScreen extends StatelessWidget {
-  const PrivacyScreen({super.key});
+class TermsCondition extends StatelessWidget {
+  const TermsCondition({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class PrivacyScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                HeaderText("Legel", "Privacy Policy",true),
+                HeaderText("Terms & Conditions", "Privacy Policy",true),
                 const SizedBox(
                   height: 20,
                 ),
