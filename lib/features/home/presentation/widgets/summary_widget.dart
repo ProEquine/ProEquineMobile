@@ -14,7 +14,7 @@ class SummaryBoxWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14,vertical:11 ),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -116,8 +116,11 @@ class SummaryBoxWidget extends StatelessWidget {
             ),
             RebiButton(
               height: 40,
-              onPressed: () {},
-              child:  Text(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              backgroundColor: Color(0xff303030),
+              child: const Text(
                 "Edit",
                 style: TextStyle(
                     color: AppColors.white,
@@ -125,7 +128,6 @@ class SummaryBoxWidget extends StatelessWidget {
                     fontSize: 14,
                     fontFamily: 'notosan'),
               ),
-              backgroundColor: Color(0xff303030),
             ),
             // SizedBox(height: 12,)
           ],

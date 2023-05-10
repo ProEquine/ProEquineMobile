@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
-import 'package:proequine/core/widgets/submit_verification_widget.dart';
-import 'package:proequine/features/user/data/check_verification_request_model.dart';
-import 'package:proequine/features/user/presentation/screens/interests_screen.dart';
+import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/widgets/submit_reset_password_page.dart';
+import 'package:proequine/features/user/data/reset_password_request_model.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui' as ui;
 
@@ -14,25 +14,26 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/images/app_images.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/constants/thems/pin_put_theme.dart';
-import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/rebi_message.dart';
+import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
-import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
+import '../../../../core/widgets/rebi_input.dart';
 import '../../data/send_verification_request_model.dart';
 import '../../domain/user_cubit.dart';
 import '../widgets/register_header.dart';
 
-class VerificationScreen extends StatefulWidget {
+class ResetPasswordScreen extends StatefulWidget {
   final String? phone;
+  final String? token;
 
-  VerificationScreen({super.key, this.phone});
+  ResetPasswordScreen({super.key, this.phone, this.token});
 
   @override
-  State<VerificationScreen> createState() => _VerificationScreenState();
+  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
 
-class _VerificationScreenState extends State<VerificationScreen> {
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _pinPutController = TextEditingController();
@@ -53,7 +54,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
       });
     });
   }
-  UserCubit cubit=UserCubit();
+
+  UserCubit cubit = UserCubit();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _confirmPassword = TextEditingController();
 
   String _formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, "0");
@@ -61,14 +65,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
     String seconds = twoDigits(duration.inSeconds.remainder(60));
     return "$minutes:$seconds";
   }
+
   @override
   void initState() {
-    context
-        .read<UserCubit>()
-        .sendVerificationCode(
-        SendVerificationRequestModel(
-            phoneNumber:widget.phone,
-            channel: "sms"));
     super.initState();
   }
 
@@ -92,7 +91,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     scale: 1,
                   ),
                 ),
-                SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: kPadding),
                   child: Column(
@@ -136,8 +137,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             controller: _pinPutController,
                             defaultPinTheme: PinThemeConst.defaultPinTheme,
                             focusedPinTheme: PinThemeConst.focusedPinTheme,
-                            submittedPinTheme:
-                                PinThemeConst.submittedPinTheme,
+                            submittedPinTheme: PinThemeConst.submittedPinTheme,
                             pinAnimationType: PinAnimationType.rotation,
                             pinputAutovalidateMode:
                                 PinputAutovalidateMode.onSubmit,
@@ -188,58 +188,115 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                   fontWeight: FontWeight.w700),
                             ))
                           : Center(
-                            child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  context
-                                      .read<UserCubit>()
-                                      .sendVerificationCode(
-                                      SendVerificationRequestModel(
-                                          phoneNumber:widget.phone,
-                                          channel: "sms"));
-                                  isResendCode = true;
-                                });
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    context
+                                        .read<UserCubit>()
+                                        .forgotPassword(
+                                            SendVerificationRequestModel(
+                                                phoneNumber: widget.phone,
+                                                channel: "sms"));
+                                    isResendCode = true;
+                                  });
 
-                                _startTimer();
-                                // Navigator.push(context,
-                                //     MaterialPageRoute(builder: (context) => LoginScreen()));
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 25, vertical: 7),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xff161616),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color: Colors.white,
-                                        spreadRadius: 1),
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: const [
-                                    Text(
-                                      "Resend Code",
-                                      style: TextStyle(
-                                          color: AppColors.white,
-                                          fontFamily: "notosan"),
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Icon(
-                                      Icons.refresh,
-                                      color: AppColors.white,
-                                      size: 20,
-                                    )
-                                  ],
+                                  _startTimer();
+                                  // Navigator.push(context,
+                                  //     MaterialPageRoute(builder: (context) => LoginScreen()));
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 7),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff161616),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          color: Colors.white, spreadRadius: 1),
+                                    ],
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: const [
+                                      Text(
+                                        "Resend Code",
+                                        style: TextStyle(
+                                            color: AppColors.white,
+                                            fontFamily: "notosan"),
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Icon(
+                                        Icons.refresh,
+                                        color: AppColors.white,
+                                        size: 20,
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
                       const SizedBox(
-                        height: 30,
+                        height: 20,
+                      ),
+                      const Divider(
+                        height: 10,
+                        thickness: 3,
+                        color: Color(0XFF36393D),
+                        endIndent: 30.0,
+                        indent: 30.0,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: RebiInput(
+                          hintText: 'New password'.tra,
+                          controller: _password,
+                          keyboardType: TextInputType.visiblePassword,
+                          textInputAction: TextInputAction.done,
+                          autoValidateMode: AutovalidateMode.onUserInteraction,
+                          isOptional: false,
+                          color: AppColors.formsLabel,
+                          readOnly: false,
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 13),
+                          obscureText: true,
+                          validator: (value) {
+                            return Validator.passwordValidator(_password.text);
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: RebiInput(
+                          hintText: 'Confirm new password'.tra,
+                          controller: _confirmPassword,
+                          scrollPadding: const EdgeInsets.only(bottom: 100),
+                          keyboardType: TextInputType.visiblePassword,
+                          textInputAction: TextInputAction.done,
+                          autoValidateMode: AutovalidateMode.onUserInteraction,
+                          isOptional: false,
+                          color: AppColors.formsLabel,
+                          readOnly: false,
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 13),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value != null && value.isEmpty) {
+                              return "Please confirm your password".tra;
+                            } else if (value != _password.text) {
+                              return "password does not match".tra;
+                            } else {
+                              return null;
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
                       ),
                       _buildVerifyConsumer(),
                       const SizedBox(
@@ -255,14 +312,15 @@ class _VerificationScreenState extends State<VerificationScreen> {
       ),
     );
   }
+
   _buildVerifyConsumer() {
     return BlocConsumer<UserCubit, UserState>(
         bloc: cubit,
         builder: (context, state) {
-          if (state is CheckVerificationLoading) {
+          if (state is ResetPasswordLoading) {
             return LoadingCircularWidget();
-
-          }{
+          }
+          {
             return RebiButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
@@ -276,20 +334,24 @@ class _VerificationScreenState extends State<VerificationScreen> {
           }
         },
         listener: (context, state) {
-          if (state is CheckVerificationSuccessful) {
+          if (state is ResetPasswordSuccessful) {
             RebiMessage.success(msg: state.message!);
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                    const VerificationSubmit()));
-          } else if (state is CheckVerificationError) {
+                    builder: (context) => const ResetPasswordSubmit()));
+          } else if (state is ResetPasswordError) {
             RebiMessage.error(msg: state.message!);
           }
         });
   }
 
   _onPressVerify() {
-    return cubit.checkVerificationCode(CheckVerificationRequestModel(phoneNumber: widget.phone,code: _pinPutController.text));
+    return cubit.resetPassword(ResetPasswordRequestModel(
+        phoneNumber: widget.phone,
+        code: _pinPutController.text,
+        token: widget.token,
+        password: _password.text,
+        confirmPassword: _confirmPassword.text));
   }
 }

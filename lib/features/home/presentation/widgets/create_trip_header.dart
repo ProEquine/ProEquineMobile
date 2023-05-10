@@ -12,7 +12,7 @@ class CreateTripHeader extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: 45.0.h,
+          height: 43.0.h,
           width: double.infinity,
           decoration:  BoxDecoration(
             image: DecorationImage(

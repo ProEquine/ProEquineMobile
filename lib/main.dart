@@ -20,6 +20,7 @@ import 'features/booking/presentation/screens/book_transport.dart';
 import 'features/events/presentation/screens/event_booking.dart';
 import 'features/nav_bar/domain/navbar_cubit.dart';
 import 'features/nav_bar/presentation/screens/bottomnavigation.dart';
+import 'features/user/presentation/screens/interests_screen.dart';
 import 'features/user/presentation/screens/login_screen.dart';
 import 'features/user/presentation/screens/register_screen.dart';
 
@@ -109,11 +110,11 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: navigatorKey,
       theme: AppStyles().mainTheme,
       title: 'Pro Equine',
-      home:const SplashScreen(),
+      home:  const SplashScreen(),
       routes: {
         loginRoute: (context) => const LoginScreen(),
         registerRoute: (context) => const RegisterScreen(),
-        '/homeRoute': (context) => const BottomNavigation(),
+        '/homeRoute': (context) => BottomNavigation(),
         transportRoute: (context) => const BookTransport(),
         eventRoute: ((context) => const BookEvent()),
         '/confirm': ((context) => const ConfirmScreen()),

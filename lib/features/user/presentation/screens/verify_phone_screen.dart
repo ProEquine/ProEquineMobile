@@ -2,11 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/features/user/data/register_request_model.dart';
+import 'package:proequine/features/user/data/send_verification_request_model.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
-
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
@@ -37,17 +38,14 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
   late final TextEditingController _countryCode;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final UserCubit cubit = UserCubit();
-  String? dob='';
-
+  String? dob = '';
 
   @override
   void initState() {
     _phone = TextEditingController();
     _countryCode = TextEditingController(text: "+971");
     super.initState();
-
   }
-
 
   @override
   void dispose() {
@@ -73,9 +71,12 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                       children: [
                         RegistrationHeader(isThereBackButton: true),
                         const CustomLogoWidget(),
-                        SizedBox(height: 40,),
+                        SizedBox(
+                          height: 40,
+                        ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: kPadding),
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: kPadding),
                           child: Column(
                             children: [
                               Align(
@@ -87,7 +88,8 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                 height: 10,
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: Row(
                                   children: [
                                     Expanded(
@@ -98,12 +100,13 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                         keyboardType: TextInputType.number,
                                         textInputAction: TextInputAction.done,
                                         autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                            AutovalidateMode.onUserInteraction,
                                         isOptional: false,
                                         color: AppColors.formsLabel,
                                         readOnly: false,
-                                        contentPadding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 13),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 13),
                                         obscureText: false,
                                         validator: (value) {
                                           return Validator.countryCodeValidator(
@@ -122,12 +125,13 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                         keyboardType: TextInputType.number,
                                         textInputAction: TextInputAction.done,
                                         autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                            AutovalidateMode.onUserInteraction,
                                         isOptional: false,
                                         color: AppColors.formsLabel,
                                         readOnly: false,
-                                        contentPadding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 13),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 13),
                                         obscureText: false,
                                         validator: (value) {
                                           return Validator.phoneValidator(
@@ -138,39 +142,44 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                   ],
                                 ),
                               ),
-
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 20),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 20),
                                 child: BlocConsumer<UserCubit, UserState>(
                                   bloc: cubit,
                                   builder: (context, state) {
-
                                     if (state is RegisterLoading) {
                                       return LoadingCircularWidget();
                                     }
                                     return RebiButton(
                                         onPressed: () {
-                                          if (_formKey.currentState!.validate()) {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            FocusManager.instance.primaryFocus?.unfocus();
                                             _sendRegisterData(
                                                 email: widget.email,
                                                 name: widget.fullName,
-                                                phone:
-                                                _countryCode.text + _phone.text,
+                                                phone: _countryCode.text +
+                                                    _phone.text,
                                                 password: widget.password,
                                                 dob: widget.dob);
                                           } else {}
                                         },
                                         backgroundColor: AppColors.white,
-                                        child: const Text("Sign up"));
+                                        child: const Text("Verify"));
                                   },
                                   listener: (context, state) {
                                     if (state is RegisterSuccessful) {
-                                      Print(state.message);
+                                      AppSharedPreferences.inputPhoneNumber =
+                                          _countryCode.text + _phone.text;
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  VerificationScreen()));
+                                                  VerificationScreen(
+                                                    phone: _countryCode.text +
+                                                        _phone.text,
+                                                  )));
                                     } else if (state is RegisterError) {
                                       RebiMessage.error(msg: state.message!);
                                     }

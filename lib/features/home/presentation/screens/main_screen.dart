@@ -83,8 +83,8 @@ class MainScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => CreateTripScreen(
-                                            type: 'local',
-                                          )));
+                                        type: 'local',
+                                      )));
                             },
                           ),
                           ServiceWidget(
@@ -95,8 +95,8 @@ class MainScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => CreateTripScreen(
-                                            type: 'hospital',
-                                          )));
+                                        type: 'hospital',
+                                      )));
                             },
                           ),
                           ServiceWidget(
@@ -124,14 +124,13 @@ class MainScreen extends StatelessWidget {
                       'Shipping',
                       textAlign: TextAlign.start,
                       style:
-                          TextStyle(fontSize: 24.0, fontWeight: FontWeight.w500),
+                      TextStyle(fontSize: 24.0, fontWeight: FontWeight.w500),
                     ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ShippingWidget(
                         image: AppImages.import,
@@ -145,6 +144,7 @@ class MainScreen extends StatelessWidget {
                           //         )));
                         },
                       ),
+                     SizedBox(width: 26,),
                       ShippingWidget(
                         image: AppImages.export,
                         title: 'Export',
@@ -158,7 +158,8 @@ class MainScreen extends StatelessWidget {
                         },
                       ),
                     ],
-                  )
+                  ),
+                  const SizedBox(height: 60,),
                 ],
               ),
             ),

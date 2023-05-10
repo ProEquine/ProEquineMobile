@@ -12,14 +12,16 @@ import '../../../home/presentation/screens/main_screen.dart';
 import '../../../notifications/presentation/screens/notifications_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
-  const BottomNavigation({super.key});
+  int? selectedIndex;
+  BottomNavigation({super.key,this.selectedIndex});
 
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+
   static final List<Widget> _widgetOptions = <Widget>[
     const MainScreen(),
     const BookingMain(),
@@ -31,6 +33,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+  @override
+  void initState() {
+    _selectedIndex=widget.selectedIndex??0;
+    super.initState();
   }
 
   @override

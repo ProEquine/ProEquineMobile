@@ -13,7 +13,7 @@ class SplashRepository{
         method: HttpMethod.POST,
    data: refreshRequestModel.toJson(),
         withAuthentication: true,
-        thereDeviceId: true,
+        thereDeviceId: false,
         url: ApiURLs.getNewToken);
   }
 

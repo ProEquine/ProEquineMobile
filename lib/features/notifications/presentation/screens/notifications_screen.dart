@@ -65,25 +65,30 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: ListView.builder(
-            shrinkWrap: true,
-            primary: false,
-            itemCount: 6,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: kPadding, vertical: 10),
-                child: NotificationWidget(
-                  image: AppImages.upComingEvent,
-                  title: 'SERC - DPEC - 2 H',
-                  transport: 'Event transport',
-                  date: '15 Sep • 04:30 pm',
-                  bookingTypeText: 'Booking completed',
-                  statusImage: AppIcons.confirmed,
-                  review: true,
-                ),
-              );
-            }),
+        child: Column(
+          children: [
+            ListView.builder(
+                shrinkWrap: true,
+                primary: false,
+                itemCount: 6,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kPadding, vertical: 10),
+                    child: NotificationWidget(
+                      image: AppImages.upComingEvent,
+                      title: 'SERC - DPEC - 2 H',
+                      transport: 'Event transport',
+                      date: '15 Sep • 04:30 pm',
+                      bookingTypeText: 'Booking completed',
+                      statusImage: AppIcons.confirmed,
+                      review: true,
+                    ),
+                  );
+                }),
+            const SizedBox(height: 80,),
+          ],
+        ),
       ),
     );
   }

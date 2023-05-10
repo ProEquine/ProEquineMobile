@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
-import 'package:proequine/features/profile/presentation/screens/reset_password_screen.dart';
+import 'package:proequine/features/profile/presentation/screens/change_password_screen.dart';
 import 'package:proequine/features/profile/presentation/screens/update_email_screen.dart';
 import 'package:proequine/features/profile/presentation/screens/update_phone_screen.dart';
 import 'package:sizer/sizer.dart';
@@ -133,7 +133,7 @@ class AccountInfoScreen extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        ResetPasswordScreen()));
+                                        ChangePasswordScreen()));
                           },
                           keyboardType: TextInputType.visiblePassword,
                           textInputAction: TextInputAction.done,

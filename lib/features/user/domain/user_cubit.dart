@@ -1,8 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:proequine/core/CoreModels/empty_model.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/features/user/data/check_verification_request_model.dart';
+import 'package:proequine/features/user/data/forgot_pass_response-model.dart';
+import 'package:proequine/features/user/data/interests_request_model.dart';
 import 'package:proequine/features/user/data/login_response_model.dart';
 import 'package:proequine/features/user/data/register_request_model.dart';
+import 'package:proequine/features/user/data/reset_password_request_model.dart';
+import 'package:proequine/features/user/data/send_verification_request_model.dart';
 import 'package:proequine/features/user/domain/repo/user_repository.dart';
 
 import '../../../core/CoreModels/base_response_model.dart';
@@ -28,9 +34,13 @@ class UserCubit extends Cubit<UserState> {
       AppSharedPreferences.accessToken = response.accessToken!;
       AppSharedPreferences.refreshToken = response.refreshToken!.token!;
       AppSharedPreferences.userId = response.refreshToken!.userId!;
+      AppSharedPreferences.phoneVerified=response.isPhoneNumberVerified;
+      AppSharedPreferences.emailVerified=response.isEmailVerified;
       Print("access token ${AppSharedPreferences.accessToken}");
       Print("refresh token ${AppSharedPreferences.refreshToken}");
       Print("userId ${AppSharedPreferences.userId}");
+      Print("userId ${AppSharedPreferences.getPhoneVerified}");
+      Print("userId ${AppSharedPreferences.getEmailVerified}");
 
       /// this type of Printing working only on debug mode so maintains high performance app
       Print("access token ${AppSharedPreferences.accessToken}");
@@ -61,6 +71,72 @@ class UserCubit extends Cubit<UserState> {
       emit(RegisterError(message: response.message));
     } else if (response is Message) {
       emit(RegisterError(message: response.content));
+    }
+  }
+
+  Future<void> sendVerificationCode(SendVerificationRequestModel sendVerificationRequestModel) async {
+    emit(SendVerificationLoading());
+    var response = await UserRepository.sendVerification(sendVerificationRequestModel);
+    if (response is EmptyModel) {
+      emit(SendVerificationSuccessful(message: "Code has sent successfully ".tra));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(SendVerificationError(message: response.message));
+    } else if (response is Message) {
+      emit(SendVerificationError(message: response.content));
+    }
+  }
+
+  Future<void> checkVerificationCode(CheckVerificationRequestModel checkVerificationRequestModel) async {
+    emit(CheckVerificationLoading());
+    var response = await UserRepository.checkVerification(checkVerificationRequestModel);
+    if (response is EmptyModel) {
+      AppSharedPreferences.phoneVerified=true;
+      emit(CheckVerificationSuccessful(message: "Account verified successfully ".tra));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(CheckVerificationError(message: response.message));
+    } else if (response is Message) {
+      emit(CheckVerificationError(message: response.content));
+    }
+  }
+
+  Future<void> forgotPassword(SendVerificationRequestModel sendVerificationRequestModel) async {
+    emit(ForgotPasswordLoading());
+    var response = await UserRepository.forgotPassword(sendVerificationRequestModel);
+    if (response is ForgotPasswordResponseModel) {
+      emit(ForgotPasswordSuccessful(model: response));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(ForgotPasswordError(message: response.message));
+    } else if (response is Message) {
+      emit(ForgotPasswordError(message: response.content));
+    }
+  }
+
+  Future<void> resetPassword(ResetPasswordRequestModel resetPasswordRequestModel) async {
+    emit(ResetPasswordLoading());
+    var response = await UserRepository.resetPassword(resetPasswordRequestModel);
+    if (response is EmptyModel) {
+      emit(ResetPasswordSuccessful(message: "Password reset successfully".tra));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(ResetPasswordError(message: response.message));
+    } else if (response is Message) {
+      emit(ResetPasswordError(message: response.content));
+    }
+  }
+
+  Future<void> interests(InterestsRequestModel interestsRequestModel) async {
+    emit(SelectInterestsLoading());
+    var response = await UserRepository.interests(interestsRequestModel);
+    if (response is EmptyModel) {
+      emit(SelectInterestsSuccessful(message: "Selected Successfully".tra));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(SelectInterestsError(message: response.message));
+    } else if (response is Message) {
+      emit(SelectInterestsError(message: response.content));
     }
   }
 }

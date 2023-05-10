@@ -1,24 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/Printer.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
-import 'package:proequine/features/user/presentation/screens/signup_screen.dart';
+import 'package:sizer/sizer.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/rebi_message.dart';
+import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/widgets/custom_logo_widget.dart';
+import '../../../../core/widgets/loading_widget.dart';
 import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
+import '../../data/interests_request_model.dart';
+import '../../domain/user_cubit.dart';
 import '../widgets/register_header.dart';
 import '../widgets/selectable_type_container.dart';
 
 class UserTypeScreen extends StatefulWidget {
-  const UserTypeScreen({Key? key}) : super(key: key);
+  String? interest;
+  String? phone;
+
+  UserTypeScreen({Key? key, this.interest, this.phone}) : super(key: key);
 
   @override
   State<UserTypeScreen> createState() => _UserTypeScreenState();
 }
 
 class _UserTypeScreenState extends State<UserTypeScreen> {
+  final UserCubit cubit = UserCubit();
   final List<bool> _isSelected = [false, false, false, false];
   String? userType;
 
@@ -28,14 +37,14 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            RegistrationHeader(isThereBackButton: true),
+            RegistrationHeader(isThereBackButton: false),
             const CustomLogoWidget(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: kPadding),
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: 11.h,
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
@@ -102,16 +111,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,
               ),
-              child: RebiButton(
-                  backgroundColor: userType!=null?AppColors.white:AppColors.formsLabel,
-                  onPressed: () {
-                    if (userType != null) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNavigation()));
-                    } else {
-                      RebiMessage.error(msg: 'Please select your type');
-                    }
-                  },
-                  child: const Text("Continue")),
+              child: _buildSelectTypeConsumer(),
             ),
             const SizedBox(
               height: 20,
@@ -129,5 +129,48 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
       }
       _isSelected[index] = value;
     });
+  }
+
+  _buildSelectTypeConsumer() {
+    return BlocConsumer<UserCubit, UserState>(
+        bloc: cubit,
+        builder: (context, state) {
+          if (state is SelectInterestsLoading) {
+            return LoadingCircularWidget();
+          } else if (state is SelectInterestsError) {
+            RebiMessage.error(msg: state.message!);
+          }
+          {
+            return RebiButton(
+                backgroundColor:
+                    userType != null ? AppColors.white : AppColors.formsLabel,
+                onPressed: () {
+                  if (userType != null) {
+                    _onPressConfirm();
+                  } else {
+                    RebiMessage.error(msg: 'Please select your type');
+                  }
+                },
+                child: const Text("Continue"));
+          }
+        },
+        listener: (context, state) {
+          if (state is SelectInterestsSuccessful) {
+            AppSharedPreferences.typeSelected = true;
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => BottomNavigation()));
+          } else if (state is SelectInterestsError) {
+            RebiMessage.error(msg: state.message!);
+          }
+        });
+  }
+
+  _onPressConfirm() {
+    return cubit
+      ..interests(InterestsRequestModel(
+        phoneNumber: widget.phone,
+        interest: widget.interest,
+        type: userType,
+      ));
   }
 }

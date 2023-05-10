@@ -9,6 +9,11 @@ class ApiURLs {
   static const String loginUSER = "$basicApiUrl/Auth/login";
   static const String registerUSER = "$basicApiUrl/Auth/register";
   static const String getNewToken = "$basicApiUrl/Auth/refresh";
+  static const String sendVerificationCode = "$basicApiUrl/Auth/sendverificationcode";
+  static const String checkVerificationCode = "$basicApiUrl/Auth/checkverificationcode";
+  static const String forgotPassword = "$basicApiUrl/Auth/forgot-password";
+  static const String resetPassword = "$basicApiUrl/Auth/reset-password";
+  static const String interests = "$basicApiUrl/Auth/saveinterestandtype";
 
 
   /// Events URLs

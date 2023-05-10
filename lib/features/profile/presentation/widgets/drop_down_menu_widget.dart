@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proequine/features/profile/presentation/widgets/profile_divider.dart';
 import '../../../../core/constants/colors/app_colors.dart';
+import '../../../../core/utils/Printer.dart';
 
 class DropDownWidget extends StatefulWidget {
   late List<DropdownMenuItem>? items;
@@ -8,12 +9,14 @@ class DropDownWidget extends StatefulWidget {
   final String? hint;
   final FormFieldValidator<String> validator;
   final BorderSide borderSide;
+  final FormFieldSetter<String>? onChanged;
 
   DropDownWidget({
     super.key,
     this.selected,
     this.items,
     required this.validator,
+    this.onChanged,
     this.hint,
     this.borderSide =
         const BorderSide(color: AppColors.backgroundColor, width: 0.0),
@@ -34,6 +37,7 @@ class DropDownWidgetState extends State<DropDownWidget> {
         autovalidateMode: AutovalidateMode.disabled,
         builder: (FormFieldState<String> state) {
           return InputDecorator(
+
             decoration: InputDecoration(
               fillColor: AppColors.formsBackground,
               filled: true,
@@ -89,11 +93,14 @@ class DropDownWidgetState extends State<DropDownWidget> {
                 }).toList(),
                 isExpanded: true,
                 isDense: true,
-                onChanged: (String? newSelectedBank) {
-                  setState(() {
-                    widget.selected = newSelectedBank;
-                  });
-                },
+                // onChanged: (String? newSelectedItem) {
+                //   setState(() {
+                //     widget.selected = newSelectedItem;
+                //     Print("selected $newSelectedItem");
+                //     Print("selected ${widget.selected}");
+                //   });
+                // },
+                onChanged: widget.onChanged,
                 value: widget.selected,
               ),
             ),

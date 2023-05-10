@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:proequine/features/splash/data/refresh_request_model.dart';
 import 'package:proequine/features/splash/domain/splash_cubit.dart';
+import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/images/app_images.dart';
 import '../../../../core/utils/printer.dart';
 import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
+import '../../../user/presentation/screens/interests_screen.dart';
 import '../../../user/presentation/screens/login_screen.dart';
 
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
@@ -47,21 +49,28 @@ class _SplashScreenState extends State<SplashScreen> {
   // }
 
   Future<void> navigateUser() async {
-    if (AppSharedPreferences.getFirstTime!) {
       if (AppSharedPreferences.accessToken.isNotEmpty) {
+        if(AppSharedPreferences.getPhoneVerified!){
+          if(AppSharedPreferences.getIsITypeSelected!){
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => BottomNavigation()));
+          }else{
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>const InterestsScreen()));
+          }
+        }else{
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) =>  VerificationScreen(phone: AppSharedPreferences.userPhoneNumber)));
+        }
         Print("token${AppSharedPreferences.accessToken}");
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const BottomNavigation()));
+
       } else {
         /// edited from login to testPage
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const LoginScreen()));
       }
-    } else {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const VideoPlayerScreen()));
     }
-  }
+
+
 
   Future<void> startTimer() async {
     Timer(const Duration(seconds: 3), () async {

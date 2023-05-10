@@ -24,6 +24,7 @@ class LegelScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+
             HeaderText("Legel", "",true),
             const SizedBox(
               height: 5,

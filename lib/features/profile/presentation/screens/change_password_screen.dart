@@ -17,8 +17,8 @@ import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/success_state_widget.dart';
 import '../../../user/presentation/widgets/register_header.dart';
 
-class ResetPasswordScreen extends StatelessWidget {
-  ResetPasswordScreen({super.key});
+class ChangePasswordScreen extends StatelessWidget {
+  ChangePasswordScreen({super.key});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _oldPassword = TextEditingController();

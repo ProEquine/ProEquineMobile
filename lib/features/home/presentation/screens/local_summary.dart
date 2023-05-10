@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
-import 'package:proequine/core/widgets/submit_page.dart';
+import 'package:proequine/core/widgets/success_state_widget.dart';
 import 'package:proequine/features/home/presentation/widgets/summary_widget.dart';
+import 'package:proequine/features/nav_bar/presentation/screens/bottomnavigation.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../core/widgets/custom_header.dart';
 
@@ -45,7 +46,21 @@ class LocalSummary extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SubmitedWidget()));
+                            builder: (context) => SuccessStateScreen(
+                                  title:
+                                      "Your Request has been Submitted successfully",
+                                  onButtonPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                BottomNavigation(
+                                                  selectedIndex: 1,
+                                                )));
+                                  },
+                                  isThereButton: true,
+                                  buttonText: "View my booking",
+                                )));
                   },
                   child: const Text("Confirm")),
               const SizedBox(

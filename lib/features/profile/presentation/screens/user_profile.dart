@@ -6,6 +6,14 @@ import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/features/profile/presentation/screens/account_information_screen.dart';
 import 'package:proequine/features/profile/presentation/screens/history_screen.dart';
+
+import 'package:proequine/features/profile/presentation/screens/horses_screen.dart';
+import 'package:proequine/features/profile/presentation/screens/legel.dart';
+import 'package:proequine/features/profile/presentation/screens/privacy_screen.dart';
+import 'package:proequine/features/profile/presentation/screens/support.dart';
+
+import 'package:proequine/features/profile/presentation/widgets/profile_divider.dart';
+
 import 'package:proequine/features/profile/presentation/screens/legel.dart';
 import 'package:proequine/features/profile/presentation/screens/support.dart';
 import 'package:proequine/features/profile/presentation/widgets/profile_list_tile_widget.dart';
@@ -15,6 +23,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/headerText.dart';
+
 
 class UserProfile extends StatelessWidget {
   const UserProfile({super.key});
@@ -96,14 +105,33 @@ class UserProfile extends StatelessWidget {
               notificationList: false,
               isThereNewNotification: false,
             ),
+
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: kPadding),
+            //   child: RebiButton(
+            //     onPressed: () {
+            //       AppSharedPreferences.clearForLogOut();
+            //       RebiMessage.success(msg: "Logout Successfully");
+            //       Navigator.pushReplacement(context,
+            //           MaterialPageRoute(builder: (context) => SplashScreen()));
+            //     },
+            //     child: Text(
+            //       "Logout",
+            //       style: TextStyle(color: AppColors.white),
+            //     ),
+            //     radius: 8,
+            //     backgroundColor: AppColors.formsBackground,
+            //   ),
+            // ),
             const SizedBox(
               height: 50,
             ),
-            RichText(
+             RichText(
                 text: const TextSpan(children: [
               TextSpan(
                 text: "faizan.k@input.ae",
-                style:  TextStyle(
+
+                style: TextStyle(
                   color: AppColors.grey,
                 ),
               ),
