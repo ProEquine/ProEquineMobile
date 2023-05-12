@@ -3,17 +3,10 @@ import 'package:flutter/material.dart';
 
 import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
+import 'package:proequine/core/utils/secure_storage/secure_storage_helper.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/features/profile/presentation/screens/account_information_screen.dart';
 import 'package:proequine/features/profile/presentation/screens/history_screen.dart';
-
-import 'package:proequine/features/profile/presentation/screens/horses_screen.dart';
-import 'package:proequine/features/profile/presentation/screens/legel.dart';
-import 'package:proequine/features/profile/presentation/screens/privacy_screen.dart';
-import 'package:proequine/features/profile/presentation/screens/support.dart';
-
-import 'package:proequine/features/profile/presentation/widgets/profile_divider.dart';
-
 import 'package:proequine/features/profile/presentation/screens/legel.dart';
 import 'package:proequine/features/profile/presentation/screens/support.dart';
 import 'package:proequine/features/profile/presentation/widgets/profile_list_tile_widget.dart';
@@ -87,11 +80,18 @@ class UserProfile extends StatelessWidget {
             ),
             ProfileListTileWidget(
               title: "Logout",
-              onTap: () {
+              onTap: () async{
                 AppSharedPreferences.clearForLogOut();
+                await SecureStorage().deleteUserId();
+                await SecureStorage().deleteDeviceId();
+                await SecureStorage().deleteRefreshToken();
+                await SecureStorage().deleteToken();
                 RebiMessage.success(msg: "Logout Successfully");
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const SplashScreen()));
+                if(context.mounted){
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => const SplashScreen()));
+                }
+
               },
               notificationList: false,
               isThereNewNotification: false,

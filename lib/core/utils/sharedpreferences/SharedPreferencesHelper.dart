@@ -27,50 +27,9 @@ class AppSharedPreferences {
   }
 
   static clearForLogOut() {
-    removeAccessToken();
-    removeRefreshToken();
-    removeUserId();
-    removeAccessTokenFirebase();
     removeTypeSelected();
     removePhoneVerified();
   }
-
-  /// AccessToken
-  static String get accessToken => _pref?.read(keyAccessToken) ?? '';
-
-  static set accessToken(String accessToken) =>
-      _pref?.save(keyAccessToken, accessToken);
-
-  static bool get hasAccessToken => _pref?.contains(keyAccessToken) ?? false;
-
-  static removeAccessToken() => _pref?.remove(keyAccessToken);
-
-  /// User Id
-  static String get userId => _pref?.read(keyUserId) ?? '';
-
-  static set userId(String userId) => _pref?.save(keyUserId, userId);
-
-  static removeUserId() => _pref?.remove(keyUserId);
-
-  /// RefreshToken
-  static String? get refreshToken => _pref?.read(keyRefreshToken) ?? '';
-
-  static set refreshToken(String? refreshToken) =>
-      _pref?.save(keyRefreshToken, refreshToken);
-
-  static bool get hasRefreshToken => _pref?.contains(keyRefreshToken);
-
-  static removeRefreshToken() => _pref?.remove(keyRefreshToken);
-
-  ///  Device id for one signal
-  static String get deviceID => _pref?.read(keyDeviceId) ?? '';
-
-  static set deviceId(String deviceId) => _pref?.save(keyDeviceId, deviceId);
-
-  static bool get hasDeviceId => _pref?.contains(keyDeviceId);
-
-  static removeAccessTokenFirebase() => _pref?.remove(keyDeviceId);
-
   ///  Store User Phone Number
   static String get userPhoneNumber => _pref?.read(keyUserPhoneNumber) ?? '';
 

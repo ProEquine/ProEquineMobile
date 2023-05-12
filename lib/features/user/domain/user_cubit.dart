@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:proequine/core/CoreModels/empty_model.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/utils/secure_storage/secure_storage_helper.dart';
 import 'package:proequine/features/user/data/check_verification_request_model.dart';
 import 'package:proequine/features/user/data/forgot_pass_response-model.dart';
 import 'package:proequine/features/user/data/interests_request_model.dart';
@@ -26,24 +27,29 @@ class UserCubit extends Cubit<UserState> {
   Future<void> login(LoginRequestModel loginRequestModel) async {
     /// here we emit loading state while contact with server
     emit(LoginLoading());
+
     /// return the response from server
     var response = await UserRepository.login(loginRequestModel);
+
     /// if server return the same model so it's success state
     if (response is LoginResponseModel) {
       /// store our token in shared pref
-      AppSharedPreferences.accessToken = response.accessToken!;
-      AppSharedPreferences.refreshToken = response.refreshToken!.token!;
-      AppSharedPreferences.userId = response.refreshToken!.userId!;
-      AppSharedPreferences.phoneVerified=response.isPhoneNumberVerified;
-      AppSharedPreferences.emailVerified=response.isEmailVerified;
-      Print("access token ${AppSharedPreferences.accessToken}");
-      Print("refresh token ${AppSharedPreferences.refreshToken}");
-      Print("userId ${AppSharedPreferences.userId}");
+      await SecureStorage().setRefreshToken(response.refreshToken!.token!);
+      await SecureStorage().setToken(response.accessToken!);
+      await SecureStorage().setUserId(response.refreshToken!.userId!);
+    String? refreshToken= await SecureStorage().getRefreshToken();
+    String? accessToken= await SecureStorage().getToken();
+    String? userId= await SecureStorage().getUserId();
+      AppSharedPreferences.phoneVerified = response.isPhoneNumberVerified;
+      AppSharedPreferences.emailVerified = response.isEmailVerified;
+      Print("access token $accessToken");
+      Print("refresh token $refreshToken");
+      Print("userId $userId");
       Print("userId ${AppSharedPreferences.getPhoneVerified}");
       Print("userId ${AppSharedPreferences.getEmailVerified}");
 
       /// this type of Printing working only on debug mode so maintains high performance app
-      Print("access token ${AppSharedPreferences.accessToken}");
+
       /// this message will show as a toast if the status is success
       emit(LoginSuccessful(message: "login successfully".tra));
     } else if (response is BaseError) {
@@ -55,16 +61,21 @@ class UserCubit extends Cubit<UserState> {
       emit(LoginError(message: response.content));
     }
   }
+
   Future<void> register(RegisterRequestModel registerRequestModel) async {
     emit(RegisterLoading());
     var response = await UserRepository.register(registerRequestModel);
     if (response is RegisterResponseModel) {
-      AppSharedPreferences.accessToken = response.accessToken!;
-      AppSharedPreferences.refreshToken = response.refreshToken!.token!;
-      AppSharedPreferences.userId = response.refreshToken!.userId!;
-      Print("access token ${AppSharedPreferences.accessToken}");
-      Print("refresh token ${AppSharedPreferences.refreshToken}");
-      Print("userId ${AppSharedPreferences.userId}");
+      await SecureStorage().setRefreshToken(response.refreshToken!.token!);
+      await SecureStorage().setToken(response.accessToken!);
+      await SecureStorage().setUserId(response.refreshToken!.userId!);
+      String? refreshToken= await SecureStorage().getRefreshToken();
+      String? accessToken= await SecureStorage().getToken();
+      String? userId= await SecureStorage().getUserId();
+      Print("access token $accessToken");
+      Print("refresh token $refreshToken");
+      Print("userId $userId");
+
       emit(RegisterSuccessful(message: "Account created successfully".tra));
     } else if (response is BaseError) {
       Print("messaggeeeeeeeee${response.message}");
@@ -74,11 +85,14 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> sendVerificationCode(SendVerificationRequestModel sendVerificationRequestModel) async {
+  Future<void> sendVerificationCode(
+      SendVerificationRequestModel sendVerificationRequestModel) async {
     emit(SendVerificationLoading());
-    var response = await UserRepository.sendVerification(sendVerificationRequestModel);
+    var response =
+        await UserRepository.sendVerification(sendVerificationRequestModel);
     if (response is EmptyModel) {
-      emit(SendVerificationSuccessful(message: "Code has sent successfully ".tra));
+      emit(SendVerificationSuccessful(
+          message: "Code has sent successfully ".tra));
     } else if (response is BaseError) {
       Print("messaggeeeeeeeee${response.message}");
       emit(SendVerificationError(message: response.message));
@@ -87,12 +101,15 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> checkVerificationCode(CheckVerificationRequestModel checkVerificationRequestModel) async {
+  Future<void> checkVerificationCode(
+      CheckVerificationRequestModel checkVerificationRequestModel) async {
     emit(CheckVerificationLoading());
-    var response = await UserRepository.checkVerification(checkVerificationRequestModel);
+    var response =
+        await UserRepository.checkVerification(checkVerificationRequestModel);
     if (response is EmptyModel) {
-      AppSharedPreferences.phoneVerified=true;
-      emit(CheckVerificationSuccessful(message: "Account verified successfully ".tra));
+      AppSharedPreferences.phoneVerified = true;
+      emit(CheckVerificationSuccessful(
+          message: "Account verified successfully ".tra));
     } else if (response is BaseError) {
       Print("messaggeeeeeeeee${response.message}");
       emit(CheckVerificationError(message: response.message));
@@ -101,9 +118,11 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> forgotPassword(SendVerificationRequestModel sendVerificationRequestModel) async {
+  Future<void> forgotPassword(
+      SendVerificationRequestModel sendVerificationRequestModel) async {
     emit(ForgotPasswordLoading());
-    var response = await UserRepository.forgotPassword(sendVerificationRequestModel);
+    var response =
+        await UserRepository.forgotPassword(sendVerificationRequestModel);
     if (response is ForgotPasswordResponseModel) {
       emit(ForgotPasswordSuccessful(model: response));
     } else if (response is BaseError) {
@@ -114,9 +133,11 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> resetPassword(ResetPasswordRequestModel resetPasswordRequestModel) async {
+  Future<void> resetPassword(
+      ResetPasswordRequestModel resetPasswordRequestModel) async {
     emit(ResetPasswordLoading());
-    var response = await UserRepository.resetPassword(resetPasswordRequestModel);
+    var response =
+        await UserRepository.resetPassword(resetPasswordRequestModel);
     if (response is EmptyModel) {
       emit(ResetPasswordSuccessful(message: "Password reset successfully".tra));
     } else if (response is BaseError) {

@@ -22,7 +22,7 @@ class UserRepository {
         method: HttpMethod.POST,
         data: loginRequestModel.toJson(),
         withAuthentication: false,
-        thereDeviceId: true,
+        thereDeviceId: false,
         url: ApiURLs.loginUSER);
   }
   static Future<BaseResultModel?> register(
@@ -32,7 +32,7 @@ class UserRepository {
         method: HttpMethod.POST,
         data: registerRequestModel.toJson(),
         withAuthentication: false,
-        thereDeviceId: true,
+        thereDeviceId: false,
         url: ApiURLs.registerUSER);
   }
 
@@ -43,7 +43,7 @@ class UserRepository {
         method: HttpMethod.POST,
         data: sendVerificationRequestModel.toJson(),
         withAuthentication: true,
-        thereDeviceId: true,
+        thereDeviceId: false,
         url: ApiURLs.sendVerificationCode);
   }
   static Future<BaseResultModel?> checkVerification(
@@ -53,7 +53,7 @@ class UserRepository {
         method: HttpMethod.POST,
         data: checkVerificationRequestModel.toJson(),
         withAuthentication: true,
-        thereDeviceId: true,
+        thereDeviceId: false,
         url: ApiURLs.checkVerificationCode);
   }
 

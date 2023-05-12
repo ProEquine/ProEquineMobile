@@ -1,21 +1,18 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:proequine/features/splash/data/refresh_request_model.dart';
 import 'package:proequine/features/splash/domain/splash_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
-import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/images/app_images.dart';
 import '../../../../core/utils/printer.dart';
+import '../../../../core/utils/secure_storage/secure_storage_helper.dart';
 import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
 import '../../../user/presentation/screens/interests_screen.dart';
 import '../../../user/presentation/screens/login_screen.dart';
-
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
-import '../../../user/presentation/screens/videoScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -33,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
   String packageName = '';
 
   void updateApp() async {
-    if (!await launch(_appUrl)) throw 'Could not launch $_appUrl';
+    if (!await launchUrl(Uri.parse(_appUrl))) throw 'Could not launch $_appUrl';
   }
 
   SplashCubit splashCubit = SplashCubit();
@@ -49,28 +46,40 @@ class _SplashScreenState extends State<SplashScreen> {
   // }
 
   Future<void> navigateUser() async {
-      if (AppSharedPreferences.accessToken.isNotEmpty) {
-        if(AppSharedPreferences.getPhoneVerified!){
-          if(AppSharedPreferences.getIsITypeSelected!){
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => BottomNavigation()));
-          }else{
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>const InterestsScreen()));
+    if (await SecureStorage().hasToken()) {
+      if (AppSharedPreferences.getPhoneVerified!) {
+        if (AppSharedPreferences.getIsITypeSelected!) {
+          if (context.mounted) {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => BottomNavigation()));
           }
-        }else{
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) =>  VerificationScreen(phone: AppSharedPreferences.userPhoneNumber)));
+        } else {
+          if (context.mounted) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const InterestsScreen()));
+          }
         }
-        Print("token${AppSharedPreferences.accessToken}");
-
       } else {
-        /// edited from login to testPage
+        if (context.mounted) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => VerificationScreen(
+                      phone: AppSharedPreferences.userPhoneNumber)));
+        }
+      }
+      Print("has token${await SecureStorage().hasToken()}");
+      Print("verified phone${AppSharedPreferences.getPhoneVerified}");
+    } else {
+      /// edited from login to testPage
+      if (context.mounted) {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const LoginScreen()));
       }
     }
-
-
+  }
 
   Future<void> startTimer() async {
     Timer(const Duration(seconds: 3), () async {
@@ -78,13 +87,24 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
+  String? refreshToken = '';
+  String? userId = '';
+
+  sendRefreshToken() async {
+    refreshToken = (await SecureStorage().getRefreshToken())!;
+    userId = (await SecureStorage().getUserId())!;
+    Print(userId);
+    Print(refreshToken);
+    splashCubit.refreshToken(
+        RefreshRequestModel(refreshToken: refreshToken, userId: userId));
+  }
+
   @override
   void initState() {
     startTimer();
+    sendRefreshToken();
     // getVersion();
-    splashCubit.refreshToken(RefreshRequestModel(
-        refreshToken: AppSharedPreferences.refreshToken,
-        userId: AppSharedPreferences.userId));
+
     super.initState();
   }
 
@@ -99,9 +119,12 @@ class _SplashScreenState extends State<SplashScreen> {
           // buildDialogForUpdate(),
           // const BackgroundImage(),
           Transform.translate(
-            offset: const Offset(0.0,-30.0),
+            offset: const Offset(0.0, -30.0),
             child: Center(
-              child: Image.asset(AppImages.logo,scale: 3,),
+              child: Image.asset(
+                AppImages.logo,
+                scale: 3,
+              ),
             ),
           ),
         ],

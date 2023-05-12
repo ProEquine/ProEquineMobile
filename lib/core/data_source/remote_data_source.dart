@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:proequine/core/utils/secure_storage/secure_storage_helper.dart';
 import '../CoreModels/base_result_model.dart';
 import '../constants/constants.dart';
 import '../http/api_provider.dart';
@@ -33,14 +34,16 @@ class RemoteDataSource {
 
 
     if (withAuthentication) {
-      if (AppSharedPreferences.accessToken != null || AppSharedPreferences.accessToken != '' ) {
-        headers.putIfAbsent(HEADER_AUTH, () => ('bearer ${AppSharedPreferences.accessToken}'));
+      final token = await SecureStorage().getToken();
+      if (token != null || token != '' ) {
+        headers.putIfAbsent(HEADER_AUTH, () => ('bearer $token'));
       }
     }
 
     if (thereDeviceId) {
-      if (AppSharedPreferences.hasDeviceId && AppSharedPreferences.deviceID != null) {
-        headers.putIfAbsent(DEVICE_ID, () => (AppSharedPreferences.deviceID));
+      final deviceId=await SecureStorage().getDeviceId();
+      if (deviceId != null) {
+          headers.putIfAbsent(DEVICE_ID, () => (deviceId.toString()));
       } else {
       }
 

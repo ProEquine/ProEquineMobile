@@ -1,16 +1,16 @@
-import 'dart:io';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:proequine/core/utils/extensions.dart';
+
+import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/features/splash/domain/repo/splash_repo.dart';
-import 'package:sizer/sizer.dart';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import '../../../core/constants/colors/app_colors.dart';
+
 import '../../../core/utils/printer.dart';
-import '../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import '../../../core/utils/secure_storage/secure_storage_helper.dart';
+
 import '../data/refresh_request_model.dart';
 import '../data/refresh_token_response.dart';
 
@@ -25,9 +25,8 @@ class SplashCubit extends Cubit<SplashState> {
   Future<void> refreshToken(RefreshRequestModel requestModel) async {
     var response = await SplashRepository.refreshToken(requestModel);
     if (response is RefreshTokenResponse) {
-      AppSharedPreferences.accessToken = response.accessToken!;
-      AppSharedPreferences.refreshToken = response.refreshToken!.token!;
-      AppSharedPreferences.userId = response.refreshToken!.userId!;
+      await SecureStorage().setRefreshToken(response.refreshToken!.token!);
+      await SecureStorage().setUserId(response.refreshToken!.userId!);
       if (response is RefreshSuccessfully) {
         Print(response);
       }
