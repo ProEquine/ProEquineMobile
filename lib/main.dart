@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:proequine/core/StartUp/StartUp.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/core/utils/secure_storage/secure_storage_helper.dart';
@@ -15,6 +16,7 @@ import 'package:sizer/sizer.dart';
 
 import 'core/constants/constants.dart';
 import 'core/constants/routes/routes.dart';
+import 'core/utils/Printer.dart';
 import 'core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'core/widgets/confirm_screen.dart';
 import 'features/booking/presentation/screens/book_transport.dart';
@@ -91,15 +93,43 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  void configOneSignal() async {
+    await OneSignal.shared.setAppId('ef8bd521-54d4-4a21-b1f3-654755149b50');
+
+    final status = await OneSignal.shared.getDeviceState();
+    final String? osUserID = status?.userId;
+    Print("Device ID ${osUserID.toString()}");
+    OneSignal.shared.setSubscriptionObserver((OSSubscriptionStateChanges changes) {
+      //  print(changes.to.userId);
+      String? userId = changes.to.userId ?? '';
+      if (userId != '') {
+        AppSharedPreferences.inputPhoneNumber = userId.toString();
+      }
+    });
+    AppSharedPreferences.inputPhoneNumber = osUserID!.toString();
+
+    Print("Device Id From Shared Pref ${AppSharedPreferences.userPhoneNumber}");
+
+    // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+    await OneSignal.shared.promptUserForPushNotificationPermission(
+      fallbackToSettings: true,
+    );
+
+    OneSignal.shared.setNotificationOpenedHandler((OSNotificationOpenedResult result) {});
+
+    /// Calls when the notification opens the app.
+    // OneSignal.shared.setNotificationOpenedHandler(handleBackgroundNotification);
+
+    await OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+      Print("Accepted permission: $accepted");
+    });
+    await OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+  }
 
   @override
   void initState() {
     super.initState();
-    // FirebaseMessaging.instance.getToken().then((fcmToken) {
-    //   Print("FCm Token$fcmToken");
-    //   AppSharedPreferences.deviceId=fcmToken!;
-    //   Print(fcmToken);
-    // });
+configOneSignal();
 
   }
   static final GlobalKey<NavigatorState> navigatorKey =

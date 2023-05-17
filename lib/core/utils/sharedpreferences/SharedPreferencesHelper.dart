@@ -39,6 +39,15 @@ class AppSharedPreferences {
 
   static removePhoneNumber() => _pref?.remove(keyUserPhoneNumber);
 
+  ///  Store User Phone Number
+  static String get getDeviceId => _pref?.read(keyDeviceId) ?? '';
+
+  static set setDeviceId(String deviceId) => _pref?.save(keyDeviceId, deviceId);
+
+  static bool get hasDeviceId => _pref?.contains(keyDeviceId);
+
+  static removeDeviceId() => _pref?.remove(keyDeviceId);
+
   ///Language
   static String get lang {
     String? lang = _pref?.read(keyLanguage);

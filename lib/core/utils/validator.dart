@@ -18,8 +18,11 @@ class Validator {
 
   static String? phoneValidator(String? value) {
     if (value != null ) {
+      if(value.startsWith('0')){
+        return 'Number should not start with zero';
+      }
       if (!RegExp(
-        r'(^(?:[+0]9)?[0-9]{9,12}$)',
+        r'(^(?:[+0]9)?[0-9]{8,12}$)',
       ).hasMatch(value.trim())) {
         return 'Please enter a valid phone number'.tra;
       }
