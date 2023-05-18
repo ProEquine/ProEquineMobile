@@ -26,5 +26,6 @@ class ApiURLs {
   static const String sendPhone = "$basicApiUrl/User/editphonenumber";
   static const String updatePhone = "$basicApiUrl/User/updatephonenumber";
   static const String contactSupport = "$basicApiUrl/User/supportquery";
+  static const String getUserData = "$basicApiUrl/User/getuserdata";
 
 }

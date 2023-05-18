@@ -44,3 +44,13 @@ class ContactSupportError extends ProfileState{
   final String? message;
   ContactSupportError({this.message});
 }
+
+class GetUserSuccessful extends ProfileState{
+  final UserDataResponseModel? responseModel;
+  GetUserSuccessful({required this.responseModel});
+}
+class GetUserLoading extends ProfileState{}
+class GetUserError extends ProfileState{
+  final String? message;
+  GetUserError({this.message});
+}

@@ -4,6 +4,7 @@ import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/features/profile/data/change_password_request_model.dart';
 import 'package:proequine/features/profile/data/support_request_model.dart';
 import 'package:proequine/features/profile/data/update_phone_request_model.dart';
+import 'package:proequine/features/profile/data/user_data_response_model.dart';
 import 'package:proequine/features/profile/domain/repo/profile_repository.dart';
 
 import '../../../core/CoreModels/base_response_model.dart';
@@ -80,6 +81,21 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(ContactSupportError(message: response.message));
     } else if (response is Message) {
       emit(ContactSupportError(message: response.content));
+    }
+  }
+
+  Future<void> getUser(String phone) async {
+    emit(GetUserLoading());
+    var response =
+    await ProfileRepository.getUserData(phone);
+    if (response is UserDataResponseModel) {
+      emit(GetUserSuccessful(
+          responseModel: response));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(GetUserError(message: response.message));
+    } else if (response is Message) {
+      emit(GetUserError(message: response.content));
     }
   }
 }

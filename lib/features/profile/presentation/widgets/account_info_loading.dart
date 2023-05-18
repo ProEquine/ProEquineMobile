@@ -1,0 +1,187 @@
+import 'package:flutter/material.dart';
+import 'package:proequine/core/constants/constants.dart';
+import '../../../../core/widgets/account_shimmer.dart';
+
+const _shimmerGradient = LinearGradient(
+  colors: [
+    Color(0x323232),
+    Color.fromRGBO(255, 255, 252, 0.2),
+    Color(0x323232),
+  ],
+  stops: [
+    0.1,
+    0.5,
+    0.9,
+  ],
+  begin: Alignment(-2.0, -0.3),
+  end: Alignment(1.0, 0.3),
+  tileMode: TileMode.mirror,
+);
+
+class AccountInfoLoading extends StatelessWidget {
+  final bool isLoading;
+
+  const AccountInfoLoading({super.key, required this.isLoading});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer(
+      linearGradient: _shimmerGradient,
+      child: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: kPadding, vertical: kPadding),
+            child: SingleChildScrollView(
+              child: IntrinsicHeight(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ShimmerLoading(
+                      isLoading: isLoading,
+                      child: SizedBox(
+                        width: 150,
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(6)),
+                            color: Color.fromRGBO(50, 50, 50, 1),
+                          ),
+                          width: 150,
+                          height: 40,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: ShimmerLoading(
+                        isLoading: isLoading,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              color: Color.fromRGBO(50, 50, 50, 1),
+                            ),
+                            width: double.infinity,
+                            height: 45,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: ShimmerLoading(
+                        isLoading: isLoading,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              color: Color.fromRGBO(50, 50, 50, 1),
+                            ),
+                            width: double.infinity,
+                            height: 45,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: ShimmerLoading(
+                        isLoading: isLoading,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              color: Color.fromRGBO(50, 50, 50, 1),
+                            ),
+                            width: double.infinity,
+                            height: 45,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: ShimmerLoading(
+                        isLoading: isLoading,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              color: Color.fromRGBO(50, 50, 50, 1),
+                            ),
+                            width: double.infinity,
+                            height: 45,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: ShimmerLoading(
+                        isLoading: isLoading,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              color: Color.fromRGBO(50, 50, 50, 1),
+                            ),
+                            width: double.infinity,
+                            height: 45,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: ShimmerLoading(
+                        isLoading: isLoading,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              color: Color.fromRGBO(50, 50, 50, 1),
+                            ),
+                            width: double.infinity,
+                            height: 45,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Spacer(
+                      flex: 3,
+                    ),
+                    Expanded(
+                      child: ShimmerLoading(
+                        isLoading: isLoading,
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(6)),
+                              color: Color.fromRGBO(50, 50, 50, 1),
+                            ),
+                            width: double.infinity,
+                            height: 55,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          )),
+    );
+  }
+}
