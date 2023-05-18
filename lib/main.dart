@@ -6,12 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:proequine/core/StartUp/StartUp.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
-import 'package:proequine/core/utils/secure_storage/secure_storage_helper.dart';
 import 'package:proequine/features/events/domain/event_cubit.dart';
+import 'package:proequine/features/profile/domain/profile_cubit.dart';
 import 'package:proequine/features/splash/presentation/screens/splash_screen.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
-import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
-import 'package:proequine/features/user/presentation/screens/verify_phone_screen.dart';
 import 'package:sizer/sizer.dart';
 
 import 'core/constants/constants.dart';
@@ -23,7 +21,6 @@ import 'features/booking/presentation/screens/book_transport.dart';
 import 'features/events/presentation/screens/event_booking.dart';
 import 'features/nav_bar/domain/navbar_cubit.dart';
 import 'features/nav_bar/presentation/screens/bottomnavigation.dart';
-import 'features/user/presentation/screens/interests_screen.dart';
 import 'features/user/presentation/screens/login_screen.dart';
 import 'features/user/presentation/screens/register_screen.dart';
 
@@ -66,6 +63,9 @@ _blocProvider() {
       BlocProvider<EventCubit>(
         create: (context) => EventCubit(),
       ),
+      BlocProvider<ProfileCubit>(
+        create: (context) => ProfileCubit(),
+      ),
 
     ],
     child: const ResponsiveSizer(),
@@ -103,12 +103,12 @@ class _MyAppState extends State<MyApp> {
       //  print(changes.to.userId);
       String? userId = changes.to.userId ?? '';
       if (userId != '') {
-        AppSharedPreferences.inputPhoneNumber = userId.toString();
+        AppSharedPreferences.setDeviceId = userId.toString();
       }
     });
-    AppSharedPreferences.inputPhoneNumber = osUserID!.toString();
+    AppSharedPreferences.setDeviceId = osUserID!.toString();
 
-    Print("Device Id From Shared Pref ${AppSharedPreferences.userPhoneNumber}");
+    Print("Device Id From Shared Pref ${AppSharedPreferences.getDeviceId}");
 
     // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
     await OneSignal.shared.promptUserForPushNotificationPermission(

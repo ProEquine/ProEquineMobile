@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
+import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/submit_verification_widget.dart';
 import 'package:proequine/features/user/data/check_verification_request_model.dart';
-import 'package:proequine/features/user/presentation/screens/interests_screen.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui' as ui;
 
@@ -14,11 +14,9 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/images/app_images.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/constants/thems/pin_put_theme.dart';
-import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
-import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
 import '../../data/send_verification_request_model.dart';
 import '../../domain/user_cubit.dart';
 import '../widgets/register_header.dart';
@@ -53,7 +51,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
       });
     });
   }
-  UserCubit cubit=UserCubit();
+
+  UserCubit cubit = UserCubit();
 
   String _formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, "0");
@@ -61,14 +60,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
     String seconds = twoDigits(duration.inSeconds.remainder(60));
     return "$minutes:$seconds";
   }
+
   @override
   void initState() {
-    context
-        .read<UserCubit>()
-        .sendVerificationCode(
-        SendVerificationRequestModel(
-            phoneNumber:widget.phone,
-            channel: "sms"));
+    context.read<UserCubit>().sendVerificationCode(SendVerificationRequestModel(
+        phoneNumber: widget.phone ?? AppSharedPreferences.userPhoneNumber,
+        channel: "sms"));
     super.initState();
   }
 
@@ -92,7 +89,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     scale: 1,
                   ),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: kPadding),
                   child: Column(
@@ -136,8 +135,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             controller: _pinPutController,
                             defaultPinTheme: PinThemeConst.defaultPinTheme,
                             focusedPinTheme: PinThemeConst.focusedPinTheme,
-                            submittedPinTheme:
-                                PinThemeConst.submittedPinTheme,
+                            submittedPinTheme: PinThemeConst.submittedPinTheme,
                             pinAnimationType: PinAnimationType.rotation,
                             pinputAutovalidateMode:
                                 PinputAutovalidateMode.onSubmit,
@@ -188,56 +186,57 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                   fontWeight: FontWeight.w700),
                             ))
                           : Center(
-                            child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  context
-                                      .read<UserCubit>()
-                                      .sendVerificationCode(
-                                      SendVerificationRequestModel(
-                                          phoneNumber:widget.phone,
-                                          channel: "sms"));
-                                  isResendCode = true;
-                                });
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    context
+                                        .read<UserCubit>()
+                                        .sendVerificationCode(
+                                            SendVerificationRequestModel(
+                                                phoneNumber: widget.phone ??
+                                                    AppSharedPreferences
+                                                        .userPhoneNumber,
+                                                channel: "sms"));
+                                    isResendCode = true;
+                                  });
 
-                                _startTimer();
-                                // Navigator.push(context,
-                                //     MaterialPageRoute(builder: (context) => LoginScreen()));
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 25, vertical: 7),
-                                decoration: BoxDecoration(
-                                  color: const Color(0xff161616),
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color: Colors.white,
-                                        spreadRadius: 1),
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: const [
-                                    Text(
-                                      "Resend Code",
-                                      style: TextStyle(
-                                          color: AppColors.white,
-                                          fontFamily: "notosan"),
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Icon(
-                                      Icons.refresh,
-                                      color: AppColors.white,
-                                      size: 20,
-                                    )
-                                  ],
+                                  _startTimer();
+                                  // Navigator.push(context,
+                                  //     MaterialPageRoute(builder: (context) => LoginScreen()));
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 7),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff161616),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          color: Colors.white, spreadRadius: 1),
+                                    ],
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: const [
+                                      Text(
+                                        "Resend Code",
+                                        style: TextStyle(
+                                            color: AppColors.white,
+                                            fontFamily: "notosan"),
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Icon(
+                                        Icons.refresh,
+                                        color: AppColors.white,
+                                        size: 20,
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
                       const SizedBox(
                         height: 30,
                       ),
@@ -255,14 +254,15 @@ class _VerificationScreenState extends State<VerificationScreen> {
       ),
     );
   }
+
   _buildVerifyConsumer() {
     return BlocConsumer<UserCubit, UserState>(
         bloc: cubit,
         builder: (context, state) {
           if (state is CheckVerificationLoading) {
             return LoadingCircularWidget();
-
-          }{
+          }
+          {
             return RebiButton(
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
@@ -281,8 +281,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                    const VerificationSubmit()));
+                    builder: (context) => const VerificationSubmit()));
           } else if (state is CheckVerificationError) {
             RebiMessage.error(msg: state.message!);
           }
@@ -290,6 +289,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
   }
 
   _onPressVerify() {
-    return cubit.checkVerificationCode(CheckVerificationRequestModel(phoneNumber: widget.phone,code: _pinPutController.text));
+    return cubit.checkVerificationCode(CheckVerificationRequestModel(
+        phoneNumber: widget.phone ?? AppSharedPreferences.userPhoneNumber,
+        code: _pinPutController.text));
   }
 }

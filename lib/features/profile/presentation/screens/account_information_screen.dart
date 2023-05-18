@@ -8,8 +8,6 @@ import 'package:proequine/features/profile/presentation/screens/update_phone_scr
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
-import '../../../../core/utils/Printer.dart';
-import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/headerText.dart';
 import '../../../../core/widgets/rebi_input.dart';

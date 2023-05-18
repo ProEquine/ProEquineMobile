@@ -4,6 +4,7 @@ class LoginResponseModel extends BaseResultModel {
   bool? isEmailVerified;
   bool? isPhoneNumberVerified;
   String? accessToken;
+  String? phoneNumber;
   RefreshToken? refreshToken;
 
   LoginResponseModel(
@@ -16,6 +17,7 @@ class LoginResponseModel extends BaseResultModel {
     isEmailVerified = json['isEmailVerified'];
     isPhoneNumberVerified = json['isPhoneNumberVerified'];
     accessToken = json['accessToken'];
+    phoneNumber = json['phoneNumber'];
     refreshToken = json['refreshToken'] != null
         ? RefreshToken.fromJson(json['refreshToken'])
         : null;
@@ -27,6 +29,7 @@ class LoginResponseModel extends BaseResultModel {
     data['isEmailVerified'] = isEmailVerified;
     data['isPhoneNumberVerified'] = isPhoneNumberVerified;
     data['accessToken'] = accessToken;
+    data['phoneNumber'] = phoneNumber;
     if (refreshToken != null) {
       data['refreshToken'] = refreshToken!.toJson();
     }

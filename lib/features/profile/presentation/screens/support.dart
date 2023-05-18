@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/utils/rebi_message.dart';
+import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import 'package:proequine/core/widgets/loading_widget.dart';
+import 'package:proequine/features/profile/data/support_request_model.dart';
+import 'package:proequine/features/profile/domain/profile_cubit.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/utils/Printer.dart';
@@ -14,7 +21,11 @@ class Support extends StatelessWidget {
   final TextEditingController bookingNumber = TextEditingController();
   final TextEditingController descriptionIssue = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+
   Support({super.key});
+
+  ProfileCubit cubit =ProfileCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +41,7 @@ class Support extends StatelessWidget {
         key: _formKey,
         child: Column(
           children: [
-            HeaderText("Support", "Get in touch, we're here to help",true),
+            HeaderText("Support", "Get in touch, we're here to help", true),
             const SizedBox(
               height: 20,
             ),
@@ -42,11 +53,11 @@ class Support extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
                 autoValidateMode: AutovalidateMode.onUserInteraction,
-                isOptional: false,
+                isOptional: true,
                 color: AppColors.formsLabel,
                 readOnly: false,
                 contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
                 obscureText: false,
                 validator: (value) {
                   return Validator.requiredValidator(bookingNumber.text);
@@ -66,34 +77,56 @@ class Support extends StatelessWidget {
                 color: AppColors.formsLabel,
                 readOnly: false,
                 contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
                 obscureText: false,
                 validator: (value) {
                   return Validator.requiredValidator(descriptionIssue.text);
                 },
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14),
-              child: RebiButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Print("Success");
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ThanksWidget()));
-                    } else {}
-                  },
-                  child: Text("Send")),
+              child: BlocConsumer<ProfileCubit, ProfileState>(
+                bloc: cubit,
+                listener: (context, state) {
+                  if (state is ContactSupportSuccessful){
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ThanksWidget()));
+                  }else if (state is ContactSupportError){
+                    RebiMessage.error(msg: state.message!);
+                  }
+                },
+                builder: (context, state) {
+                  if(state is ContactSupportLoading){
+                    return LoadingCircularWidget();
+                  }
+                  return RebiButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          onPressSend();
+                        } else {}
+                      },
+                      child: const Text("Send"));
+                },
+              ),
             ),
             const SizedBox(
-              height: 10,
+              height: 40,
             )
           ],
         ),
       ),
     );
+  }
+  onPressSend(){
+    return cubit.contactSupport(SupportRequestModel(
+      referenceNumber: bookingNumber.text,
+      description: descriptionIssue.text,
+      phoneNumber: AppSharedPreferences.userPhoneNumber,
+    ));
   }
 }

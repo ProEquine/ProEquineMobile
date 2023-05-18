@@ -105,24 +105,6 @@ class UserProfile extends StatelessWidget {
               notificationList: false,
               isThereNewNotification: false,
             ),
-
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: kPadding),
-            //   child: RebiButton(
-            //     onPressed: () {
-            //       AppSharedPreferences.clearForLogOut();
-            //       RebiMessage.success(msg: "Logout Successfully");
-            //       Navigator.pushReplacement(context,
-            //           MaterialPageRoute(builder: (context) => SplashScreen()));
-            //     },
-            //     child: Text(
-            //       "Logout",
-            //       style: TextStyle(color: AppColors.white),
-            //     ),
-            //     radius: 8,
-            //     backgroundColor: AppColors.formsBackground,
-            //   ),
-            // ),
             const SizedBox(
               height: 50,
             ),
@@ -130,7 +112,6 @@ class UserProfile extends StatelessWidget {
                 text: const TextSpan(children: [
               TextSpan(
                 text: "faizan.k@input.ae",
-
                 style: TextStyle(
                   color: AppColors.grey,
                 ),

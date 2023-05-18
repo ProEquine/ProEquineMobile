@@ -7,7 +7,7 @@ class ApiURLs {
 
   /// Auth URLs
   static const String loginUSER = "$basicApiUrl/Auth/login";
-  static const String registerUSER = "$basicApiUrl/Auth/register";
+  static const String registerUSER = "$basicApiUrl/Auth/userregister";
   static const String getNewToken = "$basicApiUrl/Auth/refresh";
   static const String sendVerificationCode = "$basicApiUrl/Auth/sendverificationcode";
   static const String checkVerificationCode = "$basicApiUrl/Auth/checkverificationcode";
@@ -16,7 +16,15 @@ class ApiURLs {
   static const String interests = "$basicApiUrl/Auth/saveinterestandtype";
 
 
+
   /// Events URLs
   static const String allEvents = "$baseUrl/MobileApp/GetEvents";
+
+
+  /// Profile URLs
+  static const String changePassword = "$basicApiUrl/Auth/resetpasswordfromprofile";
+  static const String sendPhone = "$basicApiUrl/User/editphonenumber";
+  static const String updatePhone = "$basicApiUrl/User/updatephonenumber";
+  static const String contactSupport = "$basicApiUrl/User/supportquery";
 
 }

@@ -1,21 +1,21 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
+import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import 'package:proequine/core/widgets/loading_widget.dart';
+import 'package:proequine/features/profile/data/change_password_request_model.dart';
+import 'package:proequine/features/profile/domain/profile_cubit.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
-import '../../../../core/widgets/custom_logo_widget.dart';
 import '../../../../core/widgets/headerText.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/success_state_widget.dart';
-import '../../../user/presentation/widgets/register_header.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
   ChangePasswordScreen({super.key});
@@ -24,6 +24,7 @@ class ChangePasswordScreen extends StatelessWidget {
   final TextEditingController _oldPassword = TextEditingController();
   final TextEditingController _newPassword = TextEditingController();
   final TextEditingController _confirmNewPassword = TextEditingController();
+  ProfileCubit cubit = ProfileCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,8 @@ class ChangePasswordScreen extends StatelessWidget {
             children: [
               HeaderText("Reset Password", "", false),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10,horizontal: kPadding),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10, horizontal: kPadding),
                 child: RebiInput(
                   labelText: 'Old password'.tra,
                   controller: _oldPassword,
@@ -53,17 +55,17 @@ class ChangePasswordScreen extends StatelessWidget {
                   isOptional: false,
                   color: AppColors.formsLabel,
                   readOnly: false,
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 13),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
                   obscureText: true,
                   validator: (value) {
-                    return Validator.passwordValidator(
-                        _oldPassword.text);
+                    return Validator.passwordValidator(_oldPassword.text);
                   },
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10,horizontal: kPadding),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10, horizontal: kPadding),
                 child: RebiInput(
                   labelText: 'New password'.tra,
                   controller: _newPassword,
@@ -73,17 +75,17 @@ class ChangePasswordScreen extends StatelessWidget {
                   isOptional: false,
                   color: AppColors.formsLabel,
                   readOnly: false,
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 13),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
                   obscureText: true,
                   validator: (value) {
-                    return Validator.passwordValidator(
-                        _newPassword.text);
+                    return Validator.passwordValidator(_newPassword.text);
                   },
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10,horizontal: kPadding),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10, horizontal: kPadding),
                 child: RebiInput(
                   labelText: 'Confirm new password'.tra,
                   controller: _confirmNewPassword,
@@ -93,8 +95,8 @@ class ChangePasswordScreen extends StatelessWidget {
                   isOptional: false,
                   color: AppColors.formsLabel,
                   readOnly: false,
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 13),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
                   obscureText: true,
                   validator: (value) {
                     if (value != null && value.isEmpty) {
@@ -111,18 +113,35 @@ class ChangePasswordScreen extends StatelessWidget {
                 height: 20,
               ),
               const Spacer(),
-              RebiButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
+              BlocConsumer<ProfileCubit, ProfileState>(
+                bloc: cubit,
+                listener: (context, state) {
+                  if (state is ChangePasswordSuccessful) {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                SuccessStateScreen(title: "Password Updated Successfully",)));
-                  } else {}
+                            builder: (context) => SuccessStateScreen(
+                                  title: "Password Updated Successfully",
+                                )));
+                  } else if (state is ChangePasswordError) {
+                    RebiMessage.error(msg: state.message!);
+                  }
                 },
-                backgroundColor: AppColors.white,
-                child: const Text("Update"),
+                builder: (context, state) {
+                  if (state is ChangePasswordLoading) {
+                    return LoadingCircularWidget();
+                  }
+                  return RebiButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        onPressChange();
+                      } else {}
+                    },
+                    backgroundColor: AppColors.white,
+                    child: const Text("Update"),
+                  );
+                },
               ),
               const SizedBox(
                 height: 30,
@@ -132,5 +151,13 @@ class ChangePasswordScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+  onPressChange(){
+    return cubit.changePassword(ChangePasswordRequestModel(
+      phoneNumber: AppSharedPreferences.userPhoneNumber,
+      oldPassword: _oldPassword.text,
+      password: _newPassword.text,
+      confirmPassword: _confirmNewPassword.text,
+    ));
   }
 }

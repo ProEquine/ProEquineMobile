@@ -48,7 +48,7 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Spacer(
+          const Spacer(
             flex: 2,
           ),
           Center(
@@ -67,7 +67,11 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
                   } else {
                     _controller
                       ..duration = composition.duration
-                      ..forward().whenComplete(() => Navigator.pop(context));
+                      ..forward().whenComplete(() => Navigator.pop(context)).then((value) {
+                        setState(() {
+
+                        });
+                      });
                   }
                 },
               ),
@@ -75,7 +79,7 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
           ),
           Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0.w),
+              padding: EdgeInsets.symmetric(horizontal: 10.0.w),
               child: Text(
                 widget.title!,
                 style: const TextStyle(
@@ -97,7 +101,7 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
                         widget.onButtonPressed!();
                       },
                       child: Text(widget.buttonText!)))
-              : const SizedBox.expand(),
+              : const SizedBox(height: 2,),
           const SizedBox(
             height: 40,
           ),

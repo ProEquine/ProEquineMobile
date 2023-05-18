@@ -41,8 +41,8 @@ class RemoteDataSource {
     }
 
     if (thereDeviceId) {
-      final deviceId=await SecureStorage().getDeviceId();
-      if (deviceId != null) {
+      final deviceId=AppSharedPreferences.getDeviceId;
+      if (deviceId != null || deviceId!='') {
           headers.putIfAbsent(DEVICE_ID, () => (deviceId.toString()));
       } else {
       }
