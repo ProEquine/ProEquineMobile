@@ -28,6 +28,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
   @override
   void initState() {
     Print("phone number is ${AppSharedPreferences.userPhoneNumber}");
+    Print("isType selected ${AppSharedPreferences.getIsITypeSelected}");
     super.initState();
   }
 

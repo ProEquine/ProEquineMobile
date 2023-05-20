@@ -9,13 +9,16 @@ import 'package:proequine/features/user/data/interests_request_model.dart';
 import 'package:proequine/features/user/data/login_response_model.dart';
 import 'package:proequine/features/user/data/register_request_model.dart';
 import 'package:proequine/features/user/data/reset_password_request_model.dart';
+import 'package:proequine/features/user/data/send-mail_request_model.dart';
 import 'package:proequine/features/user/data/send_verification_request_model.dart';
+import 'package:proequine/features/user/data/update_email_request_model.dart';
 import 'package:proequine/features/user/domain/repo/user_repository.dart';
 
 import '../../../core/CoreModels/base_response_model.dart';
 import '../../../core/errors/base_error.dart';
 import '../../../core/utils/Printer.dart';
 import '../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import '../data/check_mail_request_model.dart';
 import '../data/login_request_model.dart';
 import '../data/register_response_model.dart';
 
@@ -155,12 +158,71 @@ class UserCubit extends Cubit<UserState> {
     emit(SelectInterestsLoading());
     var response = await UserRepository.interests(interestsRequestModel);
     if (response is EmptyModel) {
+      AppSharedPreferences.typeSelected = true;
       emit(SelectInterestsSuccessful(message: "Selected Successfully".tra));
     } else if (response is BaseError) {
       Print("messaggeeeeeeeee${response.message}");
       emit(SelectInterestsError(message: response.message));
     } else if (response is Message) {
       emit(SelectInterestsError(message: response.content));
+    }
+  }
+
+  Future<void> sendMailVerificationCode(
+      SendMailVerificationRequestModel sendMailVerificationRequestModel) async {
+    emit(SendMailVerificationLoading());
+    var response =
+    await UserRepository.sendMailVerification(sendMailVerificationRequestModel);
+    if (response is EmptyModel) {
+      emit(SendMailVerificationSuccessful(
+          message: "Code has sent successfully ".tra));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(SendMailVerificationError(message: response.message));
+    } else if (response is Message) {
+      emit(SendMailVerificationError(message: response.content));
+    }
+  }
+
+  Future<void> checkMailVerificationCode(
+      CheckMailVerificationRequestModel checkMailVerificationRequestModel) async {
+    emit(CheckMailVerificationLoading());
+    var response =
+    await UserRepository.checkMailVerification(checkMailVerificationRequestModel);
+    if (response is EmptyModel) {
+      AppSharedPreferences.emailVerified = true;
+      emit(CheckMailVerificationSuccessful(
+          message: "Email verified successfully ".tra));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(CheckMailVerificationError(message: response.message));
+    } else if (response is Message) {
+      emit(CheckMailVerificationError(message: response.content));
+    }
+  }
+  Future<void> updateMail(
+      UpdateMailRequestModel updateMailRequestModel) async {
+    emit(UpdateMailLoading());
+    var response =
+    await UserRepository.updateMail(updateMailRequestModel);
+    if (response is EmptyModel) {
+      emit(UpdateMailSuccessful(
+          message: "code has been sent".tra));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(UpdateMailError(message: response.message));
+    } else if (response is Message) {
+      emit(UpdateMailError(message: response.content));
+    }
+  }
+  Future<void> deleteAccount(String userPhoneNumber) async {
+    emit(DeleteAccountLoading());
+    var response = await UserRepository.deleteAccount(userPhoneNumber);
+    if (response is EmptyModel) {
+      emit(SelectInterestsSuccessful(message: "Delete Successfully".tra));
+    } else if (response is BaseError) {
+      Print("Account Delete Error${response.message}");
+      emit(DeleteAccountError(message: response.message));
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
+import 'package:proequine/features/profile/data/verify_email_route.dart';
 import 'package:proequine/features/profile/domain/profile_cubit.dart';
 import 'package:sizer/sizer.dart';
 
@@ -8,28 +9,29 @@ import '../constants/colors/app_colors.dart';
 import '../constants/constants.dart';
 import '../utils/sharedpreferences/SharedPreferencesHelper.dart';
 
-class SuccessStateScreen extends StatefulWidget {
+class SubmitVerifyEmail extends StatefulWidget {
   String? title;
   bool isThereButton = false;
   Function? onButtonPressed;
   String? buttonText;
 
-  SuccessStateScreen(
+  SubmitVerifyEmail(
       {Key? key,
-      this.title,
-      this.isThereButton = false,
-      this.onButtonPressed,
-      this.buttonText})
+        this.title,
+        this.isThereButton = false,
+        this.onButtonPressed,
+        this.buttonText})
       : super(key: key);
 
   @override
-  State<SuccessStateScreen> createState() => _SuccessStateScreenState();
+  State<SubmitVerifyEmail> createState() => _SubmitVerifyEmailState();
 }
 
-class _SuccessStateScreenState extends State<SuccessStateScreen>
+class _SubmitVerifyEmailState extends State<SubmitVerifyEmail>
     with TickerProviderStateMixin {
   late final AnimationController _controller;
   ProfileCubit cubit = ProfileCubit();
+  VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
 
   @override
   void initState() {
@@ -46,7 +48,7 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
 
   @override
   Widget build(BuildContext context) {
-    final String title = ModalRoute.of(context)?.settings.arguments as String;
+     verifyEmailRoute = ModalRoute.of(context)?.settings.arguments as VerifyEmailRoute;
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -70,10 +72,30 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
                       ..forward();
                   } else {
                     //Todo: handle navigate from navbar pages
-                    _controller
-                      ..duration = composition.duration
-                      ..forward().whenComplete(() =>
-                          Navigator.pop(context));
+                    if(verifyEmailRoute.type=='Booking'){
+                      _controller
+                        ..duration = composition.duration
+                        ..forward().whenComplete(() =>
+                            Navigator.popAndPushNamed(context, '/homeRouteBooking'));
+                    }else if (verifyEmailRoute.type=='notifications'){
+                      _controller
+                        ..duration = composition.duration
+                        ..forward().whenComplete(() =>
+                            Navigator.popAndPushNamed(context, '/homeRouteNotifications'));
+                    }
+                    else if (verifyEmailRoute.type=='createTrip'){
+                      _controller
+                        ..duration = composition.duration
+                        ..forward().whenComplete(() =>
+                            Navigator.popAndPushNamed(context, '/createTrip'));
+                    }
+                    else if (verifyEmailRoute.type=='createEvent'){
+                      _controller
+                        ..duration = composition.duration
+                        ..forward().whenComplete(() =>
+                            Navigator.popAndPushNamed(context, '/createEvent'));
+                    }
+
                   }
                 },
               ),
@@ -83,7 +105,7 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0.w),
               child: Text(
-                widget.title??title,
+                verifyEmailRoute.email!,
                 style: const TextStyle(
                     color: AppColors.white,
                     fontWeight: FontWeight.w600,
@@ -96,16 +118,16 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
           ),
           widget.isThereButton
               ? Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: kPadding, vertical: 10),
-                  child: RebiButton(
-                      onPressed: () {
-                        widget.onButtonPressed!();
-                      },
-                      child: Text(widget.buttonText!)))
+              padding: const EdgeInsets.symmetric(
+                  horizontal: kPadding, vertical: 10),
+              child: RebiButton(
+                  onPressed: () {
+                    widget.onButtonPressed!();
+                  },
+                  child: Text(widget.buttonText!)))
               : const SizedBox(
-                  height: 2,
-                ),
+            height: 2,
+          ),
           const SizedBox(
             height: 40,
           ),

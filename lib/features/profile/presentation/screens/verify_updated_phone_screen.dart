@@ -17,12 +17,10 @@ import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/constants/thems/pin_put_theme.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/rebi_button.dart';
-import '../../../../core/widgets/success_state_widget.dart';
 
 class VerifyUpdatedPhoneScreen extends StatefulWidget {
-  final String? phone;
 
-  const VerifyUpdatedPhoneScreen({super.key, this.phone});
+  const VerifyUpdatedPhoneScreen({super.key,});
 
   @override
   State<VerifyUpdatedPhoneScreen> createState() =>
@@ -61,6 +59,7 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final String phone = ModalRoute.of(context)?.settings.arguments as String;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
@@ -220,14 +219,17 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
                         listener: (context, state) {
                           if (state is UpdatePhoneSuccessful) {
                             AppSharedPreferences.inputPhoneNumber =
-                                widget.phone!;
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SuccessStateScreen(
-                                          title: "Phone Updated Successfully",
-                                          isThereButton: false,
-                                        )));
+                                phone;
+                            Navigator.pushReplacementNamed(
+                                context,'/submitScreen' );
+                            // Navigator.pushReplacement(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => SuccessStateScreen(
+                            //               title: "Phone Updated Successfully",
+                            //               isThereButton: false,
+                            //             ))).then((value) => cubit
+                            //     .getUser(AppSharedPreferences.userPhoneNumber));
                           } else if (state is UpdatePhoneError) {
                             RebiMessage.error(msg: state.message!);
                           }
@@ -240,7 +242,7 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 FocusManager.instance.primaryFocus?.unfocus();
-                                onPressVerify();
+                                onPressVerify(phone);
                               } else {}
                             },
                             backgroundColor: AppColors.white,
@@ -262,11 +264,11 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
     );
   }
 
-  onPressVerify() {
+  onPressVerify(String phone) {
     return cubit
       ..updatePhoneNumber(UpdatePhoneRequestModel(
         previousPhoneNumber: AppSharedPreferences.userPhoneNumber,
-        newPhoneNumber: widget.phone,
+        newPhoneNumber: phone,
         code: _pinPutController.text,
       ));
   }

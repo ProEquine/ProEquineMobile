@@ -6,10 +6,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:proequine/core/StartUp/StartUp.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
+import 'package:proequine/core/widgets/submit_verify_email.dart';
+import 'package:proequine/core/widgets/success_state_widget.dart';
 import 'package:proequine/features/events/domain/event_cubit.dart';
+import 'package:proequine/features/home/presentation/screens/create_event_screen.dart';
+import 'package:proequine/features/home/presentation/screens/create_trip_screen.dart';
 import 'package:proequine/features/profile/domain/profile_cubit.dart';
+import 'package:proequine/features/profile/presentation/screens/account_information_screen.dart';
+import 'package:proequine/features/profile/presentation/screens/update_phone_screen.dart';
+import 'package:proequine/features/profile/presentation/screens/user_profile.dart';
+import 'package:proequine/features/profile/presentation/screens/verify_email_screen.dart';
+import 'package:proequine/features/profile/presentation/screens/verify_updated_phone_screen.dart';
 import 'package:proequine/features/splash/presentation/screens/splash_screen.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
+import 'package:proequine/features/user/presentation/screens/send_email_screen.dart';
 import 'package:sizer/sizer.dart';
 
 import 'core/constants/constants.dart';
@@ -146,9 +156,21 @@ configOneSignal();
         loginRoute: (context) => const LoginScreen(),
         registerRoute: (context) => const RegisterScreen(),
         '/homeRoute': (context) => BottomNavigation(),
+        '/homeRouteBooking': (context) => BottomNavigation(selectedIndex: 1,),
+        '/homeRouteNotifications': (context) => BottomNavigation(selectedIndex: 3,),
         transportRoute: (context) => const BookTransport(),
         eventRoute: ((context) => const BookEvent()),
         '/confirm': ((context) => const ConfirmScreen()),
+        '/createEvent': ((context) =>  CreateEventScreen()),
+        '/createTrip': ((context) =>  CreateTripScreen()),
+        '/accountInformation': (context) => AccountInfoScreen(),
+        '/userProfile': (context) => UserProfile(),
+        '/updatePhone': (context) => UpdatePhoneScreen(),
+        '/verifyUpdate': (context) => VerifyUpdatedPhoneScreen(),
+        '/submitScreen': (context) => SubmitVerifyEmail(),
+
+        '/sendEmail': (context) => const SendEmailScreen(),
+        '/VerifyEmail': (context) => VerifyEmailScreen(),
       },
     );
   }

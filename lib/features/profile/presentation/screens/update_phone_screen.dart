@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/features/profile/data/edit_phone_request_model.dart';
 import 'package:proequine/features/profile/domain/profile_cubit.dart';
 import 'package:proequine/features/profile/presentation/screens/verify_email_screen.dart';
@@ -116,12 +117,14 @@ class UpdatePhoneScreen extends StatelessWidget {
                 },
                 listener: (context, state) {
                   if (state is SendPhoneSuccessful) {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => VerifyUpdatedPhoneScreen(
-                                  phone: _countryCode.text + _phone.text,
-                                )));
+                    Navigator.pushReplacementNamed(
+                        context,'/verifyUpdate',arguments:_countryCode.text + _phone.text );
+                    // Navigator.pushReplacement(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => VerifyUpdatedPhoneScreen(
+                    //               phone: _countryCode.text + _phone.text,
+                    //             )));
                   } else if (state is SendPhoneError) {
                     RebiMessage.error(msg: state.message!);
                   }

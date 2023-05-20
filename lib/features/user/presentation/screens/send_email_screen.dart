@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/features/profile/data/verify_email_route.dart';
 import 'package:proequine/features/profile/presentation/screens/verify_email_screen.dart';
-import 'package:proequine/features/profile/presentation/screens/verify_updated_phone_screen.dart';
+import 'package:proequine/features/user/data/send-mail_request_model.dart';
 import 'package:proequine/features/user/data/update_email_request_model.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
@@ -18,17 +18,23 @@ import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 
-class UpdateEmailScreen extends StatelessWidget {
-  String previousEmail;
+class SendEmailScreen extends StatefulWidget {
+  const SendEmailScreen({Key? key,}) : super(key: key);
 
-  UpdateEmailScreen({Key? key, required this.previousEmail}) : super(key: key);
+  @override
+  State<SendEmailScreen> createState() => _SendEmailScreenState();
+}
 
+class _SendEmailScreenState extends State<SendEmailScreen> {
   final TextEditingController _email = TextEditingController();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   UserCubit cubit = UserCubit();
 
   @override
   Widget build(BuildContext context) {
+    final String route = ModalRoute.of(context)?.settings.arguments as String;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
@@ -70,7 +76,7 @@ class UpdateEmailScreen extends StatelessWidget {
               child: BlocConsumer<UserCubit, UserState>(
                 bloc: cubit,
                 builder: (context, state) {
-                  if (state is UpdateMailLoading) {
+                  if (state is SendMailVerificationLoading) {
                     return LoadingCircularWidget();
                   }
                   return RebiButton(
@@ -83,15 +89,10 @@ class UpdateEmailScreen extends StatelessWidget {
                       child: const Text("Update"));
                 },
                 listener: (context, state) {
-                  if (state is UpdateMailSuccessful) {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                VerifyEmailScreen(
-                                  email: _email.text,
-                                )));
-                  } else if (state is UpdateMailError) {
+                  if (state is SendMailVerificationSuccessful) {
+                    Navigator.pushReplacementNamed(
+                        context,'/VerifyEmail',arguments:VerifyEmailRoute(email: _email.text,type: route) );
+                  } else if (state is SendMailVerificationError) {
                     RebiMessage.error(msg: state.message!);
                   }
                 },
@@ -107,9 +108,8 @@ class UpdateEmailScreen extends StatelessWidget {
   }
 
   onSendMail() {
-    return cubit.updateMail(UpdateMailRequestModel(
-        previousEmail: previousEmail,
-      newEmail: _email.text,
+    return cubit.sendMailVerificationCode(SendMailVerificationRequestModel(
+      email: _email.text,
     ));
   }
 }

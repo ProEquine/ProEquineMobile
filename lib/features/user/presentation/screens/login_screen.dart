@@ -5,11 +5,14 @@ import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/custom_logo_widget.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:proequine/core/widgets/rebi_input.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/forget_password_screen.dart';
+import 'package:proequine/features/user/presentation/screens/interests_screen.dart';
+import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
 import 'package:proequine/features/user/presentation/widgets/login_header.dart';
 import 'package:sizer/sizer.dart';
 
@@ -243,8 +246,22 @@ class _LoginScreenState extends State<LoginScreen> {
         listener: (context, state) {
           if (state is LoginSuccessful) {
             // RebiMessage.success(msg: state.message!);
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => BottomNavigation()));
+            if (!AppSharedPreferences.getPhoneVerified!) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => VerificationScreen(
+                            phone: AppSharedPreferences.userPhoneNumber,
+                          )));
+            } else if (!AppSharedPreferences.getIsITypeSelected!) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const InterestsScreen()));
+            } else {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => BottomNavigation()));
+            }
           } else if (state is LoginError) {
             RebiMessage.error(msg: state.message!);
           }

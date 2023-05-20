@@ -27,8 +27,7 @@ class AppSharedPreferences {
   }
 
   static clearForLogOut() {
-    removeTypeSelected();
-    removePhoneVerified();
+
   }
   ///  Store User Phone Number
   static String get userPhoneNumber => _pref?.read(keyUserPhoneNumber) ?? '';
@@ -93,17 +92,7 @@ class AppSharedPreferences {
   static set emailVerified(bool? verified) =>
       _pref?.saveBoolean(keyIsEmailVerified, verified) ?? false;
 
-  /// is user select the interests
-  static bool? get getIsInterestsSelected {
-    if (_pref?.readBoolean(keyUserInterests) == null) selectedInterests = false;
-
-    return _pref?.readBoolean(keyUserInterests) ?? false;
-  }
-
   /// is user type selected
-  static set selectedInterests(bool? interests) =>
-      _pref?.saveBoolean(keyUserInterests, interests) ?? false;
-
   static bool? get getIsITypeSelected {
     if (_pref?.readBoolean(keyUserType) == null) typeSelected = false;
 

@@ -12,6 +12,7 @@ class AppColors {
   static const Color lightGrey = Color(0xFFD0D3D6);
   static const Color gold = Color(0xFFCD933D);
   static const Color eventText = Color.fromARGB(255, 140, 140, 140);
+  static const Color yellow = Color.fromRGBO(224, 173, 37, 1);
 
   /// this is old background color
   // static const Color backgroundColor = Color(0xFF262626);

@@ -1,9 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
 import 'package:proequine/core/widgets/success_state_widget.dart';
-import 'package:proequine/features/user/presentation/screens/interests_screen.dart';
+import 'package:proequine/features/profile/data/verify_email_route.dart';
+import 'package:proequine/features/user/data/check_mail_request_model.dart';
+import 'package:proequine/features/user/data/send-mail_request_model.dart';
+import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui' as ui;
 
@@ -11,11 +15,14 @@ import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/constants/thems/pin_put_theme.dart';
+import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/widgets/custom_header.dart';
+import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
   final String? email;
+
 
   const VerifyEmailScreen({super.key, this.email});
 
@@ -25,6 +32,7 @@ class VerifyEmailScreen extends StatefulWidget {
 
 class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  UserCubit cubit = UserCubit();
 
   final TextEditingController _pinPutController = TextEditingController();
   int _secondsLeft = 60;
@@ -51,9 +59,11 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     String seconds = twoDigits(duration.inSeconds.remainder(60));
     return "$minutes:$seconds";
   }
+VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
 
   @override
   Widget build(BuildContext context) {
+    verifyEmailRoute = ModalRoute.of(context)?.settings.arguments as VerifyEmailRoute;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
@@ -94,7 +104,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                               width: 30,
                               height: 20,
                               margin:
-                              const EdgeInsets.symmetric(horizontal: 15),
+                                  const EdgeInsets.symmetric(horizontal: 15),
                               decoration: const BoxDecoration(
                                 border: Border(
                                   bottom: BorderSide(
@@ -104,18 +114,17 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                               ),
                             ),
                             androidSmsAutofillMethod:
-                            AndroidSmsAutofillMethod.smsUserConsentApi,
+                                AndroidSmsAutofillMethod.smsUserConsentApi,
                             length: 6,
                             closeKeyboardWhenCompleted: true,
                             isCursorAnimationEnabled: true,
                             controller: _pinPutController,
                             defaultPinTheme: PinThemeConst.defaultPinTheme,
                             focusedPinTheme: PinThemeConst.focusedPinTheme,
-                            submittedPinTheme:
-                            PinThemeConst.submittedPinTheme,
+                            submittedPinTheme: PinThemeConst.submittedPinTheme,
                             pinAnimationType: PinAnimationType.rotation,
                             pinputAutovalidateMode:
-                            PinputAutovalidateMode.onSubmit,
+                                PinputAutovalidateMode.onSubmit,
                             validator: (value) {
                               if (value!.isEmpty || value.length < 6) {
                                 return 'please enter your code';
@@ -154,75 +163,90 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                       ),
                       isResendCode
                           ? Center(
-                          child: Text(
-                            _formatDuration(Duration(seconds: _secondsLeft))
-                                .toString(),
-                            style: const TextStyle(
-                                color: AppColors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700),
-                          ))
-                          : Center(
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              isResendCode = true;
-                            });
-
-                            _startTimer();
-                            // Navigator.push(context,
-                            //     MaterialPageRoute(builder: (context) => LoginScreen()));
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 7),
-                            decoration: BoxDecoration(
-                              color: const Color(0xff161616),
-                              borderRadius: BorderRadius.circular(8.0),
-                              boxShadow: const [
-                                BoxShadow(
-                                    color: Colors.white,
-                                    spreadRadius: 1),
-                              ],
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Text(
-                                  "Resend Code",
-                                  style: TextStyle(
-                                      color: AppColors.white,
-                                      fontFamily: "notosan"),
-                                ),
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Icon(
-                                  Icons.refresh,
+                              child: Text(
+                              _formatDuration(Duration(seconds: _secondsLeft))
+                                  .toString(),
+                              style: const TextStyle(
                                   color: AppColors.white,
-                                  size: 20,
-                                )
-                              ],
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700),
+                            ))
+                          : Center(
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    isResendCode = true;
+                                  });
+                                  context
+                                      .read<UserCubit>()
+                                      .sendMailVerificationCode(
+                                          SendMailVerificationRequestModel(
+                                              email: verifyEmailRoute.email));
+
+                                  _startTimer();
+                                  // Navigator.push(context,
+                                  //     MaterialPageRoute(builder: (context) => LoginScreen()));
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 7),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xff161616),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          color: Colors.white, spreadRadius: 1),
+                                    ],
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: const [
+                                      Text(
+                                        "Resend Code",
+                                        style: TextStyle(
+                                            color: AppColors.white,
+                                            fontFamily: "notosan"),
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Icon(
+                                        Icons.refresh,
+                                        color: AppColors.white,
+                                        size: 20,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
                       const SizedBox(
                         height: 30,
                       ),
-                      RebiButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                     SuccessStateScreen(title: "Email Updated Successfully",)));
-
-                          } else {}
+                      BlocConsumer<UserCubit, UserState>(
+                        bloc: cubit,
+                        listener: (context, state) {
+                          if (state is CheckMailVerificationSuccessful) {
+                     Navigator.pushReplacementNamed(context, '/submitScreen',arguments: VerifyEmailRoute(email: "Email verified successfully",type: verifyEmailRoute.type));
+                          } else if (state is CheckMailVerificationError) {
+                            RebiMessage.error(msg: state.message!);
+                          }
                         },
-                        backgroundColor: AppColors.white,
-                        child: const Text("Confirm"),
+                        builder: (context, state) {
+                          if (state is CheckMailVerificationLoading) {
+                            return LoadingCircularWidget();
+                          }
+                          return RebiButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                FocusManager.instance.primaryFocus?.unfocus();
+                                _onPressVerify(verifyEmailRoute.email!);
+                              } else {}
+                            },
+                            backgroundColor: AppColors.white,
+                            child: const Text("Confirm"),
+                          );
+                        },
                       ),
                       const SizedBox(
                         height: 20,
@@ -236,5 +260,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
         ),
       ),
     );
+  }
+  _onPressVerify(String email) {
+    return cubit.checkMailVerificationCode(CheckMailVerificationRequestModel(
+        email: email,
+        code: _pinPutController.text));
   }
 }

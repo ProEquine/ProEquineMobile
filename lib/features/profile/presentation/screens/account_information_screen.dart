@@ -29,20 +29,20 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
 
   final TextEditingController _discipline = TextEditingController();
 
-  final TextEditingController name = TextEditingController(text: "Bahaa Soubh");
+  final TextEditingController name = TextEditingController();
 
-  final TextEditingController email =
-      TextEditingController(text: "bahaa.s@input.ae");
+  final TextEditingController email = TextEditingController();
 
-  final TextEditingController phone =
-      TextEditingController(text: "+971545049937");
+  final TextEditingController phone = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool value = false;
 
-  ProfileCubit cubit=ProfileCubit();
+  ProfileCubit cubit = ProfileCubit();
+
   @override
   void initState() {
-   context.read<ProfileCubit>().getUser(AppSharedPreferences.userPhoneNumber);
+    cubit.getUser(AppSharedPreferences.userPhoneNumber);
     super.initState();
   }
 
@@ -58,14 +58,16 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
       ),
       body: LayoutBuilder(builder: (context, constraint) {
         return BlocConsumer<ProfileCubit, ProfileState>(
-          bloc: cubit..getUser(AppSharedPreferences.userPhoneNumber),
-          listener: (context, state) {},
+          bloc: cubit,
+          listener: (context, state) {
+            if (state is GetUserSuccessful) {}
+          },
           builder: (context, state) {
-            if(state is GetUserLoading){
+            if (state is GetUserLoading) {
               return const AccountInfoLoading(
                 isLoading: true,
               );
-            }else if (state is GetUserSuccessful){
+            } else if (state is GetUserSuccessful) {
               return Form(
                 key: _formKey,
                 child: Padding(
@@ -73,8 +75,8 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                       horizontal: kPadding, vertical: kPadding),
                   child: SingleChildScrollView(
                     child: ConstrainedBox(
-                      constraints:
-                      BoxConstraints(minHeight: constraint.maxHeight - 50.0),
+                      constraints: BoxConstraints(
+                          minHeight: constraint.maxHeight - 50.0),
                       child: IntrinsicHeight(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,12 +88,14 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: RebiInput(
-                                labelText: 'Full Name'.tra,
+                                hintText: state.responseModel!.fullName!,
+                                hintStyle:
+                                    const TextStyle(color: AppColors.white),
                                 controller: name,
                                 keyboardType: TextInputType.name,
                                 textInputAction: TextInputAction.done,
                                 autoValidateMode:
-                                AutovalidateMode.onUserInteraction,
+                                    AutovalidateMode.onUserInteraction,
                                 isOptional: false,
                                 color: AppColors.formsLabel,
                                 readOnly: true,
@@ -106,19 +110,24 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: RebiInput(
-                                labelText: 'Email'.tra,
+                                hintText: state.responseModel!.email!,
+                                hintStyle:
+                                    const TextStyle(color: AppColors.white),
                                 controller: email,
                                 onTap: () {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              UpdateEmailScreen()));
+                                              UpdateEmailScreen(
+                                                previousEmail:
+                                                    state.responseModel!.email!,
+                                              )));
                                 },
                                 keyboardType: TextInputType.emailAddress,
                                 textInputAction: TextInputAction.done,
                                 autoValidateMode:
-                                AutovalidateMode.onUserInteraction,
+                                    AutovalidateMode.onUserInteraction,
                                 isOptional: false,
                                 color: AppColors.formsLabel,
                                 readOnly: true,
@@ -133,19 +142,22 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: RebiInput(
-                                labelText: 'Phone'.tra,
+                                hintText: state.responseModel!.phoneNumber!,
+                                hintStyle:
+                                    const TextStyle(color: AppColors.white),
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              UpdatePhoneScreen()));
+                                  setState(() {
+                                    Navigator.pushNamed(context, '/updatePhone')
+                                        .then((value) => cubit.getUser(
+                                            AppSharedPreferences
+                                                .userPhoneNumber));
+                                  });
                                 },
                                 controller: phone,
                                 keyboardType: TextInputType.phone,
                                 textInputAction: TextInputAction.done,
                                 autoValidateMode:
-                                AutovalidateMode.onUserInteraction,
+                                    AutovalidateMode.onUserInteraction,
                                 isOptional: false,
                                 color: AppColors.formsLabel,
                                 readOnly: true,
@@ -160,19 +172,24 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: RebiInput(
-                                labelText: 'Reset Password'.tra,
+                                hintText: 'Reset Password'.tra,
+                                hintStyle:
+                                    const TextStyle(color: AppColors.white),
                                 controller: _currentPassword,
                                 onTap: () {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ChangePasswordScreen()));
+                                              ChangePasswordScreen())).then(
+                                      (value) => cubit.getUser(
+                                          AppSharedPreferences
+                                              .userPhoneNumber));
                                 },
                                 keyboardType: TextInputType.visiblePassword,
                                 textInputAction: TextInputAction.done,
                                 autoValidateMode:
-                                AutovalidateMode.onUserInteraction,
+                                    AutovalidateMode.onUserInteraction,
                                 isOptional: false,
                                 color: AppColors.formsLabel,
                                 readOnly: true,
@@ -184,12 +201,14 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: RebiInput(
-                                labelText: 'Preferences'.tra,
+                                hintText: 'Preferences'.tra,
                                 controller: _preferences,
+                                hintStyle:
+                                    const TextStyle(color: AppColors.white),
                                 keyboardType: TextInputType.name,
                                 textInputAction: TextInputAction.done,
                                 autoValidateMode:
-                                AutovalidateMode.onUserInteraction,
+                                    AutovalidateMode.onUserInteraction,
                                 isOptional: false,
                                 color: AppColors.formsLabel,
                                 readOnly: true,
@@ -204,12 +223,14 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: RebiInput(
-                                labelText: 'Discipline'.tra,
+                                hintText: 'Discipline'.tra,
+                                hintStyle:
+                                    const TextStyle(color: AppColors.white),
                                 controller: _discipline,
                                 keyboardType: TextInputType.name,
                                 textInputAction: TextInputAction.done,
                                 autoValidateMode:
-                                AutovalidateMode.onUserInteraction,
+                                    AutovalidateMode.onUserInteraction,
                                 isOptional: false,
                                 color: AppColors.formsLabel,
                                 readOnly: true,
@@ -230,7 +251,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                           builder: (context) =>
                                               SuccessStateScreen(
                                                 title:
-                                                "Profile Updated Successfully",
+                                                    "Profile Updated Successfully",
                                               )));
                                 },
                                 child: const Text("Update")),
@@ -244,8 +265,8 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                   ),
                 ),
               );
-            } return Container();
-
+            }
+            return Container();
           },
         );
       }),

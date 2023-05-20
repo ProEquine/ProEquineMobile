@@ -81,3 +81,44 @@ class SelectInterestsError extends UserState{
   SelectInterestsError({this.message});
 }
 
+class SendMailVerificationSuccessful extends UserState{
+  final String? message;
+  SendMailVerificationSuccessful({required this.message});
+}
+class SendMailVerificationLoading extends UserState{}
+class SendMailVerificationError extends UserState{
+  final String? message;
+  SendMailVerificationError({this.message});
+}
+
+class CheckMailVerificationSuccessful extends UserState{
+  final String? message;
+  CheckMailVerificationSuccessful({required this.message});
+}
+class CheckMailVerificationLoading extends UserState{}
+class CheckMailVerificationError extends UserState{
+  final String? message;
+  CheckMailVerificationError({this.message});
+}
+
+class UpdateMailSuccessful extends UserState{
+  final String? message;
+  UpdateMailSuccessful({required this.message});
+}
+class UpdateMailLoading extends UserState{}
+class UpdateMailError extends UserState{
+  final String? message;
+  UpdateMailError({this.message});
+}
+class DeleteAccountSuccessful extends UserState {
+  final String? message;
+  DeleteAccountSuccessful({required this.message});
+}
+
+class DeleteAccountLoading extends UserState {}
+
+class DeleteAccountError extends UserState {
+  final String? message;
+  DeleteAccountError({this.message});
+}
+

@@ -1,4 +1,5 @@
 import 'package:proequine/core/CoreModels/empty_model.dart';
+import 'package:proequine/features/user/data/check_mail_request_model.dart';
 import 'package:proequine/features/user/data/check_verification_request_model.dart';
 import 'package:proequine/features/user/data/forgot_pass_response-model.dart';
 import 'package:proequine/features/user/data/interests_request_model.dart';
@@ -7,7 +8,9 @@ import 'package:proequine/features/user/data/login_response_model.dart';
 import 'package:proequine/features/user/data/register_request_model.dart';
 import 'package:proequine/features/user/data/register_response_model.dart';
 import 'package:proequine/features/user/data/reset_password_request_model.dart';
+import 'package:proequine/features/user/data/send-mail_request_model.dart';
 import 'package:proequine/features/user/data/send_verification_request_model.dart';
+import 'package:proequine/features/user/data/update_email_request_model.dart';
 
 import '../../../../core/CoreModels/base_result_model.dart';
 import '../../../../core/data_source/remote_data_source.dart';
@@ -87,5 +90,45 @@ class UserRepository {
         withAuthentication: true,
         thereDeviceId: true,
         url: ApiURLs.interests);
+  }
+
+  static Future<BaseResultModel?> sendMailVerification(
+      SendMailVerificationRequestModel sendMailVerificationRequestModel) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.POST,
+        data: sendMailVerificationRequestModel.toJson(),
+        withAuthentication: true,
+        thereDeviceId: false,
+        url: ApiURLs.sendVerificationEmail);
+  }
+  static Future<BaseResultModel?> checkMailVerification(
+      CheckMailVerificationRequestModel checkMailVerificationRequestModel) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.POST,
+        data: checkMailVerificationRequestModel.toJson(),
+        withAuthentication: true,
+        thereDeviceId: false,
+        url: ApiURLs.checkVerificationEmail);
+  }
+  static Future<BaseResultModel?> updateMail(
+      UpdateMailRequestModel updateMailRequestModel) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.POST,
+        data: updateMailRequestModel.toJson(),
+        withAuthentication: true,
+        thereDeviceId: false,
+        url: ApiURLs.updateMail);
+  }
+  static Future<BaseResultModel?> deleteAccount(String userPhoneNumber) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.POST,
+        data: {"phoneNumber": userPhoneNumber},
+        withAuthentication: true,
+        thereDeviceId: true,
+        url: ApiURLs.deleteUser);
   }
 }
