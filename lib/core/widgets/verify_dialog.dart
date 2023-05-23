@@ -1,220 +1,100 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_svg/svg.dart';
-// import 'package:proequine/core/utils/secure_storage/secure_storage_helper.dart';
-// import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
-//
-// import '../../core/utils/extensions.dart';
-// import '../constants/colors/app_colors.dart';
-// import '../constants/images/app_images.dart';
-// import 'rebi_button.dart';
-//
-// bool showUncompletedAccountDialog(BuildContext context, {Function()? onComplete}) {
-//   if (!AppSharedPreferences.getEmailVerified!) {
-//     showDialog(
-//       context: context,
-//       builder: (context) {
-//         return Dialog(
-//           shape: const RoundedRectangleBorder(
-//             borderRadius: BorderRadius.all(
-//               Radius.circular(24.0),
-//             ),
-//           ),
-//           child: Container(
-//             padding: const EdgeInsets.only(
-//               right: 20.0,
-//               left: 20.0,
-//               top: 20.0,
-//               bottom: 10.0,
-//             ),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.center,
-//               mainAxisSize: MainAxisSize.min,
-//               children: [eight: 80.0,
-//                 ),
-//                 const SizedBox(
-//                   height: 30.0,
-//                 ),
-//                 RichText(
-//                   text: TextSpan(
-//                     text: 'Login is'.tra,
-//                     style: AppStyles.headTitleStyle.copyWith(
-//                       color: AppColors.mainTextColor,
-//                       fontSize: 16.0,
-//                       height: 1.55,
-//                       fontWeight: FontWeight.w600,
-//                     ),
-//                     children: <TextSpan>[
-//                       const TextSpan(text: ' '),
-//                       TextSpan(
-//                         text: 'required'.tra,
-//                         style: const TextStyle(
-//                           color: AppColors.alt,
-//                         ),
-//                       ),
-//                       const TextSpan(text: ' !'),
-//                     ],
-//                   ),
-//                 ),
-//                 const SizedBox(
-//                   height: 10.0,
-//                 ),
-//                 Text(
-//                   'You need to login to continue'.tra,
-//                   textAlign: TextAlign.center,
-//                   style: TextStyle(
-//                     fontSize: 15.0,
-//                     color: AppColors.main.withOpacity(0.65),
-//                   ),
-//                 ),
-//                 const SizedBox(
-//                   height: 20.0,
-//                 ),
-//                 RebiButton(
-//                   onPressed: () {
-//                     Navigator.pop(context);
-//                     Navigator.push(
-//                       context,
-//                       MaterialPageRoute(
-//                         builder: (context) => LoginPage(
-//                           comeFromNavigationBar: true,
-//                         ),
-//                       ),
-//                     ).then((value) {
-//                       if (onComplete != null) {
-//                         onComplete();
-//                       }
-//                     });
-//                   },
-//                   child: Text('Login'.tra),
-//                 ),
-//                 const SizedBox(
-//                   height: 20.0,
-//                 ),
-//                 TextButton(
-//                   onPressed: () {
-//                     Navigator.pop(context);
-//                   },
-//                   child: Text(
-//                     'Later'.tra,
-//                     style:  TextStyle(color: AppColors.gold, decoration: TextDecoration.underline),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//
-//         );
-//       },
-//     );
-//     return true;
-//   }
-//   return false;
-// }
-//
-// bool showUnverifiedAccountDialog(BuildContext context) {
-//   if (!AppSharedPreferences.isVerified) {
-//     showDialog(
-//       context: context,
-//       builder: (context) {
-//         return Dialog(
-//           shape: const RoundedRectangleBorder(
-//             borderRadius: BorderRadius.all(
-//               Radius.circular(24.0),
-//             ),
-//           ),
-//           child: Container(
-//             padding: const EdgeInsets.only(
-//               right: 20.0,
-//               left: 20.0,
-//               top: 20.0,
-//               bottom: 10.0,
-//             ),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.center,
-//               mainAxisSize: MainAxisSize.min,
-//               children: [
-//                 SvgPicture.asset(
-//                   AppIcons.phoneVerification,
-//                   height: 80.0,
-//                 ),
-//                 const SizedBox(
-//                   height: 30.0,
-//                 ),
-//                 RichText(
-//                   text: TextSpan(
-//                     text: 'Verify your'.tra,
-//                     style: AppStyles.headTitleStyle.copyWith(
-//                       color: AppColors.mainTextColor,
-//                       fontSize: 16.0,
-//                       height: 1.55,
-//                       fontWeight: FontWeight.w600,
-//                     ),
-//                     children: <TextSpan>[
-//                       const TextSpan(text: ' '),
-//                       TextSpan(
-//                         text: 'account'.tra,
-//                         style: const TextStyle(
-//                           color: AppColors.alt,
-//                         ),
-//                       ),
-//                       const TextSpan(text: ' !'),
-//                     ],
-//                   ),
-//                 ),
-//                 const SizedBox(
-//                   height: 10.0,
-//                 ),
-//                 Text(
-//                   'We noticed your phone number has not been verified. You need to verify to continue'.tra,
-//                   textAlign: TextAlign.center,
-//                   style: TextStyle(
-//                     fontSize: 15.0,
-//                     color: AppColors.main.withOpacity(0.65),
-//                   ),
-//                 ),
-//                 const SizedBox(
-//                   height: 20.0,
-//                 ),
-//                 RebiButton(
-//                   onPressed: () {
-//                     Navigator.pop(context);
-//
-//                     Navigator.push(
-//                       context,
-//                       MaterialPageRoute(
-//                         builder: (context) => VerificationPage(
-//                           isFromDialog: true,
-//                         ),
-//                       ),
-//                     ).then((value) => null);
-//                   },
-//                   child: Text('Verify your mobile'.tra),
-//                 ),
-//                 const SizedBox(
-//                   height: 20.0,
-//                 ),
-//                 TextButton(
-//                   onPressed: () {
-//                     Navigator.pop(context);
-//                   },
-//                   child: Text(
-//                     'Later'.tra,
-//                     style: const TextStyle(color: AppColors.alt, decoration: TextDecoration.underline),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         );
-//       },
-//     );
-//     return true;
-//   }
-//   return false;
-// }
-//
-// bool checkIfNotLogIn(BuildContext context) {
-//   if (AppSharedPreferences.accessToken.isEmpty) {
-//     return true;
-//   }
-//   return false;
-// }
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import 'package:proequine/features/nav_bar/presentation/screens/bottomnavigation.dart';
+
+import '../../core/utils/extensions.dart';
+import '../constants/colors/app_colors.dart';
+import '../constants/images/app_images.dart';
+import 'rebi_button.dart';
+
+void showUnverifiedAccountDialog(
+    {required BuildContext context,
+    required bool isThereNavigationBar,
+    required Function onPressVerify}) {
+  if (!AppSharedPreferences.getEmailVerified!) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Padding(
+            padding: const EdgeInsets.all(40),
+            child: Dialog(
+              insetPadding: const EdgeInsets.all(20),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(12.5),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(21.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    SvgPicture.asset(AppIcons.email),
+                    const SizedBox(height: 21),
+                    const Text(
+                      "Verify your email address To access all features",
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(height: 19),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        OutlinedButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BottomNavigation()));
+                          },
+                          style: OutlinedButton.styleFrom(
+                            minimumSize: const Size(100, 33),
+                            side: const BorderSide(
+                              color: Colors.white,
+                              width: 1,
+                            ),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(6.5),
+                              ),
+                            ),
+                          ),
+                          child: const Text(
+                            "Close",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            onPressVerify();
+
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size(100, 33),
+                            backgroundColor: AppColors.yellow,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(6.5),
+                              ),
+                            ),
+                          ),
+                          child: const Text('Verify'),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

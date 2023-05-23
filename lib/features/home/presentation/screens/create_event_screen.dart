@@ -11,7 +11,9 @@ import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
+import '../../../../core/widgets/verify_dialog.dart';
 import '../../../../core/widgets/verify_email_dialog.dart';
+import '../../../profile/data/verify_email_route.dart';
 import '../../../profile/presentation/widgets/drop_down_menu_widget.dart';
 import '../widgets/create_trip_header.dart';
 import 'local_summary.dart';
@@ -63,9 +65,27 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   ];
   late TextEditingController? timePicked;
   DateTime? time;
-
+  Future<bool> checkVerificationStatus() async {
+    if(AppSharedPreferences.getEmailVerified!){
+      return true;
+    }else{
+      await Future.delayed(const Duration(milliseconds: 50)); // Simulating an asynchronous call
+      return false;
+    }
+  }
   @override
   void initState() {
+    checkVerificationStatus().then((verified) {
+      if (!verified) {
+        // If the account is not verified, show a dialog after a delay.
+        Future.delayed(const Duration(milliseconds: 50), () {
+          showUnverifiedAccountDialog(context: context, isThereNavigationBar: true,onPressVerify: () {
+            Navigator.pushNamed(context, '/VerifyEmail',arguments: VerifyEmailRoute(type: 'createEvent',email: AppSharedPreferences.userEmailAddress))
+                .then((value) {});
+          },);
+        });
+      }
+    });
     date = TextEditingController();
     timePicked = TextEditingController();
     time = DateTime.utc(0, 0, 0, 15, 0);
@@ -74,21 +94,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   String? selectedNumber;
   String? selectedTrip;
+
   @override
   Widget build(BuildContext context) {
-    if (!AppSharedPreferences.getEmailVerified!) {
-      return VErifyEmailDialog(
-        onPressVerify: () {
-          setState(() {
-            Navigator.pushReplacementNamed(context, '/sendEmail', arguments: "createEvent")
-                .then((value) {
-              setState(() {});
-            });
-          });
-        },
-      );
-    } else {
-      return Scaffold(
+    return Scaffold(
         body: SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -321,4 +330,3 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       );
     }
   }
-}

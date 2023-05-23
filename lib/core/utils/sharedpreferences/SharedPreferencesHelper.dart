@@ -9,6 +9,7 @@ class AppSharedPreferences {
   static const keyFirstTime = "PREF_KEY_FIRST_TIME";
   static const keyLanguage = "PREF_KEY_LANGUAGE";
   static const keyUserPhoneNumber = "PREF_KEY_USER_PHONE_NUMBER";
+  static const keyUserEmailAddress = "PREF_KEY_USER_EMAIL_ADDRESS";
   static const keyUserType = "PREF_KEY_USER_TYPE";
   static const keyUserInterests = "PREF_KEY_INTERESTS";
 
@@ -37,6 +38,15 @@ class AppSharedPreferences {
   static bool get hasPhoneNumber => _pref?.contains(keyUserPhoneNumber);
 
   static removePhoneNumber() => _pref?.remove(keyUserPhoneNumber);
+
+  ///  Store User Email Address
+  static String get userEmailAddress => _pref?.read(keyUserEmailAddress) ?? '';
+
+  static set inputEmailAddress(String email) => _pref?.save(keyUserEmailAddress, email);
+
+  static bool get hasEmailAddress => _pref?.contains(keyUserEmailAddress);
+
+  static removeEmailAddress() => _pref?.remove(keyUserEmailAddress);
 
 
 

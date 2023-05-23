@@ -29,7 +29,8 @@ class ApiURLs {
   static const String getUserData = "$basicApiUrl/User/getuserdata";
   static const String sendVerificationEmail = "$basicApiUrl/User/sendemailverificationcode";
   static const String checkVerificationEmail = "$basicApiUrl/User/checkemailverificationcode";
-  static const String updateMail = "$basicApiUrl/User/updateemailaddress";
+  static const String updateMail = "$basicApiUrl/User/editemailaddress";
+  static const String checkUpdateMail = "$basicApiUrl/User/updateemailaddress";
   static const String deleteUser = "$basicApiUrl/User/deleteaccount";
 
 }

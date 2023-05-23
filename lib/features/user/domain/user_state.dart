@@ -110,6 +110,15 @@ class UpdateMailError extends UserState{
   final String? message;
   UpdateMailError({this.message});
 }
+class CheckUpdateMailSuccessful extends UserState{
+  final String? message;
+  CheckUpdateMailSuccessful({required this.message});
+}
+class CheckUpdateMailLoading extends UserState{}
+class CheckUpdateMailError extends UserState{
+  final String? message;
+  CheckUpdateMailError({this.message});
+}
 class DeleteAccountSuccessful extends UserState {
   final String? message;
   DeleteAccountSuccessful({required this.message});

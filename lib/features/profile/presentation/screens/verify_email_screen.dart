@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
+import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/success_state_widget.dart';
 import 'package:proequine/features/profile/data/verify_email_route.dart';
 import 'package:proequine/features/user/data/check_mail_request_model.dart';
@@ -38,6 +39,11 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   int _secondsLeft = 60;
   bool isResendCode = false;
   late Timer _timer;
+  onSendMail() {
+    return cubit.sendMailVerificationCode(SendMailVerificationRequestModel(
+      email: AppSharedPreferences.userEmailAddress,
+    ));
+  }
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -60,6 +66,12 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     return "$minutes:$seconds";
   }
 VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
+  @override
+  void initState() {
+    onSendMail();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +80,11 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
         child: CustomHeader(
+          // onPressBack: (){
+          //   if(verifyEmailRoute.type=='createTrip' || verifyEmailRoute.type=='createEvent'){
+          //
+          //   }
+          // },
           title: "",
           isThereBackButton: true,
         ),

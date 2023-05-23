@@ -33,7 +33,20 @@ class _VErifyEmailDialogState extends State<VErifyEmailDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              SvgPicture.asset(AppIcons.email),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  SvgPicture.asset(AppIcons.email),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.close,
+                        color: AppColors.yellow,
+                      ))
+                ],
+              ),
               const SizedBox(height: 21),
               const Text(
                 "Verify your email address To access all features",
@@ -45,15 +58,14 @@ class _VErifyEmailDialogState extends State<VErifyEmailDialog> {
                       onPressed: () {
                         widget.onPressVerify!();
                       },
-
-                  backgroundColor: AppColors.yellow,
+                      backgroundColor: AppColors.yellow,
                       child: const Text(
                         "Verify",
                         style: TextStyle(color: Colors.white),
                       ),
                     )
                   : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         OutlinedButton(
                           onPressed: () {

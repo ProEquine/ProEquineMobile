@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proequine/features/nav_bar/presentation/screens/bottomnavigation.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
@@ -29,7 +30,7 @@ class CreateTripHeader extends StatelessWidget {
               ),
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).pop();
+                  Navigator.popAndPushNamed(context, '/homeRoute');
                 },
                 child: const Icon(
                   Icons.arrow_back,

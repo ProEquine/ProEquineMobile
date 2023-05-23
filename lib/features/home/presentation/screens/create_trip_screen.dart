@@ -14,7 +14,9 @@ import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
+import '../../../../core/widgets/verify_dialog.dart';
 import '../../../../core/widgets/verify_email_dialog.dart';
+import '../../../profile/data/verify_email_route.dart';
 import '../../../profile/presentation/widgets/drop_down_menu_widget.dart';
 
 class CreateTripScreen extends StatefulWidget {
@@ -80,9 +82,28 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
   DateTime? expectedTime;
   late TextEditingController? timePicked;
   late TextEditingController? expectedTimePicked;
+  Future<bool> checkVerificationStatus() async {
+    if(AppSharedPreferences.getEmailVerified!){
+      return true;
+    }else{
+      await Future.delayed(const Duration(milliseconds: 50)); // Simulating an asynchronous call
+      return false;
+    }
+  }
 
   @override
   void initState() {
+    checkVerificationStatus().then((verified) {
+      if (!verified) {
+        // If the account is not verified, show a dialog after a delay.
+        Future.delayed(const Duration(milliseconds: 50), () {
+          showUnverifiedAccountDialog(context: context, isThereNavigationBar: true,onPressVerify: () {
+            Navigator.pushNamed(context, '/VerifyEmail', arguments: VerifyEmailRoute(type: 'createTrip',email: AppSharedPreferences.userEmailAddress))
+                .then((value) {});
+          },);
+        });
+      }
+    });
     date = TextEditingController();
     expectedDate = TextEditingController();
     timePicked = TextEditingController();
@@ -99,18 +120,7 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (!AppSharedPreferences.getEmailVerified!) {
-      return VErifyEmailDialog(
-        onPressVerify: () {
-          setState(() {
-            Navigator.pushReplacementNamed(context, '/sendEmail', arguments: "createTrip")
-                .then((value) {
-              setState(() {});
-            });
-          });
-        },
-      );
-    } else {
+
       return Scaffold(
         body: Form(
           key: _formKey,
@@ -562,4 +572,4 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                     iconColor: AppColors.gold,
                     trailing: const Icon(Icons.arrow_drop_down),
                   ))));
-}
+

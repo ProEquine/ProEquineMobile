@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:proequine/core/StartUp/StartUp.dart';
@@ -16,6 +17,7 @@ import 'package:proequine/features/profile/presentation/screens/account_informat
 import 'package:proequine/features/profile/presentation/screens/update_phone_screen.dart';
 import 'package:proequine/features/profile/presentation/screens/user_profile.dart';
 import 'package:proequine/features/profile/presentation/screens/verify_email_screen.dart';
+import 'package:proequine/features/profile/presentation/screens/verify_update_email_screen.dart';
 import 'package:proequine/features/profile/presentation/screens/verify_updated_phone_screen.dart';
 import 'package:proequine/features/splash/presentation/screens/splash_screen.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
@@ -150,6 +152,7 @@ configOneSignal();
     return MaterialApp(
       navigatorKey: navigatorKey,
       theme: AppStyles().mainTheme,
+      navigatorObservers: [MyNavigatorObserver()],
       title: 'Pro Equine',
       home:  const SplashScreen(),
       routes: {
@@ -167,11 +170,22 @@ configOneSignal();
         '/userProfile': (context) => UserProfile(),
         '/updatePhone': (context) => UpdatePhoneScreen(),
         '/verifyUpdate': (context) => VerifyUpdatedPhoneScreen(),
+        '/verifyUpdateEmail': (context) => VerifyUpdateEmailScreen(),
         '/submitScreen': (context) => SubmitVerifyEmail(),
+        '/successScreen': (context) => SuccessStateScreen(),
 
         '/sendEmail': (context) => const SendEmailScreen(),
         '/VerifyEmail': (context) => VerifyEmailScreen(),
       },
     );
+  }
+}
+class MyNavigatorObserver extends NavigatorObserver {
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    // When the back button is pressed, prevent closing the page
+    if (route.settings.name == '/') {
+      SystemNavigator.pop();
+    }
   }
 }

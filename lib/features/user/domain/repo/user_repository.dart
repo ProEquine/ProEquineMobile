@@ -1,5 +1,6 @@
 import 'package:proequine/core/CoreModels/empty_model.dart';
 import 'package:proequine/features/user/data/check_mail_request_model.dart';
+import 'package:proequine/features/user/data/check_update_email_request_model.dart';
 import 'package:proequine/features/user/data/check_verification_request_model.dart';
 import 'package:proequine/features/user/data/forgot_pass_response-model.dart';
 import 'package:proequine/features/user/data/interests_request_model.dart';
@@ -121,6 +122,16 @@ class UserRepository {
         withAuthentication: true,
         thereDeviceId: false,
         url: ApiURLs.updateMail);
+  }
+  static Future<BaseResultModel?> checkUpdateMail(
+      CheckUpdateEmailRequestModel checkUpdateEmailRequestModel) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.POST,
+        data: checkUpdateEmailRequestModel.toJson(),
+        withAuthentication: true,
+        thereDeviceId: false,
+        url: ApiURLs.checkUpdateMail);
   }
   static Future<BaseResultModel?> deleteAccount(String userPhoneNumber) async {
     return await RemoteDataSource.request<EmptyModel>(

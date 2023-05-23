@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proequine/core/constants/constants.dart';
 import '../../../../core/widgets/account_shimmer.dart';
+import '../../../../core/widgets/headerText.dart';
 
 const _shimmerGradient = LinearGradient(
   colors: [
@@ -36,20 +37,7 @@ class AccountInfoLoading extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ShimmerLoading(
-                      isLoading: isLoading,
-                      child: SizedBox(
-                        width: 150,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(6)),
-                            color: Color.fromRGBO(50, 50, 50, 1),
-                          ),
-                          width: 150,
-                          height: 40,
-                        ),
-                      ),
-                    ),
+                    HeaderText("Profile", "Account Information", true),
                     const SizedBox(
                       height: 5,
                     ),

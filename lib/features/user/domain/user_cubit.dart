@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 import 'package:proequine/core/CoreModels/empty_model.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/secure_storage/secure_storage_helper.dart';
+import 'package:proequine/features/user/data/check_update_email_request_model.dart';
 import 'package:proequine/features/user/data/check_verification_request_model.dart';
 import 'package:proequine/features/user/data/forgot_pass_response-model.dart';
 import 'package:proequine/features/user/data/interests_request_model.dart';
@@ -44,8 +45,9 @@ class UserCubit extends Cubit<UserState> {
     String? accessToken= await SecureStorage().getToken();
     String? userId= await SecureStorage().getUserId();
       AppSharedPreferences.phoneVerified = response.isPhoneNumberVerified;
-      AppSharedPreferences.emailVerified = response.isEmailVerified;
+      AppSharedPreferences.emailVerified = false;
       AppSharedPreferences.inputPhoneNumber=response.phoneNumber!;
+      AppSharedPreferences.inputEmailAddress=loginRequestModel.email!;
       Print("access token $accessToken");
       Print("refresh token $refreshToken");
       Print("userId $userId");
@@ -74,6 +76,7 @@ class UserCubit extends Cubit<UserState> {
       await SecureStorage().setToken(response.accessToken!);
       await SecureStorage().setUserId(response.refreshToken!.userId!);
       AppSharedPreferences.inputPhoneNumber=registerRequestModel.phoneNumber!;
+      AppSharedPreferences.inputEmailAddress=registerRequestModel.email!;
 
       String? refreshToken= await SecureStorage().getRefreshToken();
       String? accessToken= await SecureStorage().getToken();
@@ -213,6 +216,22 @@ class UserCubit extends Cubit<UserState> {
       emit(UpdateMailError(message: response.message));
     } else if (response is Message) {
       emit(UpdateMailError(message: response.content));
+    }
+  }
+  Future<void> checkUpdatedMail (
+      CheckUpdateEmailRequestModel checkUpdateEmailRequestModel) async {
+    emit(CheckUpdateMailLoading());
+    var response =
+    await UserRepository.checkUpdateMail(checkUpdateEmailRequestModel);
+    if (response is EmptyModel) {
+      AppSharedPreferences.emailVerified = true;
+      emit(CheckUpdateMailSuccessful(
+          message: "Email Updated successfully ".tra));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(CheckUpdateMailError(message: response.message));
+    } else if (response is Message) {
+      emit(CheckUpdateMailError(message: response.content));
     }
   }
   Future<void> deleteAccount(String userPhoneNumber) async {

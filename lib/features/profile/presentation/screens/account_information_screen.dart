@@ -115,7 +115,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                     const TextStyle(color: AppColors.white),
                                 controller: email,
                                 onTap: () {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
@@ -146,12 +146,9 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                 hintStyle:
                                     const TextStyle(color: AppColors.white),
                                 onTap: () {
-                                  setState(() {
-                                    Navigator.pushNamed(context, '/updatePhone')
-                                        .then((value) => cubit.getUser(
-                                            AppSharedPreferences
-                                                .userPhoneNumber));
-                                  });
+
+                                    Navigator.pushReplacementNamed(context, '/updatePhone');
+
                                 },
                                 controller: phone,
                                 keyboardType: TextInputType.phone,

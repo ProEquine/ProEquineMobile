@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
+import 'package:proequine/features/profile/data/verify_phone_route.dart';
 import 'package:proequine/features/profile/domain/profile_cubit.dart';
 import 'package:sizer/sizer.dart';
 
@@ -43,10 +44,11 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
     _controller.dispose();
     super.dispose();
   }
+  VerifyPhoneRoute verifyPhoneRoute=VerifyPhoneRoute();
 
   @override
   Widget build(BuildContext context) {
-    final String title = ModalRoute.of(context)?.settings.arguments as String;
+  verifyPhoneRoute = ModalRoute.of(context)?.settings.arguments as VerifyPhoneRoute;
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -69,11 +71,19 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
                       ..duration = composition.duration
                       ..forward();
                   } else {
-                    //Todo: handle navigate from navbar pages
-                    _controller
-                      ..duration = composition.duration
-                      ..forward().whenComplete(() =>
-                          Navigator.pop(context));
+
+                    if(verifyPhoneRoute.type=='accountInfo'){
+                      _controller
+                        ..duration = composition.duration
+                        ..forward().whenComplete(() =>
+                            Navigator.popAndPushNamed(context, '/accountInformation'));
+                    }else{
+                      _controller
+                        ..duration = composition.duration
+                        ..forward().whenComplete(() =>
+                            Navigator.pop(context));
+                    }
+
                   }
                 },
               ),
@@ -83,7 +93,7 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0.w),
               child: Text(
-                widget.title??title,
+                widget.title??verifyPhoneRoute.title!,
                 style: const TextStyle(
                     color: AppColors.white,
                     fontWeight: FontWeight.w600,

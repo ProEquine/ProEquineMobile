@@ -3,11 +3,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:proequine/features/notifications/presentation/widgets/notification_widget.dart';
+import 'package:proequine/features/profile/data/verify_email_route.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/images/app_images.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import '../../../../core/widgets/verify_dialog.dart';
 import '../../../../core/widgets/verify_email_dialog.dart';
 import '../../../profile/presentation/screens/user_profile.dart';
 
@@ -17,20 +19,32 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
+  Future<bool> checkVerificationStatus() async {
+    if(AppSharedPreferences.getEmailVerified!){
+      return true;
+    }else{
+      await Future.delayed(const Duration(milliseconds: 50)); // Simulating an asynchronous call
+      return false;
+    }
+  }
+  @override
+  void initState() {
+    checkVerificationStatus().then((verified) {
+      if (!verified) {
+        // If the account is not verified, show a dialog after a delay.
+        Future.delayed(const Duration(milliseconds: 50), () {
+          showUnverifiedAccountDialog(context: context, isThereNavigationBar: true,onPressVerify: () {
+            Navigator.pushNamed(context, '/VerifyEmail', arguments: VerifyEmailRoute(type: 'notifications',email: AppSharedPreferences.userEmailAddress))
+                .then((value) {});
+          },);
+        });
+      }
+    });
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
-    if (!AppSharedPreferences.getEmailVerified!) {
-      return VErifyEmailDialog(
-        isThereNavigationBar: true,
-        onPressVerify: () {
-          setState(() {
-            Navigator.pushNamed(context, '/sendEmail',arguments: 'notifications').then((value) {
-
-            });
-          });
-        },
-      );
-    } else {
       return Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(23.0.h),
@@ -102,5 +116,4 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         ),
       );
     }
-  }
 }

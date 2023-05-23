@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
-import 'package:proequine/features/profile/presentation/screens/verify_email_screen.dart';
-import 'package:proequine/features/profile/presentation/screens/verify_updated_phone_screen.dart';
+import 'package:proequine/features/profile/data/update_email_route.dart';
 import 'package:proequine/features/user/data/update_email_request_model.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
@@ -57,7 +55,7 @@ class UpdateEmailScreen extends StatelessWidget {
                 color: AppColors.formsLabel,
                 readOnly: false,
                 contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
                 obscureText: false,
                 validator: (value) {
                   return Validator.emailValidator(_email.text);
@@ -84,13 +82,10 @@ class UpdateEmailScreen extends StatelessWidget {
                 },
                 listener: (context, state) {
                   if (state is UpdateMailSuccessful) {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                VerifyEmailScreen(
-                                  email: _email.text,
-                                )));
+                    Navigator.pushReplacementNamed(context, '/verifyUpdateEmail',
+                        arguments: UpdateEmailRoute(
+                            previousEmail: previousEmail,
+                            newEmail: _email.text));
                   } else if (state is UpdateMailError) {
                     RebiMessage.error(msg: state.message!);
                   }
@@ -108,7 +103,6 @@ class UpdateEmailScreen extends StatelessWidget {
 
   onSendMail() {
     return cubit.updateMail(UpdateMailRequestModel(
-        previousEmail: previousEmail,
       newEmail: _email.text,
     ));
   }
