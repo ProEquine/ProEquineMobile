@@ -64,6 +64,7 @@ class _ResetPasswordSubmitState extends State<ResetPasswordSubmit>
               padding: EdgeInsets.symmetric(horizontal: 10.0.w),
               child: const Text(
                 "Your password has been reset successfully",
+                textAlign: TextAlign.center,
                 style:  TextStyle(
                     color: AppColors.white,
                     fontWeight: FontWeight.w600,

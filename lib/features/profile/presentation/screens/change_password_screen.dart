@@ -42,10 +42,11 @@ class ChangePasswordScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HeaderText("Reset Password", "", false),
+              const SizedBox(height: 20,),
+              HeaderText("Reset Password", "", true),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10, horizontal: kPadding),
+                padding: const EdgeInsets.only(
+                    left: kPadding,right: kPadding,bottom: 10),
                 child: RebiInput(
                   labelText: 'Old password'.tra,
                   controller: _oldPassword,
@@ -71,7 +72,6 @@ class ChangePasswordScreen extends StatelessWidget {
                   controller: _newPassword,
                   keyboardType: TextInputType.visiblePassword,
                   textInputAction: TextInputAction.done,
-                  autoValidateMode: AutovalidateMode.onUserInteraction,
                   isOptional: false,
                   color: AppColors.formsLabel,
                   readOnly: false,
@@ -122,6 +122,9 @@ class ChangePasswordScreen extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => SuccessStateScreen(
                                   title: "Password Updated Successfully",
+                              isThereButton: false,
+                              isItVerifyPhone: false,
+
                                 )));
                   } else if (state is ChangePasswordError) {
                     RebiMessage.error(msg: state.message!);
@@ -131,15 +134,18 @@ class ChangePasswordScreen extends StatelessWidget {
                   if (state is ChangePasswordLoading) {
                     return LoadingCircularWidget();
                   }
-                  return RebiButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        onPressChange();
-                      } else {}
-                    },
-                    backgroundColor: AppColors.white,
-                    child: const Text("Update"),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: kPadding),
+                    child: RebiButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          onPressChange();
+                        } else {}
+                      },
+                      backgroundColor: AppColors.white,
+                      child: const Text("Update"),
+                    ),
                   );
                 },
               ),

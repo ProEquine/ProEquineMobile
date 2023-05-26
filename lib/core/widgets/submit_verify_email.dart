@@ -112,6 +112,8 @@ class _SubmitVerifyEmailState extends State<SubmitVerifyEmail>
               padding: EdgeInsets.symmetric(horizontal: 10.0.w),
               child: Text(
                 verifyEmailRoute.email!,
+
+                textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: AppColors.white,
                     fontWeight: FontWeight.w600,

@@ -56,10 +56,11 @@ class LocalSummary extends StatelessWidget {
                                             builder: (context) =>
                                                 BottomNavigation(
                                                   selectedIndex: 1,
-                                                )));
+                                                )),);
                                   },
                                   isThereButton: true,
                                   buttonText: "View my booking",
+                              isItVerifyPhone: false,
                                 )));
                   },
                   child: const Text("Confirm")),

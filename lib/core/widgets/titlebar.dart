@@ -27,7 +27,7 @@ class TitleBar extends StatelessWidget {
           ),
         ),
         GestureDetector(
-          child: SvgPicture.asset(AppIcons.userSquare),
+          child: SvgPicture.asset(AppIcons.userSquare,height: 30,width: 30,),
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context)=>UserProfile()));
           },

@@ -43,7 +43,7 @@ class EventListMain extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      child: SvgPicture.asset(AppIcons.userSquare,height: 40,width: 40,),
+                      child: SvgPicture.asset(AppIcons.userSquare,height: 32,width: 32,),
                       onTap: () {
                         Navigator.push(
                           context,

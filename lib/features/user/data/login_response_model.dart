@@ -3,6 +3,7 @@ import 'package:proequine/core/CoreModels/base_result_model.dart';
 class LoginResponseModel extends BaseResultModel {
   bool? isEmailVerified;
   bool? isPhoneNumberVerified;
+  bool? isTypeSelected;
   String? accessToken;
   String? phoneNumber;
   RefreshToken? refreshToken;
@@ -10,12 +11,14 @@ class LoginResponseModel extends BaseResultModel {
   LoginResponseModel(
       {this.isEmailVerified,
         this.isPhoneNumberVerified,
+        this.isTypeSelected,
         this.accessToken,
         this.refreshToken});
 
   LoginResponseModel.fromJson(Map<String, dynamic> json) {
     isEmailVerified = json['isEmailVerified'];
     isPhoneNumberVerified = json['isPhoneNumberVerified'];
+    isTypeSelected = json['isTypeSelected'];
     accessToken = json['accessToken'];
     phoneNumber = json['phoneNumber'];
     refreshToken = json['refreshToken'] != null
@@ -28,6 +31,7 @@ class LoginResponseModel extends BaseResultModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['isEmailVerified'] = isEmailVerified;
     data['isPhoneNumberVerified'] = isPhoneNumberVerified;
+    data['isTypeSelected'] = isTypeSelected;
     data['accessToken'] = accessToken;
     data['phoneNumber'] = phoneNumber;
     if (refreshToken != null) {

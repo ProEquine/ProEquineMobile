@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proequine/core/constants/colors/app_colors.dart';
+import 'package:sizer/sizer.dart';
 
 class ServiceWidget extends StatelessWidget {
   String? image;
@@ -19,11 +20,14 @@ class ServiceWidget extends StatelessWidget {
         children: [
           Container(
             height: 116.0,
-            width: 102,
+            width: 27.2.w,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
+              image: DecorationImage(
+                image: AssetImage(image!),
+                fit: BoxFit.cover
+              )
             ),
-            child: Image.asset(image!),
           ),
           const SizedBox(
             height: 10,

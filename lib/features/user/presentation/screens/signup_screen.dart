@@ -52,6 +52,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           builder: (context, constraint) {
             return Form(
               key: _formKey,
+              autovalidateMode: AutovalidateMode.disabled,
               child: SingleChildScrollView(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minHeight: constraint.maxHeight),
@@ -80,7 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   keyboardType: TextInputType.emailAddress,
                                   textInputAction: TextInputAction.done,
                                   autoValidateMode:
-                                      AutovalidateMode.onUserInteraction,
+                                      AutovalidateMode.disabled,
                                   isOptional: false,
                                   color: AppColors.formsLabel,
                                   readOnly: false,
@@ -101,8 +102,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   controller: _password,
                                   keyboardType: TextInputType.visiblePassword,
                                   textInputAction: TextInputAction.done,
-                                  autoValidateMode:
-                                      AutovalidateMode.onUserInteraction,
                                   isOptional: false,
                                   color: AppColors.formsLabel,
                                   readOnly: false,

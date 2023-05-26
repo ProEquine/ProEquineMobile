@@ -85,8 +85,9 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const SizedBox(height: 20,),
                       Text("Confirm your Email",
-                          style: AppStyles.registrationTitle),
+                          style: AppStyles.profileHeader),
                       SizedBox(
                         height: 1.h,
                       ),
@@ -223,6 +224,7 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                         bloc: cubit,
                         listener: (context, state) {
                           if (state is CheckUpdateMailSuccessful) {
+                            AppSharedPreferences.inputEmailAddress=emails.newEmail!;
                             Navigator.pushReplacementNamed(
                                 context,'/submitScreen',arguments: VerifyEmailRoute(email:"Email Updated Successfully!",type: 'updateEmail'));
                             // Navigator.pushReplacement(

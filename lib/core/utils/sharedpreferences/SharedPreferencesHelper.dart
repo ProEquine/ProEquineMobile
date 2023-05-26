@@ -28,12 +28,17 @@ class AppSharedPreferences {
   }
 
   static clearForLogOut() {
-
+    removePhoneNumber();
+    removeEmailAddress();
+    removePhoneVerified();
+    removeTypeSelected();
   }
+
   ///  Store User Phone Number
   static String get userPhoneNumber => _pref?.read(keyUserPhoneNumber) ?? '';
 
-  static set inputPhoneNumber(String phoneNumber) => _pref?.save(keyUserPhoneNumber, phoneNumber);
+  static set inputPhoneNumber(String phoneNumber) =>
+      _pref?.save(keyUserPhoneNumber, phoneNumber);
 
   static bool get hasPhoneNumber => _pref?.contains(keyUserPhoneNumber);
 
@@ -42,13 +47,12 @@ class AppSharedPreferences {
   ///  Store User Email Address
   static String get userEmailAddress => _pref?.read(keyUserEmailAddress) ?? '';
 
-  static set inputEmailAddress(String email) => _pref?.save(keyUserEmailAddress, email);
+  static set inputEmailAddress(String email) =>
+      _pref?.save(keyUserEmailAddress, email);
 
   static bool get hasEmailAddress => _pref?.contains(keyUserEmailAddress);
 
   static removeEmailAddress() => _pref?.remove(keyUserEmailAddress);
-
-
 
   ///  Store User device id
   static String get getDeviceId => _pref?.read(keyDeviceId) ?? '';
@@ -90,6 +94,7 @@ class AppSharedPreferences {
 
   static set phoneVerified(bool? verified) =>
       _pref?.saveBoolean(keyIsPhoneVerified, verified) ?? false;
+
   static removePhoneVerified() => _pref?.remove(keyIsPhoneVerified);
 
   /// is email number verified
@@ -108,7 +113,9 @@ class AppSharedPreferences {
 
     return _pref?.readBoolean(keyUserType) ?? false;
   }
+
   static removeTypeSelected() => _pref?.remove(keyUserType);
+
   static set typeSelected(bool? type) =>
       _pref?.saveBoolean(keyUserType, type) ?? false;
 }

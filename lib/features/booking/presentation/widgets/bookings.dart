@@ -16,8 +16,8 @@ class Booking extends StatelessWidget {
     String getGroupName(String groupByValue) {
       // Map numeric values to group names
       switch (groupByValue) {
-        case 'Unpaid':
-          return 'Unpaid';
+        // case 'Unpaid':
+        //   return 'Unpaid';
         case 'Ongoing':
           return 'Ongoing';
         case 'Scheduled':
@@ -28,26 +28,26 @@ class Booking extends StatelessWidget {
     }
 
     const List elements = [
-      {
-        'type': 'Pending',
-        'group': 'Unpaid',
-        'pending': true,
-        'bookingId': "LT9666",
-        'date': '15 - 17 Sep',
-        'horseCount': 2,
-        'transport': 'Nat Show',
-        'transportType': 'DEC'
-      },
-      {
-        'type': 'Pending',
-        'group': 'Unpaid',
-        'pending': true,
-        'bookingId': "LT9667",
-        'date': '15 - 19 Sep',
-        'horseCount': 2,
-        'transport': 'Nat Show',
-        'transportType': 'DEC'
-      },
+      // {
+      //   'type': 'Pending',
+      //   // 'group': 'Unpaid',
+      //   'pending': true,
+      //   'bookingId': "LT9666",
+      //   'date': '15 - 17 Sep',
+      //   'horseCount': 2,
+      //   'transport': 'Nat Show',
+      //   'transportType': 'DEC'
+      // },
+      // {
+      //   'type': 'Pending',
+      //   // 'group': 'Unpaid',
+      //   'pending': true,
+      //   'bookingId': "LT9667",
+      //   'date': '15 - 19 Sep',
+      //   'horseCount': 2,
+      //   'transport': 'Nat Show',
+      //   'transportType': 'DEC'
+      // },
       {
         'type': 'On the way to pick up',
         'group': 'Ongoing',

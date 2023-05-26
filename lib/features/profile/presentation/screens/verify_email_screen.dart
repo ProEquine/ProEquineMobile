@@ -102,7 +102,7 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Confirm your Email",
-                          style: AppStyles.registrationTitle),
+                          style: AppStyles.profileHeader),
                       SizedBox(
                         height: 1.h,
                       ),

@@ -63,6 +63,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
           builder: (context, constraint) {
             return Form(
               key: _formKey,
+              autovalidateMode: AutovalidateMode.disabled,
               child: SingleChildScrollView(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minHeight: constraint.maxHeight),
@@ -99,8 +100,6 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                         controller: _countryCode,
                                         keyboardType: TextInputType.number,
                                         textInputAction: TextInputAction.done,
-                                        autoValidateMode:
-                                            AutovalidateMode.onUserInteraction,
                                         isOptional: false,
                                         color: AppColors.formsLabel,
                                         readOnly: false,
@@ -124,8 +123,6 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                         controller: _phone,
                                         keyboardType: TextInputType.number,
                                         textInputAction: TextInputAction.done,
-                                        autoValidateMode:
-                                            AutovalidateMode.onUserInteraction,
                                         isOptional: false,
                                         color: AppColors.formsLabel,
                                         readOnly: false,

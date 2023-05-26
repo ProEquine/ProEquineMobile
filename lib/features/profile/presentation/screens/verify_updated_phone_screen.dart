@@ -77,13 +77,15 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: kPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const SizedBox(height: 20,),
                       Text("Confirm your number",
-                          style: AppStyles.registrationTitle),
+                          style: AppStyles.profileHeader),
                       SizedBox(
                         height: 1.h,
                       ),

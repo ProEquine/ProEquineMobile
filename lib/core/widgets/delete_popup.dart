@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 
@@ -15,7 +14,7 @@ class DeletePopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(30.0),
       child: AlertDialog(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
@@ -23,7 +22,7 @@ class DeletePopup extends StatelessWidget {
           ),
         ),
         content: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -40,7 +39,7 @@ class DeletePopup extends StatelessWidget {
                 height: 20,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   OutlinedButton(
                     onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -56,7 +55,7 @@ class DeletePopup extends StatelessWidget {
                         ),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       "Close",
                       style: TextStyle(color: Colors.white),
                     ),
@@ -82,20 +81,20 @@ class DeletePopup extends StatelessWidget {
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            minimumSize: Size(100, 33),
-                            backgroundColor: Color.fromRGBO(224, 173, 37, 1),
+                            minimumSize: const Size(100, 33),
+                            backgroundColor: const Color.fromRGBO(224, 173, 37, 1),
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(6.5),
                               ),
                             ),
                           ),
-                          child: const Text('confirm'),
+                          child: const Text('Confirm'),
                         );
                       },
                       listener: (context, state) {
                         if (state is DeleteAccountSuccessful) {
-                          print("account delete successfull");
+
                         }
                       }),
                 ],

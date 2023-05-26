@@ -12,6 +12,7 @@ import 'package:proequine/features/profile/presentation/widgets/account_info_loa
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
+import '../../../../core/utils/Printer.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/headerText.dart';
 import '../../../../core/widgets/rebi_input.dart';
@@ -36,14 +37,19 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
   final TextEditingController phone = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool value = false;
 
   ProfileCubit cubit = ProfileCubit();
+  String? updatedEmail;
 
   @override
   void initState() {
     cubit.getUser(AppSharedPreferences.userPhoneNumber);
     super.initState();
+  }
+  @override
+  void dispose() {
+    //TODo: dispose all controllers
+    super.dispose();
   }
 
   @override
@@ -54,13 +60,24 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
         child: CustomHeader(
           title: "",
           isThereBackButton: true,
+          onPressBack: (){
+            setState(() {
+              Navigator.pop(context, updatedEmail);
+              Print("updated Email $updatedEmail");
+            });
+
+
+          },
         ),
       ),
       body: LayoutBuilder(builder: (context, constraint) {
         return BlocConsumer<ProfileCubit, ProfileState>(
           bloc: cubit,
           listener: (context, state) {
-            if (state is GetUserSuccessful) {}
+            if (state is GetUserSuccessful) {
+              updatedEmail=state.responseModel!.email!;
+
+            }
           },
           builder: (context, state) {
             if (state is GetUserLoading) {
@@ -198,7 +215,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: RebiInput(
-                                hintText: 'Preferences'.tra,
+                                hintText: state.responseModel!.userType,
                                 controller: _preferences,
                                 hintStyle:
                                     const TextStyle(color: AppColors.white),
@@ -220,7 +237,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 10),
                               child: RebiInput(
-                                hintText: 'Discipline'.tra,
+                                hintText: state.responseModel!.discipline,
                                 hintStyle:
                                     const TextStyle(color: AppColors.white),
                                 controller: _discipline,
@@ -239,22 +256,6 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                 },
                               ),
                             ),
-                            const Spacer(),
-                            RebiButton(
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              SuccessStateScreen(
-                                                title:
-                                                    "Profile Updated Successfully",
-                                              )));
-                                },
-                                child: const Text("Update")),
-                            const SizedBox(
-                              height: 10,
-                            )
                           ],
                         ),
                       ),

@@ -40,10 +40,10 @@ class MainScreen extends StatelessWidget {
                   children: [
                     SizedBox(
                       width: 150,
-                      child: Image.asset(AppImages.proEquine),
+                      child: SvgPicture.asset(AppIcons.proEquine,height: 32,width: 32,),
                     ),
                     GestureDetector(
-                      child: SvgPicture.asset(AppIcons.userSquare,height: 40,width: 40,),
+                      child: SvgPicture.asset(AppIcons.userSquare,height: 32,width: 32,),
                       onTap: () {
                         Navigator.push(
                           context,

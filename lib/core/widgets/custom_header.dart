@@ -47,7 +47,7 @@ class CustomHeader extends StatelessWidget {
                     child:InkWell(
 
                   child:const Icon(
-                    Icons.arrow_back,
+                    Icons.arrow_back_ios_new,
                     color: AppColors.white,
                   ),
                   onTap: () {

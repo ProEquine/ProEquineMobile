@@ -101,6 +101,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                         autoValidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         isOptional: false,
+                                        textAlign: TextAlign.center,
                                         color: AppColors.formsLabel,
                                         readOnly: false,
                                         contentPadding:

@@ -12,9 +12,11 @@ import 'package:proequine/features/profile/presentation/screens/legel.dart';
 import 'package:proequine/features/profile/presentation/screens/support.dart';
 import 'package:proequine/features/profile/presentation/widgets/profile_list_tile_widget.dart';
 import 'package:proequine/features/splash/presentation/screens/splash_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:sizer/sizer.dart';
 
+import '../../../../core/utils/Printer.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/delete_popup.dart';
 import '../../../../core/widgets/headerText.dart';
@@ -28,12 +30,13 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   ProfileCubit cubit = ProfileCubit();
+  String? email;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(20.0.h),
+        preferredSize: Size.fromHeight(20.h),
         child: CustomHeader(
           title: "",
           isThereBackButton: true,
@@ -43,16 +46,19 @@ class _UserProfileState extends State<UserProfile> {
         child: Column(
           children: [
             HeaderText("Profile", "", true),
-            const SizedBox(
-              height: 5,
-            ),
             ProfileListTileWidget(
               title: "Account",
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AccountInfoScreen()));
+              onTap: () async{
+                final updatedEmail = await Navigator.push<String>(
+                  context,
+                  MaterialPageRoute(builder: (context) => AccountInfoScreen()),
+                );
+
+                if (updatedEmail != null) {
+                  setState(() {
+                    email = updatedEmail;
+                  });
+                }
               },
               notificationList: false,
               isThereNewNotification: false,
@@ -96,6 +102,9 @@ class _UserProfileState extends State<UserProfile> {
                 await SecureStorage().deleteDeviceId();
                 await SecureStorage().deleteRefreshToken();
                 await SecureStorage().deleteToken();
+                AppSharedPreferences.phoneVerified=false;
+                AppSharedPreferences.typeSelected=false;
+                AppSharedPreferences.emailVerified=false;
                 RebiMessage.success(msg: "Logout Successfully");
                 if (context.mounted) {
                   Navigator.pushReplacement(
@@ -120,10 +129,10 @@ class _UserProfileState extends State<UserProfile> {
               height: 50,
             ),
             RichText(
-                text: const TextSpan(children: [
+                text:  TextSpan(children: [
               TextSpan(
-                text: "faizan.k@input.ae",
-                style: TextStyle(
+                text: email??AppSharedPreferences.userEmailAddress,
+                style: const TextStyle(
                   color: AppColors.grey,
                 ),
               ),

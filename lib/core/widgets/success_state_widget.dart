@@ -7,11 +7,11 @@ import 'package:sizer/sizer.dart';
 
 import '../constants/colors/app_colors.dart';
 import '../constants/constants.dart';
-import '../utils/sharedpreferences/SharedPreferencesHelper.dart';
 
 class SuccessStateScreen extends StatefulWidget {
   String? title;
   bool isThereButton = false;
+  bool isItVerifyPhone=true;
   Function? onButtonPressed;
   String? buttonText;
 
@@ -19,6 +19,7 @@ class SuccessStateScreen extends StatefulWidget {
       {Key? key,
       this.title,
       this.isThereButton = false,
+        this.isItVerifyPhone=true,
       this.onButtonPressed,
       this.buttonText})
       : super(key: key);
@@ -44,11 +45,15 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
     _controller.dispose();
     super.dispose();
   }
-  VerifyPhoneRoute verifyPhoneRoute=VerifyPhoneRoute();
+  VerifyPhoneRoute? verifyPhoneRoute=VerifyPhoneRoute();
 
   @override
   Widget build(BuildContext context) {
-  verifyPhoneRoute = ModalRoute.of(context)?.settings.arguments as VerifyPhoneRoute;
+    if(widget.isItVerifyPhone){
+      verifyPhoneRoute = ModalRoute.of(context)?.settings.arguments as VerifyPhoneRoute;
+    }
+
+
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -72,7 +77,7 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
                       ..forward();
                   } else {
 
-                    if(verifyPhoneRoute.type=='accountInfo'){
+                    if(verifyPhoneRoute?.type=='accountInfo'){
                       _controller
                         ..duration = composition.duration
                         ..forward().whenComplete(() =>
@@ -93,7 +98,9 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0.w),
               child: Text(
-                widget.title??verifyPhoneRoute.title!,
+
+                widget.title??verifyPhoneRoute!.title!,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: AppColors.white,
                     fontWeight: FontWeight.w600,

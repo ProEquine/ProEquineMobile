@@ -25,7 +25,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
   static final List<Widget> _widgetOptions = <Widget>[
     const MainScreen(),
     const BookingMain(),
-    const EventListMain(),
     NotificationsScreen()
   ];
 
@@ -53,46 +52,33 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 filterY: 21,
                 showSelectedLabels: true,
                 showUnselectedLabels: true,
-                selectedItemColor: AppColors.gold,
+                selectedItemColor: AppColors.navBarIconsColor,
                 opacity: 0.8,
                 bottomNavigationBarItems: <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
                     backgroundColor: Colors.transparent,
                     icon: SvgPicture.asset(
-                      AppIcons.home,
-                      color: _selectedIndex == 0
-                          ? AppColors.gold
-                          : AppColors.white,
+                      _selectedIndex == 0?AppIcons.selectedHome:AppIcons.unSelectedHome,
+                      color: _selectedIndex==0?AppColors.navBarIconsColor:AppColors.white
                     ),
+
+
                     label: 'Home',
                   ),
                   BottomNavigationBarItem(
                     backgroundColor: Colors.transparent,
                     icon: SvgPicture.asset(
-                      AppIcons.booking,
-                      color: _selectedIndex == 1
-                          ? AppColors.gold
-                          : AppColors.white,
+                      _selectedIndex == 1?AppIcons.selectedBooking:AppIcons.unSelectedBooking,
+
+
                     ),
                     label: 'Booking',
                   ),
                   BottomNavigationBarItem(
                     backgroundColor: AppColors.gold,
                     icon: SvgPicture.asset(
-                      AppIcons.event,
-                      color: _selectedIndex == 2
-                          ? AppColors.gold
-                          : AppColors.white,
-                    ),
-                    label: 'Events',
-                  ),
-                  BottomNavigationBarItem(
-                    backgroundColor: Colors.transparent,
-                    icon: SvgPicture.asset(
-                      AppIcons.inbox,
-                      color: _selectedIndex == 3
-                          ? AppColors.gold
-                          : AppColors.white,
+                      _selectedIndex == 2?AppIcons.selectedInbox:AppIcons.unSelectedInbox,
+                        color: _selectedIndex==2?AppColors.navBarIconsColor:AppColors.white
                     ),
                     label: 'Inbox',
                   ),

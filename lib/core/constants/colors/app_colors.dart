@@ -11,6 +11,8 @@ class AppColors {
   static const Color titleColor = Color(0xFFF2F3F3);
   static const Color lightGrey = Color(0xFFD0D3D6);
   static const Color gold = Color(0xFFCD933D);
+  static const Color navBarIconsColor = Color(0xFFE0AD25);
+  static const Color homeIconColor = Color(0xFFFFCB3F);
   static const Color eventText = Color.fromARGB(255, 140, 140, 140);
   static const Color yellow = Color.fromRGBO(224, 173, 37, 1);
 
@@ -36,5 +38,5 @@ class AppColors {
   static const altTextColor3 = Color(0x99fff7ec);
 
   static const inputBackground = Color(0x0d24393c);
-  static const darkRed = Color(0xFF982e2e);
+  static const darkRed = Colors.red;
 }

@@ -25,7 +25,7 @@ class PrivacyAndMarketingCheckBox extends StatelessWidget {
     this.onChanged,
   }) : super(key: key);
 
-  final String privacyUrl = 'https://findyourteam.io/privacy-policy.html';
+  final String privacyUrl = 'https://www.proequine.ae/PrivacyLegal/';
 
   void pressPrivacy2() async {
     if (!await launchUrl(

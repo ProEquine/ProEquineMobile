@@ -146,25 +146,6 @@ class AccountInfoLoading extends StatelessWidget {
                     const Spacer(
                       flex: 3,
                     ),
-                    Expanded(
-                      child: ShimmerLoading(
-                        isLoading: isLoading,
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(6)),
-                              color: Color.fromRGBO(50, 50, 50, 1),
-                            ),
-                            width: double.infinity,
-                            height: 55,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    )
                   ],
                 ),
               ),

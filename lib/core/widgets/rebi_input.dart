@@ -151,7 +151,9 @@ class _RebiInputState extends State<RebiInput> {
           obscureText: showPassword,
           decoration: InputDecoration(
             labelText: widget.labelText,
-            errorStyle: const TextStyle(color: AppColors.darkRed,fontSize: 11),
+
+            errorStyle: const TextStyle(color: AppColors.darkRed,fontSize: 11,height: 1.0,fontFamily: 'notosan'),
+            errorMaxLines: 4,
             errorBorder: OutlineInputBorder(
               borderSide:
                   const BorderSide(color: AppColors.darkRed, width: 1.0),
@@ -159,9 +161,6 @@ class _RebiInputState extends State<RebiInput> {
             ),
 
             isDense: true,
-
-            // isDense: true,
-
             iconColor: AppColors.inputIconColors,
             prefixIconColor: AppColors.formsHintFont,
             suffixIconColor: AppColors.formsHintFont,
@@ -174,6 +173,9 @@ class _RebiInputState extends State<RebiInput> {
                 : null,
 
             suffixIcon: _buildSuffixWidget(),
+            focusedErrorBorder: const OutlineInputBorder(
+              borderSide:
+               BorderSide(color: AppColors.darkRed, width: 1.0),),
             focusedBorder: OutlineInputBorder(
               borderSide: const BorderSide(color: AppColors.gold, width: 1.0),
               borderRadius: BorderRadius.circular(10.0),
@@ -198,7 +200,7 @@ class _RebiInputState extends State<RebiInput> {
             hintStyle: widget.hintStyle ??
                 const TextStyle(
                   fontFamily: "notosan",
-                  fontSize: 16.0,
+                  fontSize: 14.0,
                   color: AppColors.formsLabel,
                 ),
             hintText: widget.hintText,

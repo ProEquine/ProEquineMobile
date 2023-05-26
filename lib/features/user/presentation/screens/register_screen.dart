@@ -60,6 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           builder: (context,constraint){
             return Form(
               key: _formKey,
+
               child: SingleChildScrollView(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minHeight: constraint.maxHeight),
@@ -92,8 +93,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         controller: _firstName,
                                         keyboardType: TextInputType.name,
                                         textInputAction: TextInputAction.done,
-                                        autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
                                         isOptional: false,
                                         color: AppColors.formsLabel,
                                         readOnly: false,
@@ -120,8 +119,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         controller: _middleName,
                                         keyboardType: TextInputType.name,
                                         textInputAction: TextInputAction.done,
-                                        autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
                                         isOptional: false,
                                         color: AppColors.formsLabel,
                                         readOnly: false,
@@ -144,8 +141,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   controller: _lastName,
                                   keyboardType: TextInputType.name,
                                   textInputAction: TextInputAction.done,
-                                  autoValidateMode:
-                                  AutovalidateMode.onUserInteraction,
                                   isOptional: false,
                                   color: AppColors.formsLabel,
                                   readOnly: false,
@@ -177,8 +172,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       });
                                     });
                                   },
-                                  autoValidateMode:
-                                  AutovalidateMode.onUserInteraction,
                                   isOptional: false,
                                   color: AppColors.formsLabel,
                                   readOnly: true,

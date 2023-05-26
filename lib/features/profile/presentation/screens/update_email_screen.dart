@@ -39,14 +39,12 @@ class UpdateEmailScreen extends StatelessWidget {
         key: _formKey,
         child: Column(
           children: [
-            HeaderText("Update Email", "", false),
-            const SizedBox(
-              height: 5,
-            ),
+            const SizedBox(height: 20,),
+            HeaderText("Update Email", "", true),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: kPadding),
               child: RebiInput(
-                hintText: 'Email'.tra,
+                hintText: 'New email'.tra,
                 controller: _email,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.done,

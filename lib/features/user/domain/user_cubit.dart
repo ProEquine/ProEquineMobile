@@ -45,7 +45,8 @@ class UserCubit extends Cubit<UserState> {
     String? accessToken= await SecureStorage().getToken();
     String? userId= await SecureStorage().getUserId();
       AppSharedPreferences.phoneVerified = response.isPhoneNumberVerified;
-      AppSharedPreferences.emailVerified = false;
+      AppSharedPreferences.emailVerified = response.isEmailVerified;
+      AppSharedPreferences.typeSelected=response.isTypeSelected;
       AppSharedPreferences.inputPhoneNumber=response.phoneNumber!;
       AppSharedPreferences.inputEmailAddress=loginRequestModel.email!;
       Print("access token $accessToken");
@@ -76,6 +77,7 @@ class UserCubit extends Cubit<UserState> {
       await SecureStorage().setToken(response.accessToken!);
       await SecureStorage().setUserId(response.refreshToken!.userId!);
       AppSharedPreferences.inputPhoneNumber=registerRequestModel.phoneNumber!;
+      AppSharedPreferences.phoneVerified=false;
       AppSharedPreferences.inputEmailAddress=registerRequestModel.email!;
 
       String? refreshToken= await SecureStorage().getRefreshToken();

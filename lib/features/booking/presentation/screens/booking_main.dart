@@ -74,8 +74,7 @@ class _BookingMainState extends State<BookingMain> {
                   GestureDetector(
                     child: SvgPicture.asset(
                       AppIcons.userSquare,
-                      height: 40,
-                      width: 40,
+                      height: 32,width: 32,
                     ),
                     onTap: () {
                       Navigator.push(

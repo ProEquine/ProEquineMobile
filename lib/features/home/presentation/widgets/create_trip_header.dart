@@ -33,7 +33,7 @@ class CreateTripHeader extends StatelessWidget {
                   Navigator.popAndPushNamed(context, '/homeRoute');
                 },
                 child: const Icon(
-                  Icons.arrow_back,
+                  Icons.arrow_back_ios_new,
                   color: AppColors.white,
                 ),
               )),

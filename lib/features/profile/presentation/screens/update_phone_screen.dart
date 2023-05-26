@@ -43,13 +43,13 @@ class UpdatePhoneScreen extends StatelessWidget {
         key: _formKey,
         child: Column(
           children: [
-            HeaderText("Update Phone Number", "", false),
             const SizedBox(
-              height: 5,
+              height: 20,
             ),
+            HeaderText("Update Phone Number", "", true),
             Padding(
               padding: const EdgeInsets.symmetric(
-                  vertical: 10, horizontal: kPadding),
+                   horizontal: kPadding),
               child: Row(
                 children: [
                   Expanded(
@@ -117,8 +117,8 @@ class UpdatePhoneScreen extends StatelessWidget {
                 },
                 listener: (context, state) {
                   if (state is SendPhoneSuccessful) {
-                    Navigator.pushReplacementNamed(
-                        context,'/verifyUpdate',arguments:_countryCode.text + _phone.text );
+                    Navigator.pushReplacementNamed(context, '/verifyUpdate',
+                        arguments: _countryCode.text + _phone.text);
                     // Navigator.pushReplacement(
                     //     context,
                     //     MaterialPageRoute(

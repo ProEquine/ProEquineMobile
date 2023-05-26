@@ -72,7 +72,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     ),
                     GestureDetector(
                       child: SvgPicture.asset(
-                        AppIcons.userSquare, height: 40, width: 40,),
+                        AppIcons.userSquare, height: 32,width: 32,),
                       onTap: () {
                         Navigator.push(
                           context,

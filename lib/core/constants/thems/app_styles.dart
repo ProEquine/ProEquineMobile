@@ -47,6 +47,11 @@ class AppStyles {
     fontFamily: "notosan",
     fontWeight: FontWeight.w500,
   );
+  static final profileHeader = TextStyle(
+    fontSize: 20.sp,
+    fontFamily: "hemiHead",
+    fontWeight: FontWeight.w500,
+  );
 
   static final descriptions = TextStyle(
       color: AppColors.white,

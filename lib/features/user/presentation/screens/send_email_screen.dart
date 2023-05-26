@@ -47,10 +47,9 @@ class _SendEmailScreenState extends State<SendEmailScreen> {
         key: _formKey,
         child: Column(
           children: [
-            HeaderText("Update Email", "", false),
-            const SizedBox(
-              height: 5,
-            ),
+            const SizedBox(height: 20,),
+            HeaderText("Update Email", "", true),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: kPadding),
               child: RebiInput(
