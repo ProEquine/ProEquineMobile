@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
+import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
-import 'package:proequine/core/widgets/success_state_widget.dart';
 import 'package:proequine/features/profile/data/verify_email_route.dart';
 import 'package:proequine/features/user/data/check_mail_request_model.dart';
 import 'package:proequine/features/user/data/send-mail_request_model.dart';
@@ -71,6 +71,12 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
     onSendMail();
     super.initState();
   }
+  @override
+  void dispose() {
+   _pinPutController.dispose();
+   cubit.close();
+    super.dispose();
+  }
 
 
   @override
@@ -80,12 +86,7 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
         child: CustomHeader(
-          // onPressBack: (){
-          //   if(verifyEmailRoute.type=='createTrip' || verifyEmailRoute.type=='createEvent'){
-          //
-          //   }
-          // },
-          title: "",
+          title: "Confirm your Email",
           isThereBackButton: true,
         ),
       ),
@@ -101,11 +102,7 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Confirm your Email",
-                          style: AppStyles.profileHeader),
-                      SizedBox(
-                        height: 1.h,
-                      ),
+                      const SizedBox(height: 20,),
                       Text(
                         "A 6 digit verification code has been sent to your registered email.",
                         style: AppStyles.descriptions,
@@ -244,9 +241,9 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                         bloc: cubit,
                         listener: (context, state) {
                           if (state is CheckMailVerificationSuccessful) {
-                     Navigator.pushReplacementNamed(context, '/submitScreen',arguments: VerifyEmailRoute(email: "Email verified successfully",type: verifyEmailRoute.type));
+                     Navigator.pushReplacementNamed(context, submitVerifyEmail,arguments: VerifyEmailRoute(email: "Email verified successfully",type: verifyEmailRoute.type));
                           } else if (state is CheckMailVerificationError) {
-                            RebiMessage.error(msg: state.message!);
+                            RebiMessage.error(msg: state.message!,context: context);
                           }
                         },
                         builder: (context, state) {

@@ -5,7 +5,6 @@ import 'package:proequine/features/booking/presentation/screens/timeline.dart';
 import 'package:proequine/features/booking/presentation/widgets/bookingitem.dart';
 import 'package:proequine/features/booking/presentation/widgets/peniding_booking_items.dart';
 import '../../../../core/constants/colors/app_colors.dart';
-import '../../../../core/widgets/titlebar.dart';
 import 'confirmBookingitem.dart';
 
 class Booking extends StatelessWidget {
@@ -28,6 +27,7 @@ class Booking extends StatelessWidget {
     }
 
     const List elements = [
+      //TODO: That's for unPaid
       // {
       //   'type': 'Pending',
       //   // 'group': 'Unpaid',
@@ -190,7 +190,7 @@ class Booking extends StatelessWidget {
                     transport: element['transport'],
                   );
                 }
-                return ConfirmbookingItem(
+                return const ConfirmBookingItem(
                   date: '15 Sep • 04:30 pm',
                   horsesCount: 4,
                   transport: "Nat Show",

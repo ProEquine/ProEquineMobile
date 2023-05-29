@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/features/profile/data/update_email_route.dart';
 import 'package:proequine/features/user/data/update_email_request_model.dart';
@@ -11,7 +12,7 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
-import '../../../../core/widgets/headerText.dart';
+import '../../../../core/widgets/header_text.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
@@ -31,7 +32,7 @@ class UpdateEmailScreen extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
         child: CustomHeader(
-          title: "",
+          title: "Update Email",
           isThereBackButton: true,
         ),
       ),
@@ -40,7 +41,6 @@ class UpdateEmailScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 20,),
-            HeaderText("Update Email", "", true),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: kPadding),
               child: RebiInput(
@@ -80,12 +80,12 @@ class UpdateEmailScreen extends StatelessWidget {
                 },
                 listener: (context, state) {
                   if (state is UpdateMailSuccessful) {
-                    Navigator.pushReplacementNamed(context, '/verifyUpdateEmail',
+                    Navigator.pushReplacementNamed(context, verifyUpdateEmail,
                         arguments: UpdateEmailRoute(
                             previousEmail: previousEmail,
                             newEmail: _email.text));
                   } else if (state is UpdateMailError) {
-                    RebiMessage.error(msg: state.message!);
+                    RebiMessage.error(msg: state.message!,context: context);
                   }
                 },
               ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
+import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/features/home/presentation/screens/local_summary.dart';
@@ -15,7 +16,6 @@ import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/verify_dialog.dart';
-import '../../../../core/widgets/verify_email_dialog.dart';
 import '../../../profile/data/verify_email_route.dart';
 import '../../../profile/presentation/widgets/drop_down_menu_widget.dart';
 
@@ -98,7 +98,7 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
         // If the account is not verified, show a dialog after a delay.
         Future.delayed(const Duration(milliseconds: 50), () {
           showUnverifiedAccountDialog(context: context, isThereNavigationBar: true,onPressVerify: () {
-            Navigator.pushNamed(context, '/VerifyEmail', arguments: VerifyEmailRoute(type: 'createTrip',email: AppSharedPreferences.userEmailAddress))
+            Navigator.pushNamed(context, verifyEmail, arguments: VerifyEmailRoute(type: 'createTrip',email: AppSharedPreferences.userEmailAddress))
                 .then((value) {});
           },);
         });
@@ -429,10 +429,6 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                         confirmText: "Confirm".tra,
                                         context: context,
                                         cancelText: "Cancel".tra,
-                                        // helpText: StringKeys.selectTime.tr(),
-                                        // errorInvalidText:StringKeys.timeError.tr(),
-                                        // hourLabelText: StringKeys.hour.tr(),
-                                        // minuteLabelText: StringKeys.minute.tr(),
                                         initialEntryMode:
                                         TimePickerEntryMode.dial,
                                         initialTime: TimeOfDay.fromDateTime(
@@ -530,7 +526,7 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                             MaterialPageRoute(
                                 builder: (context) => LocalSummary()));
                       } else {
-                        RebiMessage.error(msg: "please fill all fields");
+                        RebiMessage.error(msg: "please fill all fields",context: context);
                       }
                     },
                     backgroundColor: AppColors.white,

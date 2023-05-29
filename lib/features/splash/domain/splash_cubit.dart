@@ -26,6 +26,7 @@ class SplashCubit extends Cubit<SplashState> {
     var response = await SplashRepository.refreshToken(requestModel);
     if (response is RefreshTokenResponse) {
       await SecureStorage().setRefreshToken(response.refreshToken!.token!);
+      await SecureStorage().setToken(response.accessToken!);
       await SecureStorage().setUserId(response.refreshToken!.userId!);
       if (response is RefreshSuccessfully) {
         Print(response);

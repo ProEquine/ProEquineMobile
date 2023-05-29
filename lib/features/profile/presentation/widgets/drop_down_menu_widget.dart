@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proequine/features/profile/presentation/widgets/profile_divider.dart';
 import '../../../../core/constants/colors/app_colors.dart';
-import '../../../../core/utils/Printer.dart';
 
 class DropDownWidget extends StatefulWidget {
   late List<DropdownMenuItem>? items;
@@ -55,10 +54,10 @@ class DropDownWidgetState extends State<DropDownWidget> {
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
                 borderSide: widget.borderSide,
               ),
-              errorStyle: const TextStyle(color: AppColors.darkRed),
+              errorStyle: const TextStyle(color: AppColors.red),
               errorBorder: OutlineInputBorder(
                 borderSide:
-                    const BorderSide(color: AppColors.darkRed, width: 1.0),
+                    const BorderSide(color: AppColors.red, width: 1.0),
                 borderRadius: BorderRadius.circular(
                   10.0,
                 ),

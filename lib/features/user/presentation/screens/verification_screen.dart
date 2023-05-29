@@ -24,7 +24,7 @@ import '../widgets/register_header.dart';
 class VerificationScreen extends StatefulWidget {
   final String? phone;
 
-  VerificationScreen({super.key, this.phone});
+  const VerificationScreen({super.key, this.phone});
 
   @override
   State<VerificationScreen> createState() => _VerificationScreenState();
@@ -39,7 +39,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   late Timer _timer;
 
   void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         if (_secondsLeft > 0) {
           _secondsLeft--;
@@ -68,6 +68,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
         channel: "sms"));
     super.initState();
   }
+  @override
+  void dispose() {
+    _pinPutController.dispose();
+    cubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +95,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     scale: 1,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Padding(
@@ -277,13 +283,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
         },
         listener: (context, state) {
           if (state is CheckVerificationSuccessful) {
-            RebiMessage.success(msg: state.message!);
+            RebiMessage.success(msg: state.message!,context: context);
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const VerificationSubmit()));
           } else if (state is CheckVerificationError) {
-            RebiMessage.error(msg: state.message!);
+            RebiMessage.error(msg: state.message!,context: context);
           }
         });
   }

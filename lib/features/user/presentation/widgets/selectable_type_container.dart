@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
-import '../../../../core/utils/Printer.dart';
 
 class SelectableTypeContainer extends StatefulWidget {
-  String? label ;
-  int? index;
+  final String? label;
+
+  final int? index;
   final bool isSelected;
   final Function(bool) onSelected;
 
-   SelectableTypeContainer({Key? key, required this.label,
-     required this.index,
-     required this.isSelected,
-     required this.onSelected, });
+  const SelectableTypeContainer({
+    super.key,
+    required this.label,
+    required this.index,
+    required this.isSelected,
+    required this.onSelected,
+  });
 
   @override
-  State<SelectableTypeContainer> createState() => _SelectableTypeContainerState();
+  State<SelectableTypeContainer> createState() =>
+      _SelectableTypeContainerState();
 }
 
 class _SelectableTypeContainerState extends State<SelectableTypeContainer> {
@@ -24,18 +28,18 @@ class _SelectableTypeContainerState extends State<SelectableTypeContainer> {
     return InkWell(
       onTap: () {
         widget.onSelected(true);
-        },
+      },
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-            color:  widget.isSelected
+            color: widget.isSelected
                 ? const Color(0xFFC48737).withOpacity(0.3)
                 : AppColors.backgroundColor, //here i want to add opacity
 
             border: Border.all(
               color:
-              widget.isSelected? const Color(0xFFC48737) : AppColors.grey,
+                  widget.isSelected ? const Color(0xFFC48737) : AppColors.grey,
             ),
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20.5),

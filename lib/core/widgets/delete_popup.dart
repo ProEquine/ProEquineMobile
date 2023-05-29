@@ -11,6 +11,9 @@ import '../utils/sharedpreferences/SharedPreferencesHelper.dart';
 
 class DeletePopup extends StatelessWidget {
   final UserCubit cubit = UserCubit();
+
+  DeletePopup({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -44,7 +47,7 @@ class DeletePopup extends StatelessWidget {
                   OutlinedButton(
                     onPressed: () => Navigator.pop(context, 'Cancel'),
                     style: OutlinedButton.styleFrom(
-                      minimumSize: Size(100, 33),
+                      minimumSize: const Size(100, 33),
                       side: const BorderSide(
                         color: Colors.white,
                         width: 1,
@@ -71,18 +74,23 @@ class DeletePopup extends StatelessWidget {
                             await SecureStorage().deleteDeviceId();
                             await SecureStorage().deleteRefreshToken();
                             await SecureStorage().deleteToken();
-                            RebiMessage.success(msg: "Account Deleted");
+                            if (context.mounted) {
+                              RebiMessage.success(
+                                  msg: "Account Deleted", context: context);
+                            }
+
                             if (context.mounted) {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                      const SplashScreen()));
+                                          const SplashScreen()));
                             }
                           },
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(100, 33),
-                            backgroundColor: const Color.fromRGBO(224, 173, 37, 1),
+                            backgroundColor:
+                                const Color.fromRGBO(224, 173, 37, 1),
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(6.5),
@@ -93,9 +101,7 @@ class DeletePopup extends StatelessWidget {
                         );
                       },
                       listener: (context, state) {
-                        if (state is DeleteAccountSuccessful) {
-
-                        }
+                        if (state is DeleteAccountSuccessful) {}
                       }),
                 ],
               )

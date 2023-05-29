@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-// This class simply decorates a row of widgets.
+
 class DatePickerItem extends StatelessWidget {
-  const DatePickerItem({required this.children});
+  const DatePickerItem({super.key, required this.children});
 
   final List<Widget> children;
 

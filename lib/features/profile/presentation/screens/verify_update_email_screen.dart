@@ -3,13 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
+import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/features/profile/data/update_email_route.dart';
-import 'package:proequine/features/profile/data/update_phone_request_model.dart';
 import 'package:proequine/features/profile/data/verify_email_route.dart';
-import 'package:proequine/features/profile/domain/profile_cubit.dart';
 import 'package:proequine/features/user/data/check_update_email_request_model.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:sizer/sizer.dart';
@@ -61,6 +60,12 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
     String seconds = twoDigits(duration.inSeconds.remainder(60));
     return "$minutes:$seconds";
   }
+  @override
+  void dispose() {
+    cubit.close();
+    _pinPutController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +74,7 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
         child: CustomHeader(
-          title: "",
+          title: "Confirm your Email",
           isThereBackButton: true,
         ),
       ),
@@ -86,11 +91,7 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 20,),
-                      Text("Confirm your Email",
-                          style: AppStyles.profileHeader),
-                      SizedBox(
-                        height: 1.h,
-                      ),
+
                       Text(
                         "A 6 digit verification code has been sent to your registered email address.",
                         style: AppStyles.descriptions,
@@ -226,7 +227,7 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                           if (state is CheckUpdateMailSuccessful) {
                             AppSharedPreferences.inputEmailAddress=emails.newEmail!;
                             Navigator.pushReplacementNamed(
-                                context,'/submitScreen',arguments: VerifyEmailRoute(email:"Email Updated Successfully!",type: 'updateEmail'));
+                                context,submitVerifyEmail,arguments: VerifyEmailRoute(email:"Email Updated Successfully!",type: 'updateEmail'));
                             // Navigator.pushReplacement(
                             //     context,
                             //     MaterialPageRoute(
@@ -236,7 +237,7 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                             //             ))).then((value) => cubit
                             //     .getUser(AppSharedPreferences.userPhoneNumber));
                           } else if (state is CheckUpdateMailError) {
-                            RebiMessage.error(msg: state.message!);
+                            RebiMessage.error(msg: state.message!,context: context);
                           }
                         },
                         builder: (context, state) {

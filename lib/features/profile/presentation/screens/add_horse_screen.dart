@@ -99,7 +99,7 @@ class _AddHorseScreenState extends State<AddHorseScreen> {
                     ),
                     textButtonTheme: TextButtonThemeData(
                       style: TextButton.styleFrom(
-                        primary: Colors.white, // button text color
+                        foregroundColor: Colors.white, // button text color
                       ),
                     ),
                   ),
@@ -152,7 +152,7 @@ class _AddHorseScreenState extends State<AddHorseScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
         child: CustomHeader(
-          title: " ",
+          title: "Add your Horse",
           isThereBackButton: true,
         ),
       ),

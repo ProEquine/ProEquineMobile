@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
+import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
@@ -58,6 +59,12 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
     String seconds = twoDigits(duration.inSeconds.remainder(60));
     return "$minutes:$seconds";
   }
+  @override
+  void dispose() {
+   cubit.close();
+   _pinPutController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +73,7 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
         child: CustomHeader(
-          title: "",
+          title: "Confirm your number",
           isThereBackButton: true,
         ),
       ),
@@ -84,11 +91,6 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 20,),
-                      Text("Confirm your number",
-                          style: AppStyles.profileHeader),
-                      SizedBox(
-                        height: 1.h,
-                      ),
                       Text(
                         "A 6 digit verification code has been sent to your registered phone number.",
                         style: AppStyles.descriptions,
@@ -224,12 +226,12 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
                           if (state is UpdatePhoneSuccessful) {
                             AppSharedPreferences.inputPhoneNumber = phone;
                             Navigator.pushReplacementNamed(
-                                context, '/successScreen',
+                                context, successScreen,
                                 arguments: VerifyPhoneRoute(
                                     type: 'accountInfo',
                                     title: "Phone Updated Successfully"));
                           } else if (state is UpdatePhoneError) {
-                            RebiMessage.error(msg: state.message!);
+                            RebiMessage.error(msg: state.message!,context: context);
                           }
                         },
                         builder: (context, state) {

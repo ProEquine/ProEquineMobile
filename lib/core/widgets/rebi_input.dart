@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:proequine/core/constants/thems/app_styles.dart';
-import 'package:sizer/sizer.dart';
-
 import '../constants/colors/app_colors.dart';
 
 class RebiInput extends StatefulWidget {
@@ -37,6 +34,7 @@ class RebiInput extends StatefulWidget {
     this.inputFormatters,
     this.autoValidateMode = AutovalidateMode.disabled,
     this.isOptional = false,
+    this.isItDisable=false,
     this.autofocus = false,
     this.hintStyle,
   }) : super(key: key);
@@ -68,6 +66,7 @@ class RebiInput extends StatefulWidget {
   final AutovalidateMode? autoValidateMode;
   final bool isOptional;
   final bool autofocus;
+  final bool isItDisable;
   final TextStyle? hintStyle;
 
   @override
@@ -152,16 +151,16 @@ class _RebiInputState extends State<RebiInput> {
           decoration: InputDecoration(
             labelText: widget.labelText,
 
-            errorStyle: const TextStyle(color: AppColors.darkRed,fontSize: 11,height: 1.0,fontFamily: 'notosan'),
+            errorStyle: const TextStyle(color: AppColors.red,fontSize: 11,height: 1.0,fontFamily: 'notosan'),
             errorMaxLines: 4,
             errorBorder: OutlineInputBorder(
               borderSide:
-                  const BorderSide(color: AppColors.darkRed, width: 1.0),
+                  const BorderSide(color: AppColors.red, width: 1.0),
               borderRadius: BorderRadius.circular(10.0,),
             ),
 
             isDense: true,
-            iconColor: AppColors.inputIconColors,
+            iconColor: AppColors.white,
             prefixIconColor: AppColors.formsHintFont,
             suffixIconColor: AppColors.formsHintFont,
             contentPadding: widget.contentPadding,
@@ -175,9 +174,9 @@ class _RebiInputState extends State<RebiInput> {
             suffixIcon: _buildSuffixWidget(),
             focusedErrorBorder: const OutlineInputBorder(
               borderSide:
-               BorderSide(color: AppColors.darkRed, width: 1.0),),
+               BorderSide(color: AppColors.red, width: 1.0),),
             focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: AppColors.gold, width: 1.0),
+              borderSide:  BorderSide(color:widget.isItDisable?AppColors.grey:AppColors.gold, width: 1.0),
               borderRadius: BorderRadius.circular(10.0),
             ),
             border: OutlineInputBorder(

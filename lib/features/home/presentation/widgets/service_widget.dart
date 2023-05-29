@@ -3,11 +3,11 @@ import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:sizer/sizer.dart';
 
 class ServiceWidget extends StatelessWidget {
-  String? image;
-  String? title;
-  Function? onTap;
+  final String? image;
+  final String? title;
+  final Function? onTap;
 
-  ServiceWidget({this.image, this.title, this.onTap});
+  const ServiceWidget({super.key, this.image, this.title, this.onTap});
 
   @override
   Widget build(BuildContext context) {

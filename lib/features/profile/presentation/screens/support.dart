@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
@@ -9,10 +8,9 @@ import 'package:proequine/features/profile/data/support_request_model.dart';
 import 'package:proequine/features/profile/domain/profile_cubit.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../core/constants/colors/app_colors.dart';
-import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
-import '../../../../core/widgets/headerText.dart';
+import '../../../../core/widgets/header_text.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/thank_widget.dart';
@@ -33,7 +31,7 @@ class Support extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
         child: CustomHeader(
-          title: "",
+          title: "Support",
           isThereBackButton: true,
         ),
       ),
@@ -41,7 +39,12 @@ class Support extends StatelessWidget {
         key: _formKey,
         child: Column(
           children: [
-            HeaderText("Support", "Get in touch, we're here to help", true),
+            Row(
+              children: [
+                const SizedBox(width: 14,),
+                HeaderText("", "Get in touch, we're here to help", true),
+              ],
+            ),
             const SizedBox(
               height: 20,
             ),
@@ -94,9 +97,9 @@ class Support extends StatelessWidget {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ThanksWidget()));
+                            builder: (context) => const ThanksWidget()));
                   }else if (state is ContactSupportError){
-                    RebiMessage.error(msg: state.message!);
+                    RebiMessage.error(msg: state.message!,context: context);
                   }
                 },
                 builder: (context, state) {

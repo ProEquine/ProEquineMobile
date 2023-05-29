@@ -28,6 +28,7 @@ dependencies:
   flutter_svg: ^1.1.1+1
   logger: ^1.1.0
   fluttertoast: ^8.0.9
+  motion_toast: ^2.6.8
   image_stack: ^2.1.1
   dartz: ^0.10.1
   equatable: ^2.0.3

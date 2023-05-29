@@ -42,6 +42,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   void dispose() {
     _phone.dispose();
     _countryCode.dispose();
+    cubit.close();
     super.dispose();
   }
 
@@ -177,7 +178,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                                     token: state.model!.token,
                                                   )));
                                     } else if (state is ForgotPasswordError) {
-                                      RebiMessage.error(msg: state.message!);
+                                      RebiMessage.error(msg: state.message!,context: context);
                                     }
                                   },
                                 ),

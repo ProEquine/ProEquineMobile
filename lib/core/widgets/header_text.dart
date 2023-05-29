@@ -15,18 +15,6 @@ class HeaderText extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.only(left: 15),
-          child: Text(
-            title,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: whitStyle ?FontWeight.bold:FontWeight.w500,
-              fontFamily: whitStyle ? "hemiHead" : 'notosan',
-            ),
-          ),
-        ),
         whitStyle ?
         const SizedBox(
           height: 14,
@@ -36,7 +24,7 @@ class HeaderText extends StatelessWidget {
 
         Container(
           alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.only(left: 15),
+          // padding: const EdgeInsets.only(left: 15),
           child: Text(
             subTitle,
             style: const TextStyle(

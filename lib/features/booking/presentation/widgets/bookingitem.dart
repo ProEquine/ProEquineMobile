@@ -72,7 +72,7 @@ class BookingItem extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Text(bookingId!),
                     ],
                   ),
@@ -95,7 +95,7 @@ class BookingItem extends StatelessWidget {
                                   child: SizedBox(
                                     child: SvgPicture.asset(
                                       AppIcons.date,
-                                      color: AppColors.eventText,
+                                      color: AppColors.grey,
                                     ),
                                   ),
                                 ),
@@ -108,7 +108,7 @@ class BookingItem extends StatelessWidget {
                                     date!,
                                     style:const TextStyle(
                                         fontSize: 12,
-                                        color: AppColors.eventText),
+                                        color: AppColors.grey),
                                   ),
                                 ),
                               ],
@@ -120,11 +120,9 @@ class BookingItem extends StatelessWidget {
                               children: [
                                 Expanded(
                                   flex: 1,
-                                  child: Container(
-                                    child:  Image.asset(
-                                      AppImages.greyTrans,
+                                  child: Image.asset(
+                                    AppImages.greyTrans,
 
-                                    ),
                                   ),
                                 ),
                                 const SizedBox(
@@ -134,7 +132,7 @@ class BookingItem extends StatelessWidget {
                                     flex: 13,
                                     child: Text(transport!,
                                         style: const TextStyle(
-                                          color: AppColors.eventText,
+                                          color: AppColors.grey,
                                             fontSize: 12,
                                             )))
                               ],
@@ -146,11 +144,9 @@ class BookingItem extends StatelessWidget {
                               children: [
                                 Expanded(
                                   flex: 1,
-                                  child: Container(
-                                    child: SvgPicture.asset(
-                                      AppIcons.horse,
-                                      color: AppColors.eventText,
-                                    ),
+                                  child: SvgPicture.asset(
+                                    AppIcons.horse,
+                                    color: AppColors.grey,
                                   ),
                                 ),
                                 const SizedBox(
@@ -162,7 +158,7 @@ class BookingItem extends StatelessWidget {
                                     horsesCount.toString(),
                                     style: const TextStyle(
                                         fontSize: 12,
-                                        color: AppColors.eventText),
+                                        color: AppColors.grey),
                                   ),
                                 )
                               ],
@@ -174,10 +170,8 @@ class BookingItem extends StatelessWidget {
                               children: [
                                 Expanded(
                                   flex: 1,
-                                  child: Container(
-                                    child: SvgPicture.asset(
-                                      AppIcons.transportType,
-                                    ),
+                                  child: SvgPicture.asset(
+                                    AppIcons.transportType,
                                   ),
                                 ),
                                 const SizedBox(
@@ -186,9 +180,9 @@ class BookingItem extends StatelessWidget {
                                  Expanded(
                                     flex: 13,
                                     child: Text(transportType!,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 12,
-                                            color: AppColors.eventText)))
+                                            color: AppColors.grey)))
                               ],
                             )
                           ],
@@ -196,10 +190,6 @@ class BookingItem extends StatelessWidget {
                       ),
                     ],
                   ),
-
-                  // location
-
-                  // buttons
                   const SizedBox(
                     height: 8,
                   ),

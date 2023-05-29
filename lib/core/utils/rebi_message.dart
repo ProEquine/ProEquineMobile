@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:motion_toast/motion_toast.dart';
+import 'package:motion_toast/resources/arrays.dart';
+
 import 'package:proequine/core/constants/colors/app_colors.dart';
 
 class RebiMessage {
@@ -23,44 +26,44 @@ class RebiMessage {
 
   RebiMessage.success({
     required String msg,
+    required BuildContext context,
   }) {
-    Fluttertoast.showToast(
-      msg: msg,
-      toastLength: Toast.LENGTH_LONG,
-      backgroundColor: Colors.green,
-      webBgColor: 'green',
-      timeInSecForIosWeb: 3,
-      gravity: ToastGravity.SNACKBAR,
-      webShowClose: true,
-    );
+    MotionToast.success(
+  description: Text(msg),
+      animationType: AnimationType.fromTop,
+
+    ).show(context);
   }
 
   RebiMessage.error({
     required String msg,
+    required BuildContext context,
   }) {
-    Fluttertoast.showToast(
-      msg: msg,
-      toastLength: Toast.LENGTH_LONG,
-      backgroundColor: Colors.red,
-      webBgColor: 'red',
-      timeInSecForIosWeb: 3,
-      gravity: ToastGravity.SNACKBAR,
-      webShowClose: true,
-    );
+    MotionToast.error(
+      // primaryColor: AppColors.red,
+      // secondaryColor: AppColors.red,
+      description: Text(msg),
+      animationType: AnimationType.fromTop,
+      position: MotionToastPosition.top,
+      height: 60,
+      width: 350,
+      borderRadius: 12.0,
+      displayBorder: true,
+      displaySideBar: true,
+
+
+
+
+    ).show(context);
   }
 
   RebiMessage.warning({
     required String msg,
+    required BuildContext context,
   }) {
-    Fluttertoast.showToast(
-      msg: msg,
-      toastLength: Toast.LENGTH_LONG,
-      backgroundColor: AppColors.gold,
-      webBgColor: 'yellow',
-      timeInSecForIosWeb: 3,
-      textColor: Colors.black,
-      gravity: ToastGravity.SNACKBAR,
-      webShowClose: true,
-    );
+    MotionToast.warning(
+      description: Text(msg),
+      animationType: AnimationType.fromTop,
+    ).show(context);
   }
 }

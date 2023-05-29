@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:proequine/app_settings.dart';
+
 import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/features/events/domain/event_cubit.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

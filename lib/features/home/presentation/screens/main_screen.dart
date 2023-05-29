@@ -29,32 +29,29 @@ class MainScreen extends StatelessWidget {
               sigmaX: 20.0,
               sigmaY: 20.0,
             ),
-            child: Container(
-              // color: AppColors.backgroundColor,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    top: 50, bottom: 20, left: 20, right: 20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: 150,
-                      child: SvgPicture.asset(AppIcons.proEquine,height: 32,width: 32,),
-                    ),
-                    GestureDetector(
-                      child: SvgPicture.asset(AppIcons.userSquare,height: 32,width: 32,),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => UserProfile(),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 50, bottom: 20, left: 20, right: 20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 150,
+                    child: SvgPicture.asset(AppIcons.proEquine,height: 32,width: 32,),
+                  ),
+                  GestureDetector(
+                    child: SvgPicture.asset(AppIcons.userSquare,height: 32,width: 32,),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const UserProfile(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
           ),
@@ -136,25 +133,13 @@ class MainScreen extends StatelessWidget {
                         image: AppImages.import,
                         title: 'Import',
                         onTap: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => CreateTripScreen(
-                          //           type: 'hospital',
-                          //         )));
                         },
                       ),
-                     SizedBox(width: 26,),
+                     const SizedBox(width: 26,),
                       ShippingWidget(
                         image: AppImages.export,
                         title: 'Export',
                         onTap: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => CreateTripScreen(
-                          //           type: 'local',
-                          //         )));
                         },
                       ),
                     ],

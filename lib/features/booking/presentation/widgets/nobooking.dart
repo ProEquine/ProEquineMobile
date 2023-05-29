@@ -10,7 +10,7 @@ class NoBooking extends StatelessWidget {
     return Scaffold(
         body: Column(
       children: [
-        Container(
+        SizedBox(
           width: double.infinity,
           child: Image.asset(
             'assets/images/nobooking.png',

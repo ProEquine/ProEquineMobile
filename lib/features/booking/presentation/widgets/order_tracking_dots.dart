@@ -23,7 +23,7 @@ class OrderTrackingDots extends StatelessWidget {
             width: 3,
             color: isPassed ? Colors.green : AppColors.grey,
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Container(
@@ -31,7 +31,7 @@ class OrderTrackingDots extends StatelessWidget {
             width: 3,
             color: isPassed ? Colors.green : AppColors.grey,
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Container(
@@ -39,7 +39,7 @@ class OrderTrackingDots extends StatelessWidget {
             width: 3,
             color: isPassed ? Colors.green : AppColors.grey,
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Container(

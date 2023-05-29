@@ -6,11 +6,6 @@ import '../colors/app_colors.dart';
 class AppStyles {
   /// Bold font
 
-  static const TextStyle mainTextStyle = TextStyle(
-    color: AppColors.mainTextColor,
-    fontWeight: FontWeight.w700,
-    fontSize: 17.0,
-  );
   static const TextStyle summaryTitleStyle = TextStyle(
       fontSize: 18,
       fontFamily: 'notosan',
@@ -22,23 +17,9 @@ class AppStyles {
       fontWeight: FontWeight.w400,
       color: Color(0xffA2A8AE));
 
-  /// Medium Font
-
-  static const TextStyle altTextStyle = TextStyle(
-    color: AppColors.altTextColor,
-    fontWeight: FontWeight.w500,
-    fontSize: 15.0,
-  );
-
   /// Regular font
 
   static const mainFont = TextStyle(fontFamily: 'notosan');
-
-  static const appbarTitleStyle = TextStyle(
-    color: AppColors.mainTextColor,
-    fontSize: 17,
-    fontWeight: FontWeight.bold,
-  );
 
   /// Registration flow title style
 
@@ -73,7 +54,7 @@ class AppStyles {
       ),
     ),
     timePickerTheme: timePickerTheme,
-    brightness: Brightness.dark,
+    brightness: Brightness.light,
     dividerColor: Colors.transparent,
     scaffoldBackgroundColor: Colors.black,
     hintColor: AppColors.formsHintFont,

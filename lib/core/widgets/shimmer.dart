@@ -64,12 +64,8 @@ class _ShimmerLoadingState extends State<ShimmerLoading> {
     if (!widget.isLoading) {
       return widget.child;
     }
-
-    // Collect ancestor shimmer information.
     final shimmer = Shimmer.of(context)!;
     if (!shimmer.isSized) {
-      // The ancestor Shimmer widget isn’t laid
-      // out yet. Return an empty box.
       return const SizedBox();
     }
 
@@ -105,7 +101,6 @@ class Shimmer extends StatefulWidget {
 
   const Shimmer({
     super.key,
-    // required this.linearGradient,
     this.child,
   });
 

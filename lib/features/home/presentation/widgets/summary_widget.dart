@@ -6,11 +6,13 @@ import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 
 class SummaryBoxWidget extends StatelessWidget {
+  const SummaryBoxWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xff191919),
+        color: const Color(0xff191919),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(
@@ -119,7 +121,7 @@ class SummaryBoxWidget extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
-              backgroundColor: Color(0xff303030),
+              backgroundColor: const Color(0xff303030),
               child: const Text(
                 "Edit",
                 style: TextStyle(

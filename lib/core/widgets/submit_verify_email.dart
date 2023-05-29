@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:proequine/features/profile/data/verify_email_route.dart';
 import 'package:proequine/features/profile/domain/profile_cubit.dart';
@@ -7,7 +8,6 @@ import 'package:sizer/sizer.dart';
 
 import '../constants/colors/app_colors.dart';
 import '../constants/constants.dart';
-import '../utils/sharedpreferences/SharedPreferencesHelper.dart';
 
 class SubmitVerifyEmail extends StatefulWidget {
   String? title;
@@ -76,30 +76,30 @@ class _SubmitVerifyEmailState extends State<SubmitVerifyEmail>
                       _controller
                         ..duration = composition.duration
                         ..forward().whenComplete(() =>
-                            Navigator.popAndPushNamed(context, '/homeRouteBooking'));
+                            Navigator.popAndPushNamed(context, bookingRoute));
                     }else if (verifyEmailRoute.type=='notifications'){
                       _controller
                         ..duration = composition.duration
                         ..forward().whenComplete(() =>
-                            Navigator.popAndPushNamed(context, '/homeRouteNotifications'));
+                            Navigator.popAndPushNamed(context, inboxRoute));
                     }
                     else if (verifyEmailRoute.type=='createTrip'){
                       _controller
                         ..duration = composition.duration
                         ..forward().whenComplete(() =>
-                            Navigator.popAndPushNamed(context, '/createTrip'));
+                            Navigator.popAndPushNamed(context, createTrip));
                     }
                     else if (verifyEmailRoute.type=='createEvent'){
                       _controller
                         ..duration = composition.duration
                         ..forward().whenComplete(() =>
-                            Navigator.popAndPushNamed(context, '/createEvent'));
+                            Navigator.popAndPushNamed(context, createEvent));
                     }
                     else if (verifyEmailRoute.type=='updateEmail'){
                       _controller
                         ..duration = composition.duration
                         ..forward().whenComplete(() =>
-                            Navigator.popAndPushNamed(context, '/accountInformation'));
+                            Navigator.popAndPushNamed(context, accountInfo));
                     }
 
                   }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:proequine/features/nav_bar/presentation/screens/bottomnavigation.dart';
+import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 
 class CreateTripHeader extends StatelessWidget {
-  String?image;
+  final String?image;
 
-  CreateTripHeader({super.key,this.image});
+  const CreateTripHeader({super.key,this.image});
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -30,7 +30,7 @@ class CreateTripHeader extends StatelessWidget {
               ),
               child: InkWell(
                 onTap: () {
-                  Navigator.popAndPushNamed(context, '/homeRoute');
+                  Navigator.popAndPushNamed(context, homeRoute);
                 },
                 child: const Icon(
                   Icons.arrow_back_ios_new,

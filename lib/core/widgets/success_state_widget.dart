@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:proequine/features/profile/data/verify_phone_route.dart';
 import 'package:proequine/features/profile/domain/profile_cubit.dart';
@@ -81,7 +82,7 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
                       _controller
                         ..duration = composition.duration
                         ..forward().whenComplete(() =>
-                            Navigator.popAndPushNamed(context, '/accountInformation'));
+                            Navigator.popAndPushNamed(context, accountInfo));
                     }else{
                       _controller
                         ..duration = composition.duration

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:proequine/core/constants/constants.dart';
 import '../../../../core/widgets/account_shimmer.dart';
-import '../../../../core/widgets/headerText.dart';
+import '../../../../core/widgets/header_text.dart';
 
 const _shimmerGradient = LinearGradient(
   colors: [
-    Color(0x323232),
+    Color(0xFF323232),
     Color.fromRGBO(255, 255, 252, 0.2),
-    Color(0x323232),
+    Color(0xFF323232),
   ],
   stops: [
     0.1,
@@ -37,7 +37,7 @@ class AccountInfoLoading extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    HeaderText("Profile", "Account Information", true),
+                    HeaderText("", "Account Information", true),
                     const SizedBox(
                       height: 5,
                     ),

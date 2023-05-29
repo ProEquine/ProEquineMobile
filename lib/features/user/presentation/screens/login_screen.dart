@@ -13,8 +13,7 @@ import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/forget_password_screen.dart';
 import 'package:proequine/features/user/presentation/screens/interests_screen.dart';
 import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
-import 'package:proequine/features/user/presentation/widgets/login_header.dart';
-import 'package:sizer/sizer.dart';
+
 
 import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/utils/rebi_message.dart';
@@ -48,13 +47,14 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     _email.dispose();
     _password.dispose();
+    cubit.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => BlocProvider.of<NavbarCubit>(context).onWillPop(),
+      onWillPop: () => BlocProvider.of<NavbarCubit>(context).onWillPop(context),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: SafeArea(
@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     style: AppStyles.registrationTitle,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Padding(
@@ -162,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  ForgotPasswordScreen()));
+                                                  const ForgotPasswordScreen()));
                                     },
                                     child: const Text(
                                       style: TextStyle(
@@ -229,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (state is LoginLoading) {
             return LoadingCircularWidget();
           } else if (state is LoginError) {
-            RebiMessage.error(msg: state.message!);
+
           }
           {
             return RebiButton(
@@ -260,10 +260,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       builder: (context) => const InterestsScreen()));
             } else {
               Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => BottomNavigation()));
+                  MaterialPageRoute(builder: (context) => const BottomNavigation()));
             }
           } else if (state is LoginError) {
-            RebiMessage.error(msg: state.message!);
+            RebiMessage.error(msg: state.message!,context: context);
           }
         });
   }

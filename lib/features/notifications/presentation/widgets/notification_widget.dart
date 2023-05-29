@@ -8,6 +8,8 @@ class NotificationWidget extends StatelessWidget {
   String? statusImage;
   String? bookingTypeText;
   String? image;
+  String? time;
+  String? id;
   String? title;
   String? date;
   String? transport;
@@ -18,6 +20,8 @@ class NotificationWidget extends StatelessWidget {
       this.review = false,
       this.bookingTypeText,
       this.date,
+      this.id,
+      this.time,
       this.transport,
       this.title,
       this.image,
@@ -28,155 +32,123 @@ class NotificationWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
       decoration: BoxDecoration(
-        color: Color.fromRGBO(25, 25, 25, 1),
+        color: const Color.fromRGBO(25, 25, 25, 1),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              SvgPicture.asset(statusImage!),
-              const SizedBox(
-                width: 5,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Row(
+          children: [
+            SvgPicture.asset(statusImage!),
+            const SizedBox(
+              width: 5,
+            ),
+            Text(
+              bookingTypeText!,
+              style: const TextStyle(
+                color: AppColors.textColor,
+                fontFamily: 'notosan',
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
               ),
-              Text(
-                bookingTypeText!,
-                style: const TextStyle(
-                  color: AppColors.textColor,
-                  fontFamily: 'notosan',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                ),
+            ),
+            const SizedBox(
+              width: 5,
+            ),
+            Text(
+              id!,
+              style: const TextStyle(
+                color: AppColors.grey,
+                fontFamily: 'notosan',
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
               ),
-              const SizedBox(
-                width: 5,
+            ),
+            const Spacer(),
+            Text(
+              time!,
+              style: const TextStyle(
+                color: AppColors.grey,
+                fontFamily: 'notosan',
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
               ),
-              Text(
-                "LT9664",
-                style: const TextStyle(
-                  color: AppColors.altTextColor2,
-                  fontFamily: 'notosan',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              Spacer(),
-              Text(
-                "10 min ago",
-                style: const TextStyle(
-                  color: AppColors.altTextColor2,
-                  fontFamily: 'notosan',
-                  fontSize: 12,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(
-                width: 8,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 30.0.w,
-                    child: Text(
-                      title!,
-                      textAlign: TextAlign.left,
-                      style: const TextStyle(
-                          color: AppColors.titleColor,
-                          fontSize: 14,
-                          fontFamily: 'notosan',
-                          fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 3,
-                  ),
-                  Container(
-                    width: 30.0.w,
-                    child: Text(
-                      date!,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          color: AppColors.formsHintFont,
-                          fontSize: 12,
-                          fontFamily: 'notosan',
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 3,
-                  ),
-                  SizedBox(
-                    width: 30.0.w,
-                    child: Text(
-                      transport!,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          color: AppColors.formsHintFont,
-                          fontSize: 12,
-                          fontFamily: 'notosan',
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                ],
-              ),
-              Spacer(),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    height: 50,
-                  ),
-                  // Visibility(
-                  //   visible: review,
-                  //   child: Container(
-                  //     height: 5.0.h,
-                  //     width: 20.w,
-                  //     decoration: BoxDecoration(
-                  //       color: AppColors.notificationReview,
-                  //       borderRadius: BorderRadius.circular(76),
-                  //     ),
-                  //     child: const Center(
-                  //       child: Text(
-                  //         "Review",
-                  //         style: TextStyle(
-                  //             color: AppColors.white,
-                  //             fontWeight: FontWeight.w400,
-                  //             fontSize: 12,
-                  //             fontFamily: 'notosan'),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                ],
-              ),
-              Container(
-                height: 9.0.h,
-                width: 25.0.w,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  image: DecorationImage(
-                    image: AssetImage(image!),
-                    fit: BoxFit.fill,
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const SizedBox(
+              width: 8,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 30.0.w,
+                  child: Text(
+                    title!,
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(
+                        color: AppColors.titleColor,
+                        fontSize: 14,
+                        fontFamily: 'notosan',
+                        fontWeight: FontWeight.w500),
                   ),
                 ),
+                const SizedBox(
+                  height: 3,
+                ),
+                SizedBox(
+                  width: 30.0.w,
+                  child: Text(
+                    date!,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: AppColors.formsHintFont,
+                        fontSize: 12,
+                        fontFamily: 'notosan',
+                        fontWeight: FontWeight.w400),
+                  ),
+                ),
+                const SizedBox(
+                  height: 3,
+                ),
+                SizedBox(
+                  width: 30.0.w,
+                  child: Text(
+                    transport!,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: AppColors.formsHintFont,
+                        fontSize: 12,
+                        fontFamily: 'notosan',
+                        fontWeight: FontWeight.w400),
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
+            const SizedBox(
+              height: 50,
+            ),
+            Container(
+              height: 9.0.h,
+              width: 25.0.w,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                image: DecorationImage(
+                  image: AssetImage(image!),
+                  fit: BoxFit.fill,
+                ),
               ),
-            ],
-          ),
-        ],
-      ),
+            ),
+          ],
+        ),
+      ]),
     );
   }
 }

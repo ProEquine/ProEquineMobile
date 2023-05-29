@@ -12,7 +12,7 @@ import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
-import '../../../../core/widgets/headerText.dart';
+import '../../../../core/widgets/header_text.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/success_state_widget.dart';
@@ -26,13 +26,15 @@ class ChangePasswordScreen extends StatelessWidget {
   final TextEditingController _confirmNewPassword = TextEditingController();
   ProfileCubit cubit = ProfileCubit();
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
         child: CustomHeader(
-          title: "",
+          title: "Reset password",
           isThereBackButton: true,
         ),
       ),
@@ -43,7 +45,7 @@ class ChangePasswordScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20,),
-              HeaderText("Reset Password", "", true),
+
               Padding(
                 padding: const EdgeInsets.only(
                     left: kPadding,right: kPadding,bottom: 10),
@@ -127,7 +129,7 @@ class ChangePasswordScreen extends StatelessWidget {
 
                                 )));
                   } else if (state is ChangePasswordError) {
-                    RebiMessage.error(msg: state.message!);
+                    RebiMessage.error(msg: state.message!,context: context);
                   }
                 },
                 builder: (context, state) {

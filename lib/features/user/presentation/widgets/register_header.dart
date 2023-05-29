@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:proequine/core/constants/constants.dart';
-import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/features/user/presentation/screens/login_screen.dart';
 
 import 'dart:math' as math;
@@ -45,7 +44,7 @@ class RegistrationHeader extends StatelessWidget {
           InkWell(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()));
+                  MaterialPageRoute(builder: (context) => const LoginScreen()));
             },
             child: Container(
               padding:

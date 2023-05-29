@@ -13,7 +13,7 @@ class RebiButton extends StatefulWidget {
     this.width,
     this.height = 50,
     this.elevation = 0,
-    this.shadowColor = AppColors.buttonShadow,
+    this.shadowColor = AppColors.gold,
     this.radius = 10.0,
     this.isBackButton=false,
   }) : super(key: key);
@@ -46,8 +46,8 @@ class _RebiButtonState extends State<RebiButton> {
           widget.onPressed!();
         },
         style: widget.isBackButton?ElevatedButton.styleFrom(
-          primary: widget.backgroundColor,
-          // onPrimary: AppColors.backgroundColor,
+          backgroundColor: widget.backgroundColor,
+
           side: const BorderSide(
               width: 2, // the thickness
               color:  AppColors.white,
@@ -68,8 +68,7 @@ class _RebiButtonState extends State<RebiButton> {
             ),
           ),
         ):ElevatedButton.styleFrom(
-          primary: widget.backgroundColor,
-          onPrimary: AppColors.backgroundColor,
+          foregroundColor: AppColors.backgroundColor, backgroundColor: widget.backgroundColor,
           // side: const BorderSide(
           //     width: 2, // the thickness
           //     color: Colors.black // the color of the border

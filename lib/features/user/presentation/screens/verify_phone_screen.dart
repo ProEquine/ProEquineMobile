@@ -1,18 +1,15 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/features/user/data/register_request_model.dart';
-import 'package:proequine/features/user/data/send_verification_request_model.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/thems/app_styles.dart';
-import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_logo_widget.dart';
@@ -51,6 +48,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
   void dispose() {
     _phone.dispose();
     _countryCode.dispose();
+    cubit.close();
     super.dispose();
   }
 
@@ -72,7 +70,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                       children: [
                         RegistrationHeader(isThereBackButton: true),
                         const CustomLogoWidget(),
-                        SizedBox(
+                        const SizedBox(
                           height: 40,
                         ),
                         Padding(
@@ -100,6 +98,8 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                         controller: _countryCode,
                                         keyboardType: TextInputType.number,
                                         textInputAction: TextInputAction.done,
+                                        autoValidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                         isOptional: false,
                                         color: AppColors.formsLabel,
                                         readOnly: false,
@@ -123,6 +123,8 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                         controller: _phone,
                                         keyboardType: TextInputType.number,
                                         textInputAction: TextInputAction.done,
+                                        autoValidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                         isOptional: false,
                                         color: AppColors.formsLabel,
                                         readOnly: false,
@@ -178,7 +180,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                                         _phone.text,
                                                   )));
                                     } else if (state is RegisterError) {
-                                      RebiMessage.error(msg: state.message!);
+                                      RebiMessage.error(msg: state.message!,context: context);
                                     }
                                   },
                                 ),

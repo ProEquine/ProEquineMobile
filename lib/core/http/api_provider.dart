@@ -93,19 +93,9 @@ class ApiProvider {
       Print('DioErrorDioErrorDioError $error');
       if (e.response != null) if (e.response?.data !=
           null) if (!(e.response?.data is String)) {
-        //TODO error 405 //TODO yes
-        //TODO error 401
-        //TODO test successful == true and false
 
         Print(e.response?.data);
         json = e.response?.data;
-        // if(error is HttpMethodUnCorrect) {
-        //   json = {"":""};
-        //   }else if(error is InternalServerError){
-        //   json = {"":""};
-        // }else{
-        //   json =e.response.data;
-        // }
       }
 
       return BaseResponseModel.fromJson(json: json, error: error);

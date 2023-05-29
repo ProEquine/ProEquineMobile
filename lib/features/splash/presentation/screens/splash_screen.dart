@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:proequine/features/notifications/domain/notifications_cubit.dart';
 import 'package:proequine/features/splash/data/refresh_request_model.dart';
 import 'package:proequine/features/splash/domain/splash_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
@@ -34,6 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   SplashCubit splashCubit = SplashCubit();
+  NotificationsCubit notificationsCubit = NotificationsCubit();
 
   // getVersion() async {
   //   PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -51,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (AppSharedPreferences.getIsITypeSelected!) {
           if (context.mounted) {
             Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => BottomNavigation()));
+                MaterialPageRoute(builder: (context) => const BottomNavigation()));
           }
         } else {
           if (context.mounted) {
@@ -103,9 +105,15 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     startTimer();
     sendRefreshToken();
-    // getVersion();
+    notificationsCubit.configOneSignal();
 
     super.initState();
+  }
+  @override
+  void dispose() {
+    splashCubit.close();
+    notificationsCubit.close();
+    super.dispose();
   }
 
   @override

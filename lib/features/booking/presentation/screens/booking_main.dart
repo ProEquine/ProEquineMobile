@@ -2,12 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/images/app_images.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/widgets/verify_dialog.dart';
-import '../../../../core/widgets/verify_email_dialog.dart';
 import '../../../profile/data/verify_email_route.dart';
 import '../../../profile/presentation/screens/user_profile.dart';
 import '../widgets/bookings.dart';
@@ -35,7 +35,7 @@ class _BookingMainState extends State<BookingMain> {
         // If the account is not verified, show a dialog after a delay.
         Future.delayed(const Duration(milliseconds: 50), () {
           showUnverifiedAccountDialog(context: context, isThereNavigationBar: true,onPressVerify: () {
-            Navigator.pushNamed(context, '/VerifyEmail', arguments:VerifyEmailRoute(type: 'Booking',email: AppSharedPreferences.userEmailAddress))
+            Navigator.pushNamed(context, verifyEmail, arguments:VerifyEmailRoute(type: 'Booking',email: AppSharedPreferences.userEmailAddress))
                 .then((value) {});
           },);
         });

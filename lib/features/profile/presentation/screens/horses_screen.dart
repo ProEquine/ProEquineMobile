@@ -10,6 +10,8 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/widgets/custom_header.dart';
 
 class HorsesScreen extends StatefulWidget {
+  const HorsesScreen({super.key});
+
   @override
   _HorsesScreenState createState() => _HorsesScreenState();
 }
@@ -35,7 +37,7 @@ class _HorsesScreenState extends State<HorsesScreen> {
                   shrinkWrap: true,
                   primary: false,
                 scrollDirection: Axis.vertical,
-                physics: AlwaysScrollableScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: 8,
                   itemBuilder: (context, index) {
                     return Padding(
@@ -62,7 +64,7 @@ class _HorsesScreenState extends State<HorsesScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AddHorseScreen()));
+                            builder: (context) => const AddHorseScreen()));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -70,7 +72,7 @@ class _HorsesScreenState extends State<HorsesScreen> {
                       Container(
                         // height: 10,
                         // width: 10,
-                        padding: EdgeInsets.all(3),
+                        padding: const EdgeInsets.all(3),
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.black),
                           color: Colors.white,
@@ -93,7 +95,7 @@ class _HorsesScreenState extends State<HorsesScreen> {
 
               ),
             ),
-            SizedBox(height: 10,)
+            const SizedBox(height: 10,)
           ],
         ),
     );

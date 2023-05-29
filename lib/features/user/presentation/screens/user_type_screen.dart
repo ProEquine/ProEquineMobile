@@ -17,10 +17,10 @@ import '../widgets/register_header.dart';
 import '../widgets/selectable_type_container.dart';
 
 class UserTypeScreen extends StatefulWidget {
-  String? interest;
-  String? phone;
+  final String? interest;
+  final String? phone;
 
-  UserTypeScreen({Key? key, this.interest, this.phone}) : super(key: key);
+  const UserTypeScreen({Key? key, this.interest, this.phone}) : super(key: key);
 
   @override
   State<UserTypeScreen> createState() => _UserTypeScreenState();
@@ -30,6 +30,11 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
   final UserCubit cubit = UserCubit();
   final List<bool> _isSelected = [false, false, false, false];
   String? userType;
+  @override
+  void dispose() {
+   cubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +143,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
           if (state is SelectInterestsLoading) {
             return LoadingCircularWidget();
           } else if (state is SelectInterestsError) {
-            RebiMessage.error(msg: state.message!);
+            RebiMessage.error(msg: state.message!,context: context);
           }
           {
             return RebiButton(
@@ -148,7 +153,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                   if (userType != null) {
                     _onPressConfirm();
                   } else {
-                    RebiMessage.error(msg: 'Please select your type');
+                    RebiMessage.error(msg: 'Please select your type',context: context);
                   }
                 },
                 child: const Text("Continue"));
@@ -160,7 +165,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => BottomNavigation()));
           } else if (state is SelectInterestsError) {
-            RebiMessage.error(msg: state.message!);
+            RebiMessage.error(msg: state.message!,context: context);
           }
         });
   }

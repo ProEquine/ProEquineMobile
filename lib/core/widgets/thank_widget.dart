@@ -4,8 +4,8 @@ import 'package:proequine/core/widgets/custom_back_button.dart';
 import 'package:sizer/sizer.dart';
 
 class ThanksWidget extends StatelessWidget {
-  ThanksWidget({
-    Key? key,
+  const ThanksWidget({
+    super.key,
   });
 
   @override
@@ -20,7 +20,7 @@ class ThanksWidget extends StatelessWidget {
                 height: 43.0.h,
                 width: double.infinity,
                 decoration: const BoxDecoration(
-                  color:  Color(0xff000000),
+                  color: Color(0xff000000),
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     image: AssetImage(AppImages.supportThanks),
@@ -30,7 +30,9 @@ class ThanksWidget extends StatelessWidget {
               const Positioned(
                   top: 20,
                   left: 30,
-                  child: CustomBackButton(size: 40,))
+                  child: CustomBackButton(
+                    size: 40,
+                  ))
             ],
           ),
           const Padding(

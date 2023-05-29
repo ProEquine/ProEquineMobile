@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/constants/constants.dart';
-import 'package:proequine/core/widgets/headerText.dart';
+import 'package:proequine/core/widgets/header_text.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/widgets/custom_header.dart';
@@ -15,8 +15,11 @@ class TermsCondition extends StatelessWidget {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(20.0.h),
           child: CustomHeader(
-            title: "",
-            isThereBackButton: true,
+            title: "Terms&Conditions",
+            isThereBackButton: false,
+            onPressUp: (){
+
+            },
           ),
         ),
         body: Padding(
@@ -26,7 +29,7 @@ class TermsCondition extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                HeaderText("Terms & Conditions", "Privacy Policy",true),
+                HeaderText("", "Privacy Policy",true),
                 const SizedBox(
                   height: 20,
                 ),

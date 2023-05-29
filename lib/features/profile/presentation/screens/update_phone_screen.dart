@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/extensions.dart';
-import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/features/profile/data/edit_phone_request_model.dart';
 import 'package:proequine/features/profile/domain/profile_cubit.dart';
-import 'package:proequine/features/profile/presentation/screens/verify_email_screen.dart';
-import 'package:proequine/features/profile/presentation/screens/verify_updated_phone_screen.dart';
-import 'package:proequine/features/user/presentation/screens/verify_phone_screen.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
@@ -14,11 +11,10 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
-import '../../../../core/widgets/headerText.dart';
+import '../../../../core/widgets/header_text.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
-import '../../../user/presentation/screens/verification_screen.dart';
 
 class UpdatePhoneScreen extends StatelessWidget {
   UpdatePhoneScreen({Key? key}) : super(key: key);
@@ -35,7 +31,7 @@ class UpdatePhoneScreen extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
         child: CustomHeader(
-          title: "",
+          title: "Update Phone Number",
           isThereBackButton: true,
         ),
       ),
@@ -46,7 +42,6 @@ class UpdatePhoneScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            HeaderText("Update Phone Number", "", true),
             Padding(
               padding: const EdgeInsets.symmetric(
                    horizontal: kPadding),
@@ -117,7 +112,7 @@ class UpdatePhoneScreen extends StatelessWidget {
                 },
                 listener: (context, state) {
                   if (state is SendPhoneSuccessful) {
-                    Navigator.pushReplacementNamed(context, '/verifyUpdate',
+                    Navigator.pushReplacementNamed(context, verifyUpdatePhone,
                         arguments: _countryCode.text + _phone.text);
                     // Navigator.pushReplacement(
                     //     context,
@@ -126,7 +121,7 @@ class UpdatePhoneScreen extends StatelessWidget {
                     //               phone: _countryCode.text + _phone.text,
                     //             )));
                   } else if (state is SendPhoneError) {
-                    RebiMessage.error(msg: state.message!);
+                    RebiMessage.error(msg: state.message!,context: context);
                   }
                 },
               ),

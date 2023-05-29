@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/printer.dart';
 
@@ -12,7 +13,6 @@ import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/verify_dialog.dart';
-import '../../../../core/widgets/verify_email_dialog.dart';
 import '../../../profile/data/verify_email_route.dart';
 import '../../../profile/presentation/widgets/drop_down_menu_widget.dart';
 import '../widgets/create_trip_header.dart';
@@ -80,7 +80,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         // If the account is not verified, show a dialog after a delay.
         Future.delayed(const Duration(milliseconds: 50), () {
           showUnverifiedAccountDialog(context: context, isThereNavigationBar: true,onPressVerify: () {
-            Navigator.pushNamed(context, '/VerifyEmail',arguments: VerifyEmailRoute(type: 'createEvent',email: AppSharedPreferences.userEmailAddress))
+            Navigator.pushNamed(context, verifyEmail,arguments: VerifyEmailRoute(type: 'createEvent',email: AppSharedPreferences.userEmailAddress))
                 .then((value) {});
           },);
         });

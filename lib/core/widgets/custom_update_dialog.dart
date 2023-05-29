@@ -29,12 +29,12 @@ class UpdateApp extends StatelessWidget {
               const SizedBox(height: 21),
               Text(
                 heading,
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
+                style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 19),
               Text(
                 msg,
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
               ),
               const SizedBox(height: 15),
               Row(
@@ -43,7 +43,7 @@ class UpdateApp extends StatelessWidget {
                   OutlinedButton(
                     onPressed: () {},
                     style: OutlinedButton.styleFrom(
-                      minimumSize: Size(100, 33),
+                      minimumSize: const Size(100, 33),
                       side: const BorderSide(
                         color: Colors.white,
                         width: 1,
@@ -62,8 +62,8 @@ class UpdateApp extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(100, 33),
-                      backgroundColor: Color.fromRGBO(224, 173, 37, 1),
+                      minimumSize: const Size(100, 33),
+                      backgroundColor: const Color.fromRGBO(224, 173, 37, 1),
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(6.5),

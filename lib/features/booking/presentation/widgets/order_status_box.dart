@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -34,7 +33,7 @@ class OrderStatusBox extends StatelessWidget {
 
             ),
             child:
-                CircleAvatar(
+                const CircleAvatar(
                   backgroundColor: Colors.grey,
                   radius: 8,
                 ))
@@ -45,7 +44,7 @@ class OrderStatusBox extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: orderStatus == true ? Colors.green : AppColors.grey,
                   ),
-                  child: Icon(
+                  child: const Icon(
                           Icons.check,
                           color: Colors.white,
                           size: 20,
@@ -53,10 +52,8 @@ class OrderStatusBox extends StatelessWidget {
                 ),
           Column(
             children: [
-              Container(
+              SizedBox(
                 width: 60.0.w,
-                // height: 8.0.h,
-                // padding: EdgeInsets.symmetric(vertical: 2.0.h),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: AutoSizeText(
@@ -69,7 +66,7 @@ class OrderStatusBox extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: 60.0.w,
                 // height: 8.0.h,
                 // padding: EdgeInsets.symmetric(vertical: 2.0.h),

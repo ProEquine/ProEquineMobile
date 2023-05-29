@@ -27,7 +27,7 @@ class ResetPasswordScreen extends StatefulWidget {
   final String? phone;
   final String? token;
 
-  ResetPasswordScreen({super.key, this.phone, this.token});
+  const ResetPasswordScreen({super.key, this.phone, this.token});
 
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
@@ -42,7 +42,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   late Timer _timer;
 
   void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         if (_secondsLeft > 0) {
           _secondsLeft--;
@@ -69,6 +69,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   void initState() {
     super.initState();
+  }
+  @override
+  void dispose() {
+    cubit.close();
+    _password.dispose();
+    _confirmPassword.dispose();
+    _pinPutController.dispose();
+    super.dispose();
   }
 
   @override
@@ -335,13 +343,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         },
         listener: (context, state) {
           if (state is ResetPasswordSuccessful) {
-            RebiMessage.success(msg: state.message!);
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const ResetPasswordSubmit()));
           } else if (state is ResetPasswordError) {
-            RebiMessage.error(msg: state.message!);
+            RebiMessage.error(msg: state.message!,context: context);
           }
         });
   }

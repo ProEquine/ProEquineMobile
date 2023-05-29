@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:blur_bottom_bar/blur_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,13 +6,12 @@ import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/features/nav_bar/domain/navbar_cubit.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../booking/presentation/screens/booking_main.dart';
-import '../../../events/presentation/screens/event_list_main.dart';
 import '../../../home/presentation/screens/main_screen.dart';
 import '../../../notifications/presentation/screens/notifications_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
-  int? selectedIndex;
-  BottomNavigation({super.key,this.selectedIndex});
+  final int? selectedIndex;
+  const BottomNavigation({super.key,this.selectedIndex});
 
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
@@ -43,7 +41,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: WillPopScope(
-        onWillPop: () => BlocProvider.of<NavbarCubit>(context).onWillPop(),
+        onWillPop: () => BlocProvider.of<NavbarCubit>(context).onWillPop(context),
         child: Stack(
           children: <Widget>[
             _widgetOptions.elementAt(_selectedIndex),
@@ -52,14 +50,14 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 filterY: 21,
                 showSelectedLabels: true,
                 showUnselectedLabels: true,
-                selectedItemColor: AppColors.navBarIconsColor,
+                selectedItemColor: AppColors.yellow,
                 opacity: 0.8,
                 bottomNavigationBarItems: <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
                     backgroundColor: Colors.transparent,
                     icon: SvgPicture.asset(
                       _selectedIndex == 0?AppIcons.selectedHome:AppIcons.unSelectedHome,
-                      color: _selectedIndex==0?AppColors.navBarIconsColor:AppColors.white
+                      color: _selectedIndex==0?AppColors.yellow:AppColors.white
                     ),
 
 
@@ -78,7 +76,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                     backgroundColor: AppColors.gold,
                     icon: SvgPicture.asset(
                       _selectedIndex == 2?AppIcons.selectedInbox:AppIcons.unSelectedInbox,
-                        color: _selectedIndex==2?AppColors.navBarIconsColor:AppColors.white
+                        color: _selectedIndex==2?AppColors.yellow:AppColors.white
                     ),
                     label: 'Inbox',
                   ),

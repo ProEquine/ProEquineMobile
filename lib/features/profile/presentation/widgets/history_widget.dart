@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:proequine/core/constants/constants.dart';
-import 'package:proequine/features/profile/presentation/widgets/ellipses_widget.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/images/app_images.dart';
 
 class HistoryWidget extends StatelessWidget {
-  String? statusImg;
-  String? transport;
-  String? refnumber;
-  String? title;
-  String? horsesCount;
+  final String? statusImg;
+  final String? transport;
+  final String? refNumber;
+  final String? title;
+  final String? horsesCount;
 
-  HistoryWidget({
+  const HistoryWidget({
     super.key,
     this.title,
-    this.refnumber,
+    this.refNumber,
     this.statusImg,
     this.transport,
     this.horsesCount,
@@ -28,13 +25,13 @@ class HistoryWidget extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Color.fromRGBO(25, 25, 25, 1),
+        color: const Color.fromRGBO(25, 25, 25, 1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
             child: Row(
               children: [
                 SvgPicture.asset(statusImg!),
@@ -50,11 +47,11 @@ class HistoryWidget extends StatelessWidget {
                       fontFamily: 'notosan',
                       fontWeight: FontWeight.w500),
                 ),
-                Spacer(
+                const Spacer(
                   flex: 1,
                 ),
                 Text(
-                  refnumber!,
+                  refNumber!,
                   textAlign: TextAlign.left,
                   style: const TextStyle(
                       color: AppColors.titleColor,
@@ -78,27 +75,25 @@ class HistoryWidget extends StatelessWidget {
                     Row(
                       children: [
                         Image.asset(
-                          AppImages.transport,
+                          AppImages.truckIcon,
                         ),
                         const SizedBox(
                           width: 5,
                         ),
                         Flexible(
-                          child: Container(
-                            child: Text(
-                              transport!,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                  color: AppColors.textColor,
-                                  fontSize: 12,
-                                  fontFamily: 'notosan',
-                                  fontWeight: FontWeight.w400),
-                            ),
+                          child: Text(
+                            transport!,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                                color: AppColors.textColor,
+                                fontSize: 12,
+                                fontFamily: 'notosan',
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Row(

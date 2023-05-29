@@ -5,8 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/features/events/presentation/widgets/all_events_list.dart';
 import 'package:sizer/sizer.dart';
-
-import '../../../../core/widgets/titlebar.dart';
 import '../../../profile/presentation/screens/user_profile.dart';
 import '../widgets/eventitem.dart';
 

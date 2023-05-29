@@ -24,18 +24,10 @@ class InterestsScreen extends StatefulWidget {
 class _InterestsScreenState extends State<InterestsScreen> {
   final List<bool> _isSelected = [false, false, false, false];
   String? interest;
-
-  @override
-  void initState() {
-    Print("phone number is ${AppSharedPreferences.userPhoneNumber}");
-    Print("isType selected ${AppSharedPreferences.getIsITypeSelected}");
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => BlocProvider.of<NavbarCubit>(context).onWillPop(),
+      onWillPop: () => BlocProvider.of<NavbarCubit>(context).onWillPop(context),
       child: Scaffold(
         body: SafeArea(
           child: Column(
@@ -127,7 +119,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
                                     interest: interest,
                                   )));
                     } else {
-                      RebiMessage.error(msg: 'Please select your interest');
+                      RebiMessage.error(msg: 'Please select your interest',context: context);
                     }
                   },
                   child: const Text("Continue"),

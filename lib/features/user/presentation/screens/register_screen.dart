@@ -5,7 +5,7 @@ import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
-import 'package:proequine/core/widgets/marketing_checkbox.dart';
+import 'package:proequine/core/widgets/privacy_checkbox.dart';
 import 'package:proequine/features/user/presentation/screens/signup_screen.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/global_functions/date_time_picker.dart';
@@ -39,6 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _middleName = TextEditingController();
     _lastName = TextEditingController();
     _dateOfBirth = TextEditingController();
+
     super.initState();
   }
 
@@ -57,10 +58,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: LayoutBuilder(
-          builder: (context,constraint){
+          builder: (context, constraint) {
             return Form(
               key: _formKey,
-
               child: SingleChildScrollView(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minHeight: constraint.maxHeight),
@@ -69,25 +69,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       children: [
                         RegistrationHeader(isThereBackButton: true),
                         const CustomLogoWidget(),
-                        Spacer(),
+                        const Spacer(),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: kPadding),
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: kPadding),
                           child: Column(
                             children: [
-
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text("Sign up",
                                     style: AppStyles.registrationTitle),
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   Expanded(
                                     flex: 9,
                                     child: Padding(
-                                      padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
                                       child: RebiInput(
                                         hintText: 'First Name'.tra,
                                         controller: _firstName,
@@ -96,8 +97,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         isOptional: false,
                                         color: AppColors.formsLabel,
                                         readOnly: false,
-                                        contentPadding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 13),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 13),
                                         obscureText: false,
                                         validator: (value) {
                                           return Validator.requiredValidator(
@@ -106,14 +108,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 5,
                                   ),
                                   Expanded(
                                     flex: 10,
                                     child: Padding(
-                                      padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
                                       child: RebiInput(
                                         hintText: 'Middle Name'.tra,
                                         controller: _middleName,
@@ -122,8 +124,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         isOptional: false,
                                         color: AppColors.formsLabel,
                                         readOnly: false,
-                                        contentPadding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 13),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 13),
                                         obscureText: false,
                                         validator: (value) {
                                           return Validator.requiredValidator(
@@ -135,7 +138,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ],
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: RebiInput(
                                   hintText: 'Last Name'.tra,
                                   controller: _lastName,
@@ -154,7 +158,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: RebiInput(
                                   hintText: 'Date Of Birth'.tra,
                                   controller: _dateOfBirth,
@@ -165,9 +170,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       setState(() {
                                         dateTime = value!;
                                         final DateFormat formatter =
-                                        DateFormat('dd MMM yyyy');
+                                            DateFormat('dd MMM yyyy');
                                         final String formatted =
-                                        formatter.format(dateTime);
+                                            formatter.format(dateTime);
                                         _dateOfBirth.text = formatted;
                                       });
                                     });
@@ -186,7 +191,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                               Transform.translate(
                                 offset: const Offset(-10.0, 0.0),
-                                child: PrivacyAndMarketingCheckBox(
+                                child: PrivacyCheckBox(
                                     isTherePrivacy: true,
                                     value: privacyValue,
                                     onChanged: (value) {
@@ -195,43 +200,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       });
                                     }),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               privacyValue
                                   ? Padding(
-                                padding:
-                                const EdgeInsets.symmetric(vertical: 20),
-                                child: RebiButton(
-                                    onPressed: () {
-                                      if (_formKey.currentState!.validate()) {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SignUpScreen(
-                                                      dob: dateTime
-                                                          .toIso8601String(),
-                                                      name:
-                                                      '${_firstName.text + " "+ _middleName.text +" "+ _lastName.text} ',
-                                                    )));
-                                      } else {}
-                                    },
-                                    backgroundColor: AppColors.white,
-                                    child: const Text("Sign up")),
-                              )
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 20),
+                                      child: RebiButton(
+                                          onPressed: () {
+                                            if (_formKey.currentState!
+                                                .validate()) {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SignUpScreen(
+                                                            dob: dateTime
+                                                                .toIso8601String(),
+                                                            name:
+                                                                '${"${_firstName.text} ${_middleName.text} ${_lastName.text}"} ',
+                                                          )));
+                                            } else {}
+                                          },
+                                          backgroundColor: AppColors.white,
+                                          child: const Text("Sign up")),
+                                    )
                                   : Padding(
-                                padding:
-                                const EdgeInsets.symmetric(vertical: 20),
-                                child: RebiButton(
-                                    onPressed: () {
-                                      RebiMessage.error(
-                                          msg: "Please accept the privacy first"
-                                              .tra);
-                                    },
-                                    backgroundColor: AppColors.formsLabel,
-                                    child: const Text("Sign up")),
-                              ),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 20),
+                                      child: RebiButton(
+                                          onPressed: () {
+                                            RebiMessage.error(
+                                                msg:
+                                                    "Please accept the privacy first"
+                                                        .tra,context: context);
+                                          },
+                                          backgroundColor: AppColors.formsLabel,
+                                          child: const Text("Sign up")),
+                                    ),
                               const SizedBox(
                                 height: 20,
                               ),

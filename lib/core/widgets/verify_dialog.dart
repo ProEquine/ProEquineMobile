@@ -5,10 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/features/nav_bar/presentation/screens/bottomnavigation.dart';
 
-import '../../core/utils/extensions.dart';
 import '../constants/colors/app_colors.dart';
 import '../constants/images/app_images.dart';
-import 'rebi_button.dart';
 
 void showUnverifiedAccountDialog(
     {required BuildContext context,

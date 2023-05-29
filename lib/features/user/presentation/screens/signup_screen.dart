@@ -11,10 +11,10 @@ import '../../../../core/widgets/rebi_input.dart';
 import '../widgets/register_header.dart';
 
 class SignUpScreen extends StatefulWidget {
-  String? dob;
-  String? name;
+ final String? dob;
+ final String? name;
 
-  SignUpScreen({super.key, this.dob, this.name});
+  const SignUpScreen({super.key, this.dob, this.name});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -61,7 +61,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       children: [
                         RegistrationHeader(isThereBackButton: true),
                         const CustomLogoWidget(),
-                        Spacer(),
+                        const Spacer(),
                         Padding(
                           padding:
                               const EdgeInsets.symmetric(horizontal: kPadding),
@@ -81,7 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   keyboardType: TextInputType.emailAddress,
                                   textInputAction: TextInputAction.done,
                                   autoValidateMode:
-                                      AutovalidateMode.disabled,
+                                      AutovalidateMode.onUserInteraction,
                                   isOptional: false,
                                   color: AppColors.formsLabel,
                                   readOnly: false,
@@ -103,6 +103,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   keyboardType: TextInputType.visiblePassword,
                                   textInputAction: TextInputAction.done,
                                   isOptional: false,
+                                  autoValidateMode:
+                                  AutovalidateMode.onUserInteraction,
                                   color: AppColors.formsLabel,
                                   readOnly: false,
                                   contentPadding: const EdgeInsets.symmetric(
@@ -120,7 +122,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 child: RebiInput(
                                   hintText: 'Confirm password'.tra,
                                   controller: _confirmPassword,
-                                  scrollPadding: EdgeInsets.only(bottom: 100),
+                                  scrollPadding: const EdgeInsets.only(bottom: 100),
                                   keyboardType: TextInputType.visiblePassword,
                                   textInputAction: TextInputAction.done,
                                   autoValidateMode:

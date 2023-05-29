@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/features/notifications/presentation/widgets/notification_widget.dart';
 import 'package:proequine/features/profile/data/verify_email_route.dart';
 import 'package:sizer/sizer.dart';
@@ -10,10 +11,11 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/images/app_images.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/widgets/verify_dialog.dart';
-import '../../../../core/widgets/verify_email_dialog.dart';
 import '../../../profile/presentation/screens/user_profile.dart';
 
 class NotificationsScreen extends StatefulWidget {
+  const NotificationsScreen({super.key});
+
   @override
   _NotificationsScreenState createState() => _NotificationsScreenState();
 }
@@ -34,7 +36,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         // If the account is not verified, show a dialog after a delay.
         Future.delayed(const Duration(milliseconds: 50), () {
           showUnverifiedAccountDialog(context: context, isThereNavigationBar: true,onPressVerify: () {
-            Navigator.pushNamed(context, '/VerifyEmail', arguments: VerifyEmailRoute(type: 'notifications',email: AppSharedPreferences.userEmailAddress))
+            Navigator.pushNamed(context, verifyEmail, arguments: VerifyEmailRoute(type: 'notifications',email: AppSharedPreferences.userEmailAddress))
                 .then((value) {});
           },);
         });
@@ -102,6 +104,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       child: NotificationWidget(
                         image: AppImages.upComingEvent,
                         title: 'SERC - DPEC - 2 H',
+                        id: "LT9664",
+                        time: "10 mins ago",
                         transport: 'Event transport',
                         date: '15 Sep • 04:30 pm',
                         bookingTypeText: 'Booking completed',
