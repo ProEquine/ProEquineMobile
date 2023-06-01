@@ -29,8 +29,15 @@ class RebiMessage {
     required BuildContext context,
   }) {
     MotionToast.success(
-  description: Text(msg),
+      description: Text(msg),
       animationType: AnimationType.fromTop,
+      position: MotionToastPosition.top,
+      height: 60,
+      width: 350,
+      borderRadius: 12.0,
+      displayBorder: true,
+      displaySideBar: true,
+
 
     ).show(context);
   }
@@ -64,6 +71,13 @@ class RebiMessage {
     MotionToast.warning(
       description: Text(msg),
       animationType: AnimationType.fromTop,
+      position: MotionToastPosition.top,
+      height: 60,
+      width: 350,
+      borderRadius: 12.0,
+      displayBorder: true,
+      displaySideBar: true,
+
     ).show(context);
   }
 }

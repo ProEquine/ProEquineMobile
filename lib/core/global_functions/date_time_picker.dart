@@ -9,15 +9,22 @@ _showDatePicker(BuildContext context,Function setValue) {
       context: context,
       builder: (context, child) {
         return Theme(
+
             data: Theme.of(context).copyWith(
+              textTheme: const TextTheme(
+                titleMedium: TextStyle(color: Colors.white),
+              ),
               colorScheme: const ColorScheme.light(
                 primary: AppColors.gold, // <-- SEE HERE
                 onPrimary: AppColors.white, // <-- SEE HERE
-                onSurface: Colors.white, // <-- SEE HERE
+                onSurface: Colors.white,
+                onSecondary: Colors.white,
+
+                onInverseSurface: Colors.white// <-- SEE HERE
               ),
               dialogTheme: const DialogTheme(
                 backgroundColor: AppColors.formsBackground,
-                contentTextStyle: TextStyle(fontFamily: 'notosan'),
+                contentTextStyle: TextStyle(fontFamily: 'notosan',color: Colors.white),
               ),
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(

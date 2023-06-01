@@ -251,7 +251,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                               // errorInvalidText:StringKeys.timeError.tr(),
                               // hourLabelText: StringKeys.hour.tr(),
                               // minuteLabelText: StringKeys.minute.tr(),
-                              initialEntryMode: TimePickerEntryMode.dial,
+                              initialEntryMode: TimePickerEntryMode.inputOnly,
                               initialTime: TimeOfDay.fromDateTime(
                                   DateTime.utc(0, 0, 0, 15, 0)),
                             );

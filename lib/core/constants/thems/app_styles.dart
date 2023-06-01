@@ -27,6 +27,7 @@ class AppStyles {
     fontSize: 20.sp,
     fontFamily: "notosan",
     fontWeight: FontWeight.w500,
+    color: Colors.white,
   );
   static final profileHeader = TextStyle(
     fontSize: 20.sp,
@@ -89,7 +90,7 @@ class AppStyles {
     ),
   );
   static final timePickerTheme = TimePickerThemeData(
-    backgroundColor: AppColors.backgroundColor,
+    backgroundColor: AppColors.formsBackground,
     hourMinuteShape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(8)),
       side: BorderSide(color: AppColors.gold, width: 1),
@@ -114,7 +115,7 @@ class AppStyles {
             ? Colors.white
             : AppColors.gold),
     dialHandColor: AppColors.gold,
-    dialBackgroundColor: Colors.blueGrey.shade800,
+    dialBackgroundColor: AppColors.backgroundColor,
     hourMinuteTextStyle: const TextStyle(fontSize: 20, fontFamily: 'notosan'),
     dayPeriodTextStyle: const TextStyle(fontSize: 12, fontFamily: 'notosan'),
     helpTextStyle: const TextStyle(

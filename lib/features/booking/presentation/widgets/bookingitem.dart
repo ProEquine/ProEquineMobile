@@ -69,11 +69,12 @@ class BookingItem extends StatelessWidget {
                         type!,
                         style: const TextStyle(
                           fontSize: 14,
+                          color: AppColors.lightGrey,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
                       const Spacer(),
-                      Text(bookingId!),
+                      Text(bookingId!,style: TextStyle(color: AppColors.lightGrey,),),
                     ],
                   ),
 

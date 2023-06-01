@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 
@@ -19,6 +20,7 @@ class DeletePopup extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(30.0),
       child: AlertDialog(
+        backgroundColor: AppColors.formsBackground,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(12.5),
@@ -36,7 +38,7 @@ class DeletePopup extends StatelessWidget {
               ),
               const Text(
                 "Are you sure you want to delete",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),
               ),
               const SizedBox(
                 height: 20,

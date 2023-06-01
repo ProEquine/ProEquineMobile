@@ -67,11 +67,12 @@ class ConfirmBookingItem extends StatelessWidget {
                             'Pending',
                             style: TextStyle(
                               fontSize: 14,
+                              color: AppColors.lightGrey,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                           const Spacer(),
-                          Text(bookingId!,style: const TextStyle(color: AppColors.grey),),
+                          Text(bookingId!,style: const TextStyle(color: AppColors.lightGrey,),),
                         ],
                       ),
 

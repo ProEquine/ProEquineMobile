@@ -68,7 +68,7 @@ class _BookingMainState extends State<BookingMain> {
                     style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
-                      fontFamily: "hemiHead",
+                      fontFamily: "hemiHead", color: Colors.white
                     ),
                   ),
                   GestureDetector(

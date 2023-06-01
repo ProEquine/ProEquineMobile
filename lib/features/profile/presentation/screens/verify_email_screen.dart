@@ -66,9 +66,19 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     return "$minutes:$seconds";
   }
 VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
+  String hideEmail(String email) {
+    int atIndex = email.indexOf('@');
+    String username = email.substring(0, atIndex);
+    String domain = email.substring(atIndex + 1);
+    String hiddenUsername = username.substring(0, username.length ~/ 2) +
+        '*' * (username.length - (username.length ~/ 2));
+    return '$hiddenUsername@$domain';
+  }
+  String? email;
   @override
   void initState() {
     onSendMail();
+    email=hideEmail(AppSharedPreferences.userEmailAddress);
     super.initState();
   }
   @override
@@ -104,7 +114,7 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                     children: [
                       const SizedBox(height: 20,),
                       Text(
-                        "A 6 digit verification code has been sent to your registered email.",
+                        "A 6 digit verification code has been sent to your email $email.",
                         style: AppStyles.descriptions,
                       ),
                       const SizedBox(

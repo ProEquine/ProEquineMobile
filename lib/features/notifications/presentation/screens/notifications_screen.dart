@@ -68,6 +68,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       "Inbox",
                       style: TextStyle(
                         fontSize: 26,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontFamily: "hemiHead",
                       ),

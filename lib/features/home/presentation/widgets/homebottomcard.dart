@@ -21,7 +21,7 @@ class HomeBottomCard extends StatelessWidget {
           padding:  EdgeInsets.symmetric(horizontal: 20.0,vertical: 40.0),
              child: Text(
                 'coming soon!',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700,fontFamily: 'notosan'),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700,fontFamily: 'notosan',color: Colors.white),
               ),
 
         ),

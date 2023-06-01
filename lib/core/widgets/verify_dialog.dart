@@ -22,6 +22,7 @@ void showUnverifiedAccountDialog(
           child: Padding(
             padding: const EdgeInsets.all(40),
             child: Dialog(
+              backgroundColor: AppColors.formsBackground,
               insetPadding: const EdgeInsets.all(20),
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
@@ -38,7 +39,7 @@ void showUnverifiedAccountDialog(
                     const SizedBox(height: 21),
                     const Text(
                       "Verify your email address To access all features",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500,color: Colors.white),
                     ),
                     const SizedBox(height: 19),
                     Row(
