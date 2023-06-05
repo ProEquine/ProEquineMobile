@@ -57,7 +57,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                     backgroundColor: Colors.transparent,
                     icon: SvgPicture.asset(
                       _selectedIndex == 0?AppIcons.selectedHome:AppIcons.unSelectedHome,
-                      color: _selectedIndex==0?AppColors.yellow:AppColors.white
+
                     ),
 
 

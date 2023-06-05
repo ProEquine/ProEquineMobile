@@ -4,7 +4,7 @@ class AppImages {
   static const error = "assets/images/404.png";
   static const upComingEvent = "assets/images/upcoming-events.png";
   static const truckIcon = "assets/images/transport.png";
-  static const comingSoon = "assets/images/coming-soon.png";
+  static const comingSoon = "assets/images/cooming_soon.png";
   static const event = "assets/images/event.png";
   static const homeCardFull = "assets/images/home-cardfull.png";
   static const hospital = "assets/images/hospital.png";

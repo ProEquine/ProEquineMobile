@@ -3,8 +3,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
 
-import 'package:proequine/core/constants/colors/app_colors.dart';
-
 class RebiMessage {
   RebiMessage({
     required String msg,
@@ -29,16 +27,20 @@ class RebiMessage {
     required BuildContext context,
   }) {
     MotionToast.success(
-      description: Text(msg),
+      description: Text(
+        msg,
+        style:
+            TextStyle(color: Colors.white, fontFamily: 'notosan', fontSize: 16),
+      ),
       animationType: AnimationType.fromTop,
       position: MotionToastPosition.top,
+
       height: 60,
-      width: 350,
+      width: 400,
       borderRadius: 12.0,
+      iconType: IconType.cupertino,
       displayBorder: true,
-      displaySideBar: true,
-
-
+      displaySideBar: false,
     ).show(context);
   }
 
@@ -46,21 +48,23 @@ class RebiMessage {
     required String msg,
     required BuildContext context,
   }) {
-    MotionToast.error(
-      // primaryColor: AppColors.red,
-      // secondaryColor: AppColors.red,
-      description: Text(msg),
+    MotionToast(
+      primaryColor: Colors.red.shade900,
+      secondaryColor: Colors.white,
+      backgroundType: BackgroundType.solid,
+      icon: Icons.close,
+      description: Text(
+        msg,
+        style:
+            TextStyle(color: Colors.white, fontFamily: 'notosan', fontSize: 16),
+      ),
       animationType: AnimationType.fromTop,
-      position: MotionToastPosition.top,
-      height: 60,
-      width: 350,
+      position: MotionToastPosition.values[2],
+      height: 55,
+      width: 400,
       borderRadius: 12.0,
       displayBorder: true,
-      displaySideBar: true,
-
-
-
-
+      displaySideBar: false,
     ).show(context);
   }
 
@@ -73,11 +77,11 @@ class RebiMessage {
       animationType: AnimationType.fromTop,
       position: MotionToastPosition.top,
       height: 60,
-      width: 350,
+      width: 400,
+      iconType: IconType.cupertino,
       borderRadius: 12.0,
       displayBorder: true,
-      displaySideBar: true,
-
+      displaySideBar: false,
     ).show(context);
   }
 }

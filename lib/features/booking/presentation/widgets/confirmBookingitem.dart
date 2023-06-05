@@ -28,15 +28,15 @@ class ConfirmBookingItem extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  flex: 7,
+                  flex: 8,
                   child: Container(
                     height: 14.h,
                     width: double.infinity,
                     decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(15),bottomLeft: Radius.circular(15)),
                       image: DecorationImage(
-                          image: NetworkImage(
-                              "https://images.unsplash.com/photo-1579202673506-ca3ce28943ef"),
+                          image: AssetImage(
+                             AppImages.hospital),
                           fit: BoxFit.fill),
                     ),
                   ),

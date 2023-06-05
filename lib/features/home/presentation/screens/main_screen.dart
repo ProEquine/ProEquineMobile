@@ -121,7 +121,7 @@ class MainScreen extends StatelessWidget {
                       'Shipping',
                       textAlign: TextAlign.start,
                       style:
-                      TextStyle(fontSize: 24.0, fontWeight: FontWeight.w500),
+                      TextStyle(fontSize: 24.0, fontWeight: FontWeight.w500,color: Colors.white),
                     ),
                   ),
                   const SizedBox(

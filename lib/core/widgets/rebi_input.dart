@@ -105,6 +105,7 @@ class _RebiInputState extends State<RebiInput> {
           controller: widget.controller ?? _controller,
           textAlign: widget.textAlign,
           textAlignVertical: TextAlignVertical.center,
+          keyboardAppearance: Brightness.dark,
           inputFormatters: widget.inputFormatters,
           keyboardType: widget.keyboardType,
           textInputAction: widget.textInputAction,
