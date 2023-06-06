@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/core/utils/extensions.dart';
@@ -29,6 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late final TextEditingController _dateOfBirth;
 
   late DateTime dateTime;
+  late String dateTimeInString;
 
   bool privacyValue = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -166,16 +168,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   keyboardType: TextInputType.name,
                                   textInputAction: TextInputAction.done,
                                   onTap: () {
-                                    showDate(context, (value) {
-                                      setState(() {
-                                        dateTime = value!;
-                                        final DateFormat formatter =
-                                            DateFormat('dd MMM yyyy');
-                                        final String formatted =
-                                            formatter.format(dateTime);
-                                        _dateOfBirth.text = formatted;
-                                      });
-                                    });
+                                    DatePicker.showDatePicker(context,
+                                        theme: DatePickerTheme(
+                                          containerHeight: 210.0,
+                                        ),
+                                        showTitleActions: true,
+                                        minTime: DateTime(1950, 1, 1),
+                                        maxTime: DateTime(2010, 12, 31), onConfirm: (date) {
+                                          print('confirm $date');
+                                          dateTimeInString = '${date.year} - ${date.month} - ${date.day}';
+                                          setState(() {});
+                                        }, currentTime: DateTime.now(), locale: LocaleType.en);
                                   },
                                   isOptional: false,
                                   color: AppColors.formsLabel,
