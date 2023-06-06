@@ -6,8 +6,9 @@ class ServiceWidget extends StatelessWidget {
   final String? image;
   final String? title;
   final Function? onTap;
+  bool isItDisable=false;
 
-  const ServiceWidget({super.key, this.image, this.title, this.onTap});
+   ServiceWidget({super.key, this.image, this.title, this.onTap,this.isItDisable=false});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,41 @@ class ServiceWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
+          isItDisable?Stack(
+            children: [
+              Container(
+                height: 116.0,
+                width: 27.2.w,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    image: DecorationImage(
+                        image: AssetImage(image!),
+                        fit: BoxFit.cover
+                    )
+                ),
+              ),
+              Positioned.fill(
+                child: Opacity(
+                  opacity: 0.8,
+                  child: Container(color: Colors.black),
+                ),
+              ),
+
+              const Positioned.fill(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Coming soon',
+                    style: TextStyle(
+                        color: AppColors.textColor,
+                        fontFamily: 'notosan',
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15.0),
+                  ),
+                ),
+              ),
+            ],
+          ):Container(
             height: 116.0,
             width: 27.2.w,
             decoration: BoxDecoration(
@@ -35,8 +70,8 @@ class ServiceWidget extends StatelessWidget {
           Text(
             title!,
             textAlign: TextAlign.start,
-            style: const TextStyle(
-                color: AppColors.white,
+            style:  TextStyle(
+                color: isItDisable?AppColors.textColor:AppColors.white,
                 fontFamily: 'notosan',
                 fontWeight: FontWeight.w400,
                 fontSize: 15.0),

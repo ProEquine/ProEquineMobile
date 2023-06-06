@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/features/home/presentation/screens/create_trip_screen.dart';
-import 'package:proequine/features/home/presentation/widgets/event_comingsoon.dart';
 import 'package:proequine/features/home/presentation/widgets/service_widget.dart';
 import 'package:proequine/features/home/presentation/widgets/shipping_widget.dart';
 import 'package:sizer/sizer.dart';
 import '../../../profile/presentation/screens/user_profile.dart';
 import '../widgets/home_cardfull.dart';
 import '../widgets/homebottomcard.dart';
+import 'create_event_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -103,18 +103,19 @@ class MainScreen extends StatelessWidget {
                                           )));
                             },
                           ),
-                          const EventComingSoon(),
-                          // ServiceWidget(
-                          //   image: AppImages.event,
-                          //   title: 'Event',
-                          //   onTap: () {
-                          //     Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //             builder: (context) =>
-                          //                 CreateEventScreen()));
-                          //   },
-                          // ),
+                          // const EventComingSoon(),
+                          ServiceWidget(
+                            image: AppImages.event,
+                            isItDisable: true,
+                            title: 'Event',
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CreateEventScreen()));
+                            },
+                          ),
                         ],
                       )),
                   const Padding(
