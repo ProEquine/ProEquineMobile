@@ -20,10 +20,9 @@ class Support extends StatelessWidget {
   final TextEditingController descriptionIssue = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-
   Support({super.key});
 
-  ProfileCubit cubit =ProfileCubit();
+  ProfileCubit cubit = ProfileCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +40,14 @@ class Support extends StatelessWidget {
           children: [
             Row(
               children: [
-                const SizedBox(width: 14,),
+                const SizedBox(
+                  width: 14,
+                ),
                 HeaderText("", "Get in touch, we're here to help", true),
               ],
             ),
             const SizedBox(
-              height: 20,
+              height: 5,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
@@ -60,7 +61,7 @@ class Support extends StatelessWidget {
                 color: AppColors.formsLabel,
                 readOnly: false,
                 contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
                 obscureText: false,
                 validator: (value) {
                   return Validator.requiredValidator(bookingNumber.text);
@@ -80,7 +81,7 @@ class Support extends StatelessWidget {
                 color: AppColors.formsLabel,
                 readOnly: false,
                 contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
                 obscureText: false,
                 validator: (value) {
                   return Validator.requiredValidator(descriptionIssue.text);
@@ -93,17 +94,17 @@ class Support extends StatelessWidget {
               child: BlocConsumer<ProfileCubit, ProfileState>(
                 bloc: cubit,
                 listener: (context, state) {
-                  if (state is ContactSupportSuccessful){
+                  if (state is ContactSupportSuccessful) {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const ThanksWidget()));
-                  }else if (state is ContactSupportError){
-                    RebiMessage.error(msg: state.message!,context: context);
+                  } else if (state is ContactSupportError) {
+                    RebiMessage.error(msg: state.message!, context: context);
                   }
                 },
                 builder: (context, state) {
-                  if(state is ContactSupportLoading){
+                  if (state is ContactSupportLoading) {
                     return LoadingCircularWidget();
                   }
                   return RebiButton(
@@ -125,7 +126,8 @@ class Support extends StatelessWidget {
       ),
     );
   }
-  onPressSend(){
+
+  onPressSend() {
     return cubit.contactSupport(SupportRequestModel(
       referenceNumber: bookingNumber.text,
       description: descriptionIssue.text,

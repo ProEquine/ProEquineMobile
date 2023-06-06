@@ -3,12 +3,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
-import 'package:proequine/features/home/presentation/screens/create_event_screen.dart';
 import 'package:proequine/features/home/presentation/screens/create_trip_screen.dart';
+import 'package:proequine/features/home/presentation/widgets/event_comingsoon.dart';
 import 'package:proequine/features/home/presentation/widgets/service_widget.dart';
 import 'package:proequine/features/home/presentation/widgets/shipping_widget.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../../profile/presentation/screens/user_profile.dart';
 import '../widgets/home_cardfull.dart';
 import '../widgets/homebottomcard.dart';
@@ -31,17 +30,25 @@ class MainScreen extends StatelessWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: 50, bottom: 20, left: 20, right: 20),
+                  top: 60, bottom: 5, left: 20, right: 20),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
                     width: 150,
-                    child: SvgPicture.asset(AppIcons.proEquine,height: 32,width: 32,),
+                    child: SvgPicture.asset(
+                      AppIcons.proEquine,
+                      height: 32,
+                      width: 32,
+                    ),
                   ),
                   GestureDetector(
-                    child: SvgPicture.asset(AppIcons.userSquare,height: 32,width: 32,),
+                    child: SvgPicture.asset(
+                      AppIcons.userSquare,
+                      height: 32,
+                      width: 32,
+                    ),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -68,7 +75,7 @@ class MainScreen extends StatelessWidget {
                 children: <Widget>[
                   const HomeCardFull(),
                   Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
+                      padding: const EdgeInsets.only(top: 22.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -80,8 +87,8 @@ class MainScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => CreateTripScreen(
-                                        type: 'local',
-                                      )));
+                                            type: 'local',
+                                          )));
                             },
                           ),
                           ServiceWidget(
@@ -92,25 +99,27 @@ class MainScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => CreateTripScreen(
-                                        type: 'hospital',
-                                      )));
+                                            type: 'hospital',
+                                          )));
                             },
                           ),
-                          ServiceWidget(
-                            image: AppImages.event,
-                            title: 'Event',
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CreateEventScreen()));
-                            },
-                          ),
+                          const EventComingSoon(),
+                          // ServiceWidget(
+                          //   image: AppImages.event,
+                          //   title: 'Event',
+                          //   onTap: () {
+                          //     Navigator.push(
+                          //         context,
+                          //         MaterialPageRoute(
+                          //             builder: (context) =>
+                          //                 CreateEventScreen()));
+                          //   },
+                          // ),
                         ],
                       )),
                   const Padding(
                     padding: EdgeInsets.only(
-                      top: 30,
+                      top: 24,
                       bottom: 5,
                     ),
                     child: HomeBottomCard(),
@@ -120,31 +129,35 @@ class MainScreen extends StatelessWidget {
                     child: Text(
                       'Shipping',
                       textAlign: TextAlign.start,
-                      style:
-                      TextStyle(fontSize: 24.0, fontWeight: FontWeight.w500,color: Colors.white),
+                      style: TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
                     ),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 8,
                   ),
                   Row(
                     children: [
                       ShippingWidget(
                         image: AppImages.import,
                         title: 'Import',
-                        onTap: () {
-                        },
+                        onTap: () {},
                       ),
-                     const SizedBox(width: 26,),
+                      const SizedBox(
+                        width: 26,
+                      ),
                       ShippingWidget(
                         image: AppImages.export,
                         title: 'Export',
-                        onTap: () {
-                        },
+                        onTap: () {},
                       ),
                     ],
                   ),
-                  const SizedBox(height: 60,),
+                  const SizedBox(
+                    height: 60,
+                  ),
                 ],
               ),
             ),

@@ -36,7 +36,10 @@ class HomeCardFull extends StatelessWidget {
             child: Text(
               'Transportation',
               textAlign: TextAlign.start,
-              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w500,color: Colors.white),
+              style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white),
             ),
           ),
         ),
