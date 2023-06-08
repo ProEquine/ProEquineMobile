@@ -73,9 +73,10 @@ class MainScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  const SizedBox(height: 20,),
                   const HomeCardFull(),
                   Padding(
-                      padding: const EdgeInsets.only(top: 22.0),
+                      padding: const EdgeInsets.only(top: 30.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

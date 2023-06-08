@@ -10,13 +10,13 @@ class HomeCardFull extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 65.h,
+      height: 55.h,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         image: const DecorationImage(
           image: AssetImage(AppImages.homeCardFull),
-          fit: BoxFit.contain,
+          fit: BoxFit.cover,
         ),
       ),
       child: Container(

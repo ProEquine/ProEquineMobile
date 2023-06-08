@@ -351,7 +351,7 @@ void selectDate({
                           });
                         },
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5.0,
                       ),
                       Padding(
