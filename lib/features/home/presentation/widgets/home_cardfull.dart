@@ -16,7 +16,7 @@ class HomeCardFull extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         image: const DecorationImage(
           image: AssetImage(AppImages.homeCardFull),
-          fit: BoxFit.cover,
+          fit: BoxFit.contain,
         ),
       ),
       child: Container(

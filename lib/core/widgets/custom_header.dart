@@ -27,8 +27,7 @@ class CustomHeader extends StatelessWidget {
     return SafeArea(
       child: isThereBackButton
           ? Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: Row(
                 children: [
                   Transform(
@@ -69,14 +68,11 @@ class CustomHeader extends StatelessWidget {
                 ],
               ),
             )
-
           : Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-
                   Text(
                     title,
                     style: const TextStyle(
@@ -113,7 +109,6 @@ class CustomHeader extends StatelessWidget {
                           )),
                     ),
                   ),
-
                 ],
               ),
             ),

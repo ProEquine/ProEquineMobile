@@ -30,7 +30,8 @@ void showUnverifiedAccountDialog(
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(21.0),
+                padding: const EdgeInsets.only(
+                    top: 19, left: 19, right: 19, bottom: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -39,7 +40,10 @@ void showUnverifiedAccountDialog(
                     const SizedBox(height: 21),
                     const Text(
                       "Verify your email address To access all features",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500,color: Colors.white),
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
                     ),
                     const SizedBox(height: 19),
                     Row(
@@ -72,7 +76,6 @@ void showUnverifiedAccountDialog(
                         ElevatedButton(
                           onPressed: () {
                             onPressVerify();
-
                           },
                           style: ElevatedButton.styleFrom(
                             minimumSize: const Size(100, 33),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:proequine/core/constants/colors/app_colors.dart';
@@ -54,10 +53,11 @@ class _UserProfileState extends State<UserProfile> {
             children: [
               ProfileListTileWidget(
                 title: "Account",
-                onTap: () async{
+                onTap: () async {
                   final updatedEmail = await Navigator.push<String>(
                     context,
-                    MaterialPageRoute(builder: (context) => AccountInfoScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => AccountInfoScreen()),
                   );
 
                   if (updatedEmail != null) {
@@ -108,11 +108,12 @@ class _UserProfileState extends State<UserProfile> {
                   await SecureStorage().deleteDeviceId();
                   await SecureStorage().deleteRefreshToken();
                   await SecureStorage().deleteToken();
-                  AppSharedPreferences.phoneVerified=false;
-                  AppSharedPreferences.typeSelected=false;
-                  AppSharedPreferences.emailVerified=false;
-                  if(context.mounted){
-                    RebiMessage.success(msg: "Logout Successfully",context: context);
+                  AppSharedPreferences.phoneVerified = false;
+                  AppSharedPreferences.typeSelected = false;
+                  AppSharedPreferences.emailVerified = false;
+                  if (context.mounted) {
+                    RebiMessage.success(
+                        msg: "Logout Successfully", context: context);
                   }
 
                   if (context.mounted) {
@@ -138,9 +139,9 @@ class _UserProfileState extends State<UserProfile> {
                 height: 50,
               ),
               RichText(
-                  text:  TextSpan(children: [
+                  text: TextSpan(children: [
                 TextSpan(
-                  text: email??AppSharedPreferences.userEmailAddress,
+                  text: email ?? AppSharedPreferences.userEmailAddress,
                   style: const TextStyle(
                     color: AppColors.grey,
                   ),

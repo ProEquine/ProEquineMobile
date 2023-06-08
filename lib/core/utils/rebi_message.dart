@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
+import 'package:proequine/toasticons_icons.dart';
 
 class RebiMessage {
   RebiMessage({
@@ -21,7 +22,6 @@ class RebiMessage {
       webShowClose: true,
     );
   }
-
   RebiMessage.success({
     required String msg,
     required BuildContext context,
@@ -34,7 +34,6 @@ class RebiMessage {
       ),
       animationType: AnimationType.fromTop,
       position: MotionToastPosition.top,
-
       height: 60,
       width: 400,
       borderRadius: 12.0,
@@ -49,21 +48,38 @@ class RebiMessage {
     required BuildContext context,
   }) {
     MotionToast(
+      description: Padding(
+        padding: const EdgeInsets.only(left: 16),
+        child: Row(
+          children: [
+            const Icon(
+              Toasticons.cancel_circled_outline,
+              color: Colors.white,
+              size: 32,
+            ),
+            const SizedBox(
+              width: 12,
+            ),
+            Text(
+              msg,
+              style: const TextStyle(
+                color: Colors.white,
+                fontFamily: 'notosan',
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+      ),
       primaryColor: Colors.red.shade900,
       secondaryColor: Colors.white,
       backgroundType: BackgroundType.solid,
-      icon: Icons.close,
-      description: Text(
-        msg,
-        style:
-            TextStyle(color: Colors.white, fontFamily: 'notosan', fontSize: 16),
-      ),
       animationType: AnimationType.fromTop,
       position: MotionToastPosition.values[2],
       height: 55,
       width: 400,
       borderRadius: 12.0,
-      displayBorder: true,
+      displayBorder: false,
       displaySideBar: false,
     ).show(context);
   }

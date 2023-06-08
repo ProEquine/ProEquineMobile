@@ -17,103 +17,107 @@ class DeletePopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: AlertDialog(
-        backgroundColor: AppColors.formsBackground,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(12.5),
-          ),
+    return AlertDialog(
+      backgroundColor: AppColors.formsBackground,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(12.5),
         ),
-        content: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              SvgPicture.asset(AppIcons.info),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                "Are you sure you want to delete",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () => Navigator.pop(context, 'Cancel'),
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: const Size(100, 33),
-                        side: const BorderSide(
-                          color: Colors.white,
-                          width: 1,
-                        ),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(6.5),
-                          ),
-                        ),
+      ),
+      content: Padding(
+        padding: const EdgeInsets.only(
+          top: 10,
+          left: 10,
+          right: 10,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SvgPicture.asset(AppIcons.info),
+            const SizedBox(
+              height: 20,
+            ),
+            const Text(
+              "Are you sure you want to delete",
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(
+                        color: Colors.white,
+                        width: 1,
                       ),
-                      child: const Text(
-                        "Close",
-                        style: TextStyle(color: Colors.white),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(6.5),
+                        ),
                       ),
                     ),
+                    child: const Text(
+                      "Close",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                  const SizedBox(width: 10,),
-                  BlocConsumer<UserCubit, UserState>(
-                      bloc: cubit,
-                      builder: (context, state) {
-                        return Expanded(
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              cubit.deleteAccount(
-                                  AppSharedPreferences.userPhoneNumber);
-                              await SecureStorage().deleteUserId();
-                              await SecureStorage().deleteDeviceId();
-                              await SecureStorage().deleteRefreshToken();
-                              await SecureStorage().deleteToken();
-                              if (context.mounted) {
-                                RebiMessage.success(
-                                    msg: "Account Deleted", context: context);
-                              }
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                BlocConsumer<UserCubit, UserState>(
+                    bloc: cubit,
+                    builder: (context, state) {
+                      return Expanded(
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            cubit.deleteAccount(
+                                AppSharedPreferences.userPhoneNumber);
+                            await SecureStorage().deleteUserId();
+                            await SecureStorage().deleteDeviceId();
+                            await SecureStorage().deleteRefreshToken();
+                            await SecureStorage().deleteToken();
+                            if (context.mounted) {
+                              RebiMessage.success(
+                                  msg: "Account Deleted", context: context);
+                            }
 
-                              if (context.mounted) {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SplashScreen()));
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size(100, 33),
-                              backgroundColor:
-                                  const Color.fromRGBO(224, 173, 37, 1),
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(6.5),
-                                ),
+                            if (context.mounted) {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SplashScreen()));
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromRGBO(224, 173, 37, 1),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(6.5),
                               ),
                             ),
-                            child: const Text('Confirm'),
                           ),
-                        );
-                      },
-                      listener: (context, state) {
-                        if (state is DeleteAccountSuccessful) {}
-                      }),
-                ],
-              )
-            ],
-          ),
+                          child: const Text('Confirm'),
+                        ),
+                      );
+                    },
+                    listener: (context, state) {
+                      if (state is DeleteAccountSuccessful) {}
+                    }),
+              ],
+            )
+          ],
         ),
       ),
     );
