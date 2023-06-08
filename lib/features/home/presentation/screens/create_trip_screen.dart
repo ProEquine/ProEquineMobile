@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
@@ -13,6 +14,7 @@ import '../../../../core/global_functions/date_time_picker.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
+import '../../../../core/widgets/date_time_picker.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/verify_dialog.dart';
@@ -34,6 +36,7 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
   TextEditingController destination = TextEditingController();
   TextEditingController contact = TextEditingController();
   TextEditingController comment = TextEditingController();
+  DateTime _focusedDay = DateTime.now();
   TextEditingController? date;
   TextEditingController? expectedDate;
   bool isWithoutReturn = false;
@@ -93,6 +96,9 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
 
   @override
   void initState() {
+    initializeDateFormatting();
+    dateTime=DateTime.now();
+    expectedDateTime=DateTime.now().add(const Duration(days: 1));
     checkVerificationStatus().then((verified) {
       if (!verified) {
         // If the account is not verified, show a dialog after a delay.
@@ -206,17 +212,25 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                   keyboardType: TextInputType.name,
                                   textInputAction: TextInputAction.done,
                                   onTap: () {
-                                    showDate(context, (value) {
-                                      setState(() {
-                                        dateTime = value!;
-
-                                        final DateFormat formatter =
-                                        DateFormat('dd MMM yyyy');
-                                        final String formatted =
-                                        formatter.format(dateTime);
-                                        date?.text = formatted;
-                                      });
-                                    });
+                                    selectDate(
+                                        context: context,
+                                        from: DateTime.now(),
+                                        to: DateTime(2025,1,1),
+                                        isSupportChangingYears: false,
+                                        selectedOurDay: dateTime,
+                                        controller: date!, focusDay: _focusedDay,
+                                        );
+                                    // showDate(context, (value) {
+                                    //   setState(() {
+                                    //     dateTime = value!;
+                                    //
+                                    //     final DateFormat formatter =
+                                    //     DateFormat('dd MMM yyyy');
+                                    //     final String formatted =
+                                    //     formatter.format(dateTime);
+                                    //     date?.text = formatted;
+                                    //   });
+                                    // });
                                   },
                                   autoValidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -381,17 +395,14 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                     keyboardType: TextInputType.name,
                                     textInputAction: TextInputAction.done,
                                     onTap: () {
-                                      showDate(context, (value) {
-                                        setState(() {
-                                          expectedDateTime = value!;
-
-                                          final DateFormat formatter =
-                                          DateFormat('dd MMM yyyy');
-                                          final String formatted = formatter
-                                              .format(expectedDateTime);
-                                          expectedDate?.text = formatted;
-                                        });
-                                      });
+                                      selectDate(
+                                        context: context,
+                                        from: DateTime.now().add(Duration(days: 1)),
+                                        to: DateTime(2025,1,1),
+                                        isSupportChangingYears: false,
+                                        selectedOurDay: expectedDateTime,
+                                        controller: expectedDate!, focusDay: _focusedDay,
+                                      );
                                     },
                                     autoValidateMode:
                                     AutovalidateMode.onUserInteraction,

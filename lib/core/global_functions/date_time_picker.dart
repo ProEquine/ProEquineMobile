@@ -7,6 +7,7 @@ import '../constants/colors/app_colors.dart';
 _showDatePicker(BuildContext context,Function setValue) {
   showDatePicker(
       context: context,
+      initialDatePickerMode: DatePickerMode.day,
       builder: (context, child) {
         return Theme(
 
