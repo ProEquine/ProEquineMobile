@@ -90,13 +90,16 @@ flutter:
           weight: 500
         - asset: assets/fonts/NotoSans-Bold.ttf
           weight: 700
+
     - family: MyFlutterApp
       fonts:
         - asset: assets/fonts/MyIcons.ttf
     - family: hemiHead
       fonts:
         - asset: assets/fonts/HemiHeadRg-BoldItalic 400.ttf
-
+    - family: Toasticons
+      fonts:
+        - asset: assets/fonts/Toasticons.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
