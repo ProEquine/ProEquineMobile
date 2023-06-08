@@ -14,6 +14,7 @@ class ServiceWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        isItDisable?(){}:
         onTap!();
       },
       child: Column(
