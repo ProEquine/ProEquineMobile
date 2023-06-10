@@ -121,7 +121,7 @@ class Booking extends StatelessWidget {
               },
               groupComparator: (value2, value3) => value2.compareTo(value2),
               groupSeparatorBuilder: (String value) => Padding(
-                padding: const EdgeInsets.only(bottom: 11, top: 5),
+                padding: const EdgeInsets.only(bottom: 11, top: 20),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -199,7 +199,9 @@ class Booking extends StatelessWidget {
                 );
               },
             ),
-            const SizedBox(height: 60,),
+            const SizedBox(
+              height: 60,
+            ),
           ],
         ),
       ),

@@ -68,7 +68,7 @@ class _BookingMainState extends State<BookingMain> {
             ),
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: 50, bottom: 20, left: 20, right: 20),
+                  top: 60, bottom: 1, left: 20, right: 20),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,7 +104,7 @@ class _BookingMainState extends State<BookingMain> {
       ),
       body: const SafeArea(
           child: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.only(top: 8.0, left: 20, right: 20, bottom: 20),
         child: Booking(),
       )),
       //TODO: CHANGE HERE IF THE BOOKINGS IS EMPTY

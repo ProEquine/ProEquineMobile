@@ -76,6 +76,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
   Widget build(BuildContext context) {
     widget.isUpdatedSuccessfully =
         ModalRoute.of(context)?.settings.arguments as bool;
+
     return WillPopScope(
       onWillPop:onWillPop,
       child:Scaffold(
