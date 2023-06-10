@@ -44,6 +44,8 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
   bool isInSameDay = false;
   late DateTime dateTime;
   late DateTime expectedDateTime;
+  late DateTime pickdate;
+
   List<DropdownMenuItem<String>> tripType = [
     const DropdownMenuItem(
       value: "No Return",
@@ -99,8 +101,10 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
   @override
   void initState() {
     initializeDateFormatting();
+    pickdate = DateTime.now();
     dateTime = DateTime.now();
-    expectedDateTime = DateTime.now().add(const Duration(days: 1));
+    expectedDateTime = pickdate.add(const Duration(days: 1));
+
     checkVerificationStatus().then((verified) {
       if (!verified) {
         // If the account is not verified, show a dialog after a delay.
@@ -125,6 +129,7 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
     expectedTimePicked = TextEditingController();
     time = DateTime.utc(0, 0, 0, 15, 0);
     expectedTime = DateTime.utc(0, 0, 0, 15, 0);
+
     //set the initial value of text field
     // timePicked?.text=convertToTime(time!);
     super.initState();
@@ -135,6 +140,7 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
 
   @override
   Widget build(BuildContext context) {
+    expectedDateTime = pickdate.add(const Duration(days: 1));
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
@@ -248,10 +254,10 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                               controller: date!,
                               focusDay: _focusedDay,
                             );
+
                             // showDate(context, (value) {
                             //   setState(() {
                             //     dateTime = value!;
-                            //
                             //     final DateFormat formatter =
                             //     DateFormat('dd MMM yyyy');
                             //     final String formatted =
@@ -268,6 +274,10 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                               horizontal: 20, vertical: 13),
                           obscureText: false,
                           validator: (value) {
+                            DateFormat inputFormat = DateFormat("dd MMM yyyy");
+                            DateTime date2 = inputFormat.parse(value!);
+                            pickdate = date2;
+                            print(pickdate);
                             if (dateTime.isBefore(DateTime.now()) &&
                                 !dateTime.isSameDate(DateTime.now())) {
                               return 'correct date please';
@@ -419,10 +429,11 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                     selectDate(
                                       context: context,
                                       from:
-                                          DateTime.now().add(Duration(days: 1)),
+                                          pickdate.add(const Duration(days: 1)),
                                       to: DateTime(2025, 1, 1),
                                       isSupportChangingYears: false,
-                                      selectedOurDay: expectedDateTime,
+                                      selectedOurDay:
+                                          pickdate.add(const Duration(days: 1)),
                                       controller: expectedDate!,
                                       focusDay: _focusedDay,
                                     );
@@ -489,7 +500,8 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                         expectedTime!.isBefore(time!)) {
                                       return 'Correct time please';
                                     }
-                                    // return  Validator.requiredValidator(expectedTimePicked?.text);
+                                    // return Validator.requiredValidator(
+                                    //     expectedTimePicked?.text);
                                   },
                                 ),
                               ),
@@ -545,10 +557,19 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                     if (_formKey.currentState!.validate() &&
                         selectedTrip != null &&
                         selectedNumber != null) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LocalSummary()));
+                      if ((selectedTrip == "Same day return" &&
+                              expectedTime!.isAfter(time!)) ||
+                          (selectedTrip == "Other day return" &&
+                              expectedDateTime.isAfter(dateTime))) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LocalSummary()));
+                      } else {
+                        RebiMessage.error(
+                            msg: "please enter the correct expacted Time",
+                            context: context);
+                      }
                     } else {
                       RebiMessage.error(
                           msg: "please fill all fields", context: context);
