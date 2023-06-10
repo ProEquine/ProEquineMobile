@@ -20,8 +20,7 @@ class PrivacyScreen extends StatelessWidget {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: kPadding, vertical: kPadding),
+          padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

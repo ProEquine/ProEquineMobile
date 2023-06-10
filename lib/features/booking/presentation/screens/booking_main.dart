@@ -21,29 +21,39 @@ class BookingMain extends StatefulWidget {
 
 class _BookingMainState extends State<BookingMain> {
   Future<bool> checkVerificationStatus() async {
-  if(AppSharedPreferences.getEmailVerified!){
-    return true;
-  }else{
-    await Future.delayed(const Duration(milliseconds: 50)); // Simulating an asynchronous call
-    return false;
+    if (AppSharedPreferences.getEmailVerified!) {
+      return true;
+    } else {
+      await Future.delayed(
+          const Duration(milliseconds: 50)); // Simulating an asynchronous call
+      return false;
+    }
   }
-  }
+
   @override
   void initState() {
     checkVerificationStatus().then((verified) {
       if (!verified) {
         // If the account is not verified, show a dialog after a delay.
         Future.delayed(const Duration(milliseconds: 50), () {
-          showUnverifiedAccountDialog(context: context, isThereNavigationBar: true,onPressVerify: () {
-            Navigator.pushNamed(context, verifyEmail, arguments:VerifyEmailRoute(type: 'Booking',email: AppSharedPreferences.userEmailAddress))
-                .then((value) {});
-          },);
+          showUnverifiedAccountDialog(
+            context: context,
+            isThereNavigationBar: true,
+            onPressVerify: () {
+              Navigator.pushNamed(context, verifyEmail,
+                      arguments: VerifyEmailRoute(
+                          type: 'Booking',
+                          email: AppSharedPreferences.userEmailAddress))
+                  .then((value) {});
+            },
+          );
         });
       }
     });
 
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +68,7 @@ class _BookingMainState extends State<BookingMain> {
             ),
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: 50, bottom: 20, left: 20, right: 20),
+                  top: 60, bottom: 1, left: 20, right: 20),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -66,15 +76,16 @@ class _BookingMainState extends State<BookingMain> {
                   const Text(
                     "Bookings",
                     style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "hemiHead", color: Colors.white
-                    ),
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "hemiHead",
+                        color: Colors.white),
                   ),
                   GestureDetector(
                     child: SvgPicture.asset(
                       AppIcons.userSquare,
-                      height: 32,width: 32,
+                      height: 32,
+                      width: 32,
                     ),
                     onTap: () {
                       Navigator.push(
@@ -93,7 +104,7 @@ class _BookingMainState extends State<BookingMain> {
       ),
       body: const SafeArea(
           child: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.only(top: 8.0, left: 20, right: 20, bottom: 20),
         child: Booking(),
       )),
     );
