@@ -6,8 +6,10 @@ import '../../../../core/constants/colors/app_colors.dart';
 
 class CreateTripHeader extends StatelessWidget {
   final String?image;
+   bool isThereVerifyEmail;
+   Function? onTapBack;
 
-  const CreateTripHeader({super.key,this.image});
+   CreateTripHeader({super.key,this.image,this.isThereVerifyEmail=false,this.onTapBack});
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -30,7 +32,12 @@ class CreateTripHeader extends StatelessWidget {
               ),
               child: InkWell(
                 onTap: () {
-                  Navigator.popAndPushNamed(context, homeRoute);
+               if(isThereVerifyEmail){
+                 onTapBack!();
+
+               }else {
+                 Navigator.pop(context);
+               }
                 },
                 child: const Icon(
                   Icons.arrow_back_ios_new,

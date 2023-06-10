@@ -82,7 +82,7 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
                       _controller
                         ..duration = composition.duration
                         ..forward().whenComplete(() =>
-                            Navigator.popAndPushNamed(context, accountInfo));
+                            Navigator.popAndPushNamed(context, accountInfo,arguments: true));
                     }else{
                       _controller
                         ..duration = composition.duration

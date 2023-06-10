@@ -87,19 +87,19 @@ class _SubmitVerifyEmailState extends State<SubmitVerifyEmail>
                       _controller
                         ..duration = composition.duration
                         ..forward().whenComplete(() =>
-                            Navigator.popAndPushNamed(context, createTrip));
+                            Navigator.popAndPushNamed(context, createTrip,arguments: true));
                     }
                     else if (verifyEmailRoute.type=='createEvent'){
                       _controller
                         ..duration = composition.duration
                         ..forward().whenComplete(() =>
-                            Navigator.popAndPushNamed(context, createEvent));
+                            Navigator.popAndPushNamed(context, createEvent,arguments: true));
                     }
                     else if (verifyEmailRoute.type=='updateEmail'){
                       _controller
                         ..duration = composition.duration
                         ..forward().whenComplete(() =>
-                            Navigator.popAndPushNamed(context, accountInfo));
+                            Navigator.popAndPushNamed(context, accountInfo,arguments: true));
                     }
 
                   }

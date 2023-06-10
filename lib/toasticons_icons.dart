@@ -24,8 +24,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class Toasticons {
-  Toasticons._();
+class ToastIcons {
+  ToastIcons._();
 
   static const _kFontFam = 'Toasticons';
   static const String? _kFontPkg = null;

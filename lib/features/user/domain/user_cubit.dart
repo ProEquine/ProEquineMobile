@@ -53,7 +53,7 @@ class UserCubit extends Cubit<UserState> {
       Print("refresh token $refreshToken");
       Print("userId $userId");
       Print("userId ${AppSharedPreferences.getPhoneVerified}");
-      Print("userId ${AppSharedPreferences.getEmailVerified}");
+      Print("email verified ${AppSharedPreferences.getEmailVerified}");
 
       /// this type of Printing working only on debug mode so maintains high performance app
 

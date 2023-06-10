@@ -11,12 +11,15 @@ import 'package:proequine/features/profile/presentation/widgets/account_info_loa
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
-import '../../../../core/utils/Printer.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/header_text.dart';
 import '../../../../core/widgets/rebi_input.dart';
 
 class AccountInfoScreen extends StatefulWidget {
+  bool isUpdatedSuccessfully = false;
+
+  AccountInfoScreen({super.key, this.isUpdatedSuccessfully = false});
+
   @override
   State<AccountInfoScreen> createState() => _AccountInfoScreenState();
 }
@@ -38,6 +41,17 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
 
   ProfileCubit cubit = ProfileCubit();
   String? updatedEmail;
+  DateTime? currentBackPressTime;
+
+   Future<bool> onWillPop() {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime!) > const Duration(seconds: 0)) {
+      currentBackPressTime = now;
+      return Future.value(true);
+    }
+    return Future.value(true);
+  }
 
   @override
   void initState() {
@@ -60,221 +74,241 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    widget.isUpdatedSuccessfully =
+        ModalRoute.of(context)?.settings.arguments as bool;
+    return WillPopScope(
+      onWillPop:onWillPop,
+      child:Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
         child: CustomHeader(
           title: "Profile",
+          isThereChangeWithNavigate: true,
           isThereBackButton: true,
           onPressBack: () {
-            setState(() {
-              Navigator.pop(context, updatedEmail);
-              Print("updated Email $updatedEmail");
-            });
+            if (widget.isUpdatedSuccessfully) {
+              Navigator.pop(context,email.text);
+              Navigator.pop(context,email.text);
+            } else {
+              Navigator.pop(context,email.text);
+            }
           },
         ),
       ),
-      body: LayoutBuilder(builder: (context, constraint) {
-        return BlocConsumer<ProfileCubit, ProfileState>(
-          bloc: cubit,
-          listener: (context, state) {
-            if (state is GetUserSuccessful) {
-              updatedEmail = state.responseModel!.email!;
-            }
-          },
-          builder: (context, state) {
-            if (state is GetUserLoading) {
-              return const AccountInfoLoading(
-                isLoading: true,
-              );
-            } else if (state is GetUserSuccessful) {
-              return Form(
-                key: _formKey,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: kPadding),
-                  child: SingleChildScrollView(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                          minHeight: constraint.maxHeight - 50.0),
-                      child: IntrinsicHeight(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            HeaderText("", "Account Information", true),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: RebiInput(
-                                hintText: state.responseModel!.fullName!,
-                                hintStyle:
-                                    const TextStyle(color: AppColors.white),
-                                controller: name,
-                                keyboardType: TextInputType.name,
-                                textInputAction: TextInputAction.done,
-                                autoValidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                isOptional: false,
-                                color: AppColors.formsLabel,
-                                readOnly: true,
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 13),
-                                obscureText: false,
-                                validator: (value) {
-                                  // return Validator.requiredValidator(name.text);
-                                },
+      body:  LayoutBuilder(builder: (context, constraint) {
+          return BlocConsumer<ProfileCubit, ProfileState>(
+            bloc: cubit,
+            listener: (context, state) {
+              if (state is GetUserSuccessful) {
+                updatedEmail = state.responseModel!.email!;
+              }
+            },
+            builder: (context, state) {
+              if (state is GetUserLoading) {
+                return const AccountInfoLoading(
+                  isLoading: true,
+                );
+              } else if (state is GetUserSuccessful) {
+                return Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: kPadding),
+                    child: SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                            minHeight: constraint.maxHeight - 50.0),
+                        child: IntrinsicHeight(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              HeaderText("", "Account Information", true),
+                              const SizedBox(
+                                height: 5,
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: RebiInput(
-                                hintText: state.responseModel!.email!,
-                                hintStyle:
-                                    const TextStyle(color: AppColors.white),
-                                controller: email,
-                                onTap: () {
-                                  Navigator.pushReplacement(
-                                      context,
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: RebiInput(
+                                  hintText: state.responseModel!.fullName!,
+                                  hintStyle:
+                                      const TextStyle(color: AppColors.white),
+                                  controller: name,
+                                  keyboardType: TextInputType.name,
+                                  textInputAction: TextInputAction.done,
+                                  autoValidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  isOptional: false,
+                                  color: AppColors.formsLabel,
+                                  readOnly: true,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 13),
+                                  obscureText: false,
+                                  validator: (value) {
+                                    // return Validator.requiredValidator(name.text);
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: RebiInput(
+                                  hintText: state.responseModel!.email!,
+                                  hintStyle:
+                                      const TextStyle(color: AppColors.white),
+                                  controller: email,
+                                  onTap: () {
+                                    Navigator.of(context).push(
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              UpdateEmailScreen(
-                                                previousEmail:
-                                                    state.responseModel!.email!,
-                                              )));
-                                },
-                                keyboardType: TextInputType.emailAddress,
-                                textInputAction: TextInputAction.done,
-                                autoValidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                isOptional: false,
-                                color: AppColors.formsLabel,
-                                readOnly: true,
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 13),
-                                obscureText: false,
-                                validator: (value) {
-                                  // return Validator.emailValidator(email.text);
-                                },
+                                        settings:
+                                            RouteSettings(name: updatedEmail),
+                                        builder: (context) => UpdateEmailScreen(
+                                          previousEmail:
+                                              state.responseModel!.email!,
+                                        ),
+                                      ),
+                                    );
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             UpdateEmailScreen(
+                                    //               previousEmail:
+                                    //                   state.responseModel!.email!,
+                                    //             )));
+                                  },
+                                  keyboardType: TextInputType.emailAddress,
+                                  textInputAction: TextInputAction.done,
+                                  autoValidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  isOptional: false,
+                                  color: AppColors.formsLabel,
+                                  readOnly: true,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 13),
+                                  obscureText: false,
+                                  validator: (value) {
+                                    // return Validator.emailValidator(email.text);
+                                  },
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: RebiInput(
-                                hintText: state.responseModel!.phoneNumber!,
-                                hintStyle:
-                                    const TextStyle(color: AppColors.white),
-                                onTap: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, updatePhone);
-                                },
-                                controller: phone,
-                                keyboardType: TextInputType.phone,
-                                textInputAction: TextInputAction.done,
-                                autoValidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                isOptional: false,
-                                color: AppColors.formsLabel,
-                                readOnly: true,
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 13),
-                                obscureText: false,
-                                validator: (value) {
-                                  // return Validator.phoneValidator(phone.text);
-                                },
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: RebiInput(
+                                  hintText: state.responseModel!.phoneNumber!,
+                                  hintStyle:
+                                      const TextStyle(color: AppColors.white),
+                                  onTap: () {
+                                    Navigator.pushNamed(context, updatePhone);
+                                  },
+                                  controller: phone,
+                                  keyboardType: TextInputType.phone,
+                                  textInputAction: TextInputAction.done,
+                                  autoValidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  isOptional: false,
+                                  color: AppColors.formsLabel,
+                                  readOnly: true,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 13),
+                                  obscureText: false,
+                                  validator: (value) {
+                                    // return Validator.phoneValidator(phone.text);
+                                  },
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: RebiInput(
-                                hintText: state.responseModel!.userType,
-                                controller: _preferences,
-                                hintStyle:
-                                    const TextStyle(color: AppColors.grey),
-                                keyboardType: TextInputType.name,
-                                textInputAction: TextInputAction.done,
-                                autoValidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                isOptional: false,
-                                isItDisable: true,
-
-                              color: AppColors.formsLabel,
-                                readOnly: true,
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 13),
-                                obscureText: false,
-                                validator: (value) {
-                                  // return Validator.requiredValidator(name.text);
-                                },
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: RebiInput(
+                                  hintText: state.responseModel!.userType,
+                                  controller: _preferences,
+                                  hintStyle:
+                                      const TextStyle(color: AppColors.grey),
+                                  keyboardType: TextInputType.name,
+                                  textInputAction: TextInputAction.done,
+                                  autoValidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  isOptional: false,
+                                  isItDisable: true,
+                                  color: AppColors.formsLabel,
+                                  readOnly: true,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 13),
+                                  obscureText: false,
+                                  validator: (value) {
+                                    // return Validator.requiredValidator(name.text);
+                                  },
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: RebiInput(
-                                hintText: state.responseModel!.discipline,
-                                hintStyle:
-                                    const TextStyle(color: AppColors.grey),
-
-                                onTap: (){},
-                                isItDisable: true,
-                                controller: _discipline,
-                                keyboardType: TextInputType.name,
-                                textInputAction: TextInputAction.done,
-                                autoValidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                isOptional: false,
-                                color: AppColors.formsLabel,
-                                readOnly: true,
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 13),
-                                obscureText: false,
-                                validator: (value) {
-                                  // return Validator.requiredValidator(name.text);
-                                },
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: RebiInput(
+                                  hintText: state.responseModel!.discipline,
+                                  hintStyle:
+                                      const TextStyle(color: AppColors.grey),
+                                  onTap: () {},
+                                  isItDisable: true,
+                                  controller: _discipline,
+                                  keyboardType: TextInputType.name,
+                                  textInputAction: TextInputAction.done,
+                                  autoValidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  isOptional: false,
+                                  color: AppColors.formsLabel,
+                                  readOnly: true,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 13),
+                                  obscureText: false,
+                                  validator: (value) {
+                                    // return Validator.requiredValidator(name.text);
+                                  },
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: RebiInput(
-                                hintText: 'Reset Password'.tra,
-                                hintStyle:
-                                const TextStyle(color: AppColors.white),
-                                controller: _currentPassword,
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ChangePasswordScreen())).then(
-                                          (value) => cubit.getUser(
-                                          AppSharedPreferences
-                                              .userPhoneNumber));
-                                },
-                                keyboardType: TextInputType.visiblePassword,
-                                textInputAction: TextInputAction.done,
-                                autoValidateMode:
-                                AutovalidateMode.onUserInteraction,
-                                isOptional: false,
-                                color: AppColors.formsLabel,
-                                readOnly: true,
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 13),
-                                validator: (value) {},
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: RebiInput(
+                                  hintText: 'Reset Password'.tra,
+                                  hintStyle:
+                                      const TextStyle(color: AppColors.white),
+                                  controller: _currentPassword,
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ChangePasswordScreen())).then(
+                                        (value) => cubit.getUser(
+                                            AppSharedPreferences
+                                                .userPhoneNumber));
+                                  },
+                                  keyboardType: TextInputType.visiblePassword,
+                                  textInputAction: TextInputAction.done,
+                                  autoValidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  isOptional: false,
+                                  color: AppColors.formsLabel,
+                                  readOnly: true,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 13),
+                                  validator: (value) {},
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              );
-            }
-            return Container();
-          },
-        );
-      }),
+                );
+              }
+              return Container();
+            },
+          );
+        }),
+      ),
     );
   }
 }

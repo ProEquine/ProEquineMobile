@@ -9,8 +9,6 @@ import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/features/home/presentation/screens/local_summary.dart';
 import 'package:proequine/features/home/presentation/widgets/create_trip_header.dart';
-
-import '../../../../core/global_functions/date_time_picker.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
@@ -36,13 +34,15 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
   TextEditingController destination = TextEditingController();
   TextEditingController contact = TextEditingController();
   TextEditingController comment = TextEditingController();
-  DateTime _focusedDay = DateTime.now();
+  final DateTime _focusedDay = DateTime.now();
+
   TextEditingController? date;
   TextEditingController? expectedDate;
   bool isWithoutReturn = false;
   bool isInSameDay = false;
   late DateTime dateTime;
   late DateTime expectedDateTime;
+  late DateTime compareValue;
   List<DropdownMenuItem<String>> tripType = [
     const DropdownMenuItem(
       value: "No Return",
@@ -85,11 +85,13 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
   DateTime? expectedTime;
   late TextEditingController? timePicked;
   late TextEditingController? expectedTimePicked;
+
   Future<bool> checkVerificationStatus() async {
-    if(AppSharedPreferences.getEmailVerified!){
+    if (AppSharedPreferences.getEmailVerified!) {
       return true;
-    }else{
-      await Future.delayed(const Duration(milliseconds: 50)); // Simulating an asynchronous call
+    } else {
+      await Future.delayed(
+          const Duration(milliseconds: 50)); // Simulating an asynchronous call
       return false;
     }
   }
@@ -97,16 +99,24 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
   @override
   void initState() {
     initializeDateFormatting();
-    dateTime=DateTime.now();
-    expectedDateTime=DateTime.now().add(const Duration(days: 1));
+    dateTime = DateTime.now();
+    compareValue = DateTime.now().add(const Duration(days: 1));
+    expectedDateTime = DateTime.now().add(const Duration(days: 1));
     checkVerificationStatus().then((verified) {
       if (!verified) {
         // If the account is not verified, show a dialog after a delay.
         Future.delayed(const Duration(milliseconds: 50), () {
-          showUnverifiedAccountDialog(context: context, isThereNavigationBar: true,onPressVerify: () {
-            Navigator.pushNamed(context, verifyEmail, arguments: VerifyEmailRoute(type: 'createTrip',email: AppSharedPreferences.userEmailAddress))
-                .then((value) {});
-          },);
+          showUnverifiedAccountDialog(
+            context: context,
+            isThereNavigationBar: true,
+            onPressVerify: () {
+              Navigator.pushNamed(context, verifyEmail,
+                      arguments: VerifyEmailRoute(
+                          type: 'createTrip',
+                          email: AppSharedPreferences.userEmailAddress))
+                  .then((value) {});
+            },
+          );
         });
       }
     });
@@ -120,20 +130,41 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
     // timePicked?.text=convertToTime(time!);
     super.initState();
   }
+bool? isEmailVerified=false;
+  DateTime? currentBackPressTime;
+
+  Future<bool> onWillPop() {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime!) > const Duration(seconds: 0)) {
+      currentBackPressTime = now;
+      return Future.value(true);
+    }
+    return Future.value(true);
+  }
 
   String? selectedNumber;
   String? selectedTrip;
 
   @override
   Widget build(BuildContext context) {
-
-      return Scaffold(
-        body: Form(
+    isEmailVerified=ModalRoute.of(context)?.settings.arguments as bool?;
+    Print("isEmailVerfied$isEmailVerified");
+    return Scaffold(
+      body: WillPopScope(
+        onWillPop: onWillPop,
+        child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CreateTripHeader(
+                isThereVerifyEmail: isEmailVerified??false,
+                  onTapBack: (){
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  },
                   image: widget.type == 'hospital'
                       ? AppImages.hospitalTransport
                       : AppImages.localTransport),
@@ -165,8 +196,8 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                             controller: origin,
                             keyboardType: TextInputType.name,
                             textInputAction: TextInputAction.done,
-                            autoValidateMode: AutovalidateMode
-                                .onUserInteraction,
+                            autoValidateMode:
+                                AutovalidateMode.onUserInteraction,
                             isOptional: false,
                             color: AppColors.formsLabel,
                             readOnly: false,
@@ -186,8 +217,8 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                             controller: destination,
                             keyboardType: TextInputType.name,
                             textInputAction: TextInputAction.done,
-                            autoValidateMode: AutovalidateMode
-                                .onUserInteraction,
+                            autoValidateMode:
+                                AutovalidateMode.onUserInteraction,
                             isOptional: false,
                             color: AppColors.formsLabel,
                             readOnly: false,
@@ -210,30 +241,29 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                   hintText: 'Date'.tra,
                                   controller: date,
                                   keyboardType: TextInputType.name,
+                                  onChanged: (value){
+                                    setState(() {
+                                      compareValue = dateTime.add(const Duration(days: 1));
+                                      Print("dateTime$dateTime");
+                                    });
+
+                                  },
                                   textInputAction: TextInputAction.done,
                                   onTap: () {
                                     selectDate(
-                                        context: context,
-                                        from: DateTime.now(),
-                                        to: DateTime(2025,1,1),
-                                        isSupportChangingYears: false,
-                                        selectedOurDay: dateTime,
-                                        controller: date!, focusDay: _focusedDay,
-                                        );
-                                    // showDate(context, (value) {
-                                    //   setState(() {
-                                    //     dateTime = value!;
-                                    //
-                                    //     final DateFormat formatter =
-                                    //     DateFormat('dd MMM yyyy');
-                                    //     final String formatted =
-                                    //     formatter.format(dateTime);
-                                    //     date?.text = formatted;
-                                    //   });
-                                    // });
+                                      context: context,
+                                      from: DateTime.now(),
+                                      to: DateTime(2025, 1, 1),
+                                      isSupportChangingYears: false,
+                                      selectedOurDay: dateTime,
+                                      controller: date!,
+                                      focusDay: _focusedDay,
+                                    );
+                                    Print("dateTime$dateTime");
                                   },
+
                                   autoValidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                                      AutovalidateMode.onUserInteraction,
                                   isOptional: false,
                                   color: AppColors.formsLabel,
                                   readOnly: true,
@@ -260,7 +290,8 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                       : timePicked?.text,
                                   controller: timePicked,
                                   onTap: () async {
-                                    TimeOfDay? pickedTime = await showTimePicker(
+                                    TimeOfDay? pickedTime =
+                                        await showTimePicker(
                                       confirmText: "Confirm".tra,
                                       context: context,
                                       cancelText: "Cancel".tra,
@@ -268,8 +299,8 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                       // errorInvalidText:StringKeys.timeError.tr(),
                                       // hourLabelText: StringKeys.hour.tr(),
                                       // minuteLabelText: StringKeys.minute.tr(),
-                                      initialEntryMode: TimePickerEntryMode
-                                          .dial,
+                                      initialEntryMode:
+                                          TimePickerEntryMode.dial,
                                       initialTime: TimeOfDay.fromDateTime(
                                           DateTime.utc(0, 0, 0, 15, 0)),
                                     );
@@ -280,7 +311,7 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                       time = pickedTime.toDateTime();
                                       //output 10:51 PM
                                       String parsedTime =
-                                      pickedTime.format(context);
+                                          pickedTime.format(context);
 
                                       setState(() {
                                         timePicked?.text = parsedTime;
@@ -292,7 +323,8 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                   isOptional: false,
                                   readOnly: true,
                                   validator: (value) {
-                                    // return  Validator.requiredValidator(timePicked?.text);
+                                    return Validator.requiredValidator(
+                                        timePicked?.text);
                                   },
                                 ),
                               ),
@@ -340,108 +372,22 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                 horizontal: kPadding, vertical: 10),
                             child: selectedTrip == 'Same day return'
                                 ? RebiInput(
-                              hintText: expectedTimePicked!.text.isEmpty
-                                  ? 'Time'
-                                  : expectedTimePicked?.text,
-                              controller: expectedTimePicked,
-                              onTap: () async {
-                                TimeOfDay? pickedTime =
-                                await showTimePicker(
-                                  confirmText: "Confirm".tra,
-                                  context: context,
-                                  cancelText: "Cancel".tra,
-                                  // helpText: StringKeys.selectTime.tr(),
-                                  // errorInvalidText:StringKeys.timeError.tr(),
-                                  // hourLabelText: StringKeys.hour.tr(),
-                                  // minuteLabelText: StringKeys.minute.tr(),
-                                  initialEntryMode:
-                                  TimePickerEntryMode.dial,
-                                  initialTime: TimeOfDay.fromDateTime(
-                                      DateTime.utc(0, 0, 0, 15, 0)),
-                                );
-
-                                Print(pickedTime);
-
-                                if (pickedTime != null) {
-                                  expectedTime = pickedTime.toDateTime();
-                                  //output 10:51 PM
-                                  String parsedTime =
-                                  pickedTime.format(context);
-
-                                  setState(() {
-                                    expectedTimePicked?.text = parsedTime;
-                                  });
-                                } else {}
-                              },
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 13),
-                              isOptional: false,
-                              readOnly: true,
-                              validator: (value) {
-                                if (value!.isNotEmpty &&
-                                    expectedDateTime.isSameDate(dateTime) &&
-                                    expectedTime!.isBefore(time!)) {
-                                  return 'Correct time please';
-                                }
-                                // return  Validator.requiredValidator(expectedTimePicked?.text);
-                              },
-                            )
-                                : Row(
-                              children: [
-                                Expanded(
-                                  child: RebiInput(
-                                    hintText: 'Expected Date'.tra,
-                                    controller: expectedDate,
-                                    keyboardType: TextInputType.name,
-                                    textInputAction: TextInputAction.done,
-                                    onTap: () {
-                                      selectDate(
-                                        context: context,
-                                        from: DateTime.now().add(Duration(days: 1)),
-                                        to: DateTime(2025,1,1),
-                                        isSupportChangingYears: false,
-                                        selectedOurDay: expectedDateTime,
-                                        controller: expectedDate!, focusDay: _focusedDay,
-                                      );
-                                    },
-                                    autoValidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                    isOptional: false,
-                                    color: AppColors.formsLabel,
-                                    readOnly: true,
-                                    contentPadding:
-                                    const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 13),
-                                    obscureText: false,
-                                    validator: (value) {
-                                      if (value!.isNotEmpty &&
-                                          expectedDateTime
-                                              .isBefore(dateTime)) {
-                                        return "Correct date please".tra;
-                                      } else {}
-                                      return Validator.requiredValidator(
-                                          expectedDate?.text);
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: RebiInput(
-                                    hintText:
-                                    expectedTimePicked!.text.isEmpty
+                                    hintText: expectedTimePicked!.text.isEmpty
                                         ? 'Time'
                                         : expectedTimePicked?.text,
                                     controller: expectedTimePicked,
                                     onTap: () async {
                                       TimeOfDay? pickedTime =
-                                      await showTimePicker(
+                                          await showTimePicker(
                                         confirmText: "Confirm".tra,
                                         context: context,
                                         cancelText: "Cancel".tra,
+                                        // helpText: StringKeys.selectTime.tr(),
+                                        // errorInvalidText:StringKeys.timeError.tr(),
+                                        // hourLabelText: StringKeys.hour.tr(),
+                                        // minuteLabelText: StringKeys.minute.tr(),
                                         initialEntryMode:
-                                        TimePickerEntryMode.dial,
+                                            TimePickerEntryMode.dial,
                                         initialTime: TimeOfDay.fromDateTime(
                                             DateTime.utc(0, 0, 0, 15, 0)),
                                       );
@@ -449,20 +395,17 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                       Print(pickedTime);
 
                                       if (pickedTime != null) {
-                                        expectedTime =
-                                            pickedTime.toDateTime();
+                                        expectedTime = pickedTime.toDateTime();
                                         //output 10:51 PM
                                         String parsedTime =
-                                        pickedTime.format(context);
+                                            pickedTime.format(context);
 
                                         setState(() {
-                                          expectedTimePicked?.text =
-                                              parsedTime;
+                                          expectedTimePicked?.text = parsedTime;
                                         });
                                       } else {}
                                     },
-                                    contentPadding:
-                                    const EdgeInsets.symmetric(
+                                    contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 13),
                                     isOptional: false,
                                     readOnly: true,
@@ -473,12 +416,106 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                           expectedTime!.isBefore(time!)) {
                                         return 'Correct time please';
                                       }
-                                      // return  Validator.requiredValidator(expectedTimePicked?.text);
+                                      return Validator.requiredValidator(
+                                          expectedTimePicked?.text);
                                     },
+                                  )
+                                : Row(
+                                    children: [
+                                      Expanded(
+                                        child: RebiInput(
+                                          hintText: 'Expected Date'.tra,
+                                          controller: expectedDate,
+                                          keyboardType: TextInputType.name,
+                                          textInputAction: TextInputAction.done,
+                                          onTap: () {
+                                            selectDate(
+                                              context: context,
+                                              from: compareValue,
+                                              to: DateTime(2025, 1, 1),
+                                              isSupportChangingYears: false,
+                                              selectedOurDay: expectedDateTime,
+                                              controller: expectedDate!,
+                                              focusDay: _focusedDay,
+                                            );
+                                          },
+                                          autoValidateMode: AutovalidateMode
+                                              .onUserInteraction,
+                                          isOptional: false,
+                                          color: AppColors.formsLabel,
+                                          readOnly: true,
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 13),
+                                          obscureText: false,
+                                          validator: (value) {
+                                            if (value!.isNotEmpty &&
+                                                expectedDateTime
+                                                    .isBefore(dateTime)) {
+                                              return "Correct date please".tra;
+                                            } else {}
+                                            return Validator.requiredValidator(
+                                                expectedDate?.text);
+                                          },
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        child: RebiInput(
+                                          hintText:
+                                              expectedTimePicked!.text.isEmpty
+                                                  ? 'Time'
+                                                  : expectedTimePicked?.text,
+                                          controller: expectedTimePicked,
+                                          onTap: () async {
+                                            TimeOfDay? pickedTime =
+                                                await showTimePicker(
+                                              confirmText: "Confirm".tra,
+                                              context: context,
+                                              cancelText: "Cancel".tra,
+                                              initialEntryMode:
+                                                  TimePickerEntryMode.dial,
+                                              initialTime:
+                                                  TimeOfDay.fromDateTime(
+                                                      DateTime.utc(
+                                                          0, 0, 0, 15, 0)),
+                                            );
+
+                                            Print(pickedTime);
+
+                                            if (pickedTime != null) {
+                                              expectedTime =
+                                                  pickedTime.toDateTime();
+                                              //output 10:51 PM
+                                              String parsedTime =
+                                                  pickedTime.format(context);
+
+                                              setState(() {
+                                                expectedTimePicked?.text =
+                                                    parsedTime;
+                                              });
+                                            } else {}
+                                          },
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 13),
+                                          isOptional: false,
+                                          readOnly: true,
+                                          validator: (value) {
+                                            if (value!.isNotEmpty &&
+                                                expectedDateTime
+                                                    .isSameDate(dateTime) &&
+                                                expectedTime!.isBefore(time!)) {
+                                              return 'Correct time please';
+                                            }
+                                            // return  Validator.requiredValidator(expectedTimePicked?.text);
+                                          },
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
-                            ),
                           ),
                         ),
                         Padding(
@@ -489,8 +526,8 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                             controller: contact,
                             keyboardType: TextInputType.phone,
                             textInputAction: TextInputAction.done,
-                            autoValidateMode: AutovalidateMode
-                                .onUserInteraction,
+                            autoValidateMode:
+                                AutovalidateMode.onUserInteraction,
                             isOptional: false,
                             color: AppColors.formsLabel,
                             readOnly: false,
@@ -510,8 +547,8 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                             controller: comment,
                             keyboardType: TextInputType.phone,
                             textInputAction: TextInputAction.done,
-                            autoValidateMode: AutovalidateMode
-                                .onUserInteraction,
+                            autoValidateMode:
+                                AutovalidateMode.onUserInteraction,
                             isOptional: true,
                             color: AppColors.formsLabel,
                             readOnly: false,
@@ -537,7 +574,8 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                             MaterialPageRoute(
                                 builder: (context) => LocalSummary()));
                       } else {
-                        RebiMessage.error(msg: "please fill all fields",context: context);
+                        RebiMessage.error(
+                            msg: "please fill all fields", context: context);
                       }
                     },
                     backgroundColor: AppColors.white,
@@ -546,37 +584,37 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
             ],
           ),
         ),
-      );
-    }
+      ),
+    );
   }
+}
 
-  Widget buildDropDownField({
-    required String text,
-    required VoidCallback onClick,
-    required BuildContext context,
-  }) =>
-      Theme(
-          data: Theme.of(context).copyWith(
-            timePickerTheme: TimePickerTheme.of(context).copyWith(),
-            primaryColor: AppColors.gold, //color you want at header
-            buttonTheme: ButtonTheme.of(context).copyWith(
-              colorScheme: const ColorScheme.light(
-                  secondary: AppColors
-                      .gold // Color you want for action buttons (CANCEL and OK)
-                  ),
-            ),
+Widget buildDropDownField({
+  required String text,
+  required VoidCallback onClick,
+  required BuildContext context,
+}) =>
+    Theme(
+        data: Theme.of(context).copyWith(
+          timePickerTheme: TimePickerTheme.of(context).copyWith(),
+          primaryColor: AppColors.gold, //color you want at header
+          buttonTheme: ButtonTheme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+                secondary: AppColors
+                    .gold // Color you want for action buttons (CANCEL and OK)
+                ),
           ),
-          child: Builder(
-              builder: (context) => InkWell(
-                  onTap: () {
-                    onClick();
-                  },
-                  child: ListTile(
-                    title: Text(text),
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: kPadding),
-                    selectedColor: AppColors.gold,
-                    iconColor: AppColors.gold,
-                    trailing: const Icon(Icons.arrow_drop_down),
-                  ))));
-
+        ),
+        child: Builder(
+            builder: (context) => InkWell(
+                onTap: () {
+                  onClick();
+                },
+                child: ListTile(
+                  title: Text(text),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: kPadding),
+                  selectedColor: AppColors.gold,
+                  iconColor: AppColors.gold,
+                  trailing: const Icon(Icons.arrow_drop_down),
+                ))));

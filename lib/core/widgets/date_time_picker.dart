@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:sizer/sizer.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -91,6 +92,9 @@ void selectDate({
                                               content: Form(
                                                 key: yearKey,
                                                 child: TextFormField(
+                                                  inputFormatters: [
+                                                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                                  ],
                                                   keyboardAppearance:
                                                       Brightness.dark,
                                                   autovalidateMode:
@@ -359,8 +363,7 @@ void selectDate({
                         child: Align(
                           alignment: Alignment.bottomRight,
                           child: RebiButton(
-                            width: 75,
-                            height: 45,
+                            width: 90,
                             backgroundColor: AppColors.gold,
                             onPressed: () {
                              Print('selectedOurDay $selectedOurDay');
@@ -371,7 +374,7 @@ void selectDate({
                              final String formatted =
                              formatter.format(selectedOurDay);
                              controller.text =
-                                 formatted; // update `_focusedDay` here as well
+                                 formatted;
 
                             },
                             child: const Text(

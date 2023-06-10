@@ -115,7 +115,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return  MaterialApp(
       navigatorKey: navigatorKey,
       theme: AppStyles().mainTheme,
       navigatorObservers: [MyNavigatorObserver()],

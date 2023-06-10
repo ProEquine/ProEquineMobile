@@ -78,6 +78,7 @@ flutter:
     - assets/icons/
     - assets/languages/
     - assets/animation/
+    - assets/horse_sound.mp3
 
 
   # To add custom fonts to your application:

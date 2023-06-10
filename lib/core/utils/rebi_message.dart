@@ -53,19 +53,22 @@ class RebiMessage {
         child: Row(
           children: [
             const Icon(
-              Toasticons.cancel_circled_outline,
+              ToastIcons.cancel_circled_outline,
               color: Colors.white,
               size: 32,
             ),
             const SizedBox(
               width: 12,
             ),
-            Text(
-              msg,
-              style: const TextStyle(
-                color: Colors.white,
-                fontFamily: 'notosan',
-                fontSize: 16,
+            Expanded(
+              child: Text(
+                msg,
+                maxLines: 2,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'notosan',
+                  fontSize: 16,
+                ),
               ),
             ),
           ],
