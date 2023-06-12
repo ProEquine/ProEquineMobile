@@ -150,7 +150,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   bloc: cubit,
                                   builder: (context, state) {
                                     if (state is ForgotPasswordLoading) {
-                                      return LoadingCircularWidget();
+                                      return const LoadingCircularWidget();
                                     }
                                     return RebiButton(
                                         onPressed: () {

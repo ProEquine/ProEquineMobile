@@ -1,16 +1,17 @@
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:proequine/core/CoreModels/empty_model.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/secure_storage/secure_storage_helper.dart';
 import 'package:proequine/features/user/data/check_update_email_request_model.dart';
 import 'package:proequine/features/user/data/check_verification_request_model.dart';
-import 'package:proequine/features/user/data/forgot_pass_response-model.dart';
+import 'package:proequine/features/user/data/forgot_pass_response_model.dart';
 import 'package:proequine/features/user/data/interests_request_model.dart';
 import 'package:proequine/features/user/data/login_response_model.dart';
 import 'package:proequine/features/user/data/register_request_model.dart';
 import 'package:proequine/features/user/data/reset_password_request_model.dart';
-import 'package:proequine/features/user/data/send-mail_request_model.dart';
+import 'package:proequine/features/user/data/send_mail_request_model.dart';
 import 'package:proequine/features/user/data/send_verification_request_model.dart';
 import 'package:proequine/features/user/data/update_email_request_model.dart';
 import 'package:proequine/features/user/domain/repo/user_repository.dart';
@@ -45,7 +46,7 @@ class UserCubit extends Cubit<UserState> {
     String? accessToken= await SecureStorage().getToken();
     String? userId= await SecureStorage().getUserId();
       AppSharedPreferences.phoneVerified = response.isPhoneNumberVerified;
-      AppSharedPreferences.emailVerified = false;
+      AppSharedPreferences.emailVerified = response.isEmailVerified;
       AppSharedPreferences.typeSelected=response.isTypeSelected;
       AppSharedPreferences.inputPhoneNumber=response.phoneNumber!;
       AppSharedPreferences.inputEmailAddress=loginRequestModel.email!;
@@ -79,6 +80,7 @@ class UserCubit extends Cubit<UserState> {
       AppSharedPreferences.inputPhoneNumber=registerRequestModel.phoneNumber!;
       AppSharedPreferences.phoneVerified=false;
       AppSharedPreferences.inputEmailAddress=registerRequestModel.email!;
+      AppSharedPreferences.typeSelected =true;
 
       String? refreshToken= await SecureStorage().getRefreshToken();
       String? accessToken= await SecureStorage().getToken();

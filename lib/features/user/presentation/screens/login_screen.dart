@@ -227,7 +227,7 @@ class _LoginScreenState extends State<LoginScreen> {
         bloc: cubit,
         builder: (context, state) {
           if (state is LoginLoading) {
-            return LoadingCircularWidget();
+            return const LoadingCircularWidget();
           } else if (state is LoginError) {
 
           }

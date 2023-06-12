@@ -9,7 +9,7 @@ import 'package:sizer/sizer.dart';
 import '../../../../core/widgets/custom_header.dart';
 
 class LocalSummary extends StatelessWidget {
-  LocalSummary({Key? key}) : super(key: key);
+  const LocalSummary({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class LocalSummary extends StatelessWidget {
               const SizedBox(
                 height: 14,
               ),
-              SummaryBoxWidget(),
+              const SummaryBoxWidget(),
               const SizedBox(
                 height: 14,
               ),
@@ -54,7 +54,7 @@ class LocalSummary extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                BottomNavigation(
+                                                const BottomNavigation(
                                                   selectedIndex: 1,
                                                 )),);
                                   },

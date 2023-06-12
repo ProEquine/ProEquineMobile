@@ -3,10 +3,9 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/features/booking/presentation/screens/timeline.dart';
 import 'package:proequine/features/booking/presentation/widgets/bookingitem.dart';
-import 'package:proequine/features/booking/presentation/widgets/nobooking.dart';
 import 'package:proequine/features/booking/presentation/widgets/peniding_booking_items.dart';
 import '../../../../core/constants/colors/app_colors.dart';
-import 'confirmBookingitem.dart';
+import 'confirm_booking_item.dart';
 
 class Booking extends StatelessWidget {
   const Booking({super.key});

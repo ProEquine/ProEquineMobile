@@ -7,7 +7,6 @@ import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/utils/secure_storage/secure_storage_helper.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/features/profile/domain/profile_cubit.dart';
-import 'package:proequine/features/profile/presentation/screens/account_information_screen.dart';
 import 'package:proequine/features/profile/presentation/screens/history_screen.dart';
 
 import 'package:proequine/features/profile/presentation/screens/support.dart';
@@ -19,7 +18,6 @@ import 'package:sizer/sizer.dart';
 import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/delete_popup.dart';
-import '../../../../core/widgets/header_text.dart';
 import 'legal.dart';
 
 class UserProfile extends StatefulWidget {
@@ -69,7 +67,7 @@ class _UserProfileState extends State<UserProfile> {
                 title: "History",
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HistoryScreen()));
+                      MaterialPageRoute(builder: (context) => const HistoryScreen()));
                 },
                 notificationList: false,
                 isThereNewNotification: false,

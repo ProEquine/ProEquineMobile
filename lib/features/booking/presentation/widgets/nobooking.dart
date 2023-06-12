@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../../core/constants/colors/app_colors.dart';
 
 class NoBooking extends StatelessWidget {
   const NoBooking({super.key});
@@ -11,7 +10,6 @@ class NoBooking extends StatelessWidget {
     return Scaffold(
         body: Column(
       children: [
-        // SizedBox(height: 40,),
         SizedBox(
           width: double.infinity,
           child: Image.asset(

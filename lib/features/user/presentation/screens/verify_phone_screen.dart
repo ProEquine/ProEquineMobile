@@ -148,7 +148,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                   bloc: cubit,
                                   builder: (context, state) {
                                     if (state is RegisterLoading) {
-                                      return LoadingCircularWidget();
+                                      return const LoadingCircularWidget();
                                     }
                                     return RebiButton(
                                         onPressed: () {

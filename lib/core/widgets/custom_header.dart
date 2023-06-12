@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:proequine/core/constants/constants.dart';
+
 
 import '../constants/colors/app_colors.dart';
 

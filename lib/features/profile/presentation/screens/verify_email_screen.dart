@@ -7,7 +7,7 @@ import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/features/profile/data/verify_email_route.dart';
 import 'package:proequine/features/user/data/check_mail_request_model.dart';
-import 'package:proequine/features/user/data/send-mail_request_model.dart';
+import 'package:proequine/features/user/data/send_mail_request_model.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui' as ui;
@@ -258,7 +258,7 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                         },
                         builder: (context, state) {
                           if (state is CheckMailVerificationLoading) {
-                            return LoadingCircularWidget();
+                            return const LoadingCircularWidget();
                           }
                           return RebiButton(
                             onPressed: () {

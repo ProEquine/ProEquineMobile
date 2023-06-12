@@ -23,7 +23,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   static final List<Widget> _widgetOptions = <Widget>[
     const MainScreen(),
     const BookingMain(),
-    NotificationsScreen()
+    const NotificationsScreen()
   ];
 
   void _onItemTapped(int index) {

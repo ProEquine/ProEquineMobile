@@ -236,7 +236,7 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
                         },
                         builder: (context, state) {
                           if (state is UpdatePhoneLoading) {
-                            return LoadingCircularWidget();
+                            return const LoadingCircularWidget();
                           }
                           return RebiButton(
                             onPressed: () {

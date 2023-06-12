@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:proequine/core/constants/colors/app_colors.dart';
-import 'package:proequine/core/constants/constants.dart';
-import 'package:proequine/core/widgets/header_text.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/widgets/custom_header.dart';

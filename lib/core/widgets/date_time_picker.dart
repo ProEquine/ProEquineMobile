@@ -333,7 +333,7 @@ void selectDate({
                               inherit: false),
                           // dowTextFormatter:(date, locale) =>  DateFormat(days['d']).format(date),
                         ),
-                        focusedDay: selectedOurDay ?? focusDay,
+                        focusedDay: selectedOurDay,
                         firstDay: from,
                         startingDayOfWeek: StartingDayOfWeek.monday,
                         lastDay: to,

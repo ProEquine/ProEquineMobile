@@ -13,10 +13,10 @@ class HorsesScreen extends StatefulWidget {
   const HorsesScreen({super.key});
 
   @override
-  _HorsesScreenState createState() => _HorsesScreenState();
+  HorsesScreenState createState() => HorsesScreenState();
 }
 
-class _HorsesScreenState extends State<HorsesScreen> {
+class HorsesScreenState extends State<HorsesScreen> {
   bool random = Random().nextBool();
 
   @override

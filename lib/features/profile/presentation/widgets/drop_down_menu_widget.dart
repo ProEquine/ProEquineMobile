@@ -65,7 +65,7 @@ class DropDownWidgetState extends State<DropDownWidget> {
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
-                underline: ProfileDivider(),
+                underline: const ProfileDivider(),
                 dropdownColor: AppColors.formsBackground,
                 elevation: 2,
                 borderRadius: BorderRadius.circular(10),

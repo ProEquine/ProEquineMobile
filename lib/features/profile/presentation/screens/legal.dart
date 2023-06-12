@@ -4,7 +4,6 @@ import 'package:proequine/features/profile/presentation/screens/termsandconditio
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/widgets/custom_header.dart';
-import '../../../../core/widgets/header_text.dart';
 import '../widgets/profile_list_tile_widget.dart';
 
 class LegalScreen extends StatelessWidget {

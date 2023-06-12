@@ -54,7 +54,7 @@ void showUnverifiedAccountDialog(
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => BottomNavigation()));
+                                    builder: (context) => const BottomNavigation()));
                           },
                           style: OutlinedButton.styleFrom(
                             minimumSize: const Size(100, 33),

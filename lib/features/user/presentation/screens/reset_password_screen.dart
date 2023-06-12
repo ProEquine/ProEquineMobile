@@ -326,7 +326,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         bloc: cubit,
         builder: (context, state) {
           if (state is ResetPasswordLoading) {
-            return LoadingCircularWidget();
+            return const LoadingCircularWidget();
           }
           {
             return RebiButton(

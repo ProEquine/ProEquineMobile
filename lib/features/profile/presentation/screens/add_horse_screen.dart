@@ -22,10 +22,10 @@ class AddHorseScreen extends StatefulWidget {
   const AddHorseScreen({super.key});
 
   @override
-  _AddHorseScreenState createState() => _AddHorseScreenState();
+  AddHorseScreenState createState() => AddHorseScreenState();
 }
 
-class _AddHorseScreenState extends State<AddHorseScreen> {
+class AddHorseScreenState extends State<AddHorseScreen> {
   final picker = ImagePicker();
   File? _frontImage;
   late String image;
@@ -304,6 +304,7 @@ class _AddHorseScreenState extends State<AddHorseScreen> {
                   items: gender,
                   selected: selectedGender,
                   validator: (value) {
+                    return;
                   },
                   hint: 'Gender',
                 ),

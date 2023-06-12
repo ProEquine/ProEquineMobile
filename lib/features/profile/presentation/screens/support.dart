@@ -105,7 +105,7 @@ class Support extends StatelessWidget {
                 },
                 builder: (context, state) {
                   if (state is ContactSupportLoading) {
-                    return LoadingCircularWidget();
+                    return const LoadingCircularWidget();
                   }
                   return RebiButton(
                       onPressed: () {

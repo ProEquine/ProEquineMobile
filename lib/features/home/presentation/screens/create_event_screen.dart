@@ -19,11 +19,13 @@ import '../widgets/create_trip_header.dart';
 import 'local_summary.dart';
 
 class CreateEventScreen extends StatefulWidget {
+  const CreateEventScreen({super.key});
+
   @override
-  _CreateEventScreenState createState() => _CreateEventScreenState();
+  CreateEventScreenState createState() => CreateEventScreenState();
 }
 
-class _CreateEventScreenState extends State<CreateEventScreen> {
+class CreateEventScreenState extends State<CreateEventScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController origin = TextEditingController();
   TextEditingController eventLocation = TextEditingController();
@@ -65,24 +67,34 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   ];
   late TextEditingController? timePicked;
   DateTime? time;
+
   Future<bool> checkVerificationStatus() async {
-    if(AppSharedPreferences.getEmailVerified!){
+    if (AppSharedPreferences.getEmailVerified!) {
       return true;
-    }else{
-      await Future.delayed(const Duration(milliseconds: 50)); // Simulating an asynchronous call
+    } else {
+      await Future.delayed(
+          const Duration(milliseconds: 50)); // Simulating an asynchronous call
       return false;
     }
   }
+
   @override
   void initState() {
     checkVerificationStatus().then((verified) {
       if (!verified) {
         // If the account is not verified, show a dialog after a delay.
         Future.delayed(const Duration(milliseconds: 50), () {
-          showUnverifiedAccountDialog(context: context, isThereNavigationBar: true,onPressVerify: () {
-            Navigator.pushNamed(context, verifyEmail,arguments: VerifyEmailRoute(type: 'createEvent',email: AppSharedPreferences.userEmailAddress))
-                .then((value) {});
-          },);
+          showUnverifiedAccountDialog(
+            context: context,
+            isThereNavigationBar: true,
+            onPressVerify: () {
+              Navigator.pushNamed(context, verifyEmail,
+                      arguments: VerifyEmailRoute(
+                          type: 'createEvent',
+                          email: AppSharedPreferences.userEmailAddress))
+                  .then((value) {});
+            },
+          );
         });
       }
     });
@@ -98,166 +110,165 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CreateTripHeader(image: AppImages.eventTransport),
-                const SizedBox(
-                  height: 10,
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CreateTripHeader(image: AppImages.eventTransport),
+              const SizedBox(
+                height: 10,
+              ),
+              const Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: kPadding, vertical: 10),
+                child: Text(
+                  "Event Request Transport",
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'notosan',
+                      color: AppColors.white),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: kPadding, vertical: 10),
-                  child: Text(
-                    "Event Request Transport",
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'notosan',
-                        color: AppColors.white),
-                  ),
+              ),
+              const Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: kPadding, vertical: 10),
+                child: Text(
+                  "Request an event that we aren’t covering",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'notosan',
+                      color: Color(0xffD0D3D6)),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: kPadding, vertical: 10),
-                  child: Text(
-                    "Request an event that we aren’t covering",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'notosan',
-                        color: Color(0xffD0D3D6)),
-                  ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: kPadding, vertical: 10),
+                child: RebiInput(
+                  hintText: 'Origin Location'.tra,
+                  controller: origin,
+                  keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.done,
+                  autoValidateMode: AutovalidateMode.onUserInteraction,
+                  isOptional: false,
+                  color: AppColors.formsLabel,
+                  readOnly: false,
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+                  obscureText: false,
+                  validator: (value) {
+                    return Validator.requiredValidator(origin.text);
+                  },
                 ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: kPadding, vertical: 10),
+                child: RebiInput(
+                  hintText: 'Event Location'.tra,
+                  controller: eventLocation,
+                  keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.done,
+                  autoValidateMode: AutovalidateMode.onUserInteraction,
+                  isOptional: false,
+                  color: AppColors.formsLabel,
+                  readOnly: false,
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+                  obscureText: false,
+                  validator: (value) {
+                    return Validator.requiredValidator(eventLocation.text);
+                  },
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: kPadding, vertical: 10),
+                child: RebiInput(
+                  hintText: 'Event Title'.tra,
+                  controller: eventTitle,
+                  keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.done,
+                  autoValidateMode: AutovalidateMode.onUserInteraction,
+                  isOptional: false,
+                  color: AppColors.formsLabel,
+                  readOnly: false,
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+                  obscureText: false,
+                  validator: (value) {
+                    return Validator.requiredValidator(eventTitle.text);
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: kPadding, vertical: 10),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: RebiInput(
+                        hintText: 'Date'.tra,
+                        controller: date,
+                        keyboardType: TextInputType.name,
+                        textInputAction: TextInputAction.done,
+                        onTap: () {
+                          showDate(context, (value) {
+                            setState(() {
+                              dateTime = value!;
 
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: kPadding, vertical: 10),
-                  child: RebiInput(
-                    hintText: 'Origin Location'.tra,
-                    controller: origin,
-                    keyboardType: TextInputType.name,
-                    textInputAction: TextInputAction.done,
-                    autoValidateMode: AutovalidateMode.onUserInteraction,
-                    isOptional: false,
-                    color: AppColors.formsLabel,
-                    readOnly: false,
-                    contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
-                    obscureText: false,
-                    validator: (value) {
-                      return Validator.requiredValidator(origin.text);
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: kPadding, vertical: 10),
-                  child: RebiInput(
-                    hintText: 'Event Location'.tra,
-                    controller: eventLocation,
-                    keyboardType: TextInputType.name,
-                    textInputAction: TextInputAction.done,
-                    autoValidateMode: AutovalidateMode.onUserInteraction,
-                    isOptional: false,
-                    color: AppColors.formsLabel,
-                    readOnly: false,
-                    contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
-                    obscureText: false,
-                    validator: (value) {
-                      return Validator.requiredValidator(eventLocation.text);
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: kPadding, vertical: 10),
-                  child: RebiInput(
-                    hintText: 'Event Title'.tra,
-                    controller: eventTitle,
-                    keyboardType: TextInputType.name,
-                    textInputAction: TextInputAction.done,
-                    autoValidateMode: AutovalidateMode.onUserInteraction,
-                    isOptional: false,
-                    color: AppColors.formsLabel,
-                    readOnly: false,
-                    contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
-                    obscureText: false,
-                    validator: (value) {
-                      return Validator.requiredValidator(eventTitle.text);
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: kPadding, vertical: 10),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: RebiInput(
-                          hintText: 'Date'.tra,
-                          controller: date,
-                          keyboardType: TextInputType.name,
-                          textInputAction: TextInputAction.done,
-                          onTap: () {
-                            showDate(context, (value) {
-                              setState(() {
-                                dateTime = value!;
-
-                                final DateFormat formatter =
-                                DateFormat('dd MMM yyyy');
-                                final String formatted =
-                                formatter.format(dateTime);
-                                date?.text = formatted;
-                              });
+                              final DateFormat formatter =
+                                  DateFormat('dd MMM yyyy');
+                              final String formatted =
+                                  formatter.format(dateTime);
+                              date?.text = formatted;
                             });
-                          },
-                          autoValidateMode: AutovalidateMode.onUserInteraction,
-                          isOptional: false,
-                          color: AppColors.formsLabel,
-                          readOnly: true,
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 13),
-                          obscureText: false,
-                          validator: (value) {
-                            if (dateTime.isBefore(DateTime.now()) &&
-                                !dateTime.isSameDate(DateTime.now())) {
-                              return 'correct date please';
-                            }
-                            return Validator.requiredValidator(date?.text);
-                          },
-                        ),
+                          });
+                        },
+                        autoValidateMode: AutovalidateMode.onUserInteraction,
+                        isOptional: false,
+                        color: AppColors.formsLabel,
+                        readOnly: true,
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 13),
+                        obscureText: false,
+                        validator: (value) {
+                          if (dateTime.isBefore(DateTime.now()) &&
+                              !dateTime.isSameDate(DateTime.now())) {
+                            return 'correct date please';
+                          }
+                          return Validator.requiredValidator(date?.text);
+                        },
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: RebiInput(
-                          hintText: timePicked!.text.isEmpty
-                              ? 'Time'
-                              : timePicked?.text,
-                          controller: timePicked,
-                          onTap: () async {
-                            TimeOfDay? pickedTime = await showTimePicker(
-                              confirmText: "Confirm".tra,
-                              context: context,
-                              cancelText: "Cancel".tra,
-                              // helpText: StringKeys.selectTime.tr(),
-                              // errorInvalidText:StringKeys.timeError.tr(),
-                              // hourLabelText: StringKeys.hour.tr(),
-                              // minuteLabelText: StringKeys.minute.tr(),
-                              initialEntryMode: TimePickerEntryMode.inputOnly,
-                              initialTime: TimeOfDay.fromDateTime(
-                                  DateTime.utc(0, 0, 0, 15, 0)),
-                            );
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: RebiInput(
+                        hintText: timePicked!.text.isEmpty
+                            ? 'Time'
+                            : timePicked?.text,
+                        controller: timePicked,
+                        onTap: () async {
+                          TimeOfDay? pickedTime = await showTimePicker(
+                            confirmText: "Confirm".tra,
+                            context: context,
+                            cancelText: "Cancel".tra,
+                            // helpText: StringKeys.selectTime.tr(),
+                            // errorInvalidText:StringKeys.timeError.tr(),
+                            // hourLabelText: StringKeys.hour.tr(),
+                            // minuteLabelText: StringKeys.minute.tr(),
+                            initialEntryMode: TimePickerEntryMode.inputOnly,
+                            initialTime: TimeOfDay.fromDateTime(
+                                DateTime.utc(0, 0, 0, 15, 0)),
+                          );
 
-                            Print(pickedTime);
-
+                          Print(pickedTime);
+                          if (context.mounted) {
                             if (pickedTime != null) {
                               time = pickedTime.toDateTime();
                               //output 10:51 PM
@@ -267,66 +278,66 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                                 timePicked?.text = parsedTime;
                               });
                             } else {}
-                          },
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 13),
-                          isOptional: false,
-                          readOnly: true,
-                          validator: (value) {
-                            // return  Validator.requiredValidator(timePicked?.text);
-                          },
-                        ),
+                          }
+                        },
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 13),
+                        isOptional: false,
+                        readOnly: true,
+                        validator: (value) {
+                          return;
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: kPadding, vertical: 10),
-                  child: DropDownWidget(
-                    items: numberOfHorses,
-                    selected: selectedNumber,
-                    validator: (value) {
-                      // return Validator.requiredValidator(selectedNumber);
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: kPadding, vertical: 10),
+                child: DropDownWidget(
+                  items: numberOfHorses,
+                  selected: selectedNumber,
+                  validator: (value) {
+                   return;
+                  },
+                  hint: 'Number of horses',
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: kPadding, vertical: 10),
+                child: DropDownWidget(
+                  items: tripType,
+                  selected: selectedTrip,
+                  validator: (value) {
+                    return;
+                  },
+                  hint: 'Trip type',
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: kPadding, horizontal: kPadding),
+                child: RebiButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const LocalSummary()));
+                      } else {
+                        Print("not verified");
+                      }
                     },
-                    hint: 'Number of horses',
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: kPadding, vertical: 10),
-                  child: DropDownWidget(
-                    items: tripType,
-                    selected: selectedTrip,
-                    validator: (value) {
-                      // return Validator.requiredValidator(selectedNumber);
-                    },
-                    hint: 'Trip type',
-                  ),
-                ),
-                Padding(
-                  padding:
-                  const EdgeInsets.symmetric(
-                      vertical: kPadding, horizontal: kPadding),
-                  child: RebiButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LocalSummary()));
-                        } else {
-                          Print("not verified");
-                        }
-                      },
-                      backgroundColor: AppColors.white,
-                      child: const Text("Book")),
-                )
-              ],
-            ),
+                    backgroundColor: AppColors.white,
+                    child: const Text("Book")),
+              )
+            ],
           ),
         ),
-      );
-    }
+      ),
+    );
   }
+}

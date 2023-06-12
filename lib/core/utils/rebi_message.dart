@@ -30,7 +30,7 @@ class RebiMessage {
       description: Text(
         msg,
         style:
-            TextStyle(color: Colors.white, fontFamily: 'notosan', fontSize: 16),
+            const TextStyle(color: Colors.white, fontFamily: 'notosan', fontSize: 16),
       ),
       animationType: AnimationType.fromTop,
       position: MotionToastPosition.top,
@@ -53,7 +53,7 @@ class RebiMessage {
         child: Row(
           children: [
             const Icon(
-              ToastIcons.cancel_circled_outline,
+              ToastIcons.cancelCircled,
               color: Colors.white,
               size: 32,
             ),

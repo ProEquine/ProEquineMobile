@@ -7,7 +7,7 @@ class UpdateApp extends StatelessWidget {
   final String msg;
   final String buttonText;
 
-  UpdateApp(this.heading, this.msg, this.buttonText);
+  const UpdateApp(this.heading, this.msg, this.buttonText, {super.key});
 
   @override
   Widget build(BuildContext context) {

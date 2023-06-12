@@ -62,7 +62,7 @@ class HorsesWidget extends StatelessWidget {
               )),
           const Spacer(flex: 10,),
           isActive?Container(
-            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 2),
             decoration: BoxDecoration(
               color: AppColors.notificationReview,
               borderRadius: BorderRadius.circular(8),

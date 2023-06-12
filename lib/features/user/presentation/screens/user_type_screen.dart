@@ -36,6 +36,14 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
    cubit.close();
     super.dispose();
   }
+  void _handleSelected(int index, bool value) {
+    setState(() {
+      for (int i = 0; i < _isSelected.length; i++) {
+        _isSelected[i] = false;
+      }
+      _isSelected[index] = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,21 +136,14 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
     );
   }
 
-  void _handleSelected(int index, bool value) {
-    setState(() {
-      for (int i = 0; i < _isSelected.length; i++) {
-        _isSelected[i] = false;
-      }
-      _isSelected[index] = value;
-    });
-  }
+
 
   _buildSelectTypeConsumer() {
     return BlocConsumer<UserCubit, UserState>(
         bloc: cubit,
         builder: (context, state) {
           if (state is SelectInterestsLoading) {
-            return LoadingCircularWidget();
+            return const LoadingCircularWidget();
           } else if (state is SelectInterestsError) {
             RebiMessage.error(msg: state.message!,context: context);
           }
@@ -164,7 +165,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
           if (state is SelectInterestsSuccessful) {
             AppSharedPreferences.typeSelected = true;
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => BottomNavigation()));
+                MaterialPageRoute(builder: (context) => const BottomNavigation()));
           } else if (state is SelectInterestsError) {
             RebiMessage.error(msg: state.message!,context: context);
           }

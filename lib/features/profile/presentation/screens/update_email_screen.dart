@@ -12,14 +12,12 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
-import '../../../../core/widgets/header_text.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 
 class UpdateEmailScreen extends StatelessWidget {
-  String previousEmail;
-
+  final String previousEmail;
   UpdateEmailScreen({Key? key, required this.previousEmail}) : super(key: key);
 
   final TextEditingController _email = TextEditingController();
@@ -67,7 +65,7 @@ class UpdateEmailScreen extends StatelessWidget {
                 bloc: cubit,
                 builder: (context, state) {
                   if (state is UpdateMailLoading) {
-                    return LoadingCircularWidget();
+                    return const LoadingCircularWidget();
                   }
                   return RebiButton(
                       onPressed: () {

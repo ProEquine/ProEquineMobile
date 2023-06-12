@@ -1,5 +1,3 @@
-
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -12,8 +10,6 @@ import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/features/home/presentation/screens/local_summary.dart';
 import 'package:proequine/features/home/presentation/widgets/create_trip_header.dart';
 import 'package:sizer/sizer.dart';
-
-import '../../../../core/global_functions/date_time_picker.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
@@ -25,22 +21,22 @@ import '../../../profile/data/verify_email_route.dart';
 import '../../../profile/presentation/widgets/drop_down_menu_widget.dart';
 
 class CreateTripScreen extends StatefulWidget {
-  String? type;
+  final String? type;
 
-  CreateTripScreen({super.key, this.type});
+  const CreateTripScreen({super.key, this.type});
 
   @override
-  _CreateTripScreenState createState() => _CreateTripScreenState();
+  CreateTripScreenState createState() => CreateTripScreenState();
 }
 
-class _CreateTripScreenState extends State<CreateTripScreen> {
+class CreateTripScreenState extends State<CreateTripScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController origin = TextEditingController();
   TextEditingController destination = TextEditingController();
   TextEditingController contact = TextEditingController();
   TextEditingController comment = TextEditingController();
   TextEditingController countryCode = TextEditingController(text: '+971');
-  DateTime _focusedDay = DateTime.now();
+  final DateTime _focusedDay = DateTime.now();
   TextEditingController? date;
   TextEditingController? expectedDate;
   bool isWithoutReturn = false;
@@ -133,9 +129,6 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
     expectedTimePicked = TextEditingController();
     time = DateTime.utc(0, 0, 0, 15, 0);
     expectedTime = DateTime.utc(0, 0, 0, 15, 0);
-
-    //set the initial value of text field
-    // timePicked?.text=convertToTime(time!);
     super.initState();
   }
 
@@ -200,8 +193,7 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                //Your custom height
-                child: ListView(padding: EdgeInsets.only(top: 0), children: [
+                child: ListView(children: [
                   CreateTripHeader(
                       image: widget.type == 'hospital'
                           ? AppImages.hospitalTransport
@@ -281,17 +273,6 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                 controller: date!,
                                 focusDay: _focusedDay,
                               );
-
-                              // showDate(context, (value) {
-                              //   setState(() {
-                              //     dateTime = value!;
-                              //     final DateFormat formatter =
-                              //     DateFormat('dd MMM yyyy');
-                              //     final String formatted =
-                              //     formatter.format(dateTime);
-                              //     date?.text = formatted;
-                              //   });
-                              // });
                             },
                             autoValidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -329,25 +310,22 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                 confirmText: "Confirm".tra,
                                 context: context,
                                 cancelText: "Cancel".tra,
-                                // helpText: StringKeys.selectTime.tr(),
-                                // errorInvalidText:StringKeys.timeError.tr(),
-                                // hourLabelText: StringKeys.hour.tr(),
-                                // minuteLabelText: StringKeys.minute.tr(),
                                 initialEntryMode: TimePickerEntryMode.dial,
                                 initialTime: TimeOfDay.fromDateTime(
                                     DateTime.utc(0, 0, 0, 15, 0)),
                               );
 
                               Print(pickedTime);
+                              if (context.mounted) {
+                                if (pickedTime != null) {
+                                  time = pickedTime.toDateTime();
+                                  String parsedTime =
+                                      pickedTime.format(context);
 
-                              if (pickedTime != null) {
-                                time = pickedTime.toDateTime();
-                                //output 10:51 PM
-                                String parsedTime = pickedTime.format(context);
-
-                                setState(() {
-                                  timePicked?.text = parsedTime;
-                                });
+                                  setState(() {
+                                    timePicked?.text = parsedTime;
+                                  });
+                                }
                               } else {}
                             },
                             contentPadding: const EdgeInsets.symmetric(
@@ -355,7 +333,7 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                             isOptional: false,
                             readOnly: true,
                             validator: (value) {
-                              // return  Validator.requiredValidator(timePicked?.text);
+                             return;
                             },
                           ),
                         ),
@@ -375,7 +353,7 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                         });
                       },
                       validator: (value) {
-                        // return Validator.requiredValidator(selectedNumber);
+                      return;
                       },
                       hint: 'Number of horses',
                     ),
@@ -392,7 +370,9 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                       },
                       items: tripType,
                       selected: selectedTrip,
-                      validator: (value) {},
+                      validator: (value) {
+                        return;
+                      },
                       hint: 'Trip type',
                     ),
                   ),
@@ -412,27 +392,24 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                   confirmText: "Confirm".tra,
                                   context: context,
                                   cancelText: "Cancel".tra,
-                                  // helpText: StringKeys.selectTime.tr(),
-                                  // errorInvalidText:StringKeys.timeError.tr(),
-                                  // hourLabelText: StringKeys.hour.tr(),
-                                  // minuteLabelText: StringKeys.minute.tr(),
                                   initialEntryMode: TimePickerEntryMode.dial,
                                   initialTime: TimeOfDay.fromDateTime(
                                       DateTime.utc(0, 0, 0, 15, 0)),
                                 );
 
                                 Print(pickedTime);
+                                if (context.mounted) {
+                                  if (pickedTime != null) {
+                                    expectedTime = pickedTime.toDateTime();
+                                    //output 10:51 PM
+                                    String parsedTime =
+                                        pickedTime.format(context);
 
-                                if (pickedTime != null) {
-                                  expectedTime = pickedTime.toDateTime();
-                                  //output 10:51 PM
-                                  String parsedTime =
-                                      pickedTime.format(context);
-
-                                  setState(() {
-                                    expectedTimePicked?.text = parsedTime;
-                                  });
-                                } else {}
+                                    setState(() {
+                                      expectedTimePicked?.text = parsedTime;
+                                    });
+                                  } else {}
+                                }
                               },
                               contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 13),
@@ -508,17 +485,20 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                                       );
 
                                       Print(pickedTime);
+                                      if (context.mounted) {
+                                        if (pickedTime != null) {
+                                          expectedTime =
+                                              pickedTime.toDateTime();
+                                          //output 10:51 PM
+                                          String parsedTime =
+                                              pickedTime.format(context);
 
-                                      if (pickedTime != null) {
-                                        expectedTime = pickedTime.toDateTime();
-                                        //output 10:51 PM
-                                        String parsedTime =
-                                            pickedTime.format(context);
-
-                                        setState(() {
-                                          expectedTimePicked?.text = parsedTime;
-                                        });
-                                      } else {}
+                                          setState(() {
+                                            expectedTimePicked?.text =
+                                                parsedTime;
+                                          });
+                                        } else {}
+                                      }
                                     },
                                     contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 13),
@@ -553,12 +533,11 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                             keyboardType: TextInputType.number,
                             textInputAction: TextInputAction.done,
                             autoValidateMode:
-                            AutovalidateMode.onUserInteraction,
+                                AutovalidateMode.onUserInteraction,
                             isOptional: false,
                             color: AppColors.formsLabel,
                             readOnly: true,
-                            contentPadding:
-                            const EdgeInsets.symmetric(
+                            contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 13),
                             obscureText: false,
                             validator: (value) {
@@ -577,7 +556,8 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                             controller: contact,
                             keyboardType: TextInputType.phone,
                             textInputAction: TextInputAction.done,
-                            autoValidateMode: AutovalidateMode.onUserInteraction,
+                            autoValidateMode:
+                                AutovalidateMode.onUserInteraction,
                             isOptional: false,
                             color: AppColors.formsLabel,
                             readOnly: false,
@@ -607,7 +587,9 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 13),
                       obscureText: false,
-                      validator: (value) {},
+                      validator: (value) {
+                        return;
+                      },
                     ),
                   ),
                 ]),
@@ -627,7 +609,7 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LocalSummary()));
+                                  builder: (context) => const LocalSummary()));
                         } else {
                           RebiMessage.error(
                               msg: "please enter the correct expected Time",

@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 import '../constants/colors/app_colors.dart';
@@ -29,11 +29,11 @@ _showDatePicker(BuildContext context,Function setValue) {
               ),
               textButtonTheme: TextButtonThemeData(
                 style: TextButton.styleFrom(
-                  primary: Colors.white, // button text color
+                  foregroundColor: Colors.white, // button text color
                 ),
               ),
             ),
-            child: Container(
+            child: SizedBox(
               height: 100,
               width: 100,
               child: child!,

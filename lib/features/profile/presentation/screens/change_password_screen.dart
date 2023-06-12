@@ -12,7 +12,6 @@ import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
-import '../../../../core/widgets/header_text.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/success_state_widget.dart';
@@ -134,7 +133,7 @@ class ChangePasswordScreen extends StatelessWidget {
                 },
                 builder: (context, state) {
                   if (state is ChangePasswordLoading) {
-                    return LoadingCircularWidget();
+                    return const LoadingCircularWidget();
                   }
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: kPadding),

@@ -87,7 +87,7 @@ class ResponsiveSizer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Sizer(
       builder: (context, orientation, deviceType) {
-        return MyApp();
+        return const MyApp();
       },
     );
   }
@@ -100,10 +100,10 @@ class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  _MyAppState createState() => _MyAppState();
+  MyAppState createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
@@ -131,8 +131,8 @@ class _MyAppState extends State<MyApp> {
         inboxRoute: (context) => const BottomNavigation(
               selectedIndex: 2,
             ),
-        createEvent: ((context) => CreateEventScreen()),
-        createTrip: ((context) => CreateTripScreen()),
+        createEvent: ((context) => const CreateEventScreen()),
+        createTrip: ((context) => const CreateTripScreen()),
         accountInfo: (context) => AccountInfoScreen(),
         userProfile: (context) => const UserProfile(),
         updatePhone: (context) => UpdatePhoneScreen(),

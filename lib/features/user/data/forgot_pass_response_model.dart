@@ -10,6 +10,7 @@ class ForgotPasswordResponseModel extends BaseResultModel {
     token = json['token'];
   }
 
+  @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['token'] = token;

@@ -1,12 +1,11 @@
 
 
-import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/features/splash/domain/repo/splash_repo.dart';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
+
 
 import '../../../core/utils/printer.dart';
 import '../../../core/utils/secure_storage/secure_storage_helper.dart';

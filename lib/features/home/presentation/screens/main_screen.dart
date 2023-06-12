@@ -87,7 +87,7 @@ class MainScreen extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => CreateTripScreen(
+                                      builder: (context) => const CreateTripScreen(
                                             type: 'local',
                                           )));
                             },
@@ -99,7 +99,7 @@ class MainScreen extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => CreateTripScreen(
+                                      builder: (context) => const CreateTripScreen(
                                             type: 'hospital',
                                           )));
                             },
@@ -114,7 +114,7 @@ class MainScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          CreateEventScreen()));
+                                          const CreateEventScreen()));
                             },
                           ),
                         ],

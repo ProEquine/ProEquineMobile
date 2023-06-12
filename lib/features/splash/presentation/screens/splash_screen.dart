@@ -19,10 +19,10 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  SplashScreenState createState() => SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class SplashScreenState extends State<SplashScreen> {
   final String _appUrl = Platform.isAndroid
       ? 'https://play.google.com/store/apps/details?id=com.findyourteam.mobile'
       : 'https://apps.apple.com/us/app/fyt-find-your-team/id1644097919';

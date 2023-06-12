@@ -5,7 +5,6 @@ import 'package:proequine/features/profile/presentation/widgets/history_widget.d
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/widgets/custom_header.dart';
-import '../../../../core/widgets/header_text.dart';
 
 class HistoryScreen extends StatefulWidget {
   final String? statusImg;
@@ -24,10 +23,10 @@ class HistoryScreen extends StatefulWidget {
   });
 
   @override
-  _HistoryScreenState createState() => _HistoryScreenState();
+  HistoryScreenState createState() => HistoryScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> {
+class HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

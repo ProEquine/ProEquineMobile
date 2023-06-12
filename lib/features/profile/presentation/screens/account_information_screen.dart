@@ -145,7 +145,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                       horizontal: 20, vertical: 13),
                                   obscureText: false,
                                   validator: (value) {
-                                    // return Validator.requiredValidator(name.text);
+                                    return;
                                   },
                                 ),
                               ),
@@ -168,14 +168,6 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                         ),
                                       ),
                                     );
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             UpdateEmailScreen(
-                                    //               previousEmail:
-                                    //                   state.responseModel!.email!,
-                                    //             )));
                                   },
                                   keyboardType: TextInputType.emailAddress,
                                   textInputAction: TextInputAction.done,
@@ -188,7 +180,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                       horizontal: 20, vertical: 13),
                                   obscureText: false,
                                   validator: (value) {
-                                    // return Validator.emailValidator(email.text);
+                                    return;
                                   },
                                 ),
                               ),
@@ -214,7 +206,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                       horizontal: 20, vertical: 13),
                                   obscureText: false,
                                   validator: (value) {
-                                    // return Validator.phoneValidator(phone.text);
+                                    return;
                                   },
                                 ),
                               ),
@@ -238,7 +230,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                       horizontal: 20, vertical: 13),
                                   obscureText: false,
                                   validator: (value) {
-                                    // return Validator.requiredValidator(name.text);
+                                    return;
                                   },
                                 ),
                               ),
@@ -263,7 +255,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                       horizontal: 20, vertical: 13),
                                   obscureText: false,
                                   validator: (value) {
-                                    // return Validator.requiredValidator(name.text);
+                                    return;
                                   },
                                 ),
                               ),
@@ -294,7 +286,9 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                   readOnly: true,
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 13),
-                                  validator: (value) {},
+                                  validator: (value) {
+                                    return;
+                                  },
                                 ),
                               ),
                             ],

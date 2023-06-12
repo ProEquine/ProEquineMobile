@@ -86,7 +86,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                RegistrationHeader(isThereBackButton: true),
+                RegistrationHeader(isThereBackButton: false),
                 SizedBox(
                   // padding: const EdgeInsets.symmetric(vertical: kPadding),
                   height: 15.h,
@@ -266,7 +266,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
         bloc: cubit,
         builder: (context, state) {
           if (state is CheckVerificationLoading) {
-            return LoadingCircularWidget();
+            return const LoadingCircularWidget();
           }
           {
             return RebiButton(

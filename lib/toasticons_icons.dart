@@ -30,12 +30,12 @@ class ToastIcons {
   static const _kFontFam = 'Toasticons';
   static const String? _kFontPkg = null;
 
-  static const IconData cancel_circled_outline = IconData(
+  static const IconData cancelCircled = IconData(
     0xe800,
     fontFamily: _kFontFam,
     fontPackage: _kFontPkg,
   );
-  static const IconData ok_circled2 = IconData(
+  static const IconData okCircled2 = IconData(
     0xe801,
     fontFamily: _kFontFam,
     fontPackage: _kFontPkg,

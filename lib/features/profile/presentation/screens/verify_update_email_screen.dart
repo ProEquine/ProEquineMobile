@@ -242,7 +242,7 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                         },
                         builder: (context, state) {
                           if (state is CheckUpdateMailLoading) {
-                            return LoadingCircularWidget();
+                            return const LoadingCircularWidget();
                           }
                           return RebiButton(
                             onPressed: () {

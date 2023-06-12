@@ -6,7 +6,6 @@ import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/widgets/privacy_checkbox.dart';
 import 'package:proequine/features/user/presentation/screens/signup_screen.dart';
 
-import 'package:table_calendar/table_calendar.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_logo_widget.dart';
@@ -44,9 +43,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool privacyValue = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _yearKey = GlobalKey<FormState>();
-  CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime _selectedDay = DateTime.utc(1950);
-  DateTime _focusedDay = DateTime.now();
+  final DateTime _selectedDay = DateTime.utc(1950);
+  final DateTime _focusedDay = DateTime.now();
   late int _selectedYear;
   late TextEditingController _yearController;
 

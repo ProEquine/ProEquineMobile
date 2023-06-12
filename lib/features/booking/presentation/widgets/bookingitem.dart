@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:proequine/core/constants/colors/app_colors.dart';
@@ -8,12 +6,12 @@ import '../../../../core/constants/images/app_images.dart';
 
 class BookingItem extends StatelessWidget {
   bool pending = false;
-  String? type;
+  final String? type;
   final String? bookingId;
-  String? date;
-  String? transport;
-  String? transportType;
-  int? horsesCount;
+  final String? date;
+  final String? transport;
+  final String? transportType;
+  final int? horsesCount;
 
   BookingItem({
     super.key,

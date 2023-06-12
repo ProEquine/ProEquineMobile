@@ -18,10 +18,10 @@ class ProfileListTileWidget extends StatefulWidget {
       this.onTap});
 
   @override
-  _ProfileListTileWidgetState createState() => _ProfileListTileWidgetState();
+  ProfileListTileWidgetState createState() => ProfileListTileWidgetState();
 }
 
-class _ProfileListTileWidgetState extends State<ProfileListTileWidget> {
+class ProfileListTileWidgetState extends State<ProfileListTileWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(

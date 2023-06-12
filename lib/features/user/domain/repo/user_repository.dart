@@ -2,14 +2,14 @@ import 'package:proequine/core/CoreModels/empty_model.dart';
 import 'package:proequine/features/user/data/check_mail_request_model.dart';
 import 'package:proequine/features/user/data/check_update_email_request_model.dart';
 import 'package:proequine/features/user/data/check_verification_request_model.dart';
-import 'package:proequine/features/user/data/forgot_pass_response-model.dart';
+import 'package:proequine/features/user/data/forgot_pass_response_model.dart';
 import 'package:proequine/features/user/data/interests_request_model.dart';
 import 'package:proequine/features/user/data/login_request_model.dart';
 import 'package:proequine/features/user/data/login_response_model.dart';
 import 'package:proequine/features/user/data/register_request_model.dart';
 import 'package:proequine/features/user/data/register_response_model.dart';
 import 'package:proequine/features/user/data/reset_password_request_model.dart';
-import 'package:proequine/features/user/data/send-mail_request_model.dart';
+import 'package:proequine/features/user/data/send_mail_request_model.dart';
 import 'package:proequine/features/user/data/send_verification_request_model.dart';
 import 'package:proequine/features/user/data/update_email_request_model.dart';
 

@@ -1,11 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 extension StringTranslate on String {
   String get tra {
-    // translationService.addData(this);
     return this;
-    return this.tr();
   }
 }
 extension DateOnlyCompare on DateTime {
