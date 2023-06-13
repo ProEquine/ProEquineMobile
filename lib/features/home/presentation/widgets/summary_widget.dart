@@ -5,8 +5,11 @@ import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 
+import '../../data/form_Data_Model.dart';
+
 class SummaryBoxWidget extends StatelessWidget {
-  const SummaryBoxWidget({super.key});
+  final FromDataModel? formData;
+  SummaryBoxWidget({required this.formData});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +30,8 @@ class SummaryBoxWidget extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            const Text(
-              "Event transport",
+            Text(
+              '${formData!.tripType}',
               style: AppStyles.summaryDesStyle,
             ),
             const SizedBox(
@@ -81,8 +84,8 @@ class SummaryBoxWidget extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            const Text(
-              "4 Horses",
+            Text(
+              '${formData!.numberOfHorses}',
               style: AppStyles.summaryDesStyle,
             ),
             const SizedBox(
@@ -95,8 +98,8 @@ class SummaryBoxWidget extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            const Text(
-              "+971 57 865 9658",
+            Text(
+              '${formData!.contact}',
               style: AppStyles.summaryDesStyle,
             ),
             const SizedBox(
@@ -109,8 +112,8 @@ class SummaryBoxWidget extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            const Text(
-              "Lorem Ipsum , is simply dummy text.",
+            Text(
+              '${formData!.comment}',
               style: AppStyles.summaryDesStyle,
             ),
             const SizedBox(

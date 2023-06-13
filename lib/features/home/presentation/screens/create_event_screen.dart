@@ -145,8 +145,8 @@ class CreateEventScreenState extends State<CreateEventScreen> {
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: kPadding, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: kPadding, vertical: 10),
                 child: RebiInput(
                   hintText: 'Origin Location'.tra,
                   controller: origin,
@@ -165,8 +165,8 @@ class CreateEventScreenState extends State<CreateEventScreen> {
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: kPadding, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: kPadding, vertical: 10),
                 child: RebiInput(
                   hintText: 'Event Location'.tra,
                   controller: eventLocation,
@@ -185,8 +185,8 @@ class CreateEventScreenState extends State<CreateEventScreen> {
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: kPadding, vertical: 10),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: kPadding, vertical: 10),
                 child: RebiInput(
                   hintText: 'Event Title'.tra,
                   controller: eventTitle,
@@ -299,7 +299,7 @@ class CreateEventScreenState extends State<CreateEventScreen> {
                   items: numberOfHorses,
                   selected: selectedNumber,
                   validator: (value) {
-                   return;
+                    return;
                   },
                   hint: 'Number of horses',
                 ),
@@ -323,10 +323,10 @@ class CreateEventScreenState extends State<CreateEventScreen> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LocalSummary()));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => const LocalSummary()));
                       } else {
                         Print("not verified");
                       }

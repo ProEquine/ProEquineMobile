@@ -115,7 +115,7 @@ class MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       navigatorKey: navigatorKey,
       theme: AppStyles().mainTheme,
       navigatorObservers: [MyNavigatorObserver()],
@@ -132,7 +132,7 @@ class MyAppState extends State<MyApp> {
               selectedIndex: 2,
             ),
         createEvent: ((context) => const CreateEventScreen()),
-        createTrip: ((context) => const CreateTripScreen()),
+        createTrip: ((context) => CreateTripScreen()),
         accountInfo: (context) => AccountInfoScreen(),
         userProfile: (context) => const UserProfile(),
         updatePhone: (context) => UpdatePhoneScreen(),
