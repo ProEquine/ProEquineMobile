@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
@@ -89,9 +88,8 @@ class MainScreen extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-
-                                      builder: (context) =>  CreateTripScreen()));
-
+                                      builder: (context) =>
+                                          CreateTripScreen()));
                             },
                           ),
                           ServiceWidget(
@@ -101,8 +99,6 @@ class MainScreen extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-
-
                                       builder: (context) => CreateTripScreen(
                                             type: 'hospital',
                                           )));

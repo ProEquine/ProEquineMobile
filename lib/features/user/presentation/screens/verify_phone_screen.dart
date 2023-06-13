@@ -4,6 +4,7 @@ import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/features/user/data/register_request_model.dart';
+import 'package:proequine/features/user/data/send_verification_request_model.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
 
@@ -99,7 +100,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                         keyboardType: TextInputType.number,
                                         textInputAction: TextInputAction.done,
                                         autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                            AutovalidateMode.onUserInteraction,
                                         isOptional: false,
                                         color: AppColors.formsLabel,
                                         readOnly: false,
@@ -124,7 +125,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                         keyboardType: TextInputType.number,
                                         textInputAction: TextInputAction.done,
                                         autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                            AutovalidateMode.onUserInteraction,
                                         isOptional: false,
                                         color: AppColors.formsLabel,
                                         readOnly: false,
@@ -144,31 +145,71 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 20),
+                                // child: BlocConsumer<UserCubit, UserState>(
+                                //   bloc: cubit,
+                                //   builder: (context, state) {
+                                //     if (state is RegisterLoading) {
+                                //       return const LoadingCircularWidget();
+                                //     }
+                                //     return RebiButton(
+                                //         onPressed: () {
+                                //           if (_formKey.currentState!
+                                //               .validate()) {
+                                //             FocusManager.instance.primaryFocus?.unfocus();
+                                //             _sendRegisterData(
+                                //                 email: widget.email,
+                                //                 name: widget.fullName,
+                                //                 phone: _countryCode.text +
+                                //                     _phone.text,
+                                //                 password: widget.password,
+                                //                 dob: widget.dob);
+                                //           } else {}
+                                //         },
+                                //         backgroundColor: AppColors.white,
+                                //         child: const Text("Verify"));
+                                //   },
+                                //   listener: (context, state) {
+                                //     if (state is RegisterSuccessful) {
+                                //       AppSharedPreferences.inputPhoneNumber =
+                                //           _countryCode.text + _phone.text;
+                                //       Navigator.push(
+                                //           context,
+                                //           MaterialPageRoute(
+                                //               builder: (context) =>
+                                //                   VerificationScreen(
+                                //                     phone: _countryCode.text +
+                                //                         _phone.text,
+                                //                   )));
+                                //     } else if (state is RegisterError) {
+                                //       RebiMessage.error(msg: state.message!,context: context);
+                                //     }
+                                //   },
+                                // ),
                                 child: BlocConsumer<UserCubit, UserState>(
                                   bloc: cubit,
                                   builder: (context, state) {
-                                    if (state is RegisterLoading) {
+                                    if (state is SendVerificationLoading) {
                                       return const LoadingCircularWidget();
                                     }
                                     return RebiButton(
                                         onPressed: () {
                                           if (_formKey.currentState!
                                               .validate()) {
-                                            FocusManager.instance.primaryFocus?.unfocus();
-                                            _sendRegisterData(
-                                                email: widget.email,
-                                                name: widget.fullName,
-                                                phone: _countryCode.text +
-                                                    _phone.text,
-                                                password: widget.password,
-                                                dob: widget.dob);
+                                            FocusManager.instance.primaryFocus
+                                                ?.unfocus();
+                                            cubit.sendVerificationCode(
+                                                SendVerificationRequestModel(
+                                                    phoneNumber:
+                                                        _countryCode.text +
+                                                            _phone.text,
+                                                    channel: "sms"));
                                           } else {}
                                         },
                                         backgroundColor: AppColors.white,
                                         child: const Text("Verify"));
                                   },
                                   listener: (context, state) {
-                                    if (state is RegisterSuccessful) {
+                                    if (state is SendVerificationSuccessful) {
                                       AppSharedPreferences.inputPhoneNumber =
                                           _countryCode.text + _phone.text;
                                       Navigator.push(
@@ -176,11 +217,18 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   VerificationScreen(
-                                                    phone: _countryCode.text +
-                                                        _phone.text,
+                                                    email: widget.email,
+                                                                    name: widget.fullName,
+                                                                    phone: _countryCode.text +
+                                                                        _phone.text,
+                                                                    password: widget.password,
+                                                                    dob: widget.dob
+
                                                   )));
                                     } else if (state is RegisterError) {
-                                      RebiMessage.error(msg: state.message!,context: context);
+                                      RebiMessage.error(
+                                          msg: state.message!,
+                                          context: context);
                                     }
                                   },
                                 ),

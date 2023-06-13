@@ -82,6 +82,8 @@ class DeletePopup extends StatelessWidget {
                           onPressed: () async {
                             cubit.deleteAccount(
                                 AppSharedPreferences.userPhoneNumber);
+                            AppSharedPreferences.clear();
+                            AppSharedPreferences.clearForLogOut();
                             await SecureStorage().deleteUserId();
                             await SecureStorage().deleteDeviceId();
                             await SecureStorage().deleteRefreshToken();

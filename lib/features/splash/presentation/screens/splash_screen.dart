@@ -65,7 +65,7 @@ class SplashScreenState extends State<SplashScreen> {
 
   Future<void> navigateUser() async {
     if (await SecureStorage().hasToken()) {
-      if (AppSharedPreferences.getPhoneVerified!) {
+
         if (AppSharedPreferences.getIsITypeSelected!) {
           if (context.mounted) {
             Navigator.pushReplacement(
@@ -81,17 +81,6 @@ class SplashScreenState extends State<SplashScreen> {
                     builder: (context) => const InterestsScreen()));
           }
         }
-      } else {
-        if (context.mounted) {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => VerificationScreen(
-                      phone: AppSharedPreferences.userPhoneNumber)));
-        }
-      }
-      Print("has token${await SecureStorage().hasToken()}");
-      Print("verified phone${AppSharedPreferences.getPhoneVerified}");
     } else {
       /// edited from login to testPage
       if (context.mounted) {

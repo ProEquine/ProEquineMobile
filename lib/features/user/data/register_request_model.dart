@@ -4,8 +4,9 @@ class RegisterRequestModel {
   String? fullName;
   String? dob;
   String? phoneNumber;
+  String? verificationCode;
 
-  RegisterRequestModel({this.email, this.password,this.fullName,this.dob,this.phoneNumber});
+  RegisterRequestModel({this.email, this.password,this.fullName,this.dob,this.phoneNumber,this.verificationCode});
 
   RegisterRequestModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
@@ -13,6 +14,7 @@ class RegisterRequestModel {
     fullName = json['fullName'];
     dob = json['dob'];
     phoneNumber = json['phoneNumber'];
+    verificationCode = json['verificationCode'];
   }
 
   Map<String, dynamic> toJson() {
@@ -22,6 +24,7 @@ class RegisterRequestModel {
     data['fullName'] = fullName;
     data['dob'] = dob;
     data['phoneNumber'] = phoneNumber;
+    data['verificationCode'] = verificationCode;
     return data;
   }
 }

@@ -62,7 +62,7 @@ class _VerificationSubmitState extends State<VerificationSubmit>
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w),
               child: const Text(
-                "Your phone has been verified successfully",
+                "Your account has been created successfully",
                 textAlign: TextAlign.center,
                 style:  TextStyle(
                     color: AppColors.white,
