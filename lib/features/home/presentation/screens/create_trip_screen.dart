@@ -193,7 +193,9 @@ class CreateTripScreenState extends State<CreateTripScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: ListView(children: [
+                child: ListView(
+                    padding: EdgeInsets.only(top: 0),
+                    children: [
                   CreateTripHeader(
                       image: widget.type == 'hospital'
                           ? AppImages.hospitalTransport

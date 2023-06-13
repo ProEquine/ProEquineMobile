@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:proequine/app_settings.dart';
 import 'package:proequine/features/notifications/domain/notifications_cubit.dart';
 import 'package:proequine/features/splash/data/refresh_request_model.dart';
 import 'package:proequine/features/splash/domain/splash_cubit.dart';
@@ -37,23 +41,37 @@ class SplashScreenState extends State<SplashScreen> {
   SplashCubit splashCubit = SplashCubit();
   NotificationsCubit notificationsCubit = NotificationsCubit();
 
-  // getVersion() async {
-  //   PackageInfo packageInfo = await PackageInfo.fromPlatform();
-  //   version = 'version: ${packageInfo.version}';
-  //   buildVersion = "${packageInfo.version}.${packageInfo.buildNumber}";
-  //   packageName = packageInfo.packageName;
-  //
-  //   Print('version: ${packageInfo.version}');
-  //   Print('name: ${packageInfo.packageName}');
-  // }
+  getVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    version = 'version: ${packageInfo.version}';
+    buildVersion = "${packageInfo.version}.${packageInfo.buildNumber}";
+    packageName = packageInfo.packageName;
+    if(context.mounted){
+      setState(() {
+        context.read<SplashCubit>().getEnv("${packageInfo.version}.${packageInfo.buildNumber}");
+        BlocProvider.of<SplashCubit>(context).getEnv("${packageInfo.version}.${packageInfo.buildNumber}");
+
+        Print("bloc provider ${BlocProvider.of<SplashCubit>(context).envUrl}");
+      });
+
+    }
+    Print('AppSharedPreferences.getEnvType${AppSharedPreferences.getEnvType}');
+
+    Print('version: ${packageInfo.version}');
+    Print('build Version: ${packageInfo.buildNumber}');
+    Print('build Version with build number: $buildVersion');
+    Print('name: ${packageInfo.packageName}');
+  }
 
   Future<void> navigateUser() async {
     if (await SecureStorage().hasToken()) {
       if (AppSharedPreferences.getPhoneVerified!) {
         if (AppSharedPreferences.getIsITypeSelected!) {
           if (context.mounted) {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const BottomNavigation()));
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const BottomNavigation()));
           }
         } else {
           if (context.mounted) {
@@ -101,16 +119,39 @@ class SplashScreenState extends State<SplashScreen> {
         RefreshRequestModel(refreshToken: refreshToken, userId: userId));
   }
 
+  deleteSecureStorage() async {
+    if (!AppSharedPreferences.getFirstTime!) {
+      await SecureStorage().deleteToken();
+      await SecureStorage().deleteRefreshToken();
+      await SecureStorage().deleteDeviceId();
+      await SecureStorage().deleteUserId();
+      Print("All Deleted");
+    }
+  }
+
   @override
   void initState() {
-    startTimer();
+    AppSettings.setup();
+    getVersion();
+    if(AppSharedPreferences.getEnvType!=''){
+      startTimer();
+    }else{
+      getVersion();
+      Timer(const Duration(seconds: 3), () async {
+        await startTimer();
+      });
+    }
+
+    deleteSecureStorage();
     sendRefreshToken();
     notificationsCubit.configOneSignal();
 
     super.initState();
   }
+
   @override
   void dispose() {
+    sendRefreshToken();
     splashCubit.close();
     notificationsCubit.close();
     super.dispose();

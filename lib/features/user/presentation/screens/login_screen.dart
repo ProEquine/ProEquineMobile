@@ -16,6 +16,7 @@ import 'package:proequine/features/user/presentation/screens/verification_screen
 
 
 import '../../../../core/constants/routes/routes.dart';
+import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/loading_widget.dart';
@@ -38,6 +39,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
+    AppSharedPreferences.firstTime=true;
+    Print('AppSharedPreferences.getEnvType${AppSharedPreferences.getEnvType}');
     _email = TextEditingController();
     _password = TextEditingController();
     super.initState();

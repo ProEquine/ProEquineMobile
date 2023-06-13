@@ -23,33 +23,36 @@ class EventListMain extends StatelessWidget {
               sigmaX: 30.0,
               sigmaY: 30.0,
             ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 50, bottom: 20, left: 20, right: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Upcoming Events",
-                    style:  TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "hemiHead",
+            child: Container(
+              // color: AppColors.backgroundColor,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    top: 50, bottom: 20, left: 20, right: 20),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Upcoming Events",
+                      style:  TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "hemiHead",
+                      ),
                     ),
-                  ),
-                  GestureDetector(
-                    child: SvgPicture.asset(AppIcons.userSquare,height: 32,width: 32,),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const UserProfile(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                    GestureDetector(
+                      child: SvgPicture.asset(AppIcons.userSquare,height: 32,width: 32,),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserProfile(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

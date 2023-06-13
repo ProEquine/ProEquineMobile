@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proequine/app_settings.dart';
 import 'package:proequine/core/StartUp/StartUp.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/core/widgets/submit_verify_email.dart';
@@ -19,6 +20,7 @@ import 'package:proequine/features/profile/presentation/screens/user_profile.dar
 import 'package:proequine/features/profile/presentation/screens/verify_email_screen.dart';
 import 'package:proequine/features/profile/presentation/screens/verify_update_email_screen.dart';
 import 'package:proequine/features/profile/presentation/screens/verify_updated_phone_screen.dart';
+import 'package:proequine/features/splash/domain/splash_cubit.dart';
 import 'package:proequine/features/splash/presentation/screens/splash_screen.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:sizer/sizer.dart';
@@ -36,6 +38,7 @@ void main() async {
   await AppSharedPreferences.init();
   // await Firebase.initializeApp();
   StartUp.setup();
+  AppSettings.setup();
   String? defaultLocale = Platform.localeName;
   if (defaultLocale.substring(0, 2) == 'en') {
     defaultLocale = 'en';
@@ -62,6 +65,9 @@ _blocProvider() {
     providers: [
       BlocProvider<NavbarCubit>(
         create: (context) => NavbarCubit(),
+      ),
+      BlocProvider<SplashCubit>(
+        create: (context) => SplashCubit(),
       ),
       BlocProvider<NotificationsCubit>(
         create: (context) => NotificationsCubit(),
@@ -132,7 +138,7 @@ class MyAppState extends State<MyApp> {
               selectedIndex: 2,
             ),
         createEvent: ((context) => const CreateEventScreen()),
-        createTrip: ((context) => const CreateTripScreen()),
+        createTrip: ((context) =>  CreateTripScreen()),
         accountInfo: (context) => AccountInfoScreen(),
         userProfile: (context) => const UserProfile(),
         updatePhone: (context) => UpdatePhoneScreen(),

@@ -2,14 +2,14 @@ import 'SharedPreferencesProvider.dart';
 
 class AppSharedPreferences {
   //todo move these to constants
-  static const keyAccessToken = "PREF_KEY_ACCESS_TOKEN";
-  static const keyUserId = "PREF_KEY_USER_ID";
-  static const keyRefreshToken = "PREF_KEY_REFRESH_TOKEN";
+
+
   static const keyDeviceId = "PREF_KEY_DEVICE_ID";
   static const keyFirstTime = "PREF_KEY_FIRST_TIME";
   static const keyLanguage = "PREF_KEY_LANGUAGE";
   static const keyUserPhoneNumber = "PREF_KEY_USER_PHONE_NUMBER";
   static const keyUserEmailAddress = "PREF_KEY_USER_EMAIL_ADDRESS";
+  static const keyEnv = "PREF_KEY_ENV";
   static const keyUserType = "PREF_KEY_USER_TYPE";
   static const keyUserInterests = "PREF_KEY_INTERESTS";
 
@@ -63,6 +63,11 @@ class AppSharedPreferences {
 
   static removeDeviceId() => _pref?.remove(keyDeviceId);
 
+  ///  Store User device id
+  static String get getEnvType => _pref?.read(keyEnv) ?? 'https://pet-webapi-uaeno-prod-001.azurewebsites.net';
+
+  static set setEnvType(String env) => _pref?.save(keyEnv, env);
+
   ///Language
   static String get lang {
     String? lang = _pref?.read(keyLanguage);
@@ -77,13 +82,14 @@ class AppSharedPreferences {
 
   ///FIRST_TIME Starting Application
   static bool? get getFirstTime {
-    if (_pref?.readBoolean(keyFirstTime) == null) firstTime = false;
+    if (_pref?.readBoolean(keyFirstTime) == null) firstTime = true;
 
-    return _pref?.readBoolean(keyFirstTime) ?? false;
+    return _pref?.readBoolean(keyFirstTime) ?? true;
   }
 
   static set firstTime(bool? first) =>
-      _pref?.saveBoolean(keyFirstTime, first) ?? false;
+      _pref?.saveBoolean(keyFirstTime, first) ?? true;
+
 
   /// is phone number verified
   static bool? get getPhoneVerified {

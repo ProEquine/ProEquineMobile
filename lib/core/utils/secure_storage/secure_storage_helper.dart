@@ -12,8 +12,15 @@ class SecureStorage {
     await _storage.write(key: 'token', value: token);
   }
 
+
   Future<String?> getToken() async {
     return await _storage.read(key: 'token');
+  }
+  Future<void> setUrl(String url) async {
+    await _storage.write(key: 'url', value: url);
+  }
+  Future<String?> getUrl() async {
+    return await _storage.read(key: 'url');
   }
 
   Future<bool> hasToken() async {
