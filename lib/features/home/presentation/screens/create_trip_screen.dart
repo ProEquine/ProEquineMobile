@@ -7,9 +7,12 @@ import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
+import 'package:proequine/features/home/data/form_Data_Model.dart';
 import 'package:proequine/features/home/presentation/screens/local_summary.dart';
 import 'package:proequine/features/home/presentation/widgets/create_trip_header.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../../../core/global_functions/date_time_picker.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
@@ -21,22 +24,22 @@ import '../../../profile/data/verify_email_route.dart';
 import '../../../profile/presentation/widgets/drop_down_menu_widget.dart';
 
 class CreateTripScreen extends StatefulWidget {
-  final String? type;
+  String? type;
 
-  const CreateTripScreen({super.key, this.type});
+  CreateTripScreen({super.key, this.type});
 
   @override
-  CreateTripScreenState createState() => CreateTripScreenState();
+  _CreateTripScreenState createState() => _CreateTripScreenState();
 }
 
-class CreateTripScreenState extends State<CreateTripScreen> {
+class _CreateTripScreenState extends State<CreateTripScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController origin = TextEditingController();
   TextEditingController destination = TextEditingController();
   TextEditingController contact = TextEditingController();
   TextEditingController comment = TextEditingController();
   TextEditingController countryCode = TextEditingController(text: '+971');
-  final DateTime _focusedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
   TextEditingController? date;
   TextEditingController? expectedDate;
   bool isWithoutReturn = false;
@@ -44,6 +47,7 @@ class CreateTripScreenState extends State<CreateTripScreen> {
   late DateTime dateTime;
   late DateTime expectedDateTime;
   late DateTime pickDate;
+  late DateTime expectedPickDate;
 
   List<DropdownMenuItem<String>> tripType = [
     const DropdownMenuItem(
@@ -103,7 +107,8 @@ class CreateTripScreenState extends State<CreateTripScreen> {
     initializeDateFormatting();
     pickDate = DateTime.now();
     dateTime = DateTime.now();
-    expectedDateTime = pickDate.add(const Duration(days: 1));
+    expectedPickDate = DateTime.now().add(const Duration(days: 1));
+    expectedDateTime = DateTime.now().add(const Duration(days: 1));
 
     checkVerificationStatus().then((verified) {
       if (!verified) {
@@ -129,6 +134,9 @@ class CreateTripScreenState extends State<CreateTripScreen> {
     expectedTimePicked = TextEditingController();
     time = DateTime.utc(0, 0, 0, 15, 0);
     expectedTime = DateTime.utc(0, 0, 0, 15, 0);
+
+    //set the initial value of text field
+    // timePicked?.text=convertToTime(time!);
     super.initState();
   }
 
@@ -193,9 +201,12 @@ class CreateTripScreenState extends State<CreateTripScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
+
                 child: ListView(
                     padding: EdgeInsets.only(top: 0),
                     children: [
+
+
                   CreateTripHeader(
                       image: widget.type == 'hospital'
                           ? AppImages.hospitalTransport
@@ -275,6 +286,17 @@ class CreateTripScreenState extends State<CreateTripScreen> {
                                 controller: date!,
                                 focusDay: _focusedDay,
                               );
+
+                              // showDate(context, (value) {
+                              //   setState(() {
+                              //     dateTime = value!;
+                              //     final DateFormat formatter =
+                              //     DateFormat('dd MMM yyyy');
+                              //     final String formatted =
+                              //     formatter.format(dateTime);
+                              //     date?.text = formatted;
+                              //   });
+                              // });
                             },
                             autoValidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -285,11 +307,16 @@ class CreateTripScreenState extends State<CreateTripScreen> {
                                 horizontal: 20, vertical: 13),
                             obscureText: false,
                             validator: (value) {
-                              DateFormat inputFormat =
-                                  DateFormat("dd MMM yyyy");
-                              DateTime setUpdatedDate =
-                                  inputFormat.parse(value!);
-                              pickDate = setUpdatedDate;
+                              if (value!.isNotEmpty) {
+                                DateFormat inputFormat =
+                                    DateFormat("dd MMM yyyy");
+                                DateTime setUpdatedDate =
+                                    inputFormat.parse(value);
+                                pickDate = setUpdatedDate;
+                              } else {
+                                return 'please select date';
+                              }
+
                               if (dateTime.isBefore(DateTime.now()) &&
                                   !dateTime.isSameDate(DateTime.now())) {
                                 return 'correct date please';
@@ -312,22 +339,25 @@ class CreateTripScreenState extends State<CreateTripScreen> {
                                 confirmText: "Confirm".tra,
                                 context: context,
                                 cancelText: "Cancel".tra,
+                                // helpText: StringKeys.selectTime.tr(),
+                                // errorInvalidText:StringKeys.timeError.tr(),
+                                // hourLabelText: StringKeys.hour.tr(),
+                                // minuteLabelText: StringKeys.minute.tr(),
                                 initialEntryMode: TimePickerEntryMode.dial,
                                 initialTime: TimeOfDay.fromDateTime(
                                     DateTime.utc(0, 0, 0, 15, 0)),
                               );
 
                               Print(pickedTime);
-                              if (context.mounted) {
-                                if (pickedTime != null) {
-                                  time = pickedTime.toDateTime();
-                                  String parsedTime =
-                                      pickedTime.format(context);
 
-                                  setState(() {
-                                    timePicked?.text = parsedTime;
-                                  });
-                                }
+                              if (pickedTime != null) {
+                                time = pickedTime.toDateTime();
+                                //output 10:51 PM
+                                String parsedTime = pickedTime.format(context);
+
+                                setState(() {
+                                  timePicked?.text = parsedTime;
+                                });
                               } else {}
                             },
                             contentPadding: const EdgeInsets.symmetric(
@@ -335,7 +365,7 @@ class CreateTripScreenState extends State<CreateTripScreen> {
                             isOptional: false,
                             readOnly: true,
                             validator: (value) {
-                             return;
+                              // return  Validator.requiredValidator(timePicked?.text);
                             },
                           ),
                         ),
@@ -355,7 +385,7 @@ class CreateTripScreenState extends State<CreateTripScreen> {
                         });
                       },
                       validator: (value) {
-                      return;
+                        // return Validator.requiredValidator(selectedNumber);
                       },
                       hint: 'Number of horses',
                     ),
@@ -372,9 +402,7 @@ class CreateTripScreenState extends State<CreateTripScreen> {
                       },
                       items: tripType,
                       selected: selectedTrip,
-                      validator: (value) {
-                        return;
-                      },
+                      validator: (value) {},
                       hint: 'Trip type',
                     ),
                   ),
@@ -394,24 +422,27 @@ class CreateTripScreenState extends State<CreateTripScreen> {
                                   confirmText: "Confirm".tra,
                                   context: context,
                                   cancelText: "Cancel".tra,
+                                  // helpText: StringKeys.selectTime.tr(),
+                                  // errorInvalidText:StringKeys.timeError.tr(),
+                                  // hourLabelText: StringKeys.hour.tr(),
+                                  // minuteLabelText: StringKeys.minute.tr(),
                                   initialEntryMode: TimePickerEntryMode.dial,
                                   initialTime: TimeOfDay.fromDateTime(
                                       DateTime.utc(0, 0, 0, 15, 0)),
                                 );
 
                                 Print(pickedTime);
-                                if (context.mounted) {
-                                  if (pickedTime != null) {
-                                    expectedTime = pickedTime.toDateTime();
-                                    //output 10:51 PM
-                                    String parsedTime =
-                                        pickedTime.format(context);
 
-                                    setState(() {
-                                      expectedTimePicked?.text = parsedTime;
-                                    });
-                                  } else {}
-                                }
+                                if (pickedTime != null) {
+                                  expectedTime = pickedTime.toDateTime();
+                                  //output 10:51 PM
+                                  String parsedTime =
+                                      pickedTime.format(context);
+
+                                  setState(() {
+                                    expectedTimePicked?.text = parsedTime;
+                                  });
+                                } else {}
                               },
                               contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 13),
@@ -419,7 +450,7 @@ class CreateTripScreenState extends State<CreateTripScreen> {
                               readOnly: true,
                               validator: (value) {
                                 if (value!.isNotEmpty &&
-                                    expectedDateTime.isSameDate(dateTime) &&
+                                    expectedPickDate.isSameDate(pickDate) &&
                                     expectedTime!.isBefore(time!)) {
                                   return 'Correct time please';
                                 }
@@ -456,8 +487,21 @@ class CreateTripScreenState extends State<CreateTripScreen> {
                                         horizontal: 20, vertical: 13),
                                     obscureText: false,
                                     validator: (value) {
-                                      if (value!.isNotEmpty &&
-                                          expectedDateTime.isBefore(dateTime)) {
+                                      if (value!.isNotEmpty) {
+                                        DateFormat inputFormat =
+                                            DateFormat("dd MMM yyyy");
+                                        DateTime setUpdatedDate =
+                                            inputFormat.parse(value);
+                                        expectedPickDate = setUpdatedDate;
+                                      } else {
+                                        return "please select date";
+                                      }
+
+                                      if (value.isNotEmpty &&
+                                          (expectedPickDate
+                                                  .isBefore(pickDate) ||
+                                              expectedPickDate.isAtSameMomentAs(
+                                                  pickDate))) {
                                         return "Correct date please".tra;
                                       } else {}
                                       return Validator.requiredValidator(
@@ -487,20 +531,17 @@ class CreateTripScreenState extends State<CreateTripScreen> {
                                       );
 
                                       Print(pickedTime);
-                                      if (context.mounted) {
-                                        if (pickedTime != null) {
-                                          expectedTime =
-                                              pickedTime.toDateTime();
-                                          //output 10:51 PM
-                                          String parsedTime =
-                                              pickedTime.format(context);
 
-                                          setState(() {
-                                            expectedTimePicked?.text =
-                                                parsedTime;
-                                          });
-                                        } else {}
-                                      }
+                                      if (pickedTime != null) {
+                                        expectedTime = pickedTime.toDateTime();
+                                        //output 10:51 PM
+                                        String parsedTime =
+                                            pickedTime.format(context);
+
+                                        setState(() {
+                                          expectedTimePicked?.text = parsedTime;
+                                        });
+                                      } else {}
                                     },
                                     contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 13),
@@ -508,8 +549,8 @@ class CreateTripScreenState extends State<CreateTripScreen> {
                                     readOnly: true,
                                     validator: (value) {
                                       if (value!.isNotEmpty &&
-                                          expectedDateTime
-                                              .isSameDate(dateTime) &&
+                                          expectedPickDate
+                                              .isSameDate(pickDate) &&
                                           expectedTime!.isBefore(time!)) {
                                         return 'Correct time please';
                                       }
@@ -589,9 +630,7 @@ class CreateTripScreenState extends State<CreateTripScreen> {
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 13),
                       obscureText: false,
-                      validator: (value) {
-                        return;
-                      },
+                      validator: (value) {},
                     ),
                   ),
                 ]),
@@ -601,17 +640,47 @@ class CreateTripScreenState extends State<CreateTripScreen> {
                     vertical: kPadding, horizontal: kPadding),
                 child: RebiButton(
                     onPressed: () {
+                      Duration timeDifference = expectedTime!.difference(time!);
+
+                      bool isOneHourAfter = timeDifference.inHours >= 1;
+
                       if (_formKey.currentState!.validate() &&
                           selectedTrip != null &&
                           selectedNumber != null) {
-                        if ((selectedTrip == "Same day return" &&
-                                expectedTime!.isAfter(time!)) ||
-                            (selectedTrip == "Other day return" &&
-                                expectedDateTime.isAfter(dateTime))) {
+                        FromDataModel fromData = FromDataModel(
+                          origin: origin.text,
+                          destination: destination.text,
+                          contact: '${"${countryCode.text} ${contact.text}"} ',
+                          comment: comment.text,
+                          date: pickDate,
+                          tripType: selectedTrip,
+                          numberOfHorses: selectedNumber,
+                          time: time,
+                          expectedTime: expectedTime,
+                        );
+                        if (selectedTrip == "No Return") {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const LocalSummary()));
+                                  builder: (context) => LocalSummary(
+                                        formData: fromData,
+                                      )));
+                        } else if ((selectedTrip == "Other day return" &&
+                            expectedPickDate.isBefore(pickDate))) {
+                          RebiMessage.error(
+                              msg: "please enter the correct expected Date",
+                              context: context);
+                        } else if ((selectedTrip == "Same day return" &&
+                                expectedTime!.isAfter(time!) &&
+                                isOneHourAfter) ||
+                            (selectedTrip == "Other day return" &&
+                                expectedPickDate.isAfter(pickDate))) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LocalSummary(
+                                        formData: fromData,
+                                      )));
                         } else {
                           RebiMessage.error(
                               msg: "please enter the correct expected Time",
@@ -619,7 +688,8 @@ class CreateTripScreenState extends State<CreateTripScreen> {
                         }
                       } else {
                         RebiMessage.error(
-                            msg: "please fill all fields", context: context);
+                            msg: "please fill all fields correctly",
+                            context: context);
                       }
                     },
                     backgroundColor: AppColors.white,

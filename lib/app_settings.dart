@@ -3,11 +3,12 @@ import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.d
 
 
 class AppSettings {
+
   static Future setup()async {
     String? url = await SecureStorage().getUrl();
     baseUrl=url??"https://pet-webapi-uaeno-prod-001.azurewebsites.net";
   }
-
   static  String baseUrl = AppSharedPreferences.getEnvType;
   static const String version = '1.0.0.6';
+
 }

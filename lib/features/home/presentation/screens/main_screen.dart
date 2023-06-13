@@ -73,7 +73,9 @@ class MainScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(height: 20,),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   const HomeCardFull(),
                   Padding(
                       padding: const EdgeInsets.only(top: 30.0),
@@ -87,9 +89,9 @@ class MainScreen extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>  const CreateTripScreen(
-                                            type: 'local',
-                                          )));
+
+                                      builder: (context) =>  CreateTripScreen()));
+
                             },
                           ),
                           ServiceWidget(
@@ -99,7 +101,9 @@ class MainScreen extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>  const CreateTripScreen(
+
+
+                                      builder: (context) => CreateTripScreen(
                                             type: 'hospital',
                                           )));
                             },
