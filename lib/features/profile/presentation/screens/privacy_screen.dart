@@ -34,6 +34,7 @@ class PrivacyScreen extends StatelessWidget {
                       fontFamily: 'notosan',
                       fontSize: 14),
                 ),
+                SizedBox(height: 40,),
               ],
             ),
           ),

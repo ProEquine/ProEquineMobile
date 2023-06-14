@@ -225,7 +225,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                                                     dob: widget.dob
 
                                                   )));
-                                    } else if (state is RegisterError) {
+                                    } else if (state is SendVerificationError) {
                                       RebiMessage.error(
                                           msg: state.message!,
                                           context: context);
