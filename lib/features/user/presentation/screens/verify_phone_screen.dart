@@ -217,14 +217,12 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   VerificationScreen(
-                                                    email: widget.email,
-                                                                    name: widget.fullName,
-                                                                    phone: _countryCode.text +
-                                                                        _phone.text,
-                                                                    password: widget.password,
-                                                                    dob: widget.dob
-
-                                                  )));
+                                                      email: widget.email,
+                                                      name: widget.fullName,
+                                                      phone: _countryCode.text +
+                                                          _phone.text,
+                                                      password: widget.password,
+                                                      dob: widget.dob)));
                                     } else if (state is RegisterError) {
                                       RebiMessage.error(
                                           msg: state.message!,
@@ -249,20 +247,5 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
         ),
       ),
     );
-  }
-
-  _sendRegisterData(
-      {String? email,
-      String? name,
-      String? phone,
-      String? password,
-      String? dob}) {
-    return cubit.register(RegisterRequestModel(
-      email: email,
-      fullName: name,
-      password: password,
-      phoneNumber: phone,
-      dob: dob,
-    ));
   }
 }
