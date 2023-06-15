@@ -41,6 +41,7 @@ class TermsCondition extends StatelessWidget {
                       fontFamily: 'notosan',
                       fontSize: 14),
                 ),
+                const SizedBox(height: 30,),
               ],
             ),
           ),

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
-import 'package:proequine/features/user/data/register_request_model.dart';
 import 'package:proequine/features/user/data/send_verification_request_model.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
@@ -223,7 +222,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                                           _phone.text,
                                                       password: widget.password,
                                                       dob: widget.dob)));
-                                    } else if (state is RegisterError) {
+                                    } else if (state is SendVerificationError) {
                                       RebiMessage.error(
                                           msg: state.message!,
                                           context: context);

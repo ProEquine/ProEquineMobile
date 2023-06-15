@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/routes/routes.dart';
+import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:proequine/features/profile/domain/profile_cubit.dart';
 import 'package:proequine/features/profile/presentation/screens/change_password_screen.dart';
 import 'package:proequine/features/profile/presentation/screens/update_email_screen.dart';
@@ -128,7 +130,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
+                                    const EdgeInsets.symmetric(vertical: 7),
                                 child: RebiInput(
                                   hintText: state.responseModel!.fullName!,
                                   hintStyle:
@@ -151,7 +153,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
+                                    const EdgeInsets.symmetric(vertical: 7),
                                 child: RebiInput(
                                   hintText: state.responseModel!.email!,
                                   hintStyle:
@@ -186,7 +188,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
+                                    const EdgeInsets.symmetric(vertical: 7),
                                 child: RebiInput(
                                   hintText: state.responseModel!.phoneNumber!,
                                   hintStyle:
@@ -212,7 +214,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
+                                    const EdgeInsets.symmetric(vertical: 7),
                                 child: RebiInput(
                                   hintText: state.responseModel!.userType,
                                   controller: _preferences,
@@ -236,7 +238,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
+                                    const EdgeInsets.symmetric(vertical: 7),
                                 child: RebiInput(
                                   hintText: state.responseModel!.discipline,
                                   hintStyle:
@@ -259,15 +261,13 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                   },
                                 ),
                               ),
+                              SizedBox(height: 5,),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: RebiInput(
-                                  hintText: 'Reset Password'.tra,
-                                  hintStyle:
-                                      const TextStyle(color: AppColors.white),
-                                  controller: _currentPassword,
-                                  onTap: () {
+                                    const EdgeInsets.symmetric(vertical: 14),
+                                child: RebiButton(
+
+                                  onPressed: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -277,18 +277,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                             AppSharedPreferences
                                                 .userPhoneNumber));
                                   },
-                                  keyboardType: TextInputType.visiblePassword,
-                                  textInputAction: TextInputAction.done,
-                                  autoValidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  isOptional: false,
-                                  color: AppColors.formsLabel,
-                                  readOnly: true,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 13),
-                                  validator: (value) {
-                                    return;
-                                  },
+                           child: Text("Reset Password",),
                                 ),
                               ),
                             ],
