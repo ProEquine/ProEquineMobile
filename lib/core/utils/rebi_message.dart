@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
-import '../constants/icons_files/toasticons_icons.dart';
+import '../constants/icons_files/toast_icons.dart';
 
 class RebiMessage {
   RebiMessage({

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
@@ -43,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool privacyValue = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _yearKey = GlobalKey<FormState>();
-  final DateTime _selectedDay = DateTime.utc(1950);
+  DateTime _selectedDay = DateTime.utc(1950);
   final DateTime _focusedDay = DateTime.now();
   late int _selectedYear;
   late TextEditingController _yearController;
@@ -207,6 +208,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     //   });
                                     // });
                                   },
+                                  autoValidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   isOptional: false,
                                   color: AppColors.formsLabel,
                                   readOnly: true,
@@ -214,6 +217,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       horizontal: 20, vertical: 13),
                                   obscureText: false,
                                   validator: (value) {
+                                    DateFormat inputFormat =
+                                        DateFormat("dd MMM yyyy");
+                                    DateTime dateTime =
+                                        inputFormat.parse(value!);
+                                    _selectedDay = dateTime;
                                     return Validator.requiredValidator(
                                         _dateOfBirth.text);
                                   },

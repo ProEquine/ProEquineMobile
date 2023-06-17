@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import '../CoreModels/base_response_model.dart';
 import '../CoreModels/base_result_model.dart';
 import '../constants/constants.dart';
@@ -31,21 +32,22 @@ class ApiProvider {
       Map<String, String>? files,
       CancelToken? cancelToken,
       bool isLongTime = false}) async {
-/// Edited Here
+    /// Edited Here
     var baseOptions = BaseOptions(
-      connectTimeout: isLongTime? 30 *1000 : 15 *1000,
+      connectTimeout: isLongTime ? 30 * 1000 : 15 * 1000,
     );
 
     Options options = Options(
       headers: headers,
       method: method,
       contentType: Headers.jsonContentType,
-      receiveTimeout: 60*1000, // 60 seconds
-      sendTimeout: 60*1000,
+      receiveTimeout: 60 * 1000, // 60 seconds
+      sendTimeout: 60 * 1000,
     );
 
     if (files != null) {
       headers?.remove(HEADER_CONTENT_TYPE);
+
       ///Edited
       data ??= {};
 
@@ -55,15 +57,40 @@ class ApiProvider {
         }
       });
     }
+
+    final cacheOptions = CacheOptions(
+      store: MemCacheStore(),
+      policy: CachePolicy.forceCache,
+      hitCacheOnErrorExcept: [401, 403],
+      maxStale: const Duration(minutes: 1),
+      priority: CachePriority.normal,
+      cipher: null,
+      keyBuilder: CacheOptions.defaultCacheKeyBuilder,
+      allowPostMethod: false,
+    );
+
+    final dio = Dio();
+    dio.interceptors.add(DioCacheInterceptor(options: cacheOptions));
     try {
       Response response;
       response = await Dio(baseOptions).request(url,
           queryParameters: queryParameters,
-          options: options,
+          options: options.copyWith(
+            extra: {
+              'cacheOptions': cacheOptions
+                  .copyWith(policy: CachePolicy.forceCache)
+                  .toOptions(),
+            },
+          ),
           cancelToken: cancelToken,
-
           data: files != null ? FormData.fromMap(data!) : data);
       // Get the decoded json
+      if (response.extra['isCached'] == true) {
+        print('Data is coming from cache');
+      } else {
+        print('Data is coming from server');
+      }
+
       var decodedJson;
 
       if (response.data is String) {
@@ -93,7 +120,6 @@ class ApiProvider {
       Print('DioErrorDioErrorDioError $error');
       if (e.response != null) if (e.response?.data !=
           null) if (!(e.response?.data is String)) {
-
         Print(e.response?.data);
         json = e.response?.data;
       }
