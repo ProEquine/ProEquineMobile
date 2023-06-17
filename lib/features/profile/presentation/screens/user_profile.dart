@@ -66,8 +66,10 @@ class _UserProfileState extends State<UserProfile> {
               ProfileListTileWidget(
                 title: "History",
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const HistoryScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HistoryScreen()));
                 },
                 notificationList: false,
                 isThereNewNotification: false,

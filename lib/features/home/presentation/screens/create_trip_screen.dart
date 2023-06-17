@@ -7,7 +7,7 @@ import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
-import 'package:proequine/features/home/data/form_Data_Model.dart';
+import 'package:proequine/features/home/data/form_data_model.dart';
 import 'package:proequine/features/home/presentation/screens/local_summary.dart';
 import 'package:proequine/features/home/presentation/widgets/create_trip_header.dart';
 import 'package:sizer/sizer.dart';
@@ -201,12 +201,7 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-
-                child: ListView(
-                    padding: EdgeInsets.only(top: 0),
-                    children: [
-
-
+                child: ListView(padding: EdgeInsets.only(top: 0), children: [
                   CreateTripHeader(
                       image: widget.type == 'hospital'
                           ? AppImages.hospitalTransport
@@ -647,16 +642,22 @@ class _CreateTripScreenState extends State<CreateTripScreen> {
                       if (_formKey.currentState!.validate() &&
                           selectedTrip != null &&
                           selectedNumber != null) {
+                        DateFormat inputFormat = DateFormat("dd MMM yyyy");
+                        String formatedDate = inputFormat.format(pickDate);
+                        String expectedDateFormated =
+                            inputFormat.format(expectedPickDate);
+
                         FromDataModel fromData = FromDataModel(
                           origin: origin.text,
                           destination: destination.text,
                           contact: '${"${countryCode.text} ${contact.text}"} ',
                           comment: comment.text,
-                          date: pickDate,
+                          date: formatedDate,
+                          expectedDate: expectedDateFormated,
                           tripType: selectedTrip,
                           numberOfHorses: selectedNumber,
-                          time: time,
-                          expectedTime: expectedTime,
+                          time: timePicked?.text,
+                          expectedTime: expectedTimePicked?.text,
                         );
                         if (selectedTrip == "No Return") {
                           Navigator.push(

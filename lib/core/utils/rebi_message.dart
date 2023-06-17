@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:motion_toast/motion_toast.dart';
 import 'package:motion_toast/resources/arrays.dart';
-import 'package:proequine/toasticons_icons.dart';
+import '../constants/icons_files/toasticons_icons.dart';
 
 class RebiMessage {
   RebiMessage({
@@ -29,8 +29,8 @@ class RebiMessage {
     MotionToast.success(
       description: Text(
         msg,
-        style:
-            const TextStyle(color: Colors.white, fontFamily: 'notosan', fontSize: 16),
+        style: const TextStyle(
+            color: Colors.white, fontFamily: 'notosan', fontSize: 16),
       ),
       animationType: AnimationType.fromTop,
       position: MotionToastPosition.top,
