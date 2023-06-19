@@ -3,12 +3,12 @@ class FromDataModel {
   String destination;
   String contact;
   String? comment;
-  DateTime date;
-  DateTime? expectedDate;
+  String date;
+  String? expectedDate;
   String? tripType;
   String? numberOfHorses;
-  DateTime? time;
-  DateTime? expectedTime;
+  String? time;
+  String? expectedTime;
 
   FromDataModel({
     required this.origin,

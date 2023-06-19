@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:proequine/core/widgets/success_state_widget.dart';
-import 'package:proequine/features/home/data/form_Data_Model.dart';
+import 'package:proequine/features/home/data/form_data_model.dart';
 import 'package:proequine/features/home/presentation/widgets/summary_widget.dart';
 import 'package:proequine/features/nav_bar/presentation/screens/bottomnavigation.dart';
 import 'package:sizer/sizer.dart';
@@ -27,14 +28,22 @@ class LocalSummary extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: kPadding, vertical: 10),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    image: const DecorationImage(
-                      image: AssetImage(AppImages.summary),
-                    )),
-                child: Image.asset(AppImages.summary),
+              // Container(
+              //   decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(8),
+              //       image: const DecorationImage(
+              //         image: AssetImage(AppImages.summary),
+              //       )),
+              //   child: Image.asset(AppImages.summary),
+              // ),
+              const Text(
+                "Booking Info",
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.grey),
               ),
               const SizedBox(
                 height: 14,

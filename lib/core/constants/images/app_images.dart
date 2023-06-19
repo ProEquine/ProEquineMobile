@@ -37,11 +37,17 @@ class AppIcons {
   static const unSelectedInbox = 'assets/icons/unselected_inbox.svg';
   static const proEquine = 'assets/icons/pro-equine.svg';
 
-
   static const event = 'assets/icons/calendar.svg';
   static const events = 'assets/icons/events.svg';
 
   static const transportType = 'assets/icons/transType.svg';
   static const info = 'assets/icons/info.svg';
   static const email = 'assets/icons/email.svg';
+  // summary icons
+  static const returntype = 'assets/icons/service&return.svg';
+  static const datetime = 'assets/icons/date&time.svg';
+  static const horses = 'assets/icons/horses.svg';
+  static const locations = 'assets/icons/location.svg';
+  static const note = 'assets/icons/note.svg';
+  static const contact = 'assets/icons/contact.svg';
 }

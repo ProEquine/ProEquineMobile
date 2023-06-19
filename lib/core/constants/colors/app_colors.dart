@@ -4,11 +4,11 @@ class AppColors {
   static const Color formsHintFont = Color(0xFFD0D3D6);
   static const Color formsBackground = Color(0xFF36393D);
   static const Color formsLabel = Color(0xFFB5B3BC);
-  static const Color dividerColors = Color.fromRGBO(162, 168, 174, 0.12);
+  static const Color dividerColors = Color.fromRGBO(95, 95, 95, 1);
   static const Color grey = Color(0xFF8C8C8C);
   static const Color notificationReview = Color(0xFF555D68);
   static const Color textColor = Color(0xFFA2A8AE);
-  static const Gradient errorToastColor=LinearGradient(colors: [
+  static const Gradient errorToastColor = LinearGradient(colors: [
     Color.fromRGBO(150, 74, 32, 1),
     Color.fromRGBO(184, 118, 51, 1),
     Color.fromRGBO(208, 159, 77, 1),

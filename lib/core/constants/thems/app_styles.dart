@@ -7,12 +7,12 @@ class AppStyles {
   /// Bold font
 
   static const TextStyle summaryTitleStyle = TextStyle(
-      fontSize: 18,
+      fontSize: 14,
       fontFamily: 'notosan',
       fontWeight: FontWeight.w700,
       color: AppColors.white);
   static const TextStyle summaryDesStyle = TextStyle(
-      fontSize: 14,
+      fontSize: 12,
       fontFamily: 'notosan',
       fontWeight: FontWeight.w400,
       color: Color(0xffA2A8AE));

@@ -2,8 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
+
 import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
 import 'package:proequine/core/http/path_provider.dart';
+
+
 import '../CoreModels/base_response_model.dart';
 import '../CoreModels/base_result_model.dart';
 import '../constants/constants.dart';
@@ -37,9 +40,9 @@ class ApiProvider {
       Map<String, String>? files,
       CancelToken? cancelToken,
       bool isLongTime = false}) async {
-/// Edited Here
+    /// Edited Here
     var baseOptions = BaseOptions(
-      connectTimeout: isLongTime? 30 *1000 : 15 *1000,
+      connectTimeout: isLongTime ? 30 * 1000 : 15 * 1000,
     );
     var dio = Dio();
 
@@ -65,13 +68,14 @@ class ApiProvider {
       headers: headers,
       method: method,
       contentType: Headers.jsonContentType,
-      receiveTimeout: 60*1000, // 60 seconds
-      sendTimeout: 60*1000,
+      receiveTimeout: 60 * 1000, // 60 seconds
+      sendTimeout: 60 * 1000,
     );
 
 
     if (files != null) {
       headers?.remove(HEADER_CONTENT_TYPE);
+
       ///Edited
       data ??= {};
 
@@ -81,15 +85,26 @@ class ApiProvider {
         }
       });
     }
+
+
+
+
     try {
       Response response;
       response = await dio.request(url,
           queryParameters: queryParameters,
-          options: options,
-          cancelToken: cancelToken,
+        options: options,
 
+          
+          cancelToken: cancelToken,
           data: files != null ? FormData.fromMap(data!) : data);
       // Get the decoded json
+      if (response.extra['isCached'] == true) {
+        print('Data is coming from cache');
+      } else {
+        print('Data is coming from server');
+      }
+
       var decodedJson;
 
       if (response.data is String) {
@@ -126,7 +141,6 @@ class ApiProvider {
       Print('DioErrorDioErrorDioError $error');
       if (e.response != null) if (e.response?.data !=
           null) if (!(e.response?.data is String)) {
-
         Print(e.response?.data);
         json = e.response?.data;
       }
