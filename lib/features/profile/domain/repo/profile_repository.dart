@@ -58,7 +58,7 @@ class ProfileRepository {
         converter: (json) => UserDataResponseModel.fromJson(json),
         method: HttpMethod.GET,
         policy: CachePolicy.request,
-        refreshDuration: Duration(seconds: 30),
+        refreshDuration: Duration(seconds: 20),
         queryParameters: {
           "phoneNumber":phone,
         },
