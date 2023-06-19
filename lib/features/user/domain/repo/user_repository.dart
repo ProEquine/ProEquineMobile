@@ -1,3 +1,4 @@
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:proequine/core/CoreModels/empty_model.dart';
 import 'package:proequine/features/user/data/check_mail_request_model.dart';
 import 'package:proequine/features/user/data/check_update_email_request_model.dart';
@@ -108,6 +109,7 @@ class UserRepository {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.POST,
+        policy: CachePolicy.refresh,
         data: checkMailVerificationRequestModel.toJson(),
         withAuthentication: true,
         thereDeviceId: false,
@@ -118,6 +120,7 @@ class UserRepository {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.POST,
+        policy: CachePolicy.refreshForceCache,
         data: updateMailRequestModel.toJson(),
         withAuthentication: true,
         thereDeviceId: false,
@@ -130,6 +133,7 @@ class UserRepository {
         method: HttpMethod.POST,
         data: checkUpdateEmailRequestModel.toJson(),
         withAuthentication: true,
+        policy: CachePolicy.refreshForceCache,
         thereDeviceId: false,
         url: ApiURLs.checkUpdateMail);
   }

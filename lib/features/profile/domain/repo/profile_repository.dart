@@ -1,3 +1,4 @@
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:proequine/core/CoreModels/empty_model.dart';
 import 'package:proequine/features/profile/data/change_password_request_model.dart';
 import 'package:proequine/features/profile/data/edit_phone_request_model.dart';
@@ -36,6 +37,7 @@ class ProfileRepository {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.POST,
+        policy: CachePolicy.refresh,
         data: updatePhoneRequestModel.toJson(),
         withAuthentication: true,
         thereDeviceId: false,
@@ -55,6 +57,8 @@ class ProfileRepository {
     return await RemoteDataSource.request<UserDataResponseModel>(
         converter: (json) => UserDataResponseModel.fromJson(json),
         method: HttpMethod.GET,
+        policy: CachePolicy.request,
+        refreshDuration: Duration(seconds: 30),
         queryParameters: {
           "phoneNumber":phone,
         },

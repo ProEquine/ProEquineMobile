@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:proequine/core/utils/secure_storage/secure_storage_helper.dart';
 import '../CoreModels/base_result_model.dart';
 import '../constants/constants.dart';
@@ -14,6 +15,8 @@ class RemoteDataSource {
         Map<String, dynamic>? queryParameters,
         Map<String, dynamic>? data,
         Map<String, String>? files,
+        CachePolicy policy=CachePolicy.request,
+        Duration refreshDuration=const Duration(days: 1 ),
         bool withAuthentication = true,
         bool thereDeviceId = true,
         CancelToken? cancelToken,
@@ -66,6 +69,8 @@ class RemoteDataSource {
       url: url,
       converter: converter,
       headers: headers,
+      policy: policy,
+      refreshDuration: refreshDuration,
       queryParameters: queryParameters ?? {},
       data: data ?? {},
       files: files,

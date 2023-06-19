@@ -27,15 +27,20 @@ import 'package:sizer/sizer.dart';
 
 import 'core/constants/constants.dart';
 import 'core/constants/routes/routes.dart';
+import 'core/http/path_provider.dart';
 import 'core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'features/nav_bar/domain/navbar_cubit.dart';
 import 'features/nav_bar/presentation/screens/bottomnavigation.dart';
 import 'features/user/presentation/screens/login_screen.dart';
 import 'features/user/presentation/screens/register_screen.dart';
 
+import 'injection_container.dart' as di;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppSharedPreferences.init();
+  await AppPathProvider.initPath();
+  await di.init();
   // await Firebase.initializeApp();
   StartUp.setup();
   AppSettings.setup();

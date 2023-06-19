@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/routes/routes.dart';
-import 'package:proequine/core/constants/thems/app_styles.dart';
-import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:proequine/features/profile/domain/profile_cubit.dart';
@@ -261,12 +259,11 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                   },
                                 ),
                               ),
-                              SizedBox(height: 5,),
+                              const SizedBox(height: 5,),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 14),
                                 child: RebiButton(
-
                                   onPressed: () {
                                     Navigator.push(
                                         context,
@@ -277,7 +274,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                             AppSharedPreferences
                                                 .userPhoneNumber));
                                   },
-                           child: Text("Reset Password",),
+                           child: const Text("Reset Password",),
                                 ),
                               ),
                             ],

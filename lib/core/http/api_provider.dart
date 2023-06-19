@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
+import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
+import 'package:proequine/core/http/path_provider.dart';
 import '../CoreModels/base_response_model.dart';
 import '../CoreModels/base_result_model.dart';
 import '../constants/constants.dart';
@@ -19,6 +22,7 @@ import '../errors/timeout_error.dart';
 import '../errors/unauthorized_error.dart';
 import '../errors/unknown_error.dart';
 import '../utils/Printer.dart';
+import 'dio_cache_manager.dart';
 
 class ApiProvider {
   static Future<BaseResponseModel> sendObjectRequest<T extends BaseResultModel>(
@@ -26,6 +30,8 @@ class ApiProvider {
       required String method,
       required String url,
       Map<String, dynamic>? data,
+        CachePolicy policy=CachePolicy.refreshForceCache,
+        Duration refreshDuration=const Duration(days: 1 ),
       Map<String, String>? headers,
       Map<String, dynamic>? queryParameters,
       Map<String, String>? files,
@@ -35,6 +41,25 @@ class ApiProvider {
     var baseOptions = BaseOptions(
       connectTimeout: isLongTime? 30 *1000 : 15 *1000,
     );
+    var dio = Dio();
+
+    var cacheStore = HiveCacheStore(AppPathProvider.path);
+    var cacheInterceptor = DioCacheInterceptor(
+      options: CacheOptions(
+        store: cacheStore,
+        policy: policy,
+        hitCacheOnErrorExcept: [401, 403, 302],
+        maxStale: refreshDuration,
+        priority: CachePriority.normal,
+        cipher: null,
+        keyBuilder: CacheOptions.defaultCacheKeyBuilder,
+        allowPostMethod: true,
+      ),
+    );
+
+    dio.interceptors.add(cacheInterceptor);
+
+
 
     Options options = Options(
       headers: headers,
@@ -43,6 +68,7 @@ class ApiProvider {
       receiveTimeout: 60*1000, // 60 seconds
       sendTimeout: 60*1000,
     );
+
 
     if (files != null) {
       headers?.remove(HEADER_CONTENT_TYPE);
@@ -57,7 +83,7 @@ class ApiProvider {
     }
     try {
       Response response;
-      response = await Dio(baseOptions).request(url,
+      response = await dio.request(url,
           queryParameters: queryParameters,
           options: options,
           cancelToken: cancelToken,
@@ -74,9 +100,16 @@ class ApiProvider {
         }
       } else {
         decodedJson = response.data;
+
       }
 
       Print(decodedJson);
+      if (response.extra.containsKey('dio_cache_source') &&
+          response.extra['dio_cache_source'] == 'CACHE') {
+        Print('Data retrieved from cache');
+      } else {
+        Print('Data retrieved from the network');
+      }
 
       return BaseResponseModel.fromJson(json: decodedJson, fromJson: converter);
     }
