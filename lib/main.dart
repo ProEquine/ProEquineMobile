@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:proequine/app_settings.dart';
 import 'package:proequine/core/StartUp/StartUp.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
@@ -12,6 +13,7 @@ import 'package:proequine/core/widgets/success_state_widget.dart';
 import 'package:proequine/features/events/domain/event_cubit.dart';
 import 'package:proequine/features/home/presentation/screens/create_event_screen.dart';
 import 'package:proequine/features/home/presentation/screens/create_trip_screen.dart';
+import 'package:proequine/features/nav_bar/domain/inbox_badge.dart';
 import 'package:proequine/features/notifications/domain/notifications_cubit.dart';
 import 'package:proequine/features/profile/domain/profile_cubit.dart';
 import 'package:proequine/features/profile/presentation/screens/account_information_screen.dart';
@@ -44,7 +46,7 @@ void main() async {
   // await Firebase.initializeApp();
   StartUp.setup();
   AppSettings.setup();
-  String? defaultLocale = Platform.localeName;
+   String? defaultLocale = Platform.localeName;
   if (defaultLocale.substring(0, 2) == 'en') {
     defaultLocale = 'en';
   } else if (defaultLocale.substring(0, 2) == 'ar') {
@@ -86,6 +88,9 @@ _blocProvider() {
       BlocProvider<ProfileCubit>(
         create: (context) => ProfileCubit(),
       ),
+      BlocProvider<ChangeBoolCubit>(
+        create: (context) => ChangeBoolCubit(ChangeBoolState(thereAreNotification: false)),
+      ),
     ],
     child: const ResponsiveSizer(),
   );
@@ -118,7 +123,7 @@ class MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<NotificationsCubit>(context).configOneSignal();
+    BlocProvider.of<NotificationsCubit>(context).configOneSignal(context);
     GlobalKey<NavigatorState>();
   }
 

@@ -140,7 +140,7 @@ class SplashScreenState extends State<SplashScreen> {
 
     deleteSecureStorage();
     sendRefreshToken();
-    notificationsCubit.configOneSignal();
+    notificationsCubit.configOneSignal(context);
 
     super.initState();
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
+import 'package:proequine/features/nav_bar/domain/inbox_badge.dart';
 import 'package:proequine/features/nav_bar/domain/navbar_cubit.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../booking/presentation/screens/booking_main.dart';
@@ -42,7 +43,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
     return Scaffold(
       body: WillPopScope(
         onWillPop: () => BlocProvider.of<NavbarCubit>(context).onWillPop(context),
-        child: Stack(
+        child: BlocBuilder<ChangeBoolCubit, ChangeBoolState>(
+  builder: (context, state) {
+    return Stack(
           children: <Widget>[
             _widgetOptions.elementAt(_selectedIndex),
             BlurBottomView(
@@ -74,19 +77,38 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   ),
                   BottomNavigationBarItem(
                     backgroundColor: AppColors.gold,
-                    icon: SvgPicture.asset(
-                      _selectedIndex == 2?AppIcons.selectedInbox:AppIcons.unSelectedInbox,
-                        color: _selectedIndex==2?AppColors.yellow:AppColors.white
+                    icon: Stack(
+                      children: [
+                        SvgPicture.asset(
+                          _selectedIndex == 2?AppIcons.selectedInbox:AppIcons.unSelectedInbox,
+                            color: _selectedIndex==2?AppColors.yellow:AppColors.white
+                        ),
+                        Visibility(
+                          visible: state.thereAreNotification,
+                          child: Transform.translate(
+                            offset: const Offset(12, -3),
+                            child: const Positioned(  // draw a red marble
+                              top: 0.0,
+                              right: 0.0,
+                              child:  Icon(Icons.brightness_1, size: 10.0,
+                                  color: Colors.redAccent),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                     label: 'Inbox',
                   ),
                 ],
                 currentIndex: _selectedIndex,
                 onIndexChange: (val) {
+
                   _onItemTapped(val);
                 }),
           ],
-        ),
+        );
+  },
+),
       ),
     );
   }

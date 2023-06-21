@@ -8,6 +8,7 @@ import 'package:proequine/main.dart';
 import '../../../core/constants/routes/routes.dart';
 import '../../../core/utils/Printer.dart';
 import '../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import '../../nav_bar/domain/inbox_badge.dart';
 
 
 part 'notifications_state.dart';
@@ -15,7 +16,7 @@ part 'notifications_state.dart';
 class NotificationsCubit extends Cubit<NotificationsState> {
   NotificationsCubit() : super(NotificationsInitial());
 
-  void configOneSignal() async {
+  void configOneSignal(BuildContext context) async {
     await OneSignal.shared.setAppId('ef8bd521-54d4-4a21-b1f3-654755149b50');
 
     final status = await OneSignal.shared.getDeviceState();
@@ -37,6 +38,9 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     await OneSignal.shared.promptUserForPushNotificationPermission(
       fallbackToSettings: true,
     );
+    OneSignal.shared.setNotificationWillShowInForegroundHandler((OSNotificationReceivedEvent notification) {
+      BlocProvider.of<ChangeBoolCubit>(context).changeOne();
+    });
 
     OneSignal.shared.setNotificationOpenedHandler(
         (OSNotificationOpenedResult result) async {
@@ -44,6 +48,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
         final data = result.notification.additionalData;
         SavedNotificationData.notificationData= result.notification.additionalData;
         Print("saved data from notification ${SavedNotificationData.notificationData}");
+
         Print("data ${data}");
         final payload = data!['Navigate'];
         final navigate = payload.toString();
