@@ -15,6 +15,7 @@ import '../../../../core/constants/images/app_images.dart';
 import '../../../../core/utils/printer.dart';
 import '../../../../core/utils/secure_storage/secure_storage_helper.dart';
 import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
+import '../../../notifications/data/saved_notification_data.dart';
 import '../../../user/presentation/screens/interests_screen.dart';
 import '../../../user/presentation/screens/login_screen.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
@@ -66,25 +67,32 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> navigateUser() async {
-    if (await SecureStorage().hasToken()) {
-      if (AppSharedPreferences.getIsITypeSelected!) {
-        if (context.mounted) {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const BottomNavigation()));
+    Print("saved data from notification ${SavedNotificationData
+        .notificationData}");
+    if (SavedNotificationData.notificationData != null) {
+
+    } else {
+      if (await SecureStorage().hasToken()) {
+        if (AppSharedPreferences.getIsITypeSelected!) {
+          if (context.mounted) {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const BottomNavigation()));
+          }
+        } else {
+          if (context.mounted) {
+            Navigator.push(context,
+                MaterialPageRoute(
+                    builder: (context) => const InterestsScreen()));
+          }
         }
       } else {
+        /// edited from login to testPage
         if (context.mounted) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const InterestsScreen()));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()));
         }
-      }
-    } else {
-      /// edited from login to testPage
-      if (context.mounted) {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()));
       }
     }
   }

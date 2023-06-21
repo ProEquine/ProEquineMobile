@@ -1,9 +1,9 @@
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:proequine/features/notifications/data/saved_notification_data.dart';
 import 'package:proequine/main.dart';
 import '../../../core/constants/routes/routes.dart';
 import '../../../core/utils/Printer.dart';
@@ -42,6 +42,8 @@ class NotificationsCubit extends Cubit<NotificationsState> {
         (OSNotificationOpenedResult result) async {
       try {
         final data = result.notification.additionalData;
+        SavedNotificationData.notificationData= result.notification.additionalData;
+        Print("saved data from notification ${SavedNotificationData.notificationData}");
         Print("data ${data}");
         final payload = data!['Navigate'];
         final navigate = payload.toString();
@@ -68,7 +70,7 @@ class NotificationsCubit extends Cubit<NotificationsState> {
 void getNavigationKey(String key){
   print("key $key");
   if (key == "Bookings") {
-    print("somthing");
+
 
     MyApp.navigatorKey.currentState?.pushNamed(bookingRoute);
   }
