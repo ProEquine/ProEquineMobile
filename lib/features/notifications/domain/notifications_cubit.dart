@@ -1,10 +1,14 @@
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-
+import 'package:proequine/main.dart';
+import '../../../core/constants/routes/routes.dart';
 import '../../../core/utils/Printer.dart';
 import '../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+
 
 part 'notifications_state.dart';
 
@@ -34,8 +38,21 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       fallbackToSettings: true,
     );
 
-    OneSignal.shared
-        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {});
+    OneSignal.shared.setNotificationOpenedHandler(
+        (OSNotificationOpenedResult result) async {
+      try {
+        final data = result.notification.additionalData;
+        Print("data ${data}");
+        final payload = data!['Navigate'];
+        final navigate = payload.toString();
+
+        Print("payload ${payload.toString()}");
+        getNavigationKey(navigate);
+
+      } catch (e, stacktrace) {
+        Print("e $e");
+      }
+    });
 
     /// Calls when the notification opens the app.
     // OneSignal.shared.setNotificationOpenedHandler(handleBackgroundNotification);
@@ -47,4 +64,13 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     });
     await OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
   }
+}
+void getNavigationKey(String key){
+  print("key $key");
+  if (key == "Bookings") {
+    print("somthing");
+
+    MyApp.navigatorKey.currentState?.pushNamed(bookingRoute);
+  }
+
 }

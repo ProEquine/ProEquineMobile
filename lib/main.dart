@@ -119,15 +119,13 @@ class MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     BlocProvider.of<NotificationsCubit>(context).configOneSignal();
+    GlobalKey<NavigatorState>();
   }
-
-  static final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: navigatorKey,
+      navigatorKey: MyApp.navigatorKey,
       theme: AppStyles().mainTheme,
       navigatorObservers: [MyNavigatorObserver()],
       title: 'Pro Equine',
@@ -143,7 +141,7 @@ class MyAppState extends State<MyApp> {
               selectedIndex: 2,
             ),
         createEvent: ((context) => const CreateEventScreen()),
-        createTrip: ((context) =>  CreateTripScreen()),
+        createTrip: ((context) => CreateTripScreen()),
         accountInfo: (context) => AccountInfoScreen(),
         userProfile: (context) => const UserProfile(),
         updatePhone: (context) => UpdatePhoneScreen(),

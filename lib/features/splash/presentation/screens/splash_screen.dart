@@ -46,14 +46,16 @@ class SplashScreenState extends State<SplashScreen> {
     version = 'version: ${packageInfo.version}';
     buildVersion = "${packageInfo.version}.${packageInfo.buildNumber}";
     packageName = packageInfo.packageName;
-    if(context.mounted){
+    if (context.mounted) {
       setState(() {
-        context.read<SplashCubit>().getEnv("${packageInfo.version}.${packageInfo.buildNumber}");
-        BlocProvider.of<SplashCubit>(context).getEnv("${packageInfo.version}.${packageInfo.buildNumber}");
+        context
+            .read<SplashCubit>()
+            .getEnv("${packageInfo.version}.${packageInfo.buildNumber}");
+        BlocProvider.of<SplashCubit>(context)
+            .getEnv("${packageInfo.version}.${packageInfo.buildNumber}");
 
         Print("bloc provider ${BlocProvider.of<SplashCubit>(context).envUrl}");
       });
-
     }
     Print('AppSharedPreferences.getEnvType${AppSharedPreferences.getEnvType}');
 
@@ -65,22 +67,19 @@ class SplashScreenState extends State<SplashScreen> {
 
   Future<void> navigateUser() async {
     if (await SecureStorage().hasToken()) {
-
-        if (AppSharedPreferences.getIsITypeSelected!) {
-          if (context.mounted) {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const BottomNavigation()));
-          }
-        } else {
-          if (context.mounted) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const InterestsScreen()));
-          }
+      if (AppSharedPreferences.getIsITypeSelected!) {
+        if (context.mounted) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const BottomNavigation()));
         }
+      } else {
+        if (context.mounted) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const InterestsScreen()));
+        }
+      }
     } else {
       /// edited from login to testPage
       if (context.mounted) {
@@ -122,9 +121,9 @@ class SplashScreenState extends State<SplashScreen> {
   void initState() {
     AppSettings.setup();
     getVersion();
-    if(AppSharedPreferences.getEnvType!=''){
+    if (AppSharedPreferences.getEnvType != '') {
       startTimer();
-    }else{
+    } else {
       getVersion();
       Timer(const Duration(seconds: 3), () async {
         await startTimer();
