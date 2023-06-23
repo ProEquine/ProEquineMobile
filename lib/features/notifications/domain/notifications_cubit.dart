@@ -16,7 +16,7 @@ part 'notifications_state.dart';
 class NotificationsCubit extends Cubit<NotificationsState> {
   NotificationsCubit() : super(NotificationsInitial());
 
-  void configOneSignal(BuildContext context) async {
+  void configOneSignal() async {
     await OneSignal.shared.setAppId('ef8bd521-54d4-4a21-b1f3-654755149b50');
 
     final status = await OneSignal.shared.getDeviceState();
@@ -39,7 +39,8 @@ class NotificationsCubit extends Cubit<NotificationsState> {
       fallbackToSettings: true,
     );
     OneSignal.shared.setNotificationWillShowInForegroundHandler((OSNotificationReceivedEvent notification) {
-      BlocProvider.of<ChangeBoolCubit>(context).changeOne();
+      Print("Message received");
+      BlocProvider.of<ChangeBoolCubit>(MyApp.navigatorKey.currentContext!).changeStatusToTrue();
     });
 
     OneSignal.shared.setNotificationOpenedHandler(
@@ -75,7 +76,6 @@ class NotificationsCubit extends Cubit<NotificationsState> {
 void getNavigationKey(String key){
   print("key $key");
   if (key == "Bookings") {
-
 
     MyApp.navigatorKey.currentState?.pushNamed(bookingRoute);
   }

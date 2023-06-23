@@ -6,10 +6,10 @@ class ChangeBoolState {
   ChangeBoolState({this.thereAreNotification = false});
 
   ChangeBoolState copyWith({
-    bool? one,
+    bool? notification,
   }) {
     return ChangeBoolState(
-      thereAreNotification: one ?? thereAreNotification,
+      thereAreNotification: notification ?? thereAreNotification,
 
     );
   }
@@ -18,9 +18,15 @@ class ChangeBoolState {
 class ChangeBoolCubit extends Cubit<ChangeBoolState> {
   ChangeBoolCubit(super.initialState);
 
-  void changeOne() {
+  void changeStatusToTrue() {
     emit(state.copyWith(
-      one: !state.thereAreNotification,
+      notification: true,
+    ));
+
+  }
+  void changeStatusToFalse() {
+    emit(state.copyWith(
+      notification: false,
     ));
   }
 }

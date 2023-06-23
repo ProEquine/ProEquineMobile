@@ -70,7 +70,7 @@ class SplashScreenState extends State<SplashScreen> {
     Print("saved data from notification ${SavedNotificationData
         .notificationData}");
     if (SavedNotificationData.notificationData != null) {
-
+Print("render from splash screen");
     } else {
       if (await SecureStorage().hasToken()) {
         if (AppSharedPreferences.getIsITypeSelected!) {
@@ -140,7 +140,7 @@ class SplashScreenState extends State<SplashScreen> {
 
     deleteSecureStorage();
     sendRefreshToken();
-    notificationsCubit.configOneSignal(context);
+    notificationsCubit.configOneSignal();
 
     super.initState();
   }
