@@ -132,8 +132,9 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                                 child: RebiInput(
                                   hintText: state.responseModel!.fullName!,
                                   hintStyle:
-                                      const TextStyle(color: AppColors.white),
+                                      const TextStyle(color: AppColors.grey),
                                   controller: name,
+                                  isItDisable: true,
                                   keyboardType: TextInputType.name,
                                   textInputAction: TextInputAction.done,
                                   autoValidateMode:
