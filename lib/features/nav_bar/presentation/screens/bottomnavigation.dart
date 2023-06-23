@@ -40,6 +40,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: WillPopScope(
         onWillPop: () => BlocProvider.of<NavbarCubit>(context).onWillPop(context),
@@ -80,28 +81,37 @@ class _BottomNavigationState extends State<BottomNavigation> {
                     icon: Stack(
                       children: [
                         SvgPicture.asset(
-                          _selectedIndex == 2?AppIcons.selectedInbox:AppIcons.unSelectedInbox,
-                            color: _selectedIndex==2?AppColors.yellow:AppColors.white
+                          _selectedIndex == 2 ? AppIcons.selectedInbox : AppIcons.unSelectedInbox,
+                          color: _selectedIndex == 2 ? AppColors.yellow : AppColors.white,
                         ),
+
                         Visibility(
                           visible: state.thereAreNotification,
-                          child: Transform.translate(
-                            offset: const Offset(12, -3),
-                            child: const Positioned(  // draw a red marble
-                              top: 0.0,
-                              right: 0.0,
-                              child:  Icon(Icons.brightness_1, size: 10.0,
-                                  color: Colors.redAccent),
-                            ),
+                          child: Stack(
+                            children: [
+                              Transform.translate(
+                                offset: const Offset(12, -3),
+                                child:const Icon(
+                                  Icons.brightness_1,
+                                  size: 10.0,
+                                  color: Colors.redAccent,
+                                ),
+                              ),
+                            ],
                           ),
-                        )
+                        ),
                       ],
                     ),
                     label: 'Inbox',
                   ),
+
+
                 ],
                 currentIndex: _selectedIndex,
                 onIndexChange: (val) {
+                  if(_selectedIndex==2){
+                    BlocProvider.of<ChangeBoolCubit>(context).changeStatusToFalse();
+                  }
 
                   _onItemTapped(val);
                 }),

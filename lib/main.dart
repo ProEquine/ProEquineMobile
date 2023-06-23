@@ -123,7 +123,7 @@ class MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<NotificationsCubit>(context).configOneSignal(context);
+    BlocProvider.of<NotificationsCubit>(context).configOneSignal();
     GlobalKey<NavigatorState>();
   }
 
