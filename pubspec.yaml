@@ -27,6 +27,7 @@ dependencies:
   easy_localization: ^3.0.0
   flutter_svg: ^1.1.1+1
   logger: ^1.1.0
+  readmore: ^2.2.0
   fluttertoast: ^8.0.9
   motion_toast: ^2.6.8
   image_stack: ^2.1.1
@@ -44,7 +45,6 @@ dependencies:
   pull_to_refresh: ^2.0.0
   grouped_list: ^5.1.2
   auto_size_text:
-  country_code_picker: ^3.0.0
   lottie: ^2.3.2
   blur_bottom_bar: ^1.0.3
   flutter_secure_storage: ^8.0.0
@@ -54,6 +54,7 @@ dependencies:
   dio_cache_interceptor: ^3.4.2
   dio_cache_interceptor_hive_store: ^3.2.1
   path_provider:
+  dotted_border: ^2.0.0+3
 
 
 

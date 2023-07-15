@@ -20,30 +20,23 @@ class HomeCardFull extends StatelessWidget {
         ),
       ),
       child: Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: FractionalOffset.center,
-                end: FractionalOffset.bottomCenter,
-                colors: [
-              Colors.transparent,
-              AppColors.backgroundColor
-              // I don't know what Color this will be, so I can't use this
-            ])),
-        child: Transform.translate(
-          offset: const Offset(0.0, 10),
-          child: const Align(
-            alignment: Alignment.bottomLeft,
-            child: Text(
-              'Transportation',
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white),
-            ),
-          ),
+        // decoration: const BoxDecoration(
+        //     gradient: LinearGradient(
+        //         begin: FractionalOffset.center,
+        //         end: FractionalOffset.bottomCenter,
+        //         colors: [
+        //       Colors.transparent,
+        //       AppColors.backgroundColor
+        //       // I don't know what Color this will be, so I can't use this
+        //     ])),
+        // child: Transform.translate(
+        //   offset: const Offset(0.0, 10),
+        //   child: const Align(
+        //     alignment: Alignment.bottomLeft,
+        //     child:
+        //   ),
         ),
-      ),
+
     );
   }
 }

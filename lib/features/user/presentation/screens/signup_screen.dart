@@ -3,7 +3,9 @@ import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/features/user/presentation/screens/verify_phone_screen.dart';
+import 'package:sizer/sizer.dart';
 import '../../../../core/constants/colors/app_colors.dart';
+import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_logo_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
@@ -25,6 +27,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late final TextEditingController _password;
   late final TextEditingController _confirmPassword;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  double logoHeight = 18.h;
 
   @override
   void initState() {
@@ -60,22 +63,37 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Column(
                       children: [
                         RegistrationHeader(isThereBackButton: true),
-                        const CustomLogoWidget(),
-                        const Spacer(),
+                        const Spacer(flex: 3,),
+                        // AnimatedContainer(
+                        //     duration: const Duration(milliseconds: 500),
+                        //     height: logoHeight,
+                        //     child: const CustomLogoWidget()),
+                        // const Spacer(flex: 3,),
+                        const SizedBox(height: 35,),
                         Padding(
                           padding:
                               const EdgeInsets.symmetric(horizontal: kPadding),
                           child: Column(
                             children: [
-                              Align(
+                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text("Enter Email & Password",
-                                    style: AppStyles.registrationTitle),
+                                    style: AppStyles.mainTitle),
                               ),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: RebiInput(
+                                  onTap: () {
+                                    setState(() {
+                                      logoHeight = 15.h;
+                                    });
+                                  },
+                                  onFieldSubmitted: (size){
+                                    setState(() {
+                                      logoHeight = 18.h;
+                                    });
+                                  },
                                   hintText: 'Email'.tra,
                                   controller: _email,
                                   keyboardType: TextInputType.emailAddress,
@@ -98,6 +116,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: RebiInput(
+                                  onTap: () {
+                                    setState(() {
+                                      logoHeight = 15.h;
+                                    });
+                                  },
+                                  onFieldSubmitted: (size){
+                                    setState(() {
+                                      logoHeight = 18.h;
+                                    });
+                                  },
                                   hintText: 'Password'.tra,
                                   controller: _password,
                                   keyboardType: TextInputType.visiblePassword,
@@ -120,6 +148,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: RebiInput(
+                                  onTap: () {
+                                    setState(() {
+                                      logoHeight = 15.h;
+                                    });
+                                  },
+                                  onFieldSubmitted: (size){
+                                    setState(() {
+                                      logoHeight = 18.h;
+                                    });
+                                  },
                                   hintText: 'Confirm password'.tra,
                                   controller: _confirmPassword,
                                   scrollPadding: const EdgeInsets.only(bottom: 100),
@@ -147,12 +185,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ],
                           ),
                         ),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                            horizontal: kPadding,
-                            vertical: kPadding
+                            horizontal: kPadding
                           ),
                           child: RebiButton(
+                            backgroundColor:AppSharedPreferences.getTheme ==
+                                'ThemeCubitMode.dark'
+                                ? AppColors.white
+                                : AppColors.backgroundColor,
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 Navigator.push(
@@ -170,7 +214,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                         const SizedBox(
-                          height: 40,
+                          height: 20,
                         ),
                       ],
                     ),

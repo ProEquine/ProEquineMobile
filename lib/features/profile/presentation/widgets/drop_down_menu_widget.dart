@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proequine/features/profile/presentation/widgets/profile_divider.dart';
 import '../../../../core/constants/colors/app_colors.dart';
+import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 
 class DropDownWidget extends StatefulWidget {
   late List<DropdownMenuItem>? items;
@@ -36,9 +37,10 @@ class DropDownWidgetState extends State<DropDownWidget> {
         autovalidateMode: AutovalidateMode.disabled,
         builder: (FormFieldState<String> state) {
           return InputDecorator(
-
             decoration: InputDecoration(
-              fillColor: AppColors.formsBackground,
+              fillColor: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                  ? AppColors.formsBackground
+                  : AppColors.formsBackgroundLight,
               filled: true,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
@@ -56,8 +58,7 @@ class DropDownWidgetState extends State<DropDownWidget> {
               ),
               errorStyle: const TextStyle(color: AppColors.red),
               errorBorder: OutlineInputBorder(
-                borderSide:
-                    const BorderSide(color: AppColors.red, width: 1.0),
+                borderSide: const BorderSide(color: AppColors.red, width: 1.0),
                 borderRadius: BorderRadius.circular(
                   10.0,
                 ),
@@ -66,11 +67,16 @@ class DropDownWidgetState extends State<DropDownWidget> {
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 underline: const ProfileDivider(),
-                dropdownColor: AppColors.formsBackground,
+                dropdownColor:
+                    AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                        ? AppColors.formsBackground
+                        : AppColors.formsBackgroundLight,
                 elevation: 2,
                 borderRadius: BorderRadius.circular(10),
-                style: const TextStyle(
-                  color: AppColors.white,
+                style: TextStyle(
+                  color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                      ? AppColors.formsLabel
+                      : AppColors.backgroundColor,
                   fontFamily: "notosan",
                   decoration: TextDecoration.none,
                 ),
@@ -79,7 +85,7 @@ class DropDownWidgetState extends State<DropDownWidget> {
                   style: const TextStyle(
                     fontFamily: "notosan",
                     fontSize: 16.0,
-                    color: AppColors.formsLabel,
+                    color: AppColors.formsLabelLight,
                   ),
                 ),
                 items: widget.items?.map<DropdownMenuItem<String>>((value) {

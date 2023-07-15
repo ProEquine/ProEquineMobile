@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:proequine/core/constants/thems/app_styles.dart';
 
 import '../constants/colors/app_colors.dart';
 
 class RebiButton extends StatefulWidget {
-
   const RebiButton({
     Key? key,
     required this.onPressed,
     required this.child,
     this.isLoading = false,
-    this.backgroundColor = AppColors.white,
+    this.backgroundColor = AppColors.backgroundColorLight,
     this.width,
     this.height = 50,
     this.elevation = 0,
     this.shadowColor = AppColors.gold,
     this.radius = 10.0,
-    this.isBackButton=false,
+    this.isBackButton = false,
   }) : super(key: key);
 
   final VoidCallback? onPressed;
@@ -45,59 +45,50 @@ class _RebiButtonState extends State<RebiButton> {
           }
           widget.onPressed!();
         },
-        style: widget.isBackButton?ElevatedButton.styleFrom(
-          backgroundColor: widget.backgroundColor,
+        style: widget.isBackButton
+            ? ElevatedButton.styleFrom(
+                backgroundColor: widget.backgroundColor,
+                side: const BorderSide(
+                  width: 2, // the thickness
+                  color: AppColors.white,
+                ),
+                shadowColor: widget.shadowColor,
+                elevation: widget.elevation,
+                minimumSize: widget.width != null
+                    ? Size(widget.width!, widget.height)
+                    : null,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(widget.radius),
+                  ),
+                ),
+              )
+            : ElevatedButton.styleFrom(
+                // side: const BorderSide(
+                //     width: 2, // the thickness
+                //     color: Colors.black // the color of the border
+                // ),
+                backgroundColor: widget.backgroundColor,
+                shadowColor: widget.shadowColor,
+                elevation: widget.elevation,
+                minimumSize: widget.width != null
+                    ? Size(widget.width!, widget.height)
+                    : null,
 
-          side: const BorderSide(
-              width: 2, // the thickness
-              color:  AppColors.white,
-          ),
-          textStyle: const TextStyle(
-            fontSize: 17.0,
-            fontWeight: FontWeight.w500,
-            fontFamily: "notosan",
-            color: AppColors.white,
-          ),
-          shadowColor: widget.shadowColor,
-          elevation: widget.elevation,
-          minimumSize: widget.width != null ? Size(widget.width!, widget.height) : null,
-
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(widget.radius),
-            ),
-          ),
-        ):ElevatedButton.styleFrom(
-          foregroundColor: AppColors.backgroundColor, backgroundColor: widget.backgroundColor,
-          // side: const BorderSide(
-          //     width: 2, // the thickness
-          //     color: Colors.black // the color of the border
-          // ),
-          textStyle: const TextStyle(
-            fontSize: 17.0,
-            fontWeight: FontWeight.w500,
-            fontFamily: "notosan",
-            color: AppColors.white,
-          ),
-          shadowColor: widget.shadowColor,
-          elevation: widget.elevation,
-          minimumSize: widget.width != null ? Size(widget.width!, widget.height) : null,
-
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(widget.radius),
-            ),
-          ),
-        ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(widget.radius),
+                  ),
+                ),
+              ),
         child: Container(
           height: widget.height,
           width: widget.width,
           alignment: Alignment.center,
           child: widget.isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                  ),
+              ? Center(
+                  child:
+                      CircularProgressIndicator(color: widget.backgroundColor),
                 )
               : widget.child,
         ),

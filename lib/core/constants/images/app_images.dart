@@ -1,6 +1,9 @@
 class AppImages {
   AppImages._();
-  static const logo = "assets/images/PE-primary-logo.png";
+
+  /// Dark Theme
+
+
   static const error = "assets/images/404.png";
   static const upComingEvent = "assets/images/upcoming-events.png";
   static const truckIcon = "assets/images/transport.png";
@@ -15,19 +18,28 @@ class AppImages {
   static const hospitalTransport = "assets/images/hospital-transport.png";
   static const eventTransport = "assets/images/event-transport.png";
   static const summary = "assets/images/summary.png";
-  static const greyTrans = "assets/images/Group 244 (1).png";
+
   static const emptyBookings = "assets/images/empty_bookings.png";
   static const supportThanks = "assets/images/supportThank.png";
+
+  /// Light Theme
+
 }
 
 class AppIcons {
+
+  /// Dark Theme
   static const location = 'assets/icons/location-r.svg';
+  static const logoDarkMode = "assets/icons/logo_dark_mode.svg";
+
   static const location2 = 'assets/icons/location2.svg';
   static const horse = 'assets/icons/horse.svg';
   static const date = 'assets/icons/calendar_month.svg';
   static const confirmed = 'assets/icons/check.svg';
   static const completed = 'assets/icons/check.svg';
   static const userSquare = 'assets/icons/account_circle.svg';
+  static const transportIcon = "assets/icons/transport-icon.svg";
+  static const greyTransportIcon = "assets/icons/grey_transport_icon.svg";
   static const arrows = 'assets/icons/arrows.svg';
   static const selectedHome = 'assets/icons/selected_home.svg';
   static const unSelectedHome = 'assets/icons/unselected_home.svg';
@@ -50,4 +62,14 @@ class AppIcons {
   static const locations = 'assets/icons/location.svg';
   static const note = 'assets/icons/note.svg';
   static const contact = 'assets/icons/contact.svg';
+
+/// Light Theme
+  static const proEquineLight = 'assets/icons/pro-equine-light.svg';
+  static const logo = "assets/icons/PE-primary-logo.png";
+  static const logoLight = 'assets/icons/PE Primary Logo.svg';
+  static const horizontalLogo = 'assets/icons/logo-light.svg';
+  static const unSelectedBookingIcon = 'assets/icons/booking-icon.svg';
+  static const homeIconLight = 'assets/icons/home.svg';
+  static const selectedBookingIcon = 'assets/icons/home.svg';
+  static const edit = 'assets/icons/pencil-square.svg';
 }

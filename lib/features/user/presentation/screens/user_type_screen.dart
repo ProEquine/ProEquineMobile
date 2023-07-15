@@ -52,22 +52,20 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
         child: Column(
           children: [
             RegistrationHeader(isThereBackButton: false),
-            const CustomLogoWidget(),
+            Spacer(flex: 1,),
+             CustomLogoWidget(),
+            Spacer(flex: 1,),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: kPadding),
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 11.h,
-                  ),
-                  Align(
+
+                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text("Great!, Are you  ",
-                        style: AppStyles.registrationTitle),
+                        style: AppStyles.mainTitle),
                   ),
-                  const SizedBox(
-                    height: 15,
-                  ),
+                  SizedBox(height: 2.5.h,),
                   SelectableTypeContainer(
                     label: 'Rider',
                     index: 0,
@@ -79,7 +77,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                     },
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 20,
                   ),
                   SelectableTypeContainer(
                     label: 'Owner',
@@ -92,7 +90,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                     },
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 20,
                   ),
                   SelectableTypeContainer(
                     label: 'Groom',
@@ -105,7 +103,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                     },
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 20,
                   ),
                   SelectableTypeContainer(
                     label: 'Trainer',
@@ -120,7 +118,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                 ],
               ),
             ),
-            const Spacer(),
+            SizedBox(height: 5.0.h,),
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,

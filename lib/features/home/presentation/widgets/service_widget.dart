@@ -36,7 +36,9 @@ class ServiceWidget extends StatelessWidget {
               Positioned.fill(
                 child: Opacity(
                   opacity: 0.8,
-                  child: Container(color: Colors.black),
+                  child: Container( decoration: BoxDecoration(
+                    color: const Color(0xB2565656),
+                    borderRadius: BorderRadius.circular(8),)),
                 ),
               ),
 
@@ -46,7 +48,7 @@ class ServiceWidget extends StatelessWidget {
                   child: Text(
                     'Coming soon',
                     style: TextStyle(
-                        color: AppColors.textColor,
+                        color: AppColors.white,
                         fontFamily: 'notosan',
                         fontWeight: FontWeight.w400,
                         fontSize: 15.0),
@@ -71,8 +73,8 @@ class ServiceWidget extends StatelessWidget {
           Text(
             title!,
             textAlign: TextAlign.start,
-            style:  TextStyle(
-                color: isItDisable?AppColors.textColor:AppColors.white,
+            style:  const TextStyle(
+
                 fontFamily: 'notosan',
                 fontWeight: FontWeight.w400,
                 fontSize: 15.0),

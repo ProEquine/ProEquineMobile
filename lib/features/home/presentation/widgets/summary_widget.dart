@@ -1,18 +1,19 @@
-import 'package:easy_localization/easy_localization.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
-import 'package:proequine/core/utils/printer.dart';
-import 'package:proequine/core/widgets/rebi_button.dart';
 
+import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/widgets/divider.dart';
 import '../../data/form_data_model.dart';
 
 class SummaryBoxWidget extends StatelessWidget {
   final FromDataModel? formData;
+
   SummaryBoxWidget({required this.formData});
+
   String returnDate() {
     if (formData!.tripType == "Other day return" &&
         formData!.expectedTime!.isNotEmpty) {
@@ -28,12 +29,16 @@ class SummaryBoxWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
+        color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+            ? AppColors.formsBackground
+            : AppColors.white,
         // color: const Color(0xff191919),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 11),
+        padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 19),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -46,7 +51,7 @@ class SummaryBoxWidget extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Service & Return type",
                       style: AppStyles.summaryTitleStyle,
                     ),
@@ -72,7 +77,7 @@ class SummaryBoxWidget extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Date & Time",
                       style: AppStyles.summaryTitleStyle,
                     ),
@@ -103,7 +108,7 @@ class SummaryBoxWidget extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Location",
                       style: AppStyles.summaryTitleStyle,
                     ),
@@ -134,7 +139,7 @@ class SummaryBoxWidget extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Horses",
                       style: AppStyles.summaryTitleStyle,
                     ),
@@ -160,7 +165,7 @@ class SummaryBoxWidget extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       "Contact Person",
                       style: AppStyles.summaryTitleStyle,
                     ),
@@ -178,54 +183,46 @@ class SummaryBoxWidget extends StatelessWidget {
             formData!.comment!.isNotEmpty
                 ? const CustomDivider()
                 : const SizedBox(
-                    height: 1,
+                    height: 10,
                   ),
             formData!.comment!.isNotEmpty
                 ? Row(
                     children: [
-                      SvgPicture.asset(AppIcons.note),
+                      Transform.translate(
+                          offset: const Offset(0.0, -17),
+                          child: SvgPicture.asset(AppIcons.note)),
                       const SizedBox(
                         width: 10,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Note",
-                            style: AppStyles.summaryTitleStyle,
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            '${formData!.comment}',
-                            style: AppStyles.summaryDesStyle,
-                          ),
-                        ],
-                      )
+                      Expanded(
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: 1,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Note",
+                                    style: AppStyles.summaryTitleStyle,
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    '${formData!.comment}',
+                                    maxLines: 5,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: AppStyles.summaryDesStyle,
+                                  ),
+                                ],
+                              );
+                            }),
+                      ),
                     ],
                   )
                 : const SizedBox(),
 
-            const SizedBox(
-              height: 50,
-            ),
-
-            RebiButton(
-              height: 40,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              backgroundColor: const Color(0xff303030),
-              child: const Text(
-                "Edit",
-                style: TextStyle(
-                    color: AppColors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14,
-                    fontFamily: 'notosan'),
-              ),
-            ),
             // SizedBox(height: 12,)
           ],
         ),

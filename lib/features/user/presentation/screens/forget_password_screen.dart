@@ -6,6 +6,7 @@ import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/features/user/data/send_verification_request_model.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/reset_password_screen.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
@@ -30,6 +31,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final UserCubit cubit = UserCubit();
   String? dob = '';
+  double logoHeight = 18.h;
 
   @override
   void initState() {
@@ -62,27 +64,23 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     child: Column(
                       children: [
                         RegistrationHeader(isThereBackButton: true),
-                        const CustomLogoWidget(),
-                        const SizedBox(
-                          height: 40,
-                        ),
                         Padding(
                           padding:
                               const EdgeInsets.symmetric(horizontal: kPadding),
                           child: Column(
                             children: [
-                              Align(
+                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text("Forgot your password",
-                                    style: AppStyles.registrationTitle),
+                                    style: AppStyles.mainTitle),
                               ),
                               const SizedBox(
                                 height: 10,
                               ),
-                              const Align(
+                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text("please verify your phone number",
-                                    style: AppStyles.summaryDesStyle),
+                                    style: AppStyles.descriptions),
                               ),
                               const SizedBox(
                                 height: 10,
@@ -97,6 +95,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                       child: RebiInput(
                                         hintText: 'CC'.tra,
                                         controller: _countryCode,
+                                        onTap: () {
+
+                                        },
+                                        onFieldSubmitted: (size){
+                                        },
                                         keyboardType: TextInputType.number,
                                         textInputAction: TextInputAction.done,
                                         autoValidateMode:
@@ -123,6 +126,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                       child: RebiInput(
                                         hintText: 'Phone'.tra,
                                         controller: _phone,
+                                        onTap: () {
+                                        },
+                                        onFieldSubmitted: (size){
+
+                                        },
                                         keyboardType: TextInputType.number,
                                         textInputAction: TextInputAction.done,
                                         autoValidateMode:
@@ -153,6 +161,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                       return const LoadingCircularWidget();
                                     }
                                     return RebiButton(
+                                        backgroundColor:AppSharedPreferences.getTheme ==
+                                            'ThemeCubitMode.dark'
+                                            ? AppColors.white
+                                            : AppColors.backgroundColor,
                                         onPressed: () {
                                           if (_formKey.currentState!
                                               .validate()) {
@@ -161,7 +173,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                                 phone: _countryCode.text + _phone.text);
                                           } else {}
                                         },
-                                        backgroundColor: AppColors.white,
                                         child: const Text("Verify"));
                                   },
                                   listener: (context, state) {
@@ -184,7 +195,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 ),
                               ),
                               const SizedBox(
-                                height: 40,
+                                height: 20,
                               ),
                             ],
                           ),

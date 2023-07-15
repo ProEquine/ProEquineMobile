@@ -96,8 +96,9 @@ class PendingBookingItem extends StatelessWidget {
                         children: [
                           Expanded(
                             flex: 1,
-                            child: Image.asset(
-                              AppImages.greyTrans,
+                            child: SvgPicture.asset(
+                              AppIcons.transportIcon,
+
                             ),
                           ),
                           const SizedBox(

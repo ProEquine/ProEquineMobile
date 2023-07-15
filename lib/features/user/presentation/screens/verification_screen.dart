@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import 'package:proequine/core/widgets/divider.dart';
 import 'package:proequine/core/widgets/submit_verification_widget.dart';
-import 'package:proequine/features/user/data/check_verification_request_model.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui' as ui;
 
@@ -59,6 +59,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   }
 
   UserCubit cubit = UserCubit();
+  double logoHeight = 15.h;
 
   String _formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, "0");
@@ -87,181 +88,190 @@ class _VerificationScreenState extends State<VerificationScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                RegistrationHeader(isThereBackButton: false),
-                SizedBox(
-                  // padding: const EdgeInsets.symmetric(vertical: kPadding),
-                  height: 15.h,
-                  child: Image.asset(
-                    AppImages.logo,
-                    scale: 1,
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: kPadding),
+        child: LayoutBuilder(builder: (context, constraint) {
+          return SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraint.maxHeight),
+                child: IntrinsicHeight(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text("Confirm your number",
-                          style: AppStyles.registrationTitle),
-                      SizedBox(
-                        height: 1.h,
+                      RegistrationHeader(isThereBackButton: true),
+                      const Spacer(
+                        flex: 1,
                       ),
-                      Text(
-                        "A 6 digit verification code has been sent to your registered phone number.",
-                        style: AppStyles.descriptions,
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      Center(
-                        child: Directionality(
-                          textDirection: ui.TextDirection.ltr,
-                          child: Pinput(
-                            scrollPadding: EdgeInsets.only(bottom: 60.h),
-                            preFilledWidget: Container(
-                              width: 30,
+                      Padding(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: kPadding),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Confirm your number",
+                                style: AppStyles.mainTitle),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            Text(
+                              "A 6 digit verification code has been sent to your registered phone number.",
+                              style: AppStyles.descriptions,
+                            ),
+                            const SizedBox(
+                              height: 25,
+                            ),
+                            Center(
+                              child: Directionality(
+                                textDirection: ui.TextDirection.ltr,
+                                child: Pinput(
+                                  scrollPadding: EdgeInsets.only(bottom: 50.h),
+                                  preFilledWidget: Container(
+                                    width: 30,
+                                    height: 5,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 15),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          width: 2.0,
+                                          color:
+                                              AppSharedPreferences.getTheme ==
+                                                      'ThemeCubitMode.dark'
+                                                  ? AppColors.greyLight
+                                                  : AppColors.blackLight,
+                                        ),
+                                      ),
+                                      color: AppSharedPreferences.getTheme ==
+                                              'ThemeCubitMode.dark'
+                                          ? AppColors.formsBackground
+                                          : AppColors.formsBackgroundLight,
+                                    ),
+                                  ),
+                                  androidSmsAutofillMethod:
+                                      AndroidSmsAutofillMethod
+                                          .smsUserConsentApi,
+                                  length: 6,
+                                  closeKeyboardWhenCompleted: true,
+                                  isCursorAnimationEnabled: true,
+                                  controller: _pinPutController,
+                                  defaultPinTheme:
+                                      PinThemeConst.defaultPinTheme,
+                                  focusedPinTheme:
+                                      PinThemeConst.focusedPinTheme,
+                                  submittedPinTheme:
+                                      PinThemeConst.submittedPinTheme,
+                                  pinAnimationType: PinAnimationType.rotation,
+                                  pinputAutovalidateMode:
+                                      PinputAutovalidateMode.onSubmit,
+                                  validator: (value) {
+                                    if (value!.isEmpty || value.length < 6) {
+                                      return 'please enter your code';
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
                               height: 20,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 15),
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                      width: 2.0, color: AppColors.white),
-                                ),
-                                color: AppColors.formsBackground,
-                              ),
                             ),
-                            androidSmsAutofillMethod:
-                                AndroidSmsAutofillMethod.smsUserConsentApi,
-                            length: 6,
-                            closeKeyboardWhenCompleted: true,
-                            isCursorAnimationEnabled: true,
-                            controller: _pinPutController,
-                            defaultPinTheme: PinThemeConst.defaultPinTheme,
-                            focusedPinTheme: PinThemeConst.focusedPinTheme,
-                            submittedPinTheme: PinThemeConst.submittedPinTheme,
-                            pinAnimationType: PinAnimationType.rotation,
-                            pinputAutovalidateMode:
-                                PinputAutovalidateMode.onSubmit,
-                            validator: (value) {
-                              if (value!.isEmpty || value.length < 6) {
-                                return 'please enter your code';
-                              } else {
-                                return null;
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Center(
-                        child: Text(
-                          "Haven’t received a code?",
-                          style: TextStyle(
-                              color: AppColors.white,
-                              fontSize: 14.0,
-                              fontFamily: 'notosan',
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Divider(
-                        height: 10,
-                        thickness: 3,
-                        color: Color(0XFF36393D),
-                        endIndent: 30.0,
-                        indent: 30.0,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      isResendCode
-                          ? Center(
+                            const Center(
                               child: Text(
-                              _formatDuration(Duration(seconds: _secondsLeft))
-                                  .toString(),
-                              style: const TextStyle(
-                                  color: AppColors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700),
-                            ))
-                          : Center(
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    context
-                                        .read<UserCubit>()
-                                        .sendVerificationCode(
-                                            SendVerificationRequestModel(
-                                                phoneNumber: widget.phone ??
-                                                    AppSharedPreferences
-                                                        .userPhoneNumber,
-                                                channel: "sms"));
-                                    isResendCode = true;
-                                  });
-
-                                  _startTimer();
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 25, vertical: 7),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff161616),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                          color: Colors.white, spreadRadius: 1),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: const [
-                                      Text(
-                                        "Resend Code",
-                                        style: TextStyle(
-                                            color: AppColors.white,
-                                            fontFamily: "notosan"),
-                                      ),
-                                      SizedBox(
-                                        width: 4,
-                                      ),
-                                      Icon(
-                                        Icons.refresh,
-                                        color: AppColors.white,
-                                        size: 20,
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                "Haven’t received a code?",
+                                style: TextStyle(
+                                    fontSize: 14.0,
+                                    fontFamily: 'notosan',
+                                    fontWeight: FontWeight.w500),
                               ),
                             ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      _buildVerifyConsumer(),
-                      const SizedBox(
-                        height: 20,
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const CustomDivider(),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            isResendCode
+                                ? Center(
+                                    child: Text(
+                                    _formatDuration(
+                                            Duration(seconds: _secondsLeft))
+                                        .toString(),
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),
+                                  ))
+                                : Center(
+                                    child: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          context
+                                              .read<UserCubit>()
+                                              .sendVerificationCode(
+                                                  SendVerificationRequestModel(
+                                                      phoneNumber: widget
+                                                              .phone ??
+                                                          AppSharedPreferences
+                                                              .userPhoneNumber,
+                                                      channel: "sms"));
+                                          isResendCode = true;
+                                        });
+
+                                        _startTimer();
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 25, vertical: 7),
+                                        decoration: BoxDecoration(
+                                            color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                                                ? AppColors.backgroundColor
+                                                : AppColors.backgroundColorLight,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                                spreadRadius: 1),
+                                          ],
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: const [
+                                            Text(
+                                              "Resend Code",
+                                              style: TextStyle(
+
+                                                  fontFamily: "notosan"),
+                                            ),
+                                            SizedBox(
+                                              width: 4,
+                                            ),
+                                            Icon(
+                                              Icons.refresh,
+                                              size: 20,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            _buildVerifyConsumer(),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }
@@ -278,50 +288,47 @@ class _VerificationScreenState extends State<VerificationScreen> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   FocusManager.instance.primaryFocus?.unfocus();
-
-                  _sendRegisterData(
-                    email: widget.email,
-                    dob: widget.dob,
-                    phone: widget.phone,
-                    password: widget.password,
-                    name: widget.name,
-                    verificationCode: _pinPutController.text,
-
-                  );
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const VerificationSubmit()));
+                  // _sendRegisterData(
+                  //   email: widget.email,
+                  //   dob: widget.dob,
+                  //   phone: widget.phone,
+                  //   password: widget.password,
+                  //   name: widget.name,
+                  //   verificationCode: _pinPutController.text,
+                  //
+                  // );
                 } else {}
               },
-              backgroundColor: AppColors.white,
+                backgroundColor: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                    ? Colors.white
+                    : Colors.black,
               child: const Text("Verify"),
             );
           }
         },
         listener: (context, state) {
-
-
-            if(state is RegisterSuccessful){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const VerificationSubmit()));
-            }else if (state is RegisterError){
-              RebiMessage.error(msg: state.message!, context: context);
-            }
-    
+          if (state is RegisterSuccessful) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const VerificationSubmit()));
+          } else if (state is RegisterError) {
+            RebiMessage.error(msg: state.message!, context: context);
+          }
         });
   }
 
-  _onPressVerify() {
-    return cubit.checkVerificationCode(CheckVerificationRequestModel(
-        phoneNumber: widget.phone ?? AppSharedPreferences.userPhoneNumber,
-        code: _pinPutController.text));
-  }
   _sendRegisterData(
       {String? email,
-        String? name,
-        String?verificationCode,
-        String? phone,
-        String? password,
-        String? dob}) {
+      String? name,
+      String? verificationCode,
+      String? phone,
+      String? password,
+      String? dob}) {
     return cubit.register(RegisterRequestModel(
       email: email,
       fullName: name,
@@ -329,8 +336,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
       verificationCode: verificationCode,
       phoneNumber: phone,
       dob: dob,
-
     ));
   }
 }
-

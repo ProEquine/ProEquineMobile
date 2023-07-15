@@ -55,7 +55,7 @@ class Booking extends StatelessWidget {
         'bookingId': "LT9664",
         'date': '15 - 17 Sep',
         'horseCount': 2,
-        'transport': 'Nat Show',
+        'transport': 'Local',
         'transportType': 'DEC'
       },
       {
@@ -65,7 +65,7 @@ class Booking extends StatelessWidget {
         'bookingId': "LT9665",
         'date': '15 - 18 Sep',
         'horseCount': 4,
-        'transport': 'Nat Show',
+        'transport': 'Hospital',
         'transportType': 'DEC'
       },
       {
@@ -126,49 +126,49 @@ class Booking extends StatelessWidget {
                   child: Text(
                     getGroupName(value),
                     style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.grey),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
               itemBuilder: (c, element) {
                 if (element['group'] == 'Ongoing') {
                   return InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        PageRouteBuilder(
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) =>
-                                  BookingTrack(
-                            image: AppImages.hospitalTransport,
-                            type: element['type'],
-                            bookingId: element['bookingId'],
-                            date: element['date'],
-                            horsesCount: element['horseCount'],
-                            transport: element['transport'],
-                            transportType: element['transportType'],
-                          ),
-                          transitionDuration: const Duration(milliseconds: 300),
-                          // Set duration
-                          transitionsBuilder:
-                              (context, animation, secondaryAnimation, child) {
-                            var begin =
-                                const Offset(0.0, 1.0); // Set begin offset
-                            var end = Offset.zero; // Set end offset
-                            var curve = Curves.easeOut; // Set curve
-
-                            var tween = Tween(begin: begin, end: end)
-                                .chain(CurveTween(curve: curve));
-
-                            return SlideTransition(
-                              position: animation.drive(tween),
-                              child: child,
-                            );
-                          },
-                        ),
-                      );
-                    },
+                    // onTap: () {
+                    //   Navigator.of(context).push(
+                    //     PageRouteBuilder(
+                    //       pageBuilder:
+                    //           (context, animation, secondaryAnimation) =>
+                    //               BookingTrack(
+                    //         image: AppImages.hospitalTransport,
+                    //         type: element['type'],
+                    //         bookingId: element['bookingId'],
+                    //         date: element['date'],
+                    //         horsesCount: element['horseCount'],
+                    //         transport: element['transport'],
+                    //         transportType: element['transportType'],
+                    //       ),
+                    //       transitionDuration: const Duration(milliseconds: 300),
+                    //       // Set duration
+                    //       transitionsBuilder:
+                    //           (context, animation, secondaryAnimation, child) {
+                    //         var begin =
+                    //             const Offset(0.0, 1.0); // Set begin offset
+                    //         var end = Offset.zero; // Set end offset
+                    //         var curve = Curves.easeOut; // Set curve
+                    //
+                    //         var tween = Tween(begin: begin, end: end)
+                    //             .chain(CurveTween(curve: curve));
+                    //
+                    //         return SlideTransition(
+                    //           position: animation.drive(tween),
+                    //           child: child,
+                    //         );
+                    //       },
+                    //     ),
+                    //   );
+                    // },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 3.0),
                       child: BookingItem(
@@ -199,7 +199,7 @@ class Booking extends StatelessWidget {
               },
             ),
             const SizedBox(
-              height: 60,
+              height: 40,
             ),
           ],
         ),

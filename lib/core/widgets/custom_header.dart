@@ -1,9 +1,10 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-
+import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 
 import '../constants/colors/app_colors.dart';
+import '../constants/constants.dart';
 
 class CustomHeader extends StatelessWidget {
   CustomHeader({
@@ -36,30 +37,27 @@ class CustomHeader extends StatelessWidget {
                         ? Matrix4.rotationY(math.pi)
                         : Matrix4.rotationY(0),
                     child: GestureDetector(
-                      onTap: () {
-                        isThereChangeWithNavigate
-                            ? onPressBack!()
-                            : Navigator.pop(context);
-                      },
-                      child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.formsBackground,
-                          ),
-                          child: const Icon(
-                            Icons.arrow_back_ios_new,
-                            color: AppColors.white,
-                          )),
-                    ),
+                        onTap: () {
+                          isThereChangeWithNavigate
+                              ? onPressBack!()
+                              : Navigator.pop(context);
+                        },
+                        child: Icon(Icons.arrow_back_ios_new,
+                            color: AppSharedPreferences.getTheme ==
+                                    'ThemeCubitMode.dark'
+                                ? AppColors.white
+                                : Colors.black)),
                   ),
                   const SizedBox(
                     width: 14,
                   ),
                   Text(
                     title,
-                    style: const TextStyle(
-                      color: AppColors.white,
+                    style: TextStyle(
+                      color:
+                          AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                              ? AppColors.white
+                              : Colors.black,
                       fontSize: 28.0,
                       fontFamily: 'hemiHead',
                       fontWeight: FontWeight.w400,
@@ -69,46 +67,50 @@ class CustomHeader extends StatelessWidget {
               ),
             )
           : Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: kPadding, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
-                      color: AppColors.white,
+                    style: TextStyle(
+                      color:
+                          AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                              ? AppColors.white
+                              : Colors.black,
                       fontSize: 28.0,
                       fontFamily: 'hemiHead',
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  Transform(
-                    // alignment: Alignment.center,
-                    transform: Directionality.of(context) == TextDirection.rtl
-                        ? Matrix4.rotationY(math.pi)
-                        : Matrix4.rotationY(0),
-                    child: GestureDetector(
-                      onTap: () {
-                        isThereChangeWithNavigate
-                            ? onPressUp!()
-                            : Navigator.pop(context);
-                      },
-                      child: Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.formsBackground,
-                          ),
-                          child: Transform.scale(
-                            scale: 2.5,
-                            child: const Icon(
-                              Icons.keyboard_arrow_down,
-                              size: 15,
-                              color: AppColors.white,
-                            ),
-                          )),
-                    ),
-                  ),
+                  // Transform(
+                  //   // alignment: Alignment.center,
+                  //   transform: Directionality.of(context) == TextDirection.rtl
+                  //       ? Matrix4.rotationY(math.pi)
+                  //       : Matrix4.rotationY(0),
+                  //   child: GestureDetector(
+                  //     onTap: () {
+                  //       isThereChangeWithNavigate
+                  //           ? onPressUp!()
+                  //           : Navigator.pop(context);
+                  //     },
+                  //     child: Container(
+                  //         padding: const EdgeInsets.all(12),
+                  //         decoration: const BoxDecoration(
+                  //           shape: BoxShape.circle,
+                  //           color: AppColors.formsBackground,
+                  //         ),
+                  //         child: Transform.scale(
+                  //           scale: 2.5,
+                  //           child: const Icon(
+                  //             Icons.keyboard_arrow_down,
+                  //             size: 15,
+                  //             color: AppColors.white,
+                  //           ),
+                  //         )),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

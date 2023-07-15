@@ -40,11 +40,11 @@ class BookingTrack extends StatelessWidget {
                     height: 40.0.h,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: const Color(0xff000000),
+                      color: AppColors.shapeLightMode,
                       image: DecorationImage(
                         image: AssetImage(image!),
                         colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.45), BlendMode.dstATop),
+                            AppColors.shapeLightMode, BlendMode.dstATop),
                       ),
                     ),
                   ),
@@ -157,9 +157,10 @@ class BookingTrack extends StatelessWidget {
                                         children: [
                                           Expanded(
                                             flex: 2,
-                                            child: Image.asset(
-                                              AppImages.greyTrans,
-                                              scale: 2,
+                                            child: SvgPicture.asset(
+                                              AppIcons.transportIcon,
+
+
                                             ),
                                           ),
                                           const SizedBox(

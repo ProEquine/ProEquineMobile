@@ -16,6 +16,8 @@ class AppSharedPreferences {
   static const keyIsPhoneVerified = "PREF_KEY_VERIFICATION_PHONE";
   static const keyIsEmailVerified = "PREF_KEY_VERIFICATION_EMAIL";
 
+  static const themeMode = "PREF_KEY_THEME_MODE";
+
   static bool? initialized;
   static SharedPreferencesProvider? _pref;
 
@@ -63,7 +65,12 @@ class AppSharedPreferences {
 
   static removeDeviceId() => _pref?.remove(keyDeviceId);
 
-  ///  Store User device id
+  ///  Store User Theme
+  static String get getTheme => _pref?.read(themeMode) ?? 'ThemeCubitMode.light';
+
+  static set setTheme(String theme) => _pref?.save(themeMode, theme);
+
+  ///  Store the env
   static String get getEnvType => _pref?.read(keyEnv) ?? 'https://pet-webapi-uaeno-prod-001.azurewebsites.net';
 
   static set setEnvType(String env) => _pref?.save(keyEnv, env);

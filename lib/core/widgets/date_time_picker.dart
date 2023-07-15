@@ -18,7 +18,7 @@ void selectDate({
   required DateTime from,
   required DateTime to,
   TextEditingController? yearController,
-   final GlobalKey<FormState>? yearKey,
+  final GlobalKey<FormState>? yearKey,
   required final TextEditingController controller,
 }) async {
   showDialog<DateTime>(
@@ -35,7 +35,10 @@ void selectDate({
                       borderRadius: BorderRadius.circular(12)),
                   insetPadding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                  backgroundColor: AppColors.formsBackground,
+                  backgroundColor:
+                      AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                          ? AppColors.formsBackground
+                          : AppColors.formsBackgroundLight,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     // mainAxisAlignment: MainAxisAlignment.center,
@@ -47,8 +50,9 @@ void selectDate({
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.keyboard_arrow_left,
-                                        color: Colors.white),
+                                    icon: const Icon(
+                                      Icons.keyboard_arrow_left,
+                                    ),
                                     onPressed: () {
                                       setState(() {
                                         int minYear = 1950;
@@ -74,7 +78,13 @@ void selectDate({
                                           builder: (BuildContext context) {
                                             return AlertDialog(
                                               backgroundColor:
-                                                  AppColors.formsBackground,
+                                                  AppSharedPreferences
+                                                              .getTheme ==
+                                                          'ThemeCubitMode.dark'
+                                                      ? AppColors
+                                                          .formsBackground
+                                                      : AppColors
+                                                          .backgroundColorLight,
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(
@@ -93,10 +103,17 @@ void selectDate({
                                                 key: yearKey,
                                                 child: TextFormField(
                                                   inputFormatters: [
-                                                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                                    FilteringTextInputFormatter
+                                                        .allow(
+                                                            RegExp(r'[0-9]')),
+                                                    LengthLimitingTextInputFormatter(4),
                                                   ],
                                                   keyboardAppearance:
-                                                      Brightness.dark,
+                                                      AppSharedPreferences
+                                                                  .getTheme ==
+                                                              'ThemeCubitMode.dark'
+                                                          ? Brightness.dark
+                                                          : Brightness.light,
                                                   autovalidateMode:
                                                       AutovalidateMode
                                                           .onUserInteraction,
@@ -142,13 +159,11 @@ void selectDate({
                                                     }
                                                   },
                                                   style: const TextStyle(
-                                                    color: AppColors.white,
                                                     fontFamily: "notosan",
+
                                                     // fontFamily: AppStyles.montserrat,
                                                     decoration:
                                                         TextDecoration.none,
-
-                                                    ///todo
                                                   ),
                                                   decoration: InputDecoration(
                                                     errorStyle: const TextStyle(
@@ -169,7 +184,7 @@ void selectDate({
                                                         10.0,
                                                       ),
                                                     ),
-                                                    labelText: 'Select Year',
+                                                    hintText: 'Select Year',
                                                   ),
                                                 ),
                                               ),
@@ -180,8 +195,7 @@ void selectDate({
                                                   },
                                                   child: const Text(
                                                     'Cancel',
-                                                    style: TextStyle(
-                                                        color: AppColors.white),
+                                                    style: TextStyle(),
                                                   ),
                                                 ),
                                                 TextButton(
@@ -224,12 +238,13 @@ void selectDate({
                                     child: Text(
                                       '$selectedYear',
                                       style: const TextStyle(
-                                          fontSize: 20, color: Colors.white),
+                                          fontSize: 20, ),
                                     ),
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.keyboard_arrow_right,
-                                        color: Colors.white),
+                                    icon: const Icon(
+                                      Icons.keyboard_arrow_right,
+                                    ),
                                     onPressed: () {
                                       setState(() {
                                         int minYear = 1950;
@@ -274,7 +289,7 @@ void selectDate({
 
                           titleCentered: true,
                           titleTextStyle: const TextStyle(
-                            color: AppColors.white,
+
                             fontSize: 20,
                             fontFamily: 'notosan',
                           ),
@@ -297,38 +312,45 @@ void selectDate({
                           tableBorder: TableBorder(
                               borderRadius: BorderRadius.circular(12)),
                           selectedTextStyle: const TextStyle(
-                            color: Colors.white,
                             fontFamily: 'notosan',
                             fontSize: 13,
+                            color: Colors.white
                           ),
                           selectedDecoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: AppColors.gold,
                           ),
-                          todayDecoration: const BoxDecoration(
-                              color: AppColors.formsBackground,
+                          todayDecoration: BoxDecoration(
+                              color: AppSharedPreferences.getTheme ==
+                                      'ThemeCubitMode.dark'
+                                  ? AppColors.lightGrey
+                                  : AppColors.blackLight,
                               shape: BoxShape.circle),
                           weekendTextStyle: const TextStyle(
-                            color: AppColors.white,
                             fontFamily: 'notosan',
                             fontSize: 14,
                           ),
                           outsideDaysVisible: false,
                           defaultTextStyle: const TextStyle(
-                            color: AppColors.white,
                             fontFamily: 'notosan',
                             fontSize: 14,
                           ),
                         ),
-                        daysOfWeekStyle: const DaysOfWeekStyle(
+                        daysOfWeekStyle:  DaysOfWeekStyle(
                           weekdayStyle: TextStyle(
                             fontSize: 15,
-                            color: AppColors.lightGrey,
+                            color: AppSharedPreferences.getTheme ==
+                                'ThemeCubitMode.dark'
+                                ? AppColors.lightGrey
+                                : AppColors.blackLight,
                             fontFamily: 'notosan',
                           ),
-                          weekendStyle: TextStyle(
+                          weekendStyle:  TextStyle(
                               fontSize: 15,
-                              color: AppColors.lightGrey,
+                              color:AppSharedPreferences.getTheme ==
+                                  'ThemeCubitMode.dark'
+                                  ? AppColors.lightGrey
+                                  : AppColors.blackLight,
                               fontFamily: 'notosan',
                               inherit: false),
                           // dowTextFormatter:(date, locale) =>  DateFormat(days['d']).format(date),
@@ -366,16 +388,14 @@ void selectDate({
                             width: 90,
                             backgroundColor: AppColors.gold,
                             onPressed: () {
-                             Print('selectedOurDay $selectedOurDay');
+                              Print('selectedOurDay $selectedOurDay');
                               Navigator.pop(context, selectedOurDay);
 
-                             controller.text = selectedOurDay.toString();
-                             DateFormat formatter = DateFormat('dd MMM yyyy');
-                             final String formatted =
-                             formatter.format(selectedOurDay);
-                             controller.text =
-                                 formatted;
-
+                              controller.text = selectedOurDay.toString();
+                              DateFormat formatter = DateFormat('dd MMM yyyy');
+                              final String formatted =
+                                  formatter.format(selectedOurDay);
+                              controller.text = formatted;
                             },
                             child: const Text(
                               'Confirm',

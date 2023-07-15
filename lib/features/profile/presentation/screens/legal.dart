@@ -5,6 +5,8 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/constants.dart';
 import '../../../../core/widgets/custom_header.dart';
+import '../../../../core/widgets/privacy_bottom_sheet.dart';
+import '../../../../core/widgets/terms_bottom_sheet.dart';
 import '../widgets/profile_list_tile_widget.dart';
 
 class LegalScreen extends StatelessWidget {
@@ -22,7 +24,7 @@ class LegalScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding:  const EdgeInsets.symmetric(horizontal: kPadding),
+          padding: const EdgeInsets.symmetric(horizontal: kPadding),
           child: Column(
             children: [
               const SizedBox(
@@ -31,58 +33,17 @@ class LegalScreen extends StatelessWidget {
               ProfileListTileWidget(
                 title: "Terms & Conditions",
                 onTap: () {
-                  Navigator.of(context).push(PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) =>
-                        const TermsCondition(),
-                    transitionDuration: const Duration(milliseconds: 300),
-                    // Set duration
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                      var begin = const Offset(0.0, 1.0); // Set begin offset
-                      var end = Offset.zero; // Set end offset
-                      var curve = Curves.easeOut; // Set curve
-
-                      var tween = Tween(begin: begin, end: end)
-                          .chain(CurveTween(curve: curve));
-
-                      return SlideTransition(
-                        position: animation.drive(tween),
-                        child: child,
-                      );
-                    },
-                  ),
-                  );
+                  showTermsBottomSheet(context: context);
                 },
                 notificationList: false,
                 isThereNewNotification: false,
               ),
               ProfileListTileWidget(
                 title: "Privacy Policy",
-
-                  onTap: () {
-                    Navigator.of(context).push(PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                      const PrivacyScreen(),
-                      transitionDuration: const Duration(milliseconds: 300),
-                      // Set duration
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        var begin = const Offset(0.0, 1.0); // Set begin offset
-                        var end = Offset.zero; // Set end offset
-                        var curve = Curves.easeOut; // Set curve
-
-                        var tween = Tween(begin: begin, end: end)
-                            .chain(CurveTween(curve: curve));
-
-                        return SlideTransition(
-                          position: animation.drive(tween),
-                          child: child,
-                        );
-                      },
-                    ),
-                    );
-                  },
-
+                onTap: () {
+                  showPrivacyBottomSheet(context:context
+                  );
+                },
                 notificationList: false,
                 isThereNewNotification: false,
               ),

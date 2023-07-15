@@ -1,12 +1,13 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/features/home/presentation/screens/create_trip_screen.dart';
 import 'package:proequine/features/home/presentation/widgets/service_widget.dart';
 import 'package:proequine/features/home/presentation/widgets/shipping_widget.dart';
-import 'package:sizer/sizer.dart';
-import '../../../profile/presentation/screens/user_profile.dart';
+import '../../../../core/constants/colors/app_colors.dart';
+import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../widgets/home_cardfull.dart';
 import '../widgets/homebottomcard.dart';
 import 'create_event_screen.dart';
@@ -16,68 +17,74 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // extendBodyBehindAppBar: true,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(23.0.h),
-        child: ClipRect(
-          child: BackdropFilter(
-            // blendMode: BlendMode.color,
-            filter: ImageFilter.blur(
-              sigmaX: 20.0,
-              sigmaY: 20.0,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 60, bottom: 5, left: 20, right: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 150,
-                    child: SvgPicture.asset(
-                      AppIcons.proEquine,
-                      height: 32,
-                      width: 32,
-                    ),
-                  ),
-                  GestureDetector(
-                    child: SvgPicture.asset(
-                      AppIcons.userSquare,
-                      height: 32,
-                      width: 32,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const UserProfile(),
+    return SafeArea(
+      child: Scaffold(
+        body: NestedScrollView(
+          floatHeaderSlivers: true,
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
+            SliverLayoutBuilder(builder: (context, constraints) {
+              final scrolled = constraints.scrollOffset > 10;
+              return SliverAppBar(
+                elevation: 0,
+                automaticallyImplyLeading: false,
+                backgroundColor:
+                    AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                        ? Colors.black
+                        : AppColors.backgroundColorLight,
+                expandedHeight: 60,
+                collapsedHeight: 60,
+                flexibleSpace: ClipRect(
+                  child: FlexibleSpaceBar(
+                    expandedTitleScale: 1,
+                    // centerTitle:  scrolled?true:false ,
+                    title: AnimatedAlign(
+                      alignment:
+                          scrolled ? Alignment.topCenter : Alignment.bottomLeft,
+                      duration: const Duration(milliseconds: 200),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: scrolled ? 0 : kPadding),
+                        child: SizedBox(
+                          width: 150,
+                          child: SvgPicture.asset(
+                            AppSharedPreferences.getTheme ==
+                                    'ThemeCubitMode.dark'
+                                ? AppIcons.proEquine
+                                : AppIcons.proEquineLight,
+                            height: 32,
+                            width: 32,
+                          ),
                         ),
-                      );
-                    },
+                      ),
+                    ),
                   ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: SafeArea(
+                ),
+                snap: false,
+                floating: false,
+                pinned: false,
+              );
+            }),
+          ],
+          body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(horizontal: kPadding),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const SizedBox(
-                    height: 20,
-                  ),
                   const HomeCardFull(),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  const Text(
+                    'Transportation',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
+                      padding: const EdgeInsets.only(top: 10.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -121,20 +128,20 @@ class MainScreen extends StatelessWidget {
                       )),
                   const Padding(
                     padding: EdgeInsets.only(
-                      top: 24,
-                      bottom: 5,
+                      top: 10,
+                      bottom: 16,
                     ),
                     child: HomeBottomCard(),
                   ),
                   const Padding(
-                    padding: EdgeInsets.only(top: 30, bottom: 10),
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
                     child: Text(
                       'Shipping',
                       textAlign: TextAlign.start,
                       style: TextStyle(
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white),
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -158,7 +165,7 @@ class MainScreen extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(
-                    height: 60,
+                    height: 70,
                   ),
                 ],
               ),

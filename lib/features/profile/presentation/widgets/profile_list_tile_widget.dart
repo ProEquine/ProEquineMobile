@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
+import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 
 class ProfileListTileWidget extends StatefulWidget {
   bool notificationList = false;
@@ -25,7 +26,7 @@ class ProfileListTileWidgetState extends State<ProfileListTileWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: const Color.fromRGBO(25, 25, 25, 1),
+      color:  AppSharedPreferences.getTheme=='ThemeCubitMode.dark'?AppColors.formsBackground:Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8.0),
       ),

@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
 import '../constants/colors/app_colors.dart';
+import '../utils/sharedpreferences/SharedPreferencesHelper.dart';
 
 class LoadingCircularWidget extends StatelessWidget {
   const LoadingCircularWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return  Center(
       child: CircularProgressIndicator(
-        backgroundColor: AppColors.white,
+        backgroundColor:AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+            ? AppColors.white
+            : AppColors.backgroundColor,
         valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
       ),
     );

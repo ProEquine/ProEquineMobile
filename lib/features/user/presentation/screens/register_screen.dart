@@ -6,8 +6,10 @@ import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/widgets/privacy_checkbox.dart';
 import 'package:proequine/features/user/presentation/screens/signup_screen.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
+import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_logo_widget.dart';
 import '../../../../core/widgets/date_time_picker.dart';
@@ -48,6 +50,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final DateTime _focusedDay = DateTime.now();
   late int _selectedYear;
   late TextEditingController _yearController;
+  double logoHeight = 18.h;
 
   @override
   void initState() {
@@ -88,8 +91,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Column(
                       children: [
                         RegistrationHeader(isThereBackButton: true),
-                        const CustomLogoWidget(),
-                        const Spacer(),
+                        // Spacer(flex: 1,),
+                        const Spacer(
+                          flex: 3,
+                        ),
+                        // AnimatedContainer(
+                        //     duration: const Duration(milliseconds: 500),
+                        //     height: logoHeight,
+                        //     child: const CustomLogoWidget()),
+                        // const Spacer(flex: 3,),
                         Padding(
                           padding:
                               const EdgeInsets.symmetric(horizontal: kPadding),
@@ -97,8 +107,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             children: [
                               Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text("Sign up",
-                                    style: AppStyles.registrationTitle),
+                                child:
+                                    Text("Sign up", style: AppStyles.mainTitle),
                               ),
                               Row(
                                 mainAxisAlignment:
@@ -110,6 +120,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 10),
                                       child: RebiInput(
+                                        onTap: () {
+                                          setState(() {
+                                            logoHeight = 15.h;
+                                          });
+                                        },
+                                        onFieldSubmitted: (size) {
+                                          setState(() {
+                                            logoHeight = 18.h;
+                                          });
+                                        },
                                         hintText: 'First Name'.tra,
                                         controller: _firstName,
                                         keyboardType: TextInputType.name,
@@ -137,6 +157,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 10),
                                       child: RebiInput(
+                                        onTap: () {
+                                          setState(() {
+                                            logoHeight = 15.h;
+                                          });
+                                        },
+                                        onFieldSubmitted: (size) {
+                                          setState(() {
+                                            logoHeight = 18.h;
+                                          });
+                                        },
                                         hintText: 'Middle Name'.tra,
                                         controller: _middleName,
                                         keyboardType: TextInputType.name,
@@ -161,6 +191,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: RebiInput(
+                                  onTap: () {
+                                    setState(() {
+                                      logoHeight = 15.h;
+                                    });
+                                  },
+                                  onFieldSubmitted: (size) {
+                                    setState(() {
+                                      logoHeight = 18.h;
+                                    });
+                                  },
                                   hintText: 'Last Name'.tra,
                                   controller: _lastName,
                                   keyboardType: TextInputType.name,
@@ -182,10 +222,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: RebiInput(
                                   hintText: 'Date Of Birth'.tra,
+                                  onFieldSubmitted: (size) {
+                                    setState(() {
+                                      logoHeight = 18.h;
+                                    });
+                                  },
                                   controller: _dateOfBirth,
                                   keyboardType: TextInputType.name,
                                   textInputAction: TextInputAction.done,
                                   onTap: () {
+                                    setState(() {
+                                      logoHeight = 18.h;
+                                    });
                                     selectDate(
                                         context: context,
                                         isSupportChangingYears: true,
@@ -197,16 +245,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         focusDay: _focusedDay,
                                         controller: _dateOfBirth,
                                         yearKey: _yearKey);
-                                    // showDate(context, (value) {
-                                    //   setState(() {
-                                    //     dateTime = value!;
-                                    //     final DateFormat formatter =
-                                    //         DateFormat('dd MMM yyyy');
-                                    //     final String formatted =
-                                    //         formatter.format(dateTime);
-                                    //     _dateOfBirth.text = formatted;
-                                    //   });
-                                    // });
                                   },
                                   autoValidateMode:
                                       AutovalidateMode.onUserInteraction,
@@ -242,31 +280,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 height: 20,
                               ),
                               privacyValue
-                                  ? Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 20),
-                                      child: RebiButton(
-                                          onPressed: () {
-                                            if (_formKey.currentState!
-                                                .validate()) {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SignUpScreen(
-                                                            dob: _selectedDay
-                                                                .toIso8601String(),
-                                                            name:
-                                                                '${"${_firstName.text} ${_middleName.text} ${_lastName.text}"} ',
-                                                          )));
-                                            } else {}
-                                          },
-                                          backgroundColor: AppColors.white,
-                                          child: const Text("Sign up")),
-                                    )
+                                  ? RebiButton(
+                                      backgroundColor:
+                                          AppSharedPreferences.getTheme ==
+                                                  'ThemeCubitMode.dark'
+                                              ? AppColors.white
+                                              : AppColors.backgroundColor,
+                                      onPressed: () {
+                                        if (_formKey.currentState!.validate()) {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SignUpScreen(
+                                                        dob: _selectedDay
+                                                            .toIso8601String(),
+                                                        name:
+                                                            '${"${_firstName.text} ${_middleName.text} ${_lastName.text}"} ',
+                                                      )));
+                                        } else {}
+                                      },
+                                      child: const Text("Sign up"))
                                   : Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 20),
+                                      padding: const EdgeInsets.symmetric(),
                                       child: RebiButton(
                                           onPressed: () {
                                             RebiMessage.error(

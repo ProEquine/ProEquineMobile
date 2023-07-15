@@ -8,7 +8,7 @@ class ProfileDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Divider(
-      color: AppColors.dividerColors,
+      color: AppColors.dividerColorsLight,
       thickness: 2,
       height: 20,
       indent: 20.0,

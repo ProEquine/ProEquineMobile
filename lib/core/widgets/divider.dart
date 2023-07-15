@@ -10,10 +10,10 @@ class CustomDivider extends StatelessWidget {
     return const Padding(
       padding: EdgeInsets.only(top: 10, bottom: 5),
       child: Divider(
-        color: AppColors.dividerColors,
+        color: AppColors.dividerColorsLight,
         thickness: 1,
-        indent: 5,
-        endIndent: 5,
+        indent: 0,
+        endIndent: 0,
       ),
     );
   }

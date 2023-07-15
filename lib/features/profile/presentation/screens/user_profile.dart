@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/constants/constants.dart';
@@ -18,6 +19,8 @@ import 'package:sizer/sizer.dart';
 import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/delete_popup.dart';
+import '../../../../theme_cubit_provider.dart';
+import '../../../nav_bar/domain/theme_cubit.dart';
 import 'legal.dart';
 
 class UserProfile extends StatefulWidget {
@@ -39,12 +42,13 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
+    final themeCubit = ThemeCubitProvider.of(context);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.h),
         child: CustomHeader(
           title: "Profile",
-          isThereBackButton: true,
+          isThereBackButton: false,
         ),
       ),
       body: SingleChildScrollView(
@@ -141,7 +145,26 @@ class _UserProfileState extends State<UserProfile> {
                     color: AppColors.grey,
                   ),
                 ),
-              ]))
+              ])),
+
+              Text(
+                context.watch<ThemeCubit>().state.toString(),
+                style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.gold),
+              ),
+              const SizedBox(height: 16),
+              Switch(
+
+                onChanged: (value) {
+                  themeCubit.toggleTheme();
+                },
+                value: context.watch<ThemeCubit>().state.toString() ==
+                        'ThemeCubitMode.dark'
+                    ? true
+                    : false,
+              ),
             ],
           ),
         ),

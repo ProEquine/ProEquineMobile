@@ -116,7 +116,7 @@ class CreateEventScreenState extends State<CreateEventScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CreateTripHeader(image: AppImages.eventTransport),
+              CreateTripHeader(image: AppImages.eventTransport),
               const SizedBox(
                 height: 10,
               ),

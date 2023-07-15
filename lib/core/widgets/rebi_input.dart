@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../constants/colors/app_colors.dart';
 
 class RebiInput extends StatefulWidget {
@@ -105,18 +106,20 @@ class _RebiInputState extends State<RebiInput> {
           controller: widget.controller ?? _controller,
           textAlign: widget.textAlign,
           textAlignVertical: TextAlignVertical.center,
-          keyboardAppearance: Brightness.dark,
+          keyboardAppearance:AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+              ? Brightness.dark
+              : Brightness.light,
           inputFormatters: widget.inputFormatters,
           keyboardType: widget.keyboardType,
           textInputAction: widget.textInputAction,
           obscuringCharacter: '*',
-          style: const TextStyle(
-            color: AppColors.white,
+          style:  TextStyle(
+            color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                ? AppColors.white
+                : Colors.black,
             fontFamily: "notosan",
             // fontFamily: AppStyles.montserrat,
             decoration: TextDecoration.none,
-
-            ///todo
           ),
           readOnly: widget.readOnly,
           maxLines: widget.maxLines,
@@ -188,20 +191,24 @@ class _RebiInputState extends State<RebiInput> {
               borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
               borderSide: widget.borderSide,
             ),
-            fillColor: widget.background,
+            fillColor: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                ? AppColors.formsBackground
+                : AppColors.formsBackgroundLight,
             filled: true,
             alignLabelWithHint: true,
-            labelStyle: TextStyle(
-              fontSize: 12.0,
-              fontFamily: "notosan",
-              fontWeight: FontWeight.w400,
-              color: widget.color,
-            ),
+            // labelStyle: TextStyle(
+            //   fontSize: 12.0,
+            //   fontFamily: "notosan",
+            //   fontWeight: FontWeight.w400,
+            //   color: widget.color,
+            // ),
             hintStyle: widget.hintStyle ??
-                const TextStyle(
+                 TextStyle(
                   fontFamily: "notosan",
                   fontSize: 14.0,
-                  color: AppColors.formsLabel,
+                  color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                      ? AppColors.formsHintFont
+                      : AppColors.formsHintFontLight
                 ),
             hintText: widget.hintText,
           ),
@@ -218,14 +225,18 @@ class _RebiInputState extends State<RebiInput> {
           ? IconButton(
               focusNode: FocusNode(skipTraversal: false),
               icon: showPassword
-                  ? const Icon(
+                  ?  Icon(
                       CupertinoIcons.eye,
-                      color: AppColors.white,
+                      color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                          ? AppColors.formsHintFont
+                          : AppColors.formsHintFontLight,
                       size: 20.0,
                     )
-                  : const Icon(
+                  :  Icon(
                       CupertinoIcons.eye_slash,
-                      color: AppColors.white,
+                      color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                          ? AppColors.formsHintFont
+                          : AppColors.formsHintFontLight,
                       size: 20.0,
                     ),
               onPressed: () {

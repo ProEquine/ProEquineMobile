@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:proequine/app_settings.dart';
 import 'package:proequine/features/notifications/domain/notifications_cubit.dart';
 import 'package:proequine/features/splash/data/refresh_request_model.dart';
 import 'package:proequine/features/splash/domain/splash_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
+import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/images/app_images.dart';
@@ -67,10 +69,10 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> navigateUser() async {
-    Print("saved data from notification ${SavedNotificationData
-        .notificationData}");
+    Print(
+        "saved data from notification ${SavedNotificationData.notificationData}");
     if (SavedNotificationData.notificationData != null) {
-Print("render from splash screen");
+      Print("render from splash screen");
     } else {
       if (await SecureStorage().hasToken()) {
         if (AppSharedPreferences.getIsITypeSelected!) {
@@ -82,7 +84,8 @@ Print("render from splash screen");
           }
         } else {
           if (context.mounted) {
-            Navigator.push(context,
+            Navigator.push(
+                context,
                 MaterialPageRoute(
                     builder: (context) => const InterestsScreen()));
           }
@@ -166,10 +169,7 @@ Print("render from splash screen");
           Transform.translate(
             offset: const Offset(0.0, -30.0),
             child: Center(
-              child: Image.asset(
-                AppImages.logo,
-                scale: 3,
-              ),
+              child:SvgPicture.asset(AppSharedPreferences.getTheme=='ThemeCubitMode.dark'?AppIcons.logoDarkMode:AppIcons.logoLight,height: 20.0.h,),
             ),
           ),
         ],

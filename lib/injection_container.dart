@@ -4,25 +4,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/http/dio_cache_manager.dart';
 
-
 final sl = GetIt.instance;
 
 Future<void> init() async {
-
-
-
-
-
   /// External
   final sharedPreference = await SharedPreferences.getInstance();
 
-
   sl.registerLazySingleton(() => sharedPreference);
 
-
-
   sl.registerLazySingleton(
-        () => CacheInterceptor(
+    () => CacheInterceptor(
       options: CacheOptions(
         // A default store is required for interceptor.
         store: MemCacheStore(),

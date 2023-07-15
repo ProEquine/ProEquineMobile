@@ -36,7 +36,7 @@ class ShippingWidget extends StatelessWidget {
             title!,
             textAlign: TextAlign.start,
             style: const TextStyle(
-                color: AppColors.white,
+
                 fontFamily: 'notosan',
                 fontWeight: FontWeight.w400,
                 fontSize: 15.0),

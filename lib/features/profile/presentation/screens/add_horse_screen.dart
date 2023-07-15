@@ -197,7 +197,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                                     animType: AnimType.topSlide,
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 2.0.w, vertical: 2.0.h),
-                                    customHeader: Image.asset(AppImages.logo),
+                                    customHeader: SvgPicture.asset(AppIcons.logo),
                                     headerAnimationLoop: true,
                                     bodyHeaderDistance: 100,
                                     dialogType: DialogType.info,

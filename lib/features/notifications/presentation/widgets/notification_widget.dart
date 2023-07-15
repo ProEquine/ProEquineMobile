@@ -4,10 +4,11 @@ import 'package:proequine/core/constants/colors/app_colors.dart';
 
 import 'package:sizer/sizer.dart';
 
+import '../../../../core/constants/constants.dart';
+import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+
 class NotificationWidget extends StatelessWidget {
-  String? statusImage;
   String? bookingTypeText;
-  String? image;
   String? time;
   String? id;
   String? title;
@@ -24,30 +25,40 @@ class NotificationWidget extends StatelessWidget {
       this.time,
       this.transport,
       this.title,
-      this.image,
-      this.statusImage});
+      });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+      padding: const EdgeInsets.all(kPadding),
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(25, 25, 25, 1),
+        color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+            ? AppColors.formsBackground
+            : AppColors.white,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(
           children: [
-            SvgPicture.asset(statusImage!),
+            bookingTypeText == 'Booking completed'
+                ? const Icon(
+                    Icons.check,
+                    color: Color(0xff34C759),
+                  )
+                : Container(
+                    height: 10,
+                    width: 10,
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle, color: AppColors.yellow),
+                  ),
             const SizedBox(
               width: 5,
             ),
             Text(
               bookingTypeText!,
               style: const TextStyle(
-                color: AppColors.textColor,
                 fontFamily: 'notosan',
-                fontSize: 12,
+
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -57,20 +68,18 @@ class NotificationWidget extends StatelessWidget {
             Text(
               id!,
               style: const TextStyle(
-                color: AppColors.grey,
                 fontFamily: 'notosan',
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
+
+                color: AppColors.inboxContent,
               ),
             ),
             const Spacer(),
             Text(
               time!,
               style: const TextStyle(
-                color: AppColors.grey,
                 fontFamily: 'notosan',
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
+
+                color: AppColors.inboxContent,
               ),
             ),
           ],
@@ -88,13 +97,11 @@ class NotificationWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: 30.0.w,
                   child: Text(
                     title!,
                     textAlign: TextAlign.left,
                     style: const TextStyle(
-                        color: AppColors.titleColor,
-                        fontSize: 14,
+                        color: AppColors.inboxContent,
                         fontFamily: 'notosan',
                         fontWeight: FontWeight.w500),
                   ),
@@ -103,13 +110,11 @@ class NotificationWidget extends StatelessWidget {
                   height: 3,
                 ),
                 SizedBox(
-                  width: 30.0.w,
                   child: Text(
                     date!,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                        color: AppColors.formsHintFont,
-                        fontSize: 12,
+                        color: AppColors.inboxContent,
                         fontFamily: 'notosan',
                         fontWeight: FontWeight.w400),
                   ),
@@ -118,13 +123,11 @@ class NotificationWidget extends StatelessWidget {
                   height: 3,
                 ),
                 SizedBox(
-                  width: 30.0.w,
                   child: Text(
                     transport!,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                        color: AppColors.formsHintFont,
-                        fontSize: 12,
+                        color: AppColors.inboxContent,
                         fontFamily: 'notosan',
                         fontWeight: FontWeight.w400),
                   ),
@@ -134,17 +137,6 @@ class NotificationWidget extends StatelessWidget {
             const Spacer(),
             const SizedBox(
               height: 50,
-            ),
-            Container(
-              height: 9.0.h,
-              width: 25.0.w,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                image: DecorationImage(
-                  image: AssetImage(image!),
-                  fit: BoxFit.fill,
-                ),
-              ),
             ),
           ],
         ),

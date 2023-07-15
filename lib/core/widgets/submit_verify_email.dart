@@ -71,7 +71,6 @@ class _SubmitVerifyEmailState extends State<SubmitVerifyEmail>
                       ..duration = composition.duration
                       ..forward();
                   } else {
-                    //Todo: handle navigate from navbar pages
                     if(verifyEmailRoute.type=='Booking'){
                       _controller
                         ..duration = composition.duration

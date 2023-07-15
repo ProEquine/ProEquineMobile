@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -41,7 +42,7 @@ class PrivacyCheckBox extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
-              activeColor: AppColors.gold,
+              activeColor: AppSharedPreferences.getTheme=='ThemeCubitMode.dark'?Colors.white:Colors.black,
               value: value,
               onChanged: (bool? val) {
                 onChanged!(val);
@@ -56,18 +57,18 @@ class PrivacyCheckBox extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12.5.sp,
                     fontFamily: 'nonotosan',
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.white,
+                    fontWeight: FontWeight.w500,
+                    color: AppSharedPreferences.getTheme=='ThemeCubitMode.dark'?Colors.white:Colors.black,
                   ),
                   children: [
                     TextSpan(
                       text: 'privacy policy & terms of use'.tra,
                       style: TextStyle(
-                        fontSize: 12.0.sp,
+                        fontSize: 12.5.sp,
                         fontFamily: 'nonotosan',
                         fontWeight: FontWeight.w400,
                         decoration: TextDecoration.underline,
-                        color: AppColors.gold,
+                        color: AppSharedPreferences.getTheme=='ThemeCubitMode.dark'?Colors.white:Colors.black,
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {

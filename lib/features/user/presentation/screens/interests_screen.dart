@@ -33,22 +33,20 @@ class _InterestsScreenState extends State<InterestsScreen> {
           child: Column(
             children: [
               RegistrationHeader(isThereBackButton: false),
-              const CustomLogoWidget(),
+              Spacer(flex: 1,),
+               CustomLogoWidget(),
+              Spacer(flex: 1,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: kPadding),
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: 11.h,
-                    ),
-                    Align(
+
+                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text("Let us know your interests",
-                          style: AppStyles.registrationTitle),
+                          style: AppStyles.mainTitle),
                     ),
-                    const SizedBox(
-                      height: 15,
-                    ),
+                   SizedBox(height: 2.5.h,),
                     SelectableTypeContainer(
                       label: 'Show Jumping',
                       index: 0,
@@ -60,7 +58,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
                       },
                     ),
                     const SizedBox(
-                      height: 15,
+                      height: 20,
                     ),
                     SelectableTypeContainer(
                       label: 'Racing',
@@ -73,7 +71,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
                       },
                     ),
                     const SizedBox(
-                      height: 15,
+                      height: 20,
                     ),
                     SelectableTypeContainer(
                       label: 'Dressage',
@@ -86,7 +84,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
                       },
                     ),
                     const SizedBox(
-                      height: 15,
+                      height: 20,
                     ),
                     SelectableTypeContainer(
                       label: 'Endurance',
@@ -101,7 +99,7 @@ class _InterestsScreenState extends State<InterestsScreen> {
                   ],
                 ),
               ),
-              const Spacer(),
+              SizedBox(height: 5.0.h,),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,

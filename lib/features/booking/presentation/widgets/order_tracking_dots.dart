@@ -9,19 +9,24 @@ class OrderTrackingDots extends StatelessWidget {
     Key? key,
     this.isPassed = false,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:  EdgeInsets.only(
-              left: 11.0.w,
-            ),
+      padding: EdgeInsets.only(
+        left: 2.2.w,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+          const SizedBox(
+            height: 5,
+          ),
           Container(
             height: 10,
             width: 3,
-            color: isPassed ? Colors.green : AppColors.grey,
+            color: isPassed ? AppColors.yellow : AppColors.grey,
           ),
           const SizedBox(
             height: 5,
@@ -29,7 +34,7 @@ class OrderTrackingDots extends StatelessWidget {
           Container(
             height: 10,
             width: 3,
-            color: isPassed ? Colors.green : AppColors.grey,
+            color: isPassed ? AppColors.yellow : AppColors.grey,
           ),
           const SizedBox(
             height: 5,
@@ -37,7 +42,7 @@ class OrderTrackingDots extends StatelessWidget {
           Container(
             height: 10,
             width: 3,
-            color: isPassed ? Colors.green : AppColors.grey,
+            color: isPassed ? AppColors.yellow : AppColors.grey,
           ),
           const SizedBox(
             height: 5,
@@ -45,7 +50,10 @@ class OrderTrackingDots extends StatelessWidget {
           Container(
             height: 10,
             width: 3,
-            color: isPassed ? Colors.green : AppColors.grey,
+            color: isPassed ? AppColors.yellow : AppColors.grey,
+          ),
+          const SizedBox(
+            height: 5,
           ),
         ],
       ),

@@ -15,7 +15,9 @@ import '../../../../core/constants/images/app_images.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/constants/thems/pin_put_theme.dart';
 import '../../../../core/utils/rebi_message.dart';
+import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
+import '../../../../core/widgets/divider.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
@@ -91,24 +93,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 RegistrationHeader(isThereBackButton: true),
-                SizedBox(
-                  // padding: const EdgeInsets.symmetric(vertical: kPadding),
-                  height: 15.h,
-                  child: Image.asset(
-                    AppImages.logo,
-                    scale: 1,
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: kPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Confirm your number",
-                          style: AppStyles.registrationTitle),
+                       Text("Confirm your number",
+                          style: AppStyles.mainTitle),
                       SizedBox(
                         height: 1.h,
                       ),
@@ -123,32 +114,45 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         child: Directionality(
                           textDirection: ui.TextDirection.ltr,
                           child: Pinput(
-                            scrollPadding: EdgeInsets.only(bottom: 60.h),
+                            scrollPadding: EdgeInsets.only(bottom: 50.h),
                             preFilledWidget: Container(
                               width: 30,
-                              height: 20,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 15),
-                              decoration: const BoxDecoration(
+                              height: 5,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 15),
+                              decoration: BoxDecoration(
                                 border: Border(
                                   bottom: BorderSide(
-                                      width: 2.0, color: AppColors.white),
+                                    width: 2.0,
+                                    color:
+                                    AppSharedPreferences.getTheme ==
+                                        'ThemeCubitMode.dark'
+                                        ? AppColors.greyLight
+                                        : AppColors.blackLight,
+                                  ),
                                 ),
-                                color: AppColors.formsBackground,
+                                color: AppSharedPreferences.getTheme ==
+                                    'ThemeCubitMode.dark'
+                                    ? AppColors.formsBackground
+                                    : AppColors.formsBackgroundLight,
                               ),
                             ),
                             androidSmsAutofillMethod:
-                                AndroidSmsAutofillMethod.smsUserConsentApi,
+                            AndroidSmsAutofillMethod
+                                .smsUserConsentApi,
                             length: 6,
                             closeKeyboardWhenCompleted: true,
                             isCursorAnimationEnabled: true,
                             controller: _pinPutController,
-                            defaultPinTheme: PinThemeConst.defaultPinTheme,
-                            focusedPinTheme: PinThemeConst.focusedPinTheme,
-                            submittedPinTheme: PinThemeConst.submittedPinTheme,
+                            defaultPinTheme:
+                            PinThemeConst.defaultPinTheme,
+                            focusedPinTheme:
+                            PinThemeConst.focusedPinTheme,
+                            submittedPinTheme:
+                            PinThemeConst.submittedPinTheme,
                             pinAnimationType: PinAnimationType.rotation,
                             pinputAutovalidateMode:
-                                PinputAutovalidateMode.onSubmit,
+                            PinputAutovalidateMode.onSubmit,
                             validator: (value) {
                               if (value!.isEmpty || value.length < 6) {
                                 return 'please enter your code';
@@ -166,7 +170,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         child: Text(
                           "Haven’t received a code?",
                           style: TextStyle(
-                              color: AppColors.white,
                               fontSize: 14.0,
                               fontFamily: 'notosan',
                               fontWeight: FontWeight.w500),
@@ -175,13 +178,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      const Divider(
-                        height: 10,
-                        thickness: 3,
-                        color: Color(0XFF36393D),
-                        endIndent: 30.0,
-                        indent: 30.0,
-                      ),
+                      const  CustomDivider(),
                       const SizedBox(
                         height: 20,
                       ),
@@ -216,11 +213,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 25, vertical: 7),
                                   decoration: BoxDecoration(
-                                    color: const Color(0xff161616),
+                                    color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                                        ? AppColors.backgroundColor
+                                        : AppColors.backgroundColorLight,
                                     borderRadius: BorderRadius.circular(8.0),
                                     boxShadow: const [
-                                      BoxShadow(
-                                          color: Colors.white, spreadRadius: 1),
+                                      BoxShadow(spreadRadius: 1),
                                     ],
                                   ),
                                   child: Row(
@@ -229,7 +227,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                       Text(
                                         "Resend Code",
                                         style: TextStyle(
-                                            color: AppColors.white,
                                             fontFamily: "notosan"),
                                       ),
                                       SizedBox(
@@ -237,7 +234,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                       ),
                                       Icon(
                                         Icons.refresh,
-                                        color: AppColors.white,
+
                                         size: 20,
                                       )
                                     ],
@@ -248,13 +245,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const Divider(
-                        height: 10,
-                        thickness: 3,
-                        color: Color(0XFF36393D),
-                        endIndent: 30.0,
-                        indent: 30.0,
-                      ),
+                      const CustomDivider(),
                       const SizedBox(
                         height: 20,
                       ),
@@ -336,7 +327,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   _onPressVerify();
                 } else {}
               },
-              backgroundColor: AppColors.white,
+              backgroundColor:AppSharedPreferences.getTheme ==
+                  'ThemeCubitMode.dark'
+                  ? AppColors.white
+                  : AppColors.backgroundColor,
               child: const Text("Verify"),
             );
           }
