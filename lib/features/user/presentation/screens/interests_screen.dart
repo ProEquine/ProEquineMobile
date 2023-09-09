@@ -26,12 +26,19 @@ class EquineInfoScreen extends StatefulWidget {
 }
 
 class _EquineInfoScreenState extends State<EquineInfoScreen> {
-
   final UserCubit cubit = UserCubit();
-  final List<bool> _isInterestsSelected = [false, false, false, false];
+  final List<bool> _isInterestsSelected = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
   String? interest;
 
-  final List<bool> _isUserTypeSelected = [false, false, false, false,false];
+  final List<bool> _isUserTypeSelected = [false, false, false, false, false];
   String? userType;
 
   @override
@@ -71,7 +78,8 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text("What’s your discipline", style: AppStyles.mainTitle2),
+                      child: Text("What’s your discipline",
+                          style: AppStyles.mainTitle2),
                     ),
                     const SizedBox(
                       height: 10,
@@ -89,18 +97,18 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
                           index: 0,
                           isSelected: _isInterestsSelected[0],
                           onSelected: (bool value) {
-                            _handleSelected(0, value,_isInterestsSelected);
+                            _handleSelected(0, value, _isInterestsSelected);
                             interest = 'Show Jumping';
                             Print("Selected type $interest");
                           },
                         ),
                         SelectableTypeContainer(
-                          label: 'Racing',
+                          label: 'Endurance',
                           index: 1,
                           isSelected: _isInterestsSelected[1],
                           onSelected: (bool value) {
-                            _handleSelected(1, value,_isInterestsSelected);
-                            interest = 'Racing';
+                            _handleSelected(1, value, _isInterestsSelected);
+                            interest = 'Endurance';
                             Print("Selected type $interest");
                           },
                         ),
@@ -109,18 +117,48 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
                           index: 2,
                           isSelected: _isInterestsSelected[2],
                           onSelected: (bool value) {
-                            _handleSelected(2, value,_isInterestsSelected);
+                            _handleSelected(2, value, _isInterestsSelected);
                             interest = 'Dressage';
                             Print("Selected type $interest");
                           },
                         ),
                         SelectableTypeContainer(
-                          label: 'Endurance',
+                          label: 'Flat Race',
                           index: 3,
                           isSelected: _isInterestsSelected[3],
                           onSelected: (bool value) {
-                            _handleSelected(3, value,_isInterestsSelected);
-                            interest = 'Endurance';
+                            _handleSelected(3, value, _isInterestsSelected);
+                            interest = 'Flat Race';
+                            Print("Selected type $interest");
+                          },
+                        ),
+                        SelectableTypeContainer(
+                          label: 'Eventing',
+                          index: 4,
+                          isSelected: _isInterestsSelected[4],
+                          onSelected: (bool value) {
+                            _handleSelected(4, value, _isInterestsSelected);
+                            interest = 'Eventing';
+                            Print("Selected type $interest");
+                          },
+                        ),
+                        SelectableTypeContainer(
+                          label: 'Tent Pegging',
+                          index: 5,
+                          isSelected: _isInterestsSelected[5],
+                          onSelected: (bool value) {
+                            _handleSelected(5, value, _isInterestsSelected);
+                            interest = 'Tent Pegging';
+                            Print("Selected type $interest");
+                          },
+                        ),
+                        SelectableTypeContainer(
+                          label: 'Arabian Horse Show',
+                          index: 6,
+                          isSelected: _isInterestsSelected[6],
+                          onSelected: (bool value) {
+                            _handleSelected(6, value, _isInterestsSelected);
+                            interest = 'Arabian Horse Show';
                             Print("Selected type $interest");
                           },
                         ),
@@ -149,7 +187,7 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
                           index: 0,
                           isSelected: _isUserTypeSelected[0],
                           onSelected: (bool value) {
-                            _handleSelected(0, value,_isUserTypeSelected);
+                            _handleSelected(0, value, _isUserTypeSelected);
                             userType = 'Rider';
                             Print("Selected type $userType");
                           },
@@ -159,18 +197,17 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
                           index: 1,
                           isSelected: _isUserTypeSelected[1],
                           onSelected: (bool value) {
-                            _handleSelected(1, value,_isUserTypeSelected);
+                            _handleSelected(1, value, _isUserTypeSelected);
                             userType = 'Owner';
                             Print("Selected type $userType");
                           },
                         ),
-
                         SelectableTypeContainer(
                           label: 'Trainer',
                           index: 2,
                           isSelected: _isUserTypeSelected[2],
                           onSelected: (bool value) {
-                            _handleSelected(2, value,_isUserTypeSelected);
+                            _handleSelected(2, value, _isUserTypeSelected);
                             userType = 'Trainer';
                             Print("Selected type $userType");
                           },
@@ -180,7 +217,7 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
                             index: 3,
                             isSelected: _isUserTypeSelected[3],
                             onSelected: (bool value) {
-                              _handleSelected(3, value,_isUserTypeSelected);
+                              _handleSelected(3, value, _isUserTypeSelected);
                               userType = 'Groom';
                             }),
                         SelectableTypeContainer(
@@ -188,7 +225,7 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
                           index: 4,
                           isSelected: _isUserTypeSelected[4],
                           onSelected: (bool value) {
-                            _handleSelected(4, value,_isUserTypeSelected);
+                            _handleSelected(4, value, _isUserTypeSelected);
                             userType = 'Spectator';
                             Print("Selected type $userType");
                           },
@@ -198,7 +235,7 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
                   ],
                 ),
               ),
-             Spacer(),
+              Spacer(),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
@@ -214,6 +251,7 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
       ),
     );
   }
+
   _buildSelectTypeConsumer() {
     return BlocConsumer<UserCubit, UserState>(
         bloc: cubit,
@@ -221,20 +259,24 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
           if (state is SelectInterestsLoading) {
             return const LoadingCircularWidget();
           } else if (state is SelectInterestsError) {
-            RebiMessage.error(msg: state.message!,context: context);
+            RebiMessage.error(msg: state.message!, context: context);
           }
           {
             return RebiButton(
-                backgroundColor:
-                interest != null && userType!=null ? AppColors.yellow : AppColors.formsLabel,
-                onPressed: () {
-                  if (userType != null && interest !=null) {
-                    _onPressConfirm();
-                  } else {
-                    RebiMessage.error(msg: 'Please select your interests & type',context: context);
-                  }
-                },
-              child: const Text("Next"),);
+              backgroundColor: interest != null && userType != null
+                  ? AppColors.yellow
+                  : AppColors.formsLabel,
+              onPressed: () {
+                if (userType != null && interest != null) {
+                  _onPressConfirm();
+                } else {
+                  RebiMessage.error(
+                      msg: 'Please select your interests & type',
+                      context: context);
+                }
+              },
+              child: const Text("Next"),
+            );
           }
         },
         listener: (context, state) {
@@ -255,10 +297,8 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
     //     interest: interest,
     //     type: userType,
     //   ));
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const ChooseStableScreen()));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const ChooseStableScreen()));
   }
 
   void _handleSelected(int index, bool value, var _isSelected) {

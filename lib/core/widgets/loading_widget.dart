@@ -13,7 +13,7 @@ class LoadingCircularWidget extends StatelessWidget {
         backgroundColor:AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
             ? AppColors.white
             : AppColors.yellow,
-        valueColor: AlwaysStoppedAnimation<Color>(AppColors.gold),
+        valueColor: const AlwaysStoppedAnimation<Color>(AppColors.gold),
       ),
     );
   }
