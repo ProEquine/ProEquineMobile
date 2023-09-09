@@ -87,7 +87,7 @@ class SplashScreenState extends State<SplashScreen> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const InterestsScreen()));
+                    builder: (context) => const EquineInfoScreen()));
           }
         }
       } else {

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../constants/colors/app_colors.dart';
+
 const _shimmerGradient = LinearGradient(
   colors: [
-    Color(0x8024393C),
-    Color(0xFFF4F4F4),
-    Color(0x8024393C),
+    AppColors.borderColor,
+    AppColors.backgroundColorLight,
+    AppColors.borderColor
   ],
   stops: [
     0.1,

@@ -8,7 +8,10 @@ class AppImages {
   static const upComingEvent = "assets/images/upcoming-events.png";
   static const truckIcon = "assets/images/transport.png";
   static const comingSoon = "assets/images/cooming_soon.png";
-  static const event = "assets/images/event.png";
+  static const shows = "assets/images/shows.png";
+  static const ba = "assets/images/ba.png";
+  static const serc = "assets/images/serc.png";
+  static const eec = "assets/images/eec.png";
   static const homeCardFull = "assets/images/home-cardfull.png";
   static const hospital = "assets/images/hospital.png";
   static const local = "assets/images/local.png";
@@ -18,6 +21,9 @@ class AppImages {
   static const hospitalTransport = "assets/images/hospital-transport.png";
   static const eventTransport = "assets/images/event-transport.png";
   static const summary = "assets/images/summary.png";
+  static const missWhite = "assets/images/miss_white.png";
+  static const cando = "assets/images/cando.png";
+  static const stormy = "assets/images/stormy.png";
 
   static const emptyBookings = "assets/images/empty_bookings.png";
   static const supportThanks = "assets/images/supportThank.png";
@@ -41,19 +47,21 @@ class AppIcons {
   static const transportIcon = "assets/icons/transport-icon.svg";
   static const greyTransportIcon = "assets/icons/grey_transport_icon.svg";
   static const arrows = 'assets/icons/arrows.svg';
-  static const selectedHome = 'assets/icons/selected_home.svg';
-  static const unSelectedHome = 'assets/icons/unselected_home.svg';
-  static const selectedBooking = 'assets/icons/selected_booking.svg';
-  static const unSelectedBooking = 'assets/icons/unselected_booking.svg';
-  static const selectedInbox = 'assets/icons/selected_inbox.svg';
-  static const unSelectedInbox = 'assets/icons/unselected_inbox.svg';
+
+
   static const proEquine = 'assets/icons/pro-equine.svg';
+  static const directArrow = 'assets/icons/direct_arrow.svg';
+  static const takePic = 'assets/icons/take_pic.svg';
+  static const applePay = 'assets/icons/apple_pay.svg';
+  static const creditCard = 'assets/icons/credit-card.svg';
 
   static const event = 'assets/icons/calendar.svg';
   static const events = 'assets/icons/events.svg';
 
   static const transportType = 'assets/icons/transType.svg';
   static const info = 'assets/icons/info.svg';
+  static const check = 'assets/icons/check.svg';
+  static const subtract = 'assets/icons/Subtract.svg';
   static const email = 'assets/icons/email.svg';
   // summary icons
   static const returntype = 'assets/icons/service&return.svg';
@@ -67,9 +75,28 @@ class AppIcons {
   static const proEquineLight = 'assets/icons/pro-equine-light.svg';
   static const logo = "assets/icons/PE-primary-logo.png";
   static const logoLight = 'assets/icons/PE Primary Logo.svg';
+  static const verifiedHorse = 'assets/icons/verifed_horse.svg';
   static const horizontalLogo = 'assets/icons/logo-light.svg';
-  static const unSelectedBookingIcon = 'assets/icons/booking-icon.svg';
+  static const unSelectedBookingIcon = 'assets/icons/unselected_booking.svg';
+
   static const homeIconLight = 'assets/icons/home.svg';
-  static const selectedBookingIcon = 'assets/icons/home.svg';
+  static const selectedHome = 'assets/icons/selected_home.svg';
+  static const unSelectedHome = 'assets/icons/unselected_home.svg';
+  static const unSelectedBooking = 'assets/icons/unselected_booking.svg';
+  static const selectedBookingIcon = 'assets/icons/selected_booking.svg';
+  static const selectedInbox = 'assets/icons/selected_inbox.svg';
+  static const unSelectedInbox = 'assets/icons/unselected_inbox.svg';
+  static const selectedProfile = 'assets/icons/selected_profile.svg';
+  static const unSelectedProfile = 'assets/icons/unselected_profile.svg';
+  static const selectedHorses = 'assets/icons/selected_horses.svg';
+  static const unSelectedHorses = 'assets/icons/unselected_horses.svg';
   static const edit = 'assets/icons/pencil-square.svg';
+  static const instagramIcon = 'assets/icons/instagram.svg';
+  static const facebookIcon = 'assets/icons/facebook.svg';
+  static const instagramMedia = 'assets/icons/instagram_media.svg';
+  static const facebookMedia = 'assets/icons/facebook_media.svg';
+  static const youtubeMedia = 'assets/icons/youtube_media.svg';
+  static const tikTokMedia = 'assets/icons/tiktok_media.svg';
+  static const canceled = 'assets/icons/canceled.svg';
+  static const completedHistory = 'assets/icons/completed.svg';
 }

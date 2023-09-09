@@ -24,7 +24,7 @@ void showTrackingBottomSheet({
     backgroundColor: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
         ? AppColors.formsBackground
         : AppColors.white,
-    useSafeArea: true,
+    useSafeArea: false,
     context: context,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
@@ -55,7 +55,7 @@ void showTrackingBottomSheet({
                                 color: AppSharedPreferences.getTheme ==
                                         'ThemeCubitMode.dark'
                                     ? Colors.white
-                                    : Colors.black)),
+                                    : AppColors.blackLight)),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -316,7 +316,7 @@ void showTrackingBottomSheet({
                     ],
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 30,
                   ),
                 ],
               ),

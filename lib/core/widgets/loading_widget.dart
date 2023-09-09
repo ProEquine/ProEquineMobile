@@ -12,8 +12,8 @@ class LoadingCircularWidget extends StatelessWidget {
       child: CircularProgressIndicator(
         backgroundColor:AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
             ? AppColors.white
-            : AppColors.backgroundColor,
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+            : AppColors.yellow,
+        valueColor: AlwaysStoppedAnimation<Color>(AppColors.gold),
       ),
     );
   }

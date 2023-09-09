@@ -7,13 +7,15 @@ class SelectableTypeContainer extends StatefulWidget {
 
   final int? index;
   final bool isSelected;
+  EdgeInsets? padding;
   final Function(bool) onSelected;
 
-  const SelectableTypeContainer({
+   SelectableTypeContainer({
     super.key,
     required this.label,
     required this.index,
     required this.isSelected,
+    this.padding,
     required this.onSelected,
   });
 
@@ -30,16 +32,16 @@ class _SelectableTypeContainerState extends State<SelectableTypeContainer> {
         widget.onSelected(true);
       },
       child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 8),
+        padding:widget.padding ?? const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
             color: widget.isSelected
-                ? const Color(0xFFC48737).withOpacity(0.3)
-                : AppColors.backgroundColor, //here i want to add opacity
+                // ? const Color(0xFFC48737).withOpacity(0.3)
+            ?AppColors.yellow
+                : AppColors.white, //here i want to add opacity
 
             border: Border.all(
               color:
-                  widget.isSelected ? const Color(0xFFC48737) : AppColors.grey,
+                  widget.isSelected ? AppColors.yellow : AppColors.borderColor,
             ),
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20.5),
@@ -47,13 +49,21 @@ class _SelectableTypeContainerState extends State<SelectableTypeContainer> {
                 bottomLeft: Radius.circular(20.5),
                 bottomRight: Radius.circular(20.5))),
         child: Center(
-          child: Text(
+          child: widget.padding!=null?Text(
             widget.label!,
-            style: const TextStyle(
-              fontSize: 18.0,
+            style:  TextStyle(
+              fontSize: 12,
               fontWeight: FontWeight.w400,
               fontFamily: "notosan",
-              color: AppColors.white,
+              color: widget.isSelected ?Colors.white:AppColors.formsHintFontLight
+            ),
+          ):Text(
+            widget.label!,
+            style:  TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.w400,
+                fontFamily: "notosan",
+                color: widget.isSelected ?Colors.white:AppColors.blackLight
             ),
           ),
         ),

@@ -150,7 +150,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                   androidSmsAutofillMethod:
                                       AndroidSmsAutofillMethod
                                           .smsUserConsentApi,
-                                  length: 6,
+                                  length: 4,
                                   closeKeyboardWhenCompleted: true,
                                   isCursorAnimationEnabled: true,
                                   controller: _pinPutController,
@@ -164,7 +164,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                   pinputAutovalidateMode:
                                       PinputAutovalidateMode.onSubmit,
                                   validator: (value) {
-                                    if (value!.isEmpty || value.length < 6) {
+                                    if (value!.isEmpty || value.length < 4) {
                                       return 'please enter your code';
                                     } else {
                                       return null;
@@ -200,6 +200,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                         .toString(),
                                     style: const TextStyle(
                                         fontSize: 16,
+                                        color: AppColors.yellow,
                                         fontWeight: FontWeight.w700),
                                   ))
                                 : Center(
@@ -223,16 +224,17 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 25, vertical: 7),
-                                        decoration: BoxDecoration(
-                                            color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
-                                                ? AppColors.backgroundColor
-                                                : AppColors.backgroundColorLight,
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          boxShadow: const [
-                                            BoxShadow(
-                                                spreadRadius: 1),
-                                          ],
+                                        clipBehavior: Clip.antiAlias,
+                                        // decoration: BoxDecoration(
+                                        //     color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                                        //         ? AppColors.backgroundColor
+                                        //         : AppColors.backgroundColorLight,
+
+                                          decoration: ShapeDecoration(
+                                            shape: RoundedRectangleBorder(
+                                              side: const BorderSide(width: 0.50, color: AppColors.yellow),
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
                                         ),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,
@@ -240,7 +242,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                             Text(
                                               "Resend Code",
                                               style: TextStyle(
-
+                                                  color: AppColors.yellow,
                                                   fontFamily: "notosan"),
                                             ),
                                             SizedBox(
@@ -249,6 +251,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                             Icon(
                                               Icons.refresh,
                                               size: 20,
+                                              color: AppColors.yellow,
                                             )
                                           ],
                                         ),
@@ -303,22 +306,19 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   // );
                 } else {}
               },
-                backgroundColor: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
-                    ? Colors.white
-                    : Colors.black,
               child: const Text("Verify"),
             );
           }
         },
         listener: (context, state) {
-          if (state is RegisterSuccessful) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const VerificationSubmit()));
-          } else if (state is RegisterError) {
-            RebiMessage.error(msg: state.message!, context: context);
-          }
+          // if (state is RegisterSuccessful) {
+          //   Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //           builder: (context) => const VerificationSubmit()));
+          // } else if (state is RegisterError) {
+          //   RebiMessage.error(msg: state.message!, context: context);
+          // }
         });
   }
 

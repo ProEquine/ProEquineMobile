@@ -12,6 +12,7 @@ class RebiInput extends StatefulWidget {
     this.color = AppColors.formsHintFont,
     this.hintText,
     this.labelText,
+    this.needToMessage = false,
     this.obscureText = false,
     this.onSave,
     this.onFieldSubmitted,
@@ -25,7 +26,7 @@ class RebiInput extends StatefulWidget {
     this.suffixIcon,
     this.contentPadding =
         const EdgeInsets.symmetric(vertical: 13.0, horizontal: 4.0),
-    this.scrollPadding=const EdgeInsets.only(bottom: 40),
+    this.scrollPadding = const EdgeInsets.only(bottom: 40),
     this.borderSide =
         const BorderSide(color: AppColors.backgroundColor, width: 0.0),
     this.controller,
@@ -35,7 +36,7 @@ class RebiInput extends StatefulWidget {
     this.inputFormatters,
     this.autoValidateMode = AutovalidateMode.disabled,
     this.isOptional = false,
-    this.isItDisable=false,
+    this.isItDisable = false,
     this.autofocus = false,
     this.hintStyle,
   }) : super(key: key);
@@ -66,6 +67,7 @@ class RebiInput extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final AutovalidateMode? autoValidateMode;
   final bool isOptional;
+  final bool needToMessage;
   final bool autofocus;
   final bool isItDisable;
   final TextStyle? hintStyle;
@@ -106,17 +108,18 @@ class _RebiInputState extends State<RebiInput> {
           controller: widget.controller ?? _controller,
           textAlign: widget.textAlign,
           textAlignVertical: TextAlignVertical.center,
-          keyboardAppearance:AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
-              ? Brightness.dark
-              : Brightness.light,
+          keyboardAppearance:
+              AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                  ? Brightness.dark
+                  : Brightness.light,
           inputFormatters: widget.inputFormatters,
           keyboardType: widget.keyboardType,
           textInputAction: widget.textInputAction,
           obscuringCharacter: '*',
-          style:  TextStyle(
+          style: TextStyle(
             color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
                 ? AppColors.white
-                : Colors.black,
+                : AppColors.blackLight,
             fontFamily: "notosan",
             // fontFamily: AppStyles.montserrat,
             decoration: TextDecoration.none,
@@ -155,12 +158,19 @@ class _RebiInputState extends State<RebiInput> {
           decoration: InputDecoration(
             labelText: widget.labelText,
 
-            errorStyle: const TextStyle(color: AppColors.red,fontSize: 11,height: 1.0,fontFamily: 'notosan'),
+            errorStyle: widget.needToMessage
+                ? TextStyle(
+                    color: AppColors.red,
+                    fontSize: 11,
+                    height: 1.0,
+                    fontFamily: 'notosan')
+                : TextStyle(height: 0),
             errorMaxLines: 4,
             errorBorder: OutlineInputBorder(
-              borderSide:
-                  const BorderSide(color: AppColors.red, width: 1.0),
-              borderRadius: BorderRadius.circular(10.0,),
+              borderSide: const BorderSide(color: AppColors.red, width: 1.0),
+              borderRadius: BorderRadius.circular(
+                10.0,
+              ),
             ),
 
             isDense: true,
@@ -177,19 +187,28 @@ class _RebiInputState extends State<RebiInput> {
 
             suffixIcon: _buildSuffixWidget(),
             focusedErrorBorder: const OutlineInputBorder(
-              borderSide:
-               BorderSide(color: AppColors.red, width: 1.0),),
+              borderSide: BorderSide(color: AppColors.red, width: 1.0),
+            ),
             focusedBorder: OutlineInputBorder(
-              borderSide:  BorderSide(color:widget.isItDisable?AppColors.grey:AppColors.gold, width: 1.0),
+              borderSide: BorderSide(
+                color: widget.isItDisable ? AppColors.grey : AppColors.gold,
+                width: 1,
+              ),
               borderRadius: BorderRadius.circular(10.0),
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
-              borderSide: widget.borderSide,
+              borderSide: const BorderSide(
+                color: Color(0xFFDBD4C3),
+                width: 0.50,
+              ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(widget.radius)),
-              borderSide: widget.borderSide,
+              borderSide: const BorderSide(
+                color: Color(0xFFDBD4C3),
+                width: 0.50,
+              ),
             ),
             fillColor: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
                 ? AppColors.formsBackground
@@ -203,13 +222,13 @@ class _RebiInputState extends State<RebiInput> {
             //   color: widget.color,
             // ),
             hintStyle: widget.hintStyle ??
-                 TextStyle(
-                  fontFamily: "notosan",
-                  fontSize: 14.0,
-                  color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
-                      ? AppColors.formsHintFont
-                      : AppColors.formsHintFontLight
-                ),
+                TextStyle(
+                    fontFamily: "notosan",
+                    fontSize: 14.0,
+                    color:
+                        AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                            ? AppColors.formsHintFont
+                            : AppColors.formsHintFontLight),
             hintText: widget.hintText,
           ),
         ),
@@ -225,18 +244,20 @@ class _RebiInputState extends State<RebiInput> {
           ? IconButton(
               focusNode: FocusNode(skipTraversal: false),
               icon: showPassword
-                  ?  Icon(
+                  ? Icon(
                       CupertinoIcons.eye,
-                      color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
-                          ? AppColors.formsHintFont
-                          : AppColors.formsHintFontLight,
+                      color:
+                          AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                              ? AppColors.formsHintFont
+                              : AppColors.formsHintFontLight,
                       size: 20.0,
                     )
-                  :  Icon(
+                  : Icon(
                       CupertinoIcons.eye_slash,
-                      color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
-                          ? AppColors.formsHintFont
-                          : AppColors.formsHintFontLight,
+                      color:
+                          AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                              ? AppColors.formsHintFont
+                              : AppColors.formsHintFontLight,
                       size: 20.0,
                     ),
               onPressed: () {

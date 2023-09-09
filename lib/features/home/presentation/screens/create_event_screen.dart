@@ -13,8 +13,8 @@ import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/verify_dialog.dart';
-import '../../../profile/data/verify_email_route.dart';
-import '../../../profile/presentation/widgets/drop_down_menu_widget.dart';
+import '../../../manage_account/data/verify_email_route.dart';
+import '../../../../core/widgets/drop_down_menu_widget.dart';
 import '../widgets/create_trip_header.dart';
 import 'local_summary.dart';
 

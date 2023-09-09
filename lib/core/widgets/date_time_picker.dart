@@ -271,7 +271,8 @@ void selectDate({
                       TableCalendar(
                         onPageChanged: (date) {
                           selectedYear =
-                              date.year; // update `_focusedDay` here as well
+                              date.year;
+                          focusDay;// update `_focusedDay` here as well
                         },
                         shouldFillViewport: false,
                         headerStyle: HeaderStyle(
@@ -323,7 +324,7 @@ void selectDate({
                           todayDecoration: BoxDecoration(
                               color: AppSharedPreferences.getTheme ==
                                       'ThemeCubitMode.dark'
-                                  ? AppColors.lightGrey
+                                  ? AppColors.borderColor
                                   : AppColors.blackLight,
                               shape: BoxShape.circle),
                           weekendTextStyle: const TextStyle(
@@ -341,7 +342,7 @@ void selectDate({
                             fontSize: 15,
                             color: AppSharedPreferences.getTheme ==
                                 'ThemeCubitMode.dark'
-                                ? AppColors.lightGrey
+                                ? AppColors.borderColor
                                 : AppColors.blackLight,
                             fontFamily: 'notosan',
                           ),
@@ -349,7 +350,7 @@ void selectDate({
                               fontSize: 15,
                               color:AppSharedPreferences.getTheme ==
                                   'ThemeCubitMode.dark'
-                                  ? AppColors.lightGrey
+                                  ? AppColors.borderColor
                                   : AppColors.blackLight,
                               fontFamily: 'notosan',
                               inherit: false),

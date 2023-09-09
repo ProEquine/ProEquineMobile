@@ -7,23 +7,41 @@ import '../colors/app_colors.dart';
 
 class PinThemeConst {
   static final defaultPinTheme = PinTheme(
-    width: 35,
+    width: 40,
     height: 52,
     margin: const EdgeInsets.symmetric(horizontal: 5),
     textStyle: TextStyle(
         fontSize: 14.sp,
         color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
             ? Colors.white
-            : Colors.black,
+            : AppColors.blackLight,
         fontWeight: FontWeight.w600,
         fontFamily: 'hemiHead'),
     decoration: BoxDecoration(
       border: Border(
-        bottom: BorderSide(
-          width: 5.0,
+        top: BorderSide(
+          width: 2.0,
           color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
               ? const Color(0xff555D68)
-              : AppColors.lightGrey,
+              : AppColors.borderColor,
+        ),
+        left: BorderSide(
+          width: 2.0,
+          color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+              ? const Color(0xff555D68)
+              : AppColors.borderColor,
+        ),
+        right: BorderSide(
+          width: 2.0,
+          color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+              ? const Color(0xff555D68)
+              : AppColors.borderColor,
+        ),
+        bottom: BorderSide(
+          width: 5,
+          color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+              ? const Color(0xff555D68)
+              : AppColors.borderColor,
         ),
       ),
       color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
@@ -40,7 +58,7 @@ class PinThemeConst {
         fontSize: 14.sp,
         color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
             ? Colors.white
-            : Colors.black,
+            : AppColors.blackLight,
         fontWeight: FontWeight.w600,
         fontFamily: 'hemiHead'),
     decoration: BoxDecoration(
@@ -64,7 +82,7 @@ class PinThemeConst {
         fontSize: 14.sp,
         color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
             ? Colors.white
-            : Colors.black,
+            : AppColors.blackLight,
         fontWeight: FontWeight.w600,
         fontFamily: 'hemiHead'),
     decoration: BoxDecoration(

@@ -9,12 +9,12 @@ class RebiButton extends StatefulWidget {
     required this.onPressed,
     required this.child,
     this.isLoading = false,
-    this.backgroundColor = AppColors.backgroundColorLight,
+    this.backgroundColor = AppColors.yellow,
     this.width,
     this.height = 50,
     this.elevation = 0,
     this.shadowColor = AppColors.gold,
-    this.radius = 10.0,
+    this.radius = 8.0,
     this.isBackButton = false,
   }) : super(key: key);
 
@@ -47,10 +47,10 @@ class _RebiButtonState extends State<RebiButton> {
         },
         style: widget.isBackButton
             ? ElevatedButton.styleFrom(
-                backgroundColor: widget.backgroundColor,
+                backgroundColor: AppColors.backgroundColorLight,
                 side: const BorderSide(
                   width: 2, // the thickness
-                  color: AppColors.white,
+                  color: AppColors.yellow,
                 ),
                 shadowColor: widget.shadowColor,
                 elevation: widget.elevation,

@@ -161,10 +161,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                       return const LoadingCircularWidget();
                                     }
                                     return RebiButton(
-                                        backgroundColor:AppSharedPreferences.getTheme ==
-                                            'ThemeCubitMode.dark'
-                                            ? AppColors.white
-                                            : AppColors.backgroundColor,
                                         onPressed: () {
                                           if (_formKey.currentState!
                                               .validate()) {
@@ -215,7 +211,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   _sendVerificationRequest({
     String? phone,
   }) {
-    return cubit.forgotPassword(
-        SendVerificationRequestModel(phoneNumber: phone, channel: "sms"));
+    //   return cubit.forgotPassword(
+    //       SendVerificationRequestModel(phoneNumber: phone, channel: "sms"));
+    // }
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                ResetPasswordScreen(
+                  phone: _countryCode.text +
+                      _phone.text,
+                  token: 'state.model!.token',
+                )));
   }
 }

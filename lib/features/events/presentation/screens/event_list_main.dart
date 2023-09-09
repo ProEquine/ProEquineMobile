@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/features/events/presentation/widgets/all_events_list.dart';
 import 'package:sizer/sizer.dart';
-import '../../../profile/presentation/screens/user_profile.dart';
+import '../../../manage_account/presentation/screens/user_profile.dart';
 import '../widgets/eventitem.dart';
 
 class EventListMain extends StatelessWidget {

@@ -1,26 +1,24 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:proequine/core/constants/colors/app_colors.dart';
-import 'package:proequine/core/constants/images/app_images.dart';
+
 import 'package:proequine/core/constants/thems/app_styles.dart';
 
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/widgets/divider.dart';
-import '../../data/form_data_model.dart';
+import '../../data/trip_service_data_model.dart';
 
 class SummaryBoxWidget extends StatelessWidget {
-  final FromDataModel? formData;
+  final TripServiceDataModel? tripServiceDataModel;
 
-  SummaryBoxWidget({required this.formData});
+  const SummaryBoxWidget({super.key, required this.tripServiceDataModel});
 
   String returnDate() {
-    if (formData!.tripType == "Other day return" &&
-        formData!.expectedTime!.isNotEmpty) {
-      return "Returning: ${formData!.expectedDate} • ${formData!.expectedTime}";
-    } else if (formData!.tripType == "Same day return" &&
-        formData!.expectedTime!.isNotEmpty) {
-      return "Returning:  ${formData!.date} • ${formData!.expectedTime}";
+    if (tripServiceDataModel!.tripType == "Other day return" &&
+        tripServiceDataModel!.expectedTime!.isNotEmpty) {
+      return "Returning: ${tripServiceDataModel!.expectedDate} • ${tripServiceDataModel!.expectedTime}";
+    } else if (tripServiceDataModel!.tripType == "Same day return" &&
+        tripServiceDataModel!.expectedTime!.isNotEmpty) {
+      return "Returning:  ${tripServiceDataModel!.pickupDate} • ${tripServiceDataModel!.expectedTime}";
     } else {
       return "";
     }
@@ -29,201 +27,100 @@ class SummaryBoxWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
-            ? AppColors.formsBackground
-            : AppColors.white,
-        // color: const Color(0xff191919),
-        borderRadius: BorderRadius.circular(8),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      decoration: ShapeDecoration(
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(width: 0.50, color: Color(0xFFDFD9C9)),
+          borderRadius: BorderRadius.circular(8),
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 19),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SvgPicture.asset(AppIcons.returntype),
-                const SizedBox(
-                  width: 10,
+                Text(
+                  "Service",
+                  style: AppStyles.summaryTitleStyle,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Service & Return type",
-                      style: AppStyles.summaryTitleStyle,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      '${formData!.tripType}',
-                      style: AppStyles.summaryDesStyle,
-                    ),
-                  ],
-                )
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  "${tripServiceDataModel!.pickupDate} • ${tripServiceDataModel!.pickupTime}",
+                  style: AppStyles.summaryDesStyle,
+                ),
+                Text(
+                  tripServiceDataModel!.tripType,
+                  style: AppStyles.summaryDesStyle,
+                ),
               ],
             ),
             const CustomDivider(),
-
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SvgPicture.asset(AppIcons.datetime),
-                const SizedBox(
-                  width: 10,
+                Text(
+                  "Pick up",
+                  style: AppStyles.summaryTitleStyle,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Date & Time",
-                      style: AppStyles.summaryTitleStyle,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Going: ${formData!.date} • ${formData!.time}",
-                      style: AppStyles.summaryDesStyle,
-                    ),
-                    Text(
-                      returnDate(),
-                      style: AppStyles.summaryDesStyle,
-                    ),
-                  ],
-                )
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  tripServiceDataModel!.pickupLocation,
+                  style: AppStyles.summaryDesStyle,
+                ),
+                Text(
+                  "${tripServiceDataModel!.pickupContactName} • ${tripServiceDataModel!.pickupContactNumber}",
+                  style: AppStyles.summaryDesStyle,
+                ),
               ],
             ),
-
             const CustomDivider(),
-
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SvgPicture.asset(AppIcons.locations),
-                const SizedBox(
-                  width: 10,
+                Text(
+                  "Drop off",
+                  style: AppStyles.summaryTitleStyle,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Location",
-                      style: AppStyles.summaryTitleStyle,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Origin: ${formData!.origin}",
-                      style: AppStyles.summaryDesStyle,
-                    ),
-                    Text(
-                      "Destination: ${formData!.destination}",
-                      style: AppStyles.summaryDesStyle,
-                    ),
-                  ],
-                )
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  tripServiceDataModel?.dropLocation ??
+                      tripServiceDataModel?.hospitalName ??
+                      'non',
+                  style: AppStyles.summaryDesStyle,
+                ),
+                Text(
+                  "${tripServiceDataModel!.dropContactName} • ${tripServiceDataModel!.dropContactNumber}",
+                  style: AppStyles.summaryDesStyle,
+                ),
               ],
             ),
-
             const CustomDivider(),
-
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SvgPicture.asset(AppIcons.horses),
-                const SizedBox(
-                  width: 10,
+                Text(
+                  "Horses",
+                  style: AppStyles.summaryTitleStyle,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Horses",
-                      style: AppStyles.summaryTitleStyle,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      '${formData!.numberOfHorses}',
-                      style: AppStyles.summaryDesStyle,
-                    ),
-                  ],
-                )
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  tripServiceDataModel!.horsesNumber,
+                  style: AppStyles.summaryDesStyle,
+                ),
               ],
             ),
-
-            const CustomDivider(),
-            Row(
-              children: [
-                SvgPicture.asset(AppIcons.contact),
-                const SizedBox(
-                  width: 10,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Contact Person",
-                      style: AppStyles.summaryTitleStyle,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      formData!.contact,
-                      style: AppStyles.summaryDesStyle,
-                    ),
-                  ],
-                )
-              ],
-            ),
-            formData!.comment!.isNotEmpty
-                ? const CustomDivider()
-                : const SizedBox(
-                    height: 10,
-                  ),
-            formData!.comment!.isNotEmpty
-                ? Row(
-                    children: [
-                      Transform.translate(
-                          offset: const Offset(0.0, -17),
-                          child: SvgPicture.asset(AppIcons.note)),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: 1,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Note",
-                                    style: AppStyles.summaryTitleStyle,
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    '${formData!.comment}',
-                                    maxLines: 5,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: AppStyles.summaryDesStyle,
-                                  ),
-                                ],
-                              );
-                            }),
-                      ),
-                    ],
-                  )
-                : const SizedBox(),
-
-            // SizedBox(height: 12,)
           ],
         ),
       ),

@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
-import 'package:proequine/features/profile/data/verify_email_route.dart';
-import 'package:proequine/features/profile/domain/profile_cubit.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../features/manage_account/data/verify_email_route.dart';
 import '../constants/colors/app_colors.dart';
 import '../constants/constants.dart';
 
@@ -30,7 +29,6 @@ class SubmitVerifyEmail extends StatefulWidget {
 class _SubmitVerifyEmailState extends State<SubmitVerifyEmail>
     with TickerProviderStateMixin {
   late final AnimationController _controller;
-  ProfileCubit cubit = ProfileCubit();
   VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
 
   @override

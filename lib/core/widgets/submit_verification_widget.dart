@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:proequine/features/user/presentation/screens/interests_screen.dart';
+import 'package:proequine/features/user/presentation/screens/create_user_name_screen.dart';
 import 'package:sizer/sizer.dart';
-
-import '../constants/colors/app_colors.dart';
 
 class VerificationSubmit extends StatefulWidget {
   const VerificationSubmit({Key? key}) : super(key: key);
@@ -41,9 +39,12 @@ class _VerificationSubmitState extends State<VerificationSubmit>
           ),
           Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25.0.w, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               child: Lottie.asset(
-                'assets/animation/check-Animation.json',
+
+                'assets/animation/Success.json',
+                height: 250,
+                width: 250,
                 controller: _controller,
                 onLoaded: (composition) {
                   // Configure the AnimationController with the duration of the
@@ -53,7 +54,7 @@ class _VerificationSubmitState extends State<VerificationSubmit>
                     ..forward().whenComplete(() => Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const InterestsScreen())));
+                            builder: (context) =>  CreateUserNameScreen())));
                 },
               ),
             ),
@@ -65,8 +66,8 @@ class _VerificationSubmitState extends State<VerificationSubmit>
                 "Your account has been created successfully",
                 textAlign: TextAlign.center,
                 style:  TextStyle(
-                    color: AppColors.white,
-                    fontWeight: FontWeight.w600,
+
+                    fontWeight: FontWeight.w500,
                     fontSize: 20),
               ),
             ),

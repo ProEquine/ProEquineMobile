@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:sizer/sizer.dart';
 
@@ -7,18 +8,16 @@ import '../colors/app_colors.dart';
 class AppStyles {
   /// Bold font
 
-  static final TextStyle summaryTitleStyle = TextStyle(
+  static TextStyle summaryTitleStyle = const TextStyle(
       fontSize: 15,
       fontFamily: 'notosan',
       fontWeight: FontWeight.w700,
-      color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
-          ? Colors.white
-          : Colors.black);
-  static final TextStyle summaryDesStyle = TextStyle(
+      color: AppColors.gold);
+  static TextStyle summaryDesStyle = const TextStyle(
       fontSize: 13,
       fontFamily: 'notosan',
       fontWeight: FontWeight.w400,
-      color: Color(0xffA2A8AE));
+      color: Color(0xff8B9299));
 
   /// Regular font
 
@@ -28,17 +27,32 @@ class AppStyles {
       fontWeight: FontWeight.w600,
       color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
           ? Colors.white
-          : Colors.black);
+          : AppColors.blackLight);
+
+  static const bookingContent =  TextStyle(
+    color: AppColors.formsHintFontLight,
+    fontSize: 13,
+    fontFamily: 'Noto Sans',
+    fontWeight: FontWeight.w600,
+  );
 
   /// Registration flow title style
 
   static final mainTitle = TextStyle(
       fontSize: 26,
       fontFamily: "notosan",
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w700,
       color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
           ? Colors.white
-          : Colors.black);
+          : AppColors.blackLight);
+
+  static final mainTitle2 = TextStyle(
+      fontSize: 20,
+      fontFamily: "notosan",
+      fontWeight: FontWeight.w700,
+      color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+          ? Colors.white
+          : AppColors.blackLight);
 
   static final appBarTitle = TextStyle(
       fontSize: 17,
@@ -46,7 +60,7 @@ class AppStyles {
       fontWeight: FontWeight.w600,
       color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
           ? Colors.white
-          : Colors.black);
+          : AppColors.blackLight);
 
   static final elevatedButtonTitle = TextStyle(
       fontSize: 17.0,
@@ -54,14 +68,14 @@ class AppStyles {
       fontFamily: "notosan",
       color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
           ? Colors.white
-          : Colors.black);
+          : AppColors.blackLight);
   static final buttonTitle = TextStyle(
       fontSize: 17.0,
       fontWeight: FontWeight.w600,
       fontFamily: "notosan",
       color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
           ? Colors.white
-          : Colors.black);
+          : Colors.white);
 
   static final profileHeader = TextStyle(
     fontSize: 20.sp,
@@ -74,8 +88,23 @@ class AppStyles {
           ? Colors.white
           : Colors.black,
       fontFamily: 'notosan',
-      fontSize: 12.sp,
+      fontSize: 11.sp,
       fontWeight: FontWeight.w400);
+  static final currentData = TextStyle(
+      color: AppColors.blackLight,
+      fontFamily: 'notosan',
+      fontSize: 11.sp,
+      fontWeight: FontWeight.w400);
+  static const profileTitles = TextStyle(
+      color: AppColors.gold,
+      fontFamily: 'notosan',
+      fontSize: 16,
+      fontWeight: FontWeight.w700);
+  static const profileBlackTitles = TextStyle(
+      color: AppColors.blackLight,
+      fontFamily: 'notosan',
+      fontSize: 17,
+      fontWeight: FontWeight.w700);
 
   final darkTheme = ThemeData(
     primaryColor: Colors.black,
@@ -155,7 +184,11 @@ class AppStyles {
     ),
   );
   final lightTheme = ThemeData(
-    primaryColor: Colors.white,
+      appBarTheme: AppBarTheme(
+
+        elevation: 2,
+      ),
+    primaryColor: Color(0xFFF8F7F3),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
           backgroundColor: Colors.black, // background (button) color
@@ -189,8 +222,8 @@ class AppStyles {
       style: ButtonStyle(
         foregroundColor: MaterialStateProperty.resolveWith(
           (states) => states.contains(MaterialState.selected)
-              ? Colors.black
-              : Colors.black,
+              ? AppColors.blackLight
+              : AppColors.blackLight,
         ),
         textStyle: MaterialStateProperty.resolveWith(
           (states) => elevatedButtonTitle,
@@ -286,7 +319,7 @@ class AppStyles {
       borderRadius: BorderRadius.all(Radius.circular(8)),
       side: BorderSide(color: AppColors.gold, width: 1),
     ),
-    dayPeriodTextColor: Colors.black,
+    dayPeriodTextColor: AppColors.blackLight,
     dayPeriodShape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(8)),
       side: BorderSide(color: AppColors.gold, width: 1),
@@ -311,7 +344,7 @@ class AppStyles {
     dialTextColor: MaterialStateColor.resolveWith((states) =>
         states.contains(MaterialState.selected)
             ? AppColors.gold
-            : Colors.black),
+            : AppColors.blackLight),
     entryModeIconColor: AppColors.gold,
   );
 }

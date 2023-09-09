@@ -103,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
+                                      const EdgeInsets.symmetric(vertical: 7),
                                   child: RebiInput(
                                     hintText: 'Email'.tra,
                                     onTap: () {
@@ -137,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.symmetric(vertical: 10),
+                                      const EdgeInsets.symmetric(vertical: 7),
                                   child: RebiInput(
                                     hintText: 'Password'.tra,
                                     onTap: () {
@@ -217,7 +217,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 AppSharedPreferences.getTheme ==
                                                         'ThemeCubitMode.dark'
                                                     ? Colors.white
-                                                    : Colors.black,
+                                                    : AppColors.blackLight,
                                             fontSize: 18),
                                       ),
                                       TextSpan(
@@ -228,7 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                           .getTheme ==
                                                       'ThemeCubitMode.dark'
                                                   ? Colors.white
-                                                  : Colors.black,
+                                                  : AppColors.blackLight,
                                               fontWeight: FontWeight.w700,
                                               fontFamily: 'notosan',
                                               decoration:
@@ -281,11 +281,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     _onPressLogin();
                   } else {}
                 },
-                backgroundColor:
-                AppSharedPreferences.getTheme ==
-                    'ThemeCubitMode.dark'
-                    ? AppColors.white
-                    : AppColors.backgroundColor,
                 child: const Text("Sign in"));
           }
         },
@@ -303,7 +298,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const InterestsScreen()));
+                      builder: (context) => const EquineInfoScreen()));
             } else {
               Navigator.pushReplacement(
                   context,

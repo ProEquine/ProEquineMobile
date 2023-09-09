@@ -17,8 +17,8 @@ void showTermsBottomSheet({
     isScrollControlled: true,
     backgroundColor: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
         ? AppColors.formsBackground
-        : AppColors.white,
-    useSafeArea: true,
+        : AppColors.backgroundColorLight,
+    useSafeArea: false,
     context: context,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
@@ -26,7 +26,7 @@ void showTermsBottomSheet({
     builder: (BuildContext context) {
       return Wrap(children: [
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.80,
+          height: MediaQuery.of(context).size.height * 0.90,
           child: Padding(
             padding: const EdgeInsets.only(
                 top: kPadding, left: kPadding, right: kPadding),
@@ -48,21 +48,14 @@ void showTermsBottomSheet({
                                 fontWeight: FontWeight.w600,
                                 color: AppSharedPreferences.getTheme ==
                                         'ThemeCubitMode.dark'
-                                    ? Colors.white
-                                    : Colors.black)),
+                                    ? AppColors.white
+                                    : AppColors.blackLight)),
                       ),
-                      GestureDetector(
-                        onTap: () {
+                      IconButton(
+                        icon: const Icon(Icons.close,size: 18,color: AppColors.yellow,),
+                        onPressed: (){
                           Navigator.pop(context);
                         },
-                        child: const Text(
-                          'Close',
-                          style: TextStyle(
-                              fontSize: 17,
-                              fontFamily: "notosan",
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.yellow),
-                        ),
                       ),
                     ],
                   ),
@@ -78,7 +71,7 @@ void showTermsBottomSheet({
                         fontSize: 14),
                   ),
                   const SizedBox(
-                    height: 30,
+                    height: 50,
                   ),
                 ],
               ),

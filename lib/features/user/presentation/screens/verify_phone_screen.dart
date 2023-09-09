@@ -1,3 +1,4 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -72,18 +73,25 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                     child: Column(
                       children: [
                         RegistrationHeader(isThereBackButton: true),
-                        const Spacer(flex: 3,),
-                        const Spacer(flex: 6,),
-                        SizedBox(height: 5,),
+                        Spacer(),
                         Padding(
                           padding:
                               const EdgeInsets.symmetric(horizontal: kPadding),
                           child: Column(
                             children: [
-                               Align(
+                              Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text("Verify Phone Number",
+                                child: Text("Mobile number",
                                     style: AppStyles.mainTitle),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                    "For account verification and receive timely notifications this helps us ensure your account's safety while keeping you informed",
+                                    style: AppStyles.descriptions),
                               ),
                               const SizedBox(
                                 height: 10,
@@ -96,16 +104,6 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                     Expanded(
                                       flex: 1,
                                       child: RebiInput(
-                                        onTap: () {
-                                          setState(() {
-                                            logoHeight = 15.h;
-                                          });
-                                        },
-                                        onFieldSubmitted: (size){
-                                          setState(() {
-                                            logoHeight = 18.h;
-                                          });
-                                        },
                                         inputFormatters: [
                                           LengthLimitingTextInputFormatter(4),
                                         ],
@@ -116,6 +114,62 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                         autoValidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         isOptional: false,
+                                        onTap: (){
+                                          showCountryPicker(
+                                            context: context,
+                                            showPhoneCode: true,
+                                            countryListTheme: CountryListThemeData(
+                                              flagSize: 25,
+                                              backgroundColor:
+                                              AppColors.backgroundColorLight,
+                                              textStyle: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: AppColors.blackLight),
+                                              bottomSheetHeight: 85.0.h,
+                                              // Optional. Country list modal height
+                                              //Optional. Sets the border radius for the bottomsheet.
+                                              borderRadius: const BorderRadius.only(
+                                                topLeft: Radius.circular(20.0),
+                                                topRight: Radius.circular(20.0),
+                                              ),
+                                              //Optional. Styles the search field.
+                                              inputDecoration:
+                                              const InputDecoration(
+                                                hintText: 'Search by name or code',
+                                                hintStyle: TextStyle(
+                                                  color: AppColors.formsHintFontLight,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                                prefixIcon: Icon(
+                                                  Icons.search,
+                                                  color: AppColors.formsHintFontLight,
+                                                ),
+                                                filled: true,
+                                                fillColor: AppColors.whiteLight,
+                                                border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(8)),
+                                                  borderSide: BorderSide(
+                                                    color: Color(0xFFDBD4C3),
+                                                    width: 0.50,
+                                                  ),
+                                                ),
+                                                enabledBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(8)),
+                                                  borderSide: BorderSide(
+                                                    color: Color(0xFFDBD4C3),
+                                                    width: 0.50,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            onSelect: (Country country) =>
+                                            _countryCode.text =
+                                            '+${country.phoneCode}',
+                                          );
+                                        },
                                         color: AppColors.formsLabel,
                                         readOnly: false,
                                         contentPadding:
@@ -134,16 +188,6 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                     Expanded(
                                       flex: 3,
                                       child: RebiInput(
-                                        onTap: () {
-                                          setState(() {
-                                            logoHeight = 15.h;
-                                          });
-                                        },
-                                        onFieldSubmitted: (size){
-                                          setState(() {
-                                            logoHeight = 18.h;
-                                          });
-                                        },
                                         hintText: 'Phone'.tra,
                                         controller: _phone,
                                         keyboardType: TextInputType.number,
@@ -181,40 +225,50 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                               .validate()) {
                                             FocusManager.instance.primaryFocus
                                                 ?.unfocus();
-                                            cubit.sendVerificationCode(
-                                                SendVerificationRequestModel(
-                                                    phoneNumber:
-                                                        _countryCode.text +
-                                                            _phone.text,
-                                                    channel: "sms"));
+                                            // cubit.sendVerificationCode(
+                                            //     SendVerificationRequestModel(
+                                            //         phoneNumber:
+                                            //             _countryCode.text +
+                                            //                 _phone.text,
+                                            //         channel: "sms"));
+
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        VerificationScreen(
+                                                            email: widget.email,
+                                                            name:
+                                                                widget.fullName,
+                                                            phone: _countryCode
+                                                                    .text +
+                                                                _phone.text,
+                                                            password:
+                                                                widget.password,
+                                                            dob: widget.dob)));
                                           } else {}
                                         },
-                                        backgroundColor:AppSharedPreferences.getTheme ==
-                                            'ThemeCubitMode.dark'
-                                            ? AppColors.white
-                                            : AppColors.backgroundColor,
                                         child: const Text("Verify"));
                                   },
                                   listener: (context, state) {
-                                    if (state is SendVerificationSuccessful) {
-                                      AppSharedPreferences.inputPhoneNumber =
-                                          _countryCode.text + _phone.text;
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  VerificationScreen(
-                                                      email: widget.email,
-                                                      name: widget.fullName,
-                                                      phone: _countryCode.text +
-                                                          _phone.text,
-                                                      password: widget.password,
-                                                      dob: widget.dob)));
-                                    } else if (state is SendVerificationError) {
-                                      RebiMessage.error(
-                                          msg: state.message!,
-                                          context: context);
-                                    }
+                                    // if (state is SendVerificationSuccessful) {
+                                    //   AppSharedPreferences.inputPhoneNumber =
+                                    //       _countryCode.text + _phone.text;
+                                    //   Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //           builder: (context) =>
+                                    //               VerificationScreen(
+                                    //                   email: widget.email,
+                                    //                   name: widget.fullName,
+                                    //                   phone: _countryCode.text +
+                                    //                       _phone.text,
+                                    //                   password: widget.password,
+                                    //                   dob: widget.dob)));
+                                    // } else if (state is SendVerificationError) {
+                                    //   RebiMessage.error(
+                                    //       msg: state.message!,
+                                    //       context: context);
                                   },
                                 ),
                               ),

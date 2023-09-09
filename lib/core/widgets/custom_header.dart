@@ -14,14 +14,24 @@ class CustomHeader extends StatelessWidget {
     this.isThereChangeWithNavigate = false,
     this.onPressBack,
     this.onPressUp,
+    this.isThereThirdOption = false,
+    this.isThereThirdOptionDelete = false,
+    this.isItMainScreen = false,
+    this.thirdOptionTitle,
+    this.onPressThirdOption,
   }) : super(key: key);
 
   final String title;
+  final String? thirdOptionTitle;
   final bool isThereBackButton;
+  final bool isItMainScreen;
   bool isThereChangeWithNavigate = false;
+  bool isThereThirdOptionDelete = false;
+  bool isThereThirdOption = false;
 
   final Function? onPressBack;
   final Function? onPressUp;
+  final Function? onPressThirdOption;
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +40,9 @@ class CustomHeader extends StatelessWidget {
           ? Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Transform(
+                  isItMainScreen?SizedBox():Transform(
                     // alignment: Alignment.center,
                     transform: Directionality.of(context) == TextDirection.rtl
                         ? Matrix4.rotationY(math.pi)
@@ -43,74 +54,148 @@ class CustomHeader extends StatelessWidget {
                               : Navigator.pop(context);
                         },
                         child: Icon(Icons.arrow_back_ios_new,
+                            size: 24,
                             color: AppSharedPreferences.getTheme ==
                                     'ThemeCubitMode.dark'
                                 ? AppColors.white
-                                : Colors.black)),
-                  ),
-                  const SizedBox(
-                    width: 14,
+                                : AppColors.blackLight)),
                   ),
                   Text(
                     title,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       color:
                           AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
                               ? AppColors.white
-                              : Colors.black,
-                      fontSize: 28.0,
-                      fontFamily: 'hemiHead',
-                      fontWeight: FontWeight.w400,
+                              : AppColors.blackLight,
+                      fontSize: 17.0,
+                      fontFamily: 'notosan',
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
+                  isThereThirdOption
+                      ? GestureDetector(
+                          onTap: () {
+                            onPressThirdOption!();
+                          },
+                          child: Text(
+                            thirdOptionTitle!,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: isThereThirdOptionDelete
+                                  ? AppColors.red
+                                  : const Color(0xFFC48636),
+                              fontSize: 14,
+                              fontFamily: 'notosans',
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        )
+                      : SizedBox.fromSize()
                 ],
               ),
             )
           : Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: kPadding, vertical: 10),
-              child: Row(
+              child: isItMainScreen?Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     title,
+                    textAlign: TextAlign.start,
                     style: TextStyle(
                       color:
                           AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
                               ? AppColors.white
-                              : Colors.black,
-                      fontSize: 28.0,
-                      fontFamily: 'hemiHead',
-                      fontWeight: FontWeight.w500,
+                              : AppColors.blackLight,
+                      fontSize: 24.0,
+                      fontFamily: 'notosan',
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                  // Transform(
-                  //   // alignment: Alignment.center,
-                  //   transform: Directionality.of(context) == TextDirection.rtl
-                  //       ? Matrix4.rotationY(math.pi)
-                  //       : Matrix4.rotationY(0),
-                  //   child: GestureDetector(
-                  //     onTap: () {
-                  //       isThereChangeWithNavigate
-                  //           ? onPressUp!()
-                  //           : Navigator.pop(context);
-                  //     },
-                  //     child: Container(
-                  //         padding: const EdgeInsets.all(12),
-                  //         decoration: const BoxDecoration(
-                  //           shape: BoxShape.circle,
-                  //           color: AppColors.formsBackground,
-                  //         ),
-                  //         child: Transform.scale(
-                  //           scale: 2.5,
-                  //           child: const Icon(
-                  //             Icons.keyboard_arrow_down,
-                  //             size: 15,
-                  //             color: AppColors.white,
-                  //           ),
-                  //         )),
-                  //   ),
-                  // ),
+                  isThereThirdOption
+                      ? GestureDetector(
+                          onTap: () {
+                            onPressThirdOption!();
+                          },
+                          child: Transform.translate(
+                            offset: Offset(0.0, 1),
+                            child: Text(
+                              thirdOptionTitle!,
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                color: isThereThirdOptionDelete
+                                    ? AppColors.red
+                                    : const Color(0xFFC48636),
+                                fontSize: 14,
+                                fontFamily: 'Noto Sans',
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        )
+                      : SizedBox.fromSize()
+                ],
+              ):Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Visibility(
+                    visible: false,
+                    child: Transform(
+                      // alignment: Alignment.center,
+                      transform: Directionality.of(context) == TextDirection.rtl
+                          ? Matrix4.rotationY(math.pi)
+                          : Matrix4.rotationY(0),
+                      child: GestureDetector(
+                          onTap: () {
+                            isThereChangeWithNavigate
+                                ? onPressBack!()
+                                : Navigator.pop(context);
+                          },
+                          child: Icon(Icons.arrow_back_ios_new,
+                              size: 24,
+                              color: AppSharedPreferences.getTheme ==
+                                  'ThemeCubitMode.dark'
+                                  ? AppColors.white
+                                  : AppColors.blackLight)),
+                    ),
+                  ),
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color:
+                      AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                          ? AppColors.white
+                          : AppColors.blackLight,
+                      fontSize: 17.0,
+                      fontFamily: 'notosan',
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  isThereThirdOption
+                      ? GestureDetector(
+                    onTap: () {
+                      onPressThirdOption!();
+                    },
+                    child: Transform.translate(
+                      offset: Offset(0.0, 1),
+                      child: Text(
+                        thirdOptionTitle!,
+                        textAlign: TextAlign.end,
+                        style: TextStyle(
+                          color: isThereThirdOptionDelete
+                              ? AppColors.red
+                              : const Color(0xFFC48636),
+                          fontSize: 14,
+                          fontFamily: 'Noto Sans',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  )
+                      : SizedBox.fromSize()
                 ],
               ),
             ),

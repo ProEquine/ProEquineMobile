@@ -5,10 +5,12 @@ import 'package:proequine/features/booking/presentation/screens/timeline.dart';
 import 'package:proequine/features/booking/presentation/widgets/bookingitem.dart';
 import 'package:proequine/features/booking/presentation/widgets/peniding_booking_items.dart';
 import '../../../../core/constants/colors/app_colors.dart';
-import 'confirm_booking_item.dart';
+import 'booking_item_widget.dart';
 
 class Booking extends StatelessWidget {
-  const Booking({super.key});
+  String type;
+
+  Booking({super.key, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +21,8 @@ class Booking extends StatelessWidget {
         //   return 'Unpaid';
         case 'Ongoing':
           return 'Ongoing';
-        case 'Scheduled':
-          return 'Scheduled';
+        case 'Requested':
+          return 'Requested';
         default:
           return 'Other';
       }
@@ -69,8 +71,8 @@ class Booking extends StatelessWidget {
         'transportType': 'DEC'
       },
       {
-        'type': 'Scheduled',
-        'group': 'Scheduled',
+        'type': 'Requested',
+        'group': 'Requested',
         'pending': false,
         'bookingId': "LT9674",
         'date': '15 - 17 Sep',
@@ -79,8 +81,8 @@ class Booking extends StatelessWidget {
         'transportType': 'DEC'
       },
       {
-        'type': 'Scheduled',
-        'group': 'Scheduled',
+        'type': 'Requested',
+        'group': 'Requested',
         'pending': false,
         'bookingId': "LT9677",
         'date': '15 - 17 Sep',
@@ -89,8 +91,8 @@ class Booking extends StatelessWidget {
         'transportType': 'DEC'
       },
       {
-        'type': 'Scheduled',
-        'group': 'Scheduled',
+        'type': 'Requested',
+        'group': 'Requested',
         'pending': false,
         'bookingId': "LT9664",
         'date': '15 - 17 Sep',
@@ -103,103 +105,164 @@ class Booking extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            GroupedListView<dynamic, String>(
-              elements: elements,
-              shrinkWrap: true,
-              groupBy: (element) {
-                // Group items based on their category
-                if (element['group'] == 'Unpaid') {
-                  return 'Unpaid';
-                } else if (element['group'] == 'Ongoing') {
-                  return 'Ongoing';
-                } else if (element['group'] == 'Scheduled') {
-                  return 'Scheduled';
-                } else {
-                  return 'Other';
-                }
-              },
-              groupComparator: (value2, value3) => value2.compareTo(value2),
-              groupSeparatorBuilder: (String value) => Padding(
-                padding: const EdgeInsets.only(bottom: 11, top: 20),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    getGroupName(value),
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
-              itemBuilder: (c, element) {
-                if (element['group'] == 'Ongoing') {
-                  return InkWell(
-                    // onTap: () {
-                    //   Navigator.of(context).push(
-                    //     PageRouteBuilder(
-                    //       pageBuilder:
-                    //           (context, animation, secondaryAnimation) =>
-                    //               BookingTrack(
-                    //         image: AppImages.hospitalTransport,
-                    //         type: element['type'],
-                    //         bookingId: element['bookingId'],
-                    //         date: element['date'],
-                    //         horsesCount: element['horseCount'],
-                    //         transport: element['transport'],
-                    //         transportType: element['transportType'],
-                    //       ),
-                    //       transitionDuration: const Duration(milliseconds: 300),
-                    //       // Set duration
-                    //       transitionsBuilder:
-                    //           (context, animation, secondaryAnimation, child) {
-                    //         var begin =
-                    //             const Offset(0.0, 1.0); // Set begin offset
-                    //         var end = Offset.zero; // Set end offset
-                    //         var curve = Curves.easeOut; // Set curve
-                    //
-                    //         var tween = Tween(begin: begin, end: end)
-                    //             .chain(CurveTween(curve: curve));
-                    //
-                    //         return SlideTransition(
-                    //           position: animation.drive(tween),
-                    //           child: child,
-                    //         );
-                    //       },
-                    //     ),
-                    //   );
-                    // },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 3.0),
-                      child: BookingItem(
-                        type: element['type'],
-                        pending: element['pending'],
-                        bookingId: element['bookingId'],
-                        date: element['date'],
-                        horsesCount: element['horseCount'],
-                        transport: element['transport'],
-                        transportType: element['transportType'],
-                      ),
-                    ),
-                  );
-                } else if (element['group'] == 'Unpaid') {
-                  return PendingBookingItem(
-                    type: element['type'],
-                    bookingId: element['bookingId'],
-                    date: element['date'],
-                    transport: element['transport'],
-                  );
-                }
-                return const ConfirmBookingItem(
-                  date: '15 Sep • 04:30 pm',
-                  horsesCount: 4,
-                  transport: "Nat Show",
-                  bookingId: 'LT9677',
-                );
-              },
-            ),
+            // type=='Shipping'?
+            // GroupedListView<dynamic, String>(
+            //   elements: elements,
+            //   shrinkWrap: true,
+            //   groupBy: (element) {
+            //     // Group items based on their category
+            //     if (element['group'] == 'Unpaid') {
+            //       return 'Unpaid';
+            //     } else if (element['group'] == 'Ongoing') {
+            //       return 'Ongoing';
+            //     } else if (element['group'] == 'Requested') {
+            //       return 'Requested';
+            //     } else {
+            //       return 'Other';
+            //     }
+            //   },
+            //   groupComparator: (value2, value3) => value2.compareTo(value2),
+            //   groupSeparatorBuilder: (String value) => Padding(
+            //     padding: const EdgeInsets.only(bottom: 11, top: 20),
+            //     child: Align(
+            //       alignment: Alignment.centerLeft,
+            //       child: Text(
+            //         getGroupName(value),
+            //         style: const TextStyle(
+            //           fontSize: 16,
+            //           fontWeight: FontWeight.w500,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            //   itemBuilder: (c, element) {
+            //     if (element['group'] == 'Ongoing') {
+            //       return const BookingItemWidget(
+            //         status: "Confirmed",
+            //         date: '15 Sep • 04:30 pm',
+            //         horsesCount: 2,
+            //         from: "DEC",
+            //         to: "DEH",
+            //         transportType: "Shipping",
+            //         bookingId: 'LT9677',
+            //       );
+            //     } else if (element['group'] == 'Unpaid') {
+            //       return PendingBookingItem(
+            //         type: element['type'],
+            //         bookingId: element['bookingId'],
+            //         date: element['date'],
+            //         transport: element['transport'],
+            //       );
+            //     }
+            //     return const BookingItemWidget(
+            //       status: "Pending",
+            //       date: '15 Sep • 04:30 pm',
+            //       horsesCount: 4,
+            //       from: "DEC",
+            //       to: "DEH",
+            //       transportType: "Shipping",
+            //       bookingId: 'LT9677',
+            //     );
+            //   },
+            // ):
+            // GroupedListView<dynamic, String>(
+            //   elements: elements,
+            //   shrinkWrap: true,
+            //   groupBy: (element) {
+            //     // Group items based on their category
+            //     if (element['group'] == 'Unpaid') {
+            //       return 'Unpaid';
+            //     } else if (element['group'] == 'Ongoing') {
+            //       return 'Ongoing';
+            //     } else if (element['group'] == 'Requested') {
+            //       return 'Requested';
+            //     } else {
+            //       return 'Other';
+            //     }
+            //   },
+            //   groupComparator: (value2, value3) => value2.compareTo(value2),
+            //   groupSeparatorBuilder: (String value) => Padding(
+            //     padding: const EdgeInsets.only(bottom: 11, top: 20),
+            //     child: Align(
+            //       alignment: Alignment.centerLeft,
+            //       child: Text(
+            //         getGroupName(value),
+            //         style: const TextStyle(
+            //           fontSize: 16,
+            //           fontWeight: FontWeight.w500,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            //   itemBuilder: (c, element) {
+            //     if (element['group'] == 'Ongoing') {
+            //       return const BookingItemWidget(
+            //         status: "Pending",
+            //         date: '15 Sep • 04:30 pm',
+            //         horsesCount: 4,
+            //         from: "DEC",
+            //         to: "DEH",
+            //         transportType: "Local Transport",
+            //         bookingId: 'LT9677',
+            //       );
+            //     } else if (element['group'] == 'Unpaid') {
+            //       return PendingBookingItem(
+            //         type: element['type'],
+            //         bookingId: element['bookingId'],
+            //         date: element['date'],
+            //         transport: element['transport'],
+            //       );
+            //     }
+            //     return const BookingItemWidget(
+            //       status: "Confirmed",
+            //       date: '15 Sep • 04:30 pm',
+            //       horsesCount: 4,
+            //       from: "DEC",
+            //       to: "DEH",
+            //       transportType: "Local Transport",
+            //       bookingId: 'LT9677',
+            //     );
+            //   },
+            // ),
+            type == 'Shipping'
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 3),
+                        child: const BookingItemWidget(
+                          status: "Confirmed",
+                          date: '15 Sep • 04:30 pm',
+                          horsesCount: 2,
+                          from: "DEC",
+                          to: "DEH",
+                          transportType: "Shipping",
+                          bookingId: 'LT9677',
+                        ),
+                      );
+                    })
+                : ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return const Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 3),
+                        child: BookingItemWidget(
+                          status: "Pending",
+                          date: '15 Sep • 04:30 pm',
+                          horsesCount: 2,
+                          from: "DEC",
+                          to: "DEH",
+                          transportType: "Hospital Transport",
+                          bookingId: 'LT9677',
+                        ),
+                      );
+                    }),
             const SizedBox(
-              height: 40,
+              height: 60,
             ),
           ],
         ),

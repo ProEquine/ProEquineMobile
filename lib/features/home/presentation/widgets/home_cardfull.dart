@@ -10,7 +10,7 @@ class HomeCardFull extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 55.h,
+      height: 46.h,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),

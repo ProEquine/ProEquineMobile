@@ -11,8 +11,10 @@ import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 
 class RegistrationHeader extends StatelessWidget {
   bool isThereBackButton = false;
+  bool isThereSkip=false;
+  Function? onTapSkip;
 
-  RegistrationHeader({super.key, this.isThereBackButton = false});
+  RegistrationHeader({super.key, this.isThereBackButton = false,this.isThereSkip=false,this.onTapSkip});
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +47,20 @@ class RegistrationHeader extends StatelessWidget {
           Transform.translate(
             offset: Offset(0.0,-2.5),
             child: TextButton(
-              child: const Text(
-                "Sign In",
+              child:  Text(
+                isThereSkip?"Skip":"Sign In",
+                style: const TextStyle(
+                  color: AppColors.yellow,
+                ),
               ),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const LoginScreen()));
+                if(isThereSkip){
+                  onTapSkip!();
+                }else{
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const LoginScreen()));
+                }
+
               },
             ),
           ),

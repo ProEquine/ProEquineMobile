@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
-import 'package:proequine/features/profile/data/verify_phone_route.dart';
-import 'package:proequine/features/profile/domain/profile_cubit.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../features/manage_account/data/verify_phone_route.dart';
 import '../constants/colors/app_colors.dart';
 import '../constants/constants.dart';
 
@@ -32,7 +31,6 @@ class SuccessStateScreen extends StatefulWidget {
 class _SuccessStateScreenState extends State<SuccessStateScreen>
     with TickerProviderStateMixin {
   late final AnimationController _controller;
-  ProfileCubit cubit = ProfileCubit();
 
   @override
   void initState() {
@@ -67,7 +65,7 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 25.0.w, vertical: 10),
               child: Lottie.asset(
-                'assets/animation/check-Animation.json',
+                'assets/animation/PE Success.json',
                 controller: _controller,
                 onLoaded: (composition) {
                   // Configure the AnimationController with the duration of the

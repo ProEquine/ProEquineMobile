@@ -42,7 +42,7 @@ class PrivacyCheckBox extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
               ),
-              activeColor: AppSharedPreferences.getTheme=='ThemeCubitMode.dark'?Colors.white:Colors.black,
+              activeColor: AppColors.yellow,
               value: value,
               onChanged: (bool? val) {
                 onChanged!(val);
@@ -58,7 +58,7 @@ class PrivacyCheckBox extends StatelessWidget {
                     fontSize: 12.5.sp,
                     fontFamily: 'nonotosan',
                     fontWeight: FontWeight.w500,
-                    color: AppSharedPreferences.getTheme=='ThemeCubitMode.dark'?Colors.white:Colors.black,
+                    color: AppSharedPreferences.getTheme=='ThemeCubitMode.dark'?Colors.white:AppColors.blackLight,
                   ),
                   children: [
                     TextSpan(
@@ -68,7 +68,7 @@ class PrivacyCheckBox extends StatelessWidget {
                         fontFamily: 'nonotosan',
                         fontWeight: FontWeight.w400,
                         decoration: TextDecoration.underline,
-                        color: AppSharedPreferences.getTheme=='ThemeCubitMode.dark'?Colors.white:Colors.black,
+                        color: AppSharedPreferences.getTheme=='ThemeCubitMode.dark'?Colors.white:AppColors.blackLight,
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
