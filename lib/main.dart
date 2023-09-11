@@ -36,6 +36,7 @@ import 'package:proequine/features/splash/domain/splash_cubit.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/choose_stable_screen.dart';
 import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
+import 'package:proequine/test_countries.dart';
 import 'package:proequine/test_page.dart';
 import 'package:proequine/theme_cubit_provider.dart';
 
@@ -188,7 +189,7 @@ class MyAppState extends State<MyApp> {
             : AppStyles().lightTheme,
         navigatorObservers: [MyNavigatorObserver()],
         title: 'Pro Equine',
-        home: const LoginScreen(),
+        home: const BottomNavigation(),
         routes: {
           loginRoute: (context) => const LoginScreen(),
           registerRoute: (context) => const RegisterScreen(),

@@ -5,7 +5,7 @@ import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/widgets/custom_dashed_divider_widget.dart';
 import 'package:proequine/core/widgets/divider.dart';
-import 'package:proequine/core/widgets/profile_help_bottom_sheet.dart';
+import 'package:proequine/core/widgets/global_bottom_sheet.dart';
 import 'package:proequine/core/widgets/profile_two_lines_list_tile.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:proequine/core/widgets/rebi_input.dart';

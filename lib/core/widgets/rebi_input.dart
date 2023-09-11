@@ -103,7 +103,7 @@ class _RebiInputState extends State<RebiInput> {
           focusNode: focusNode,
           autofocus: widget.autofocus,
           enableSuggestions: false,
-          cursorColor: AppColors.white,
+          cursorColor: AppColors.blackLight,
           autocorrect: false,
           controller: widget.controller ?? _controller,
           textAlign: widget.textAlign,

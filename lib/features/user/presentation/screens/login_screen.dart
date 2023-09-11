@@ -271,7 +271,8 @@ class _LoginScreenState extends State<LoginScreen> {
             return RebiButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    if(_email.text=='abdalla@proequine.ae'&&_password.text=='Abdalla*123'){
+                    if (_email.text == 'abdalla@proequine.ae' &&
+                        _password.text == 'Abdalla*123') {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

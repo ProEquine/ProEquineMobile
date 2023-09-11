@@ -33,7 +33,7 @@ import '../../../../core/constants/images/app_images.dart';
 import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/date_time_picker.dart';
-import '../../../../core/widgets/profile_help_bottom_sheet.dart';
+import '../../../../core/widgets/global_bottom_sheet.dart';
 import '../../../../core/widgets/profile_two_lines_list_tile.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
@@ -119,7 +119,7 @@ class _ManageAccountFadeLoadingScreenState
           isThereThirdOption: true,
           thirdOptionTitle: 'Help',
           onPressThirdOption: () {
-            showProfileHelpBottomSheet(
+            showGlobalBottomSheet(
                 context: MyApp.navigatorKey.currentState!.context,
                 title: "Account Help",
                 content: Column(
@@ -127,7 +127,7 @@ class _ManageAccountFadeLoadingScreenState
                     ProfileListTileWidget(
                       title: "Update Info",
                       onTap: () {
-                        showProfileHelpBottomSheet(
+                        showGlobalBottomSheet(
                             context: MyApp.navigatorKey.currentState!.context,
                             title: "Update Info",
                             content:
@@ -192,7 +192,7 @@ class _ManageAccountFadeLoadingScreenState
                                       onPressed: () {
                                         /// show and handle change name
                                         if (selectedOption == 'Name') {
-                                          showProfileHelpBottomSheet(
+                                          showGlobalBottomSheet(
                                               context: context,
                                               title: "Change Your Name",
                                               content: Column(
@@ -369,7 +369,7 @@ class _ManageAccountFadeLoadingScreenState
                                         /// show and handle change nationality
                                         else if (selectedOption ==
                                             'Nationality') {
-                                          showProfileHelpBottomSheet(
+                                          showGlobalBottomSheet(
                                               context: context,
                                               title: "Change Your Nationality",
                                               content: Column(
@@ -539,7 +539,7 @@ class _ManageAccountFadeLoadingScreenState
 
                                         /// show and handle change date of birth
                                         else if (selectedOption == 'DOB') {
-                                          showProfileHelpBottomSheet(
+                                          showGlobalBottomSheet(
                                               context: context,
                                               title: "Change Your DOB",
                                               content: Column(
@@ -671,7 +671,7 @@ class _ManageAccountFadeLoadingScreenState
                       isDeleteAccount: true,
                       title: "Delete Account",
                       onTap: () {
-                        showProfileHelpBottomSheet(
+                        showGlobalBottomSheet(
                             context: context,
                             title: "Delete Account",
                             content: Column(

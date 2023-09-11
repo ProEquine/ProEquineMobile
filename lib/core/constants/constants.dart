@@ -39,3 +39,85 @@ const NOTIFICATIONS_CHANNEL_DESCRIPTION = 'Global Channel';
 
 const kPadding = 15.0;
 const kAnimationDuration = Duration(milliseconds: 600);
+
+Map<String, List<String>> cityData = {
+  'Dubai': [
+    'Dubai City',
+    'Jebel Ali',
+    'Al Barsha',
+    'Deira',
+    'Bur Dubai',
+    'Jumeirah',
+    'Downtown Dubai',
+    'Dubai Marina',
+    'Al Qusais',
+    'Satwa',
+    'Business Bay',
+    'Al Quoz',
+    'International City',
+    'Dubai Silicon Oasis',
+    'Palm Jumeirah',
+    'Discovery Gardens',
+    'Dubai Sports City',
+    'Dubai Investment Park',
+    'Al Nahda',
+    'Al Jadaf',
+  ],
+  'Abu Dhabi Emirate': [
+    'Abu Dhabi Island and Internal Islands City',
+    'Abu Dhabi Municipality',
+    'Al Ain City',
+    'Al Ain Municipality',
+    'Al Dhafra',
+    'Al Shamkhah City',
+    'Ar Ruways',
+    'Bani Yas City',
+    'Khalifah A City',
+    'Musaffah',
+    'Muzayriâ€˜',
+    'Zayed City'
+  ],
+  'Sharjah Emirate': [
+    'Sharjah City',
+    'Adh Dhayd',
+    'Al Batayih',
+    'Al Hamriyah',
+    'Al Madam',
+    'Dhaid',
+    ' Dibba Al Hesn',
+    'Kalba',
+    'Khawr FakkÄn',
+    'Khor Fakkan',
+    'Milehah',
+    ' Murbaá¸©',
+  ],
+  'Ajman Emirate': [
+    'Ajman',
+    'Ajman City',
+    'Manama',
+    'Masfout',
+  ],
+  'Ras al-Khaimah': [
+    'Ras Al Khaimah',
+    'Ras Al Khaimah City',
+  ],
+  'Fujairah': [
+    'Al Fujairah City',
+    'Al Fujairah Municipality',
+    'Dibba Al Fujairah Municipality',
+    'Dibba Al-Fujairah',
+    'Dibba Al-Hisn',
+    'Reef Al Fujairah City',
+  ],
+  'Umm al-Quwain': ['Umm AL Quwain', 'Umm Al Quwain City']
+};
+
+const List<String> emiratesStates = [
+  'Abu Dhabi Emirate',
+  'Ajman Emirate',
+  'Dubai',
+  'Fujairah',
+  'Ras al-Khaimah',
+  'Sharjah Emirate',
+  'Umm al-Quwain',
+];

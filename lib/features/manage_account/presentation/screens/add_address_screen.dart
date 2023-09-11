@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_country_state/flutter_country_state.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/utils/rebi_message.dart';
+import 'package:proequine/core/widgets/divider.dart';
+import 'package:proequine/core/widgets/global_bottom_sheet.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
@@ -30,6 +33,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? selectedGender;
   String? selectedState;
+  String? selectedCity;
 
   @override
   void initState() {
@@ -82,63 +86,6 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 7),
-                              child: RebiInput(
-                                hintText: 'City'.tra,
-                                controller: city,
-                                keyboardType: TextInputType.name,
-                                textInputAction: TextInputAction.done,
-                                isOptional: false,
-                                color: AppColors.formsLabel,
-                                readOnly: false,
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 13),
-                                obscureText: false,
-                                validator: (value) {
-                                  return Validator.requiredValidator(city.text);
-                                },
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 7),
-                              child: RebiInput(
-                                hintText: 'Address'.tra,
-                                controller: address,
-                                keyboardType: TextInputType.name,
-                                textInputAction: TextInputAction.done,
-                                isOptional: false,
-                                color: AppColors.formsLabel,
-                                readOnly: false,
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 13),
-                                obscureText: false,
-                                validator: (value) {
-                                  return Validator.requiredValidator(
-                                      address.text);
-                                },
-                              ),
-                            ),
-                            // Padding(
-                            //   padding:
-                            //   const EdgeInsets.symmetric(vertical: 7),
-                            //   child: RebiInput(
-                            //     hintText: 'Code'.tra,
-                            //     controller: code,
-                            //     keyboardType: TextInputType.none,
-                            //     textInputAction: TextInputAction.done,
-                            //     isOptional: false,
-                            //     color: AppColors.formsLabel,
-                            //     readOnly: false,
-                            //     contentPadding: const EdgeInsets.symmetric(
-                            //         horizontal: 20, vertical: 13),
-                            //     obscureText: false,
-                            //     validator: (value) {
-                            //       return Validator.requiredValidator(
-                            //           code.text);
-                            //     },
-                            //   ),
-                            // ),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 7),
                               child: RebiInput(
@@ -198,6 +145,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                       ),
                                       onSelect: (Country selectedCountry) {
                                         country.text = selectedCountry.name;
+                                        state.text = '';
+
+                                        city.text = '';
                                         setState(() {
                                           Variables.country =
                                               selectedCountry.name;
@@ -220,62 +170,203 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 7),
-                                child: RebiInput(
-                                  hintText: 'State'.tra,
-                                  controller: state,
-                                  keyboardType: TextInputType.name,
-                                  textInputAction: TextInputAction.done,
-                                  onTap: () {
-                                    Print("States is ${Variables.state}");
-                                    showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(40.0),
-                                          topRight: Radius.circular(40.0),
-                                        ),
+                                child: country.text == 'United Arab Emirates'
+                                    ? RebiInput(
+                                        hintText: 'State'.tra,
+                                        controller: state,
+                                        keyboardType: TextInputType.name,
+                                        textInputAction: TextInputAction.done,
+                                        onTap: () {
+                                          Print("States is ${Variables.state}");
+                                          showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(40.0),
+                                                topRight: Radius.circular(40.0),
+                                              ),
+                                            ),
+                                            context: context,
+                                            isDismissible: false,
+                                            builder: (context) => SizedBox(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.8,
+                                              child: StateDialog(
+                                                stateHeaderStyle:
+                                                    const TextStyle(
+                                                        color: AppColors
+                                                            .blackLight,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                style: const TextStyle(
+                                                    color: AppColors.blackLight,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                subStringStyle: const TextStyle(
+                                                    color:
+                                                        AppColors.blackLight),
+                                                substringBackground:
+                                                    AppColors.blackLight,
+                                                selectedStateBackgroundColor:
+                                                    AppColors
+                                                        .backgroundColorLight,
+                                                notSelectedStateBackgroundColor:
+                                                    AppColors
+                                                        .backgroundColorLight,
+                                                onSelectedState: () {
+                                                  setState(() {
+                                                    state.text =
+                                                        Variables.state;
+                                                    city.text = '';
+                                                    Print(
+                                                        "choosed state ${state.text}");
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        autoValidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        isOptional: false,
+                                        color: AppColors.formsLabel,
+                                        readOnly: true,
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 13),
+                                        obscureText: false,
+                                        validator: (value) {},
+                                      )
+                                    : RebiInput(
+                                        hintText: 'State'.tra,
+                                        controller: state,
+                                        keyboardType: TextInputType.name,
+                                        textInputAction: TextInputAction.done,
+                                        autoValidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        isOptional: false,
+                                        color: AppColors.formsLabel,
+                                        readOnly: false,
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 13),
+                                        obscureText: false,
+                                        validator: (value) {
+                                          return Validator.requiredValidator(
+                                              state.text);
+                                        },
                                       ),
-                                      context: context,
-                                      isDismissible: false,
-                                      builder: (context) => SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.8,
-                                        child: StateDialog(
-                                          stateHeaderStyle: const TextStyle(
-                                              color: AppColors.blackLight,
-                                              fontWeight: FontWeight.w500),
-                                          style: const TextStyle(
-                                              color: AppColors.blackLight,
-                                              fontWeight: FontWeight.w500),
-                                          subStringStyle: const TextStyle(
-                                              color: AppColors.blackLight),
-                                          substringBackground: AppColors.blackLight,
-                                          selectedStateBackgroundColor:
-                                              AppColors.backgroundColorLight,
-                                          notSelectedStateBackgroundColor:
-                                              AppColors.backgroundColorLight,
-                                          onSelectedState: () {
-                                            setState(() {
-                                              state.text = Variables.state;
-                                              Print(
-                                                  "choosed state ${state.text}");
-                                            });
-                                          },
-                                        ),
+                              ),
+                            ),
+                            Visibility(
+                              visible: state.text == '' ? false : true,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 7),
+                                child: country.text == 'United Arab Emirates'
+                                    ? RebiInput(
+                                        hintText: 'City'.tra,
+                                        controller: city,
+                                        keyboardType: TextInputType.name,
+                                        textInputAction: TextInputAction.done,
+                                        isOptional: false,
+                                        onTap: () {
+                                          if (state.text.isNotEmpty &&
+                                              cityData
+                                                  .containsKey(state.text)) {
+                                            List<String> citiesInEmirate =
+                                                cityData[state.text]!;
+                                            showGlobalBottomSheet(
+                                                height: 75.0.h,
+                                                context: context,
+                                                title: "Select City",
+                                                content: ListView.separated(
+                                                  shrinkWrap: true,
+                                                  physics:
+                                                      NeverScrollableScrollPhysics(),
+                                                  separatorBuilder:
+                                                      (context, index) {
+                                                    return CustomDivider();
+                                                  },
+                                                  itemCount:
+                                                      citiesInEmirate.length,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        setState(() {
+                                                          city.text =
+                                                              citiesInEmirate[
+                                                                  index];
+                                                        });
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: ListTile(
+                                                        title: Text(
+                                                            citiesInEmirate[
+                                                                index]),
+                                                        // Add other ListTile properties as needed
+                                                      ),
+                                                    );
+                                                  },
+                                                ));
+                                          } else {
+                                            RebiMessage.error(
+                                                msg:
+                                                    "Please Select correct state",
+                                                context: context);
+                                          }
+                                        },
+                                        color: AppColors.formsLabel,
+                                        readOnly: true,
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 13),
+                                        obscureText: false,
+                                        validator: (value) {
+                                          return Validator.requiredValidator(
+                                              city.text);
+                                        },
+                                      )
+                                    : RebiInput(
+                                        hintText: 'City'.tra,
+                                        controller: city,
+                                        keyboardType: TextInputType.name,
+                                        textInputAction: TextInputAction.done,
+                                        isOptional: false,
+                                        color: AppColors.formsLabel,
+                                        readOnly: false,
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 13),
+                                        obscureText: false,
+                                        validator: (value) {
+                                          return Validator.requiredValidator(
+                                              city.text);
+                                        },
                                       ),
-                                    );
-                                  },
-                                  autoValidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  isOptional: false,
-                                  color: AppColors.formsLabel,
-                                  readOnly: true,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 13),
-                                  obscureText: false,
-                                  validator: (value) {},
-                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 7),
+                              child: RebiInput(
+                                hintText: 'Address'.tra,
+                                controller: address,
+                                keyboardType: TextInputType.name,
+                                textInputAction: TextInputAction.done,
+                                isOptional: false,
+                                color: AppColors.formsLabel,
+                                readOnly: false,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 13),
+                                obscureText: false,
+                                validator: (value) {
+                                  return Validator.requiredValidator(
+                                      address.text);
+                                },
                               ),
                             ),
                           ],

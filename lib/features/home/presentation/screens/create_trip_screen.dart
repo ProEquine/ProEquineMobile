@@ -154,7 +154,6 @@ class CreateTripScreenState extends State<CreateTripScreen>
     'Salsabeel vet. establishment '
   ];
 
-
   String selectedFilter = "All";
 
   Future<bool> onWillPop() {
@@ -345,7 +344,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
                               keyboardType: TextInputType.name,
                               textInputAction: TextInputAction.done,
                               autoValidateMode:
-                              AutovalidateMode.onUserInteraction,
+                                  AutovalidateMode.onUserInteraction,
                               isOptional: false,
                               color: AppColors.formsLabel,
                               onTap: () {
@@ -358,84 +357,72 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                           SizedBox(
                                             height: 25,
                                             child: StatefulBuilder(
-                                                builder:
-                                                    (context, setState) {
-                                                  return ListView.builder(
-                                                    shrinkWrap: true,
-                                                    scrollDirection:
+                                                builder: (context, setState) {
+                                              return ListView.builder(
+                                                shrinkWrap: true,
+                                                scrollDirection:
                                                     Axis.horizontal,
-                                                    itemCount:
-                                                    filteredEmirates
-                                                        .length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      bool isSelected =
-                                                          filteredEmirates[
-                                                          index] ==
-                                                              selectedFilter;
-                                                      return GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            selectedFilter =
+                                                itemCount:
+                                                    filteredEmirates.length,
+                                                itemBuilder: (context, index) {
+                                                  bool isSelected =
+                                                      filteredEmirates[index] ==
+                                                          selectedFilter;
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        selectedFilter =
                                                             filteredEmirates[
-                                                            index];
-                                                          });
-                                                          print(
-                                                              selectedFilter);
-                                                          print(
-                                                              filteredEmirates[
-                                                              index]);
-                                                        },
-                                                        child: Container(
-                                                          width: 70,
-                                                          // Adjust the width as needed
-                                                          margin:
-                                                          const EdgeInsets
+                                                                index];
+                                                      });
+                                                      print(selectedFilter);
+                                                      print(filteredEmirates[
+                                                          index]);
+                                                    },
+                                                    child: Container(
+                                                      width: 70,
+                                                      // Adjust the width as needed
+                                                      margin: const EdgeInsets
                                                               .symmetric(
-                                                              horizontal:
-                                                              10),
-                                                          decoration:
+                                                          horizontal: 10),
+                                                      decoration:
                                                           ShapeDecoration(
+                                                        color: isSelected
+                                                            ? AppColors.yellow
+                                                            : AppColors
+                                                                .backgroundColorLight,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          side: const BorderSide(
+                                                              width: 0.50,
+                                                              color: AppColors
+                                                                  .borderColor),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                      ),
+                                                      child: Center(
+                                                        child: Text(
+                                                          filteredEmirates[
+                                                              index],
+                                                          style: TextStyle(
                                                             color: isSelected
                                                                 ? AppColors
-                                                                .yellow
-                                                                : AppColors
-                                                                .backgroundColorLight,
-                                                            shape:
-                                                            RoundedRectangleBorder(
-                                                              side: const BorderSide(
-                                                                  width: 0.50,
-                                                                  color: AppColors
-                                                                      .borderColor),
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  10),
-                                                            ),
-                                                          ),
-                                                          child: Center(
-                                                            child: Text(
-                                                              filteredEmirates[
-                                                              index],
-                                                              style:
-                                                              TextStyle(
-                                                                color: isSelected
-                                                                    ? AppColors
                                                                     .whiteLight
-                                                                    : AppColors
+                                                                : AppColors
                                                                     .yellow,
-                                                                fontSize: 10,
-                                                                fontWeight:
-                                                                FontWeight
-                                                                    .w500,
-                                                              ),
-                                                            ),
+                                                            fontSize: 10,
+                                                            fontWeight:
+                                                                FontWeight.w500,
                                                           ),
                                                         ),
-                                                      );
-                                                    },
+                                                      ),
+                                                    ),
                                                   );
-                                                }),
+                                                },
+                                              );
+                                            }),
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -443,24 +430,21 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                           ListView.separated(
                                             shrinkWrap: true,
                                             physics:
-                                            NeverScrollableScrollPhysics(),
+                                                NeverScrollableScrollPhysics(),
                                             itemCount: places.length,
-                                            separatorBuilder:
-                                                (context, index) {
+                                            separatorBuilder: (context, index) {
                                               return const CustomDivider();
                                             },
-                                            itemBuilder:
-                                                (context, index) {
+                                            itemBuilder: (context, index) {
                                               return GestureDetector(
                                                 onTap: () {
                                                   setState(() {
                                                     selectedPlace =
-                                                    places[index];
+                                                        places[index];
                                                     pickUpLocation.text =
-                                                    places[index];
+                                                        places[index];
 
-                                                    Navigator.pop(
-                                                        context);
+                                                    Navigator.pop(context);
                                                     Print(
                                                         "Selected Place ${places[index]}");
                                                     Print(
@@ -469,8 +453,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                                 },
                                                 child: ListTile(
                                                   minVerticalPadding: 10,
-                                                  title:
-                                                  Text(places[index]),
+                                                  title: Text(places[index]),
                                                 ),
                                               );
                                             },
@@ -1085,7 +1068,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
                               keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.done,
                               autoValidateMode:
-                              AutovalidateMode.onUserInteraction,
+                                  AutovalidateMode.onUserInteraction,
                               inputFormatters: [
                                 LengthLimitingTextInputFormatter(2),
                                 // Limit input to 2 characters
@@ -1105,127 +1088,20 @@ class CreateTripScreenState extends State<CreateTripScreen>
                               },
                             ),
                           ),
-                          widget.type=='hospital'?SizedBox():Visibility(
-                            visible: selectedTrip == 'No Return' ? false : true,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: kPadding, vertical: 6),
-                              child: selectedTrip == 'Same day return'
-                                  ? RebiInput(
-                                      hintText: expectedTimePicked!.text.isEmpty
-                                          ? 'Time'
-                                          : expectedTimePicked?.text,
-                                      controller: expectedTimePicked,
-                                      onTap: () async {
-                                        TimeOfDay? pickedTime =
-                                            await showTimePicker(
-                                          confirmText: "Confirm".tra,
-                                          context: context,
-                                          cancelText: "Cancel".tra,
-                                          initialEntryMode:
-                                              TimePickerEntryMode.dial,
-                                          initialTime: TimeOfDay.fromDateTime(
-                                              DateTime.utc(0, 0, 0, 15, 0)),
-                                        );
-
-                                        Print(pickedTime);
-
-                                        if (pickedTime != null) {
-                                          expectedTime =
-                                              pickedTime.toDateTime();
-                                          String parsedTime =
-                                              pickedTime.format(context);
-
-                                          setState(() {
-                                            expectedTimePicked?.text =
-                                                parsedTime;
-                                          });
-                                        } else {}
-                                      },
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              horizontal: 20, vertical: 13),
-                                      isOptional: false,
-                                      readOnly: true,
-                                      validator: (value) {
-                                        if (value!.isNotEmpty &&
-                                            expectedPickDate
-                                                .isSameDate(pickDate) &&
-                                            expectedTime!.isBefore(time!)) {
-                                          return 'Correct time please';
-                                        }
-                                        // return  Validator.requiredValidator(expectedTimePicked?.text);
-                                      },
-                                    )
-                                  : Row(
-                                      children: [
-                                        Expanded(
-                                          child: RebiInput(
-                                            hintText: 'Return Date'.tra,
-                                            controller: expectedDate,
-                                            keyboardType: TextInputType.name,
-                                            textInputAction:
-                                                TextInputAction.done,
-                                            onTap: () {
-                                              selectDate(
-                                                context: context,
-                                                from: pickDate.add(
-                                                    const Duration(days: 1)),
-                                                to: DateTime(2025, 1, 1),
-                                                isSupportChangingYears: false,
-                                                selectedOurDay: pickDate.add(
-                                                    const Duration(days: 1)),
-                                                controller: expectedDate!,
-                                                focusDay: focusedDay,
-                                              );
-                                            },
-                                            autoValidateMode: AutovalidateMode
-                                                .onUserInteraction,
-                                            isOptional: false,
-                                            color: AppColors.formsLabel,
-                                            readOnly: true,
-                                            contentPadding:
-                                                const EdgeInsets.symmetric(
-                                                    horizontal: 20,
-                                                    vertical: 13),
-                                            obscureText: false,
-                                            validator: (value) {
-                                              if (value!.isNotEmpty) {
-                                                DateFormat inputFormat =
-                                                    DateFormat("dd MMM yyyy");
-                                                DateTime setUpdatedDate =
-                                                    inputFormat.parse(value);
-                                                expectedPickDate =
-                                                    setUpdatedDate;
-                                              } else {
-                                                return "";
-                                              }
-
-                                              if (value.isNotEmpty &&
-                                                  (expectedPickDate
-                                                          .isBefore(pickDate) ||
-                                                      expectedPickDate
-                                                          .isAtSameMomentAs(
-                                                              pickDate))) {
-                                                return "Correct date please"
-                                                    .tra;
-                                              } else {
-                                                return'';
-                                              }
-                                              return Validator
-                                                  .requiredValidator(
-                                                      expectedDate?.text);
-                                            },
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Expanded(
-                                          child: RebiInput(
+                          widget.type == 'hospital'
+                              ? SizedBox()
+                              : Visibility(
+                                  visible: selectedTrip == 'No Return'
+                                      ? false
+                                      : true,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: kPadding, vertical: 6),
+                                    child: selectedTrip == 'Same day return'
+                                        ? RebiInput(
                                             hintText:
                                                 expectedTimePicked!.text.isEmpty
-                                                    ? 'Return Time'
+                                                    ? 'Time'
                                                     : expectedTimePicked?.text,
                                             controller: expectedTimePicked,
                                             onTap: () async {
@@ -1247,7 +1123,6 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                               if (pickedTime != null) {
                                                 expectedTime =
                                                     pickedTime.toDateTime();
-                                                //output 10:51 PM
                                                 String parsedTime =
                                                     pickedTime.format(context);
 
@@ -1271,15 +1146,123 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                                       .isBefore(time!)) {
                                                 return 'Correct time please';
                                               }
-                                              // return Validator.requiredValidator(
-                                              //     expectedTimePicked?.text);
+                                              // return  Validator.requiredValidator(expectedTimePicked?.text);
                                             },
+                                          )
+                                        : Row(
+                                            children: [
+                                              Expanded(
+                                                child: RebiInput(
+                                                  hintText: 'Return Date'.tra,
+                                                  controller: expectedDate,
+                                                  keyboardType:
+                                                      TextInputType.name,
+                                                  textInputAction:
+                                                      TextInputAction.done,
+                                                  onTap: () {
+                                                    selectDate(
+                                                      context: context,
+                                                      from: pickDate.add(
+                                                          const Duration(
+                                                              days: 1)),
+                                                      to: DateTime(2025, 1, 1),
+                                                      isSupportChangingYears:
+                                                          false,
+                                                      selectedOurDay: pickDate
+                                                          .add(const Duration(
+                                                              days: 1)),
+                                                      controller: expectedDate!,
+                                                      focusDay: focusedDay,
+                                                    );
+                                                  },
+                                                  autoValidateMode:
+                                                      AutovalidateMode
+                                                          .onUserInteraction,
+                                                  isOptional: false,
+                                                  color: AppColors.formsLabel,
+                                                  readOnly: true,
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 20,
+                                                          vertical: 13),
+                                                  obscureText: false,
+                                                  validator: (value) {
+                                                    return Validator
+                                                        .requiredValidator(
+                                                            expectedDate?.text);
+                                                  },
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              Expanded(
+                                                child: RebiInput(
+                                                  hintText: expectedTimePicked!
+                                                          .text.isEmpty
+                                                      ? 'Return Time'
+                                                      : expectedTimePicked
+                                                          ?.text,
+                                                  controller:
+                                                      expectedTimePicked,
+                                                  onTap: () async {
+                                                    TimeOfDay? pickedTime =
+                                                        await showTimePicker(
+                                                      confirmText:
+                                                          "Confirm".tra,
+                                                      context: context,
+                                                      cancelText: "Cancel".tra,
+                                                      initialEntryMode:
+                                                          TimePickerEntryMode
+                                                              .dial,
+                                                      initialTime: TimeOfDay
+                                                          .fromDateTime(
+                                                              DateTime.utc(0, 0,
+                                                                  0, 15, 0)),
+                                                    );
+
+                                                    Print(pickedTime);
+
+                                                    if (pickedTime != null) {
+                                                      expectedTime = pickedTime
+                                                          .toDateTime();
+                                                      //output 10:51 PM
+                                                      String parsedTime =
+                                                          pickedTime
+                                                              .format(context);
+
+                                                      setState(() {
+                                                        expectedTimePicked
+                                                            ?.text = parsedTime;
+                                                      });
+                                                    } else {}
+                                                  },
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 20,
+                                                          vertical: 13),
+                                                  isOptional: false,
+                                                  readOnly: true,
+                                                  validator: (value) {
+                                                    if (value!.isNotEmpty &&
+                                                        expectedPickDate
+                                                            .isSameDate(
+                                                                pickDate) &&
+                                                        expectedTime!
+                                                            .isBefore(time!)) {
+                                                      return 'Correct time please';
+                                                    }
+                                                    // return Validator.requiredValidator(
+                                                    //     expectedTimePicked?.text);
+                                                  },
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                            ),
-                          ),
+                                  ),
+                                ),
                         ],
                       ),
                       Spacer(),
@@ -1294,7 +1277,6 @@ class CreateTripScreenState extends State<CreateTripScreen>
                               bool isOneHourAfter = timeDifference.inHours >= 1;
                               if (widget.type == 'hospital') {
                                 if (_formKey.currentState!.validate() &&
-                                    selectedTrip != null &&
                                     selectedHospital != null) {
                                   TripServiceDataModel tripServiceModel =
                                       TripServiceDataModel(
@@ -1357,9 +1339,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                       context: context);
                                 }
                               } else {
-                                if (_formKey.currentState!.validate() &&
-                                    selectedTrip != null
-                                ) {
+                                if (_formKey.currentState!.validate()) {
                                   DateFormat inputFormat =
                                       DateFormat("dd MMM yyyy");
                                   String formatedDate =
