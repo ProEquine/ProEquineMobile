@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/features/booking/presentation/screens/timeline.dart';
 import 'package:proequine/features/booking/presentation/widgets/bookingitem.dart';
+import 'package:proequine/features/booking/presentation/widgets/empty_service_widget.dart';
 import 'package:proequine/features/booking/presentation/widgets/peniding_booking_items.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import 'booking_item_widget.dart';
@@ -225,42 +227,42 @@ class Booking extends StatelessWidget {
             //   },
             // ),
             type == 'Shipping'
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 3),
-                        child: const BookingItemWidget(
-                          status: "Confirmed",
-                          date: '15 Sep • 04:30 pm',
-                          horsesCount: 2,
-                          from: "DEC",
-                          to: "DEH",
-                          transportType: "Shipping",
-                          bookingId: 'LT9677',
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      SizedBox(height: 200,),
+                      Center(
+                        child: Text(
+                          "Comming Soon",
+                          style: TextStyle(
+                              color: AppColors.blackLight,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 30),
                         ),
-                      );
-                    })
-                : ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return const Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 3),
-                        child: BookingItemWidget(
-                          status: "Pending",
-                          date: '15 Sep • 04:30 pm',
-                          horsesCount: 2,
-                          from: "DEC",
-                          to: "DEH",
-                          transportType: "Hospital Transport",
-                          bookingId: 'LT9677',
-                        ),
-                      );
-                    }),
+                      ),
+                    ],
+                  )
+                : type == 'Transport'
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 3),
+                            child: BookingItemWidget(
+                              status: "Pending",
+                              date: '15 Sep • 04:30 pm',
+                              horsesCount: 2,
+                              from: "DEC",
+                              to: "DEH",
+                              transportType: "Hospital Transport",
+                              bookingId: 'LT9677',
+                            ),
+                          );
+                        })
+                    : EmptyServiceScreen(serviceType: type),
             const SizedBox(
               height: 60,
             ),

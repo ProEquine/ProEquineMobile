@@ -6,6 +6,7 @@ import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/features/home/presentation/screens/create_export_screen.dart';
 import 'package:proequine/features/home/presentation/screens/create_import_screen.dart';
 import 'package:proequine/features/home/presentation/screens/create_trip_screen.dart';
+import 'package:proequine/features/home/presentation/screens/media_list_screen.dart';
 import 'package:proequine/features/home/presentation/screens/shows_screen.dart';
 import 'package:proequine/features/home/presentation/widgets/service_widget.dart';
 import 'package:proequine/features/home/presentation/widgets/shipping_widget.dart';
@@ -133,7 +134,8 @@ class _MainScreenState extends State<MainScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => const CreateTripScreen(
+                                        builder: (context) =>
+                                            const CreateTripScreen(
                                               type: 'hospital',
                                             )));
                               },
@@ -195,6 +197,39 @@ class _MainScreenState extends State<MainScreen> {
                           },
                         ),
                       ],
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 20, bottom: 10),
+                      child: Text(
+                        'Media',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    MediaListScreen(type: "Media Services")));
+                      },
+                      child: Image.asset(AppImages.mediaPics),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 10, bottom: 7),
+                      child: Text(
+                        'Photos and videos ',
+                        style: TextStyle(
+                          color: Color(0xFF6B7280),
+                          fontSize: 14,
+                          fontFamily: 'notosan',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 70,

@@ -116,7 +116,7 @@ class _BookingMainState extends State<BookingMain> {
               ];
             },
             body: DefaultTabController(
-              length: 2,
+              length: 3,
               child:
                   // body:Padding(
                   //     padding:
@@ -169,6 +169,9 @@ class _BookingMainState extends State<BookingMain> {
                                 text: "Transport",
                               ),
                               Tab(
+                                text: "Media",
+                              ),
+                              Tab(
                                 text: "Shipping",
                               )
                             ]),
@@ -185,9 +188,15 @@ class _BookingMainState extends State<BookingMain> {
                        Padding(
                            padding: const EdgeInsets.symmetric(horizontal: kPadding),
                            child:Booking(
-                            type: "Shipping",
+                            type: "Media",
                           ),
                        ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: kPadding),
+                            child:Booking(
+                              type: "Shipping",
+                            ),
+                          ),
               ],
                         ),
 

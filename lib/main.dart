@@ -200,7 +200,7 @@ class MyAppState extends State<MyApp> {
           inboxRoute: (context) => const BottomNavigation(
                 selectedIndex: 2,
               ),
-          createEvent: ((context) => const CreateEventScreen()),
+          // createEvent: ((context) => const CreateEventScreen()),
           createTrip: ((context) => const CreateTripScreen()),
           accountInfo: (context) => AccountInfoScreen(),
           editProfile: (context) => const ManageAccountScreen(),
