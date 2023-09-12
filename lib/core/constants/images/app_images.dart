@@ -22,6 +22,7 @@ class AppImages {
   static const eventTransport = "assets/images/event-transport.png";
   static const summary = "assets/images/summary.png";
   static const missWhite = "assets/images/miss_white.png";
+  static const mediaPics = "assets/images/media_pic.png";
   static const cando = "assets/images/cando.png";
   static const stormy = "assets/images/stormy.png";
 
@@ -99,4 +100,8 @@ class AppIcons {
   static const tikTokMedia = 'assets/icons/tiktok_media.svg';
   static const canceled = 'assets/icons/canceled.svg';
   static const completedHistory = 'assets/icons/completed.svg';
+
+  static const emptyMedia = 'assets/icons/empty_media.svg';
+  static const emptyShipping = 'assets/icons/empty_shipping.svg';
+  static const emptyTransport = 'assets/icons/empty_transport.svg';
 }

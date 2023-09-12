@@ -208,11 +208,6 @@ class _ChooseStableScreenState extends State<ChooseStableScreen> {
                                     child: RebiInput(
                                       hintText: 'Location'.tra,
                                       controller: _mainStableLocation,
-                                      onChanged: (value){
-                                        setState(() {
-
-                                        });
-                                      },
                                       scrollPadding:
                                           const EdgeInsets.only(bottom: 100),
                                       keyboardType: TextInputType.url,

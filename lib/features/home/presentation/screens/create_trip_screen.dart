@@ -10,11 +10,9 @@ import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/features/home/data/trip_service_data_model.dart';
 import 'package:proequine/features/home/presentation/screens/chose_horses_trip_screen.dart';
-import 'package:proequine/features/home/presentation/screens/local_summary.dart';
 import 'package:proequine/features/home/presentation/widgets/hospital_bottom_sheet.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../../core/global_functions/global_statics_drop_down.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
@@ -22,8 +20,7 @@ import '../../../../core/widgets/date_time_picker.dart';
 import '../../../../core/widgets/divider.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
-import '../../../../core/widgets/drop_down_menu_widget.dart';
-import '../../data/trip_service_data_model.dart';
+import '../widgets/select_place_form_widget.dart';
 
 class CreateTripScreen extends StatefulWidget {
   final String? type;
@@ -61,31 +58,6 @@ class CreateTripScreenState extends State<CreateTripScreen>
     final time = DateFormat.Hm().format(dateTime);
     return time;
   }
-
-  List<String> filteredEmirates = [
-    'All',
-    'AUD',
-    'DXB',
-    'SHJ',
-    'AUJ',
-    'UAQ',
-    'RKT',
-    'FJR',
-  ];
-  List<String> places = [
-    'ADEC - Abu Dhabi Equestrian Club',
-    'AESGC - Al Ain Equestrian',
-    'ABEC - Al Bahiya Equestrian Club',
-    'AFISR - AL Forsan International Sports Resort',
-    'BEAC - Boudheib Equestrian Academy',
-    'SCEC - Sustainable City Equestrian Club',
-    'SERC - Sharjah Equestrian and Racing Club',
-    'EEC - Emirates Equestrian Center',
-    'FSEC - Fujairah Shooting and Equestrian Club Kalba',
-    'SERC - Sharjah Equestrian and Racing Club',
-  ];
-
-  int selectedIndex = 0;
 
   DateTime? time;
   DateTime? expectedTime;
@@ -182,6 +154,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
     isEmailVerified = ModalRoute.of(context)?.settings.arguments as bool?;
     expectedDateTime = pickDate.add(const Duration(days: 1));
     isEmailVerified ??= false;
+
     return WillPopScope(
       onWillPop: onWillPop,
       child: Scaffold(
@@ -335,142 +308,197 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                     ),
                                   ),
                                 ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: kPadding, vertical: 6),
-                            child: RebiInput(
-                              hintText: 'Pickup Location'.tra,
-                              controller: pickUpLocation,
-                              keyboardType: TextInputType.name,
-                              textInputAction: TextInputAction.done,
-                              autoValidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              isOptional: false,
-                              color: AppColors.formsLabel,
-                              onTap: () {
-                                showHospitalsAndPlacesBottomSheet(
-                                    context: context,
-                                    title: "Select Place",
-                                    content: SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 25,
-                                            child: StatefulBuilder(
-                                                builder: (context, setState) {
-                                              return ListView.builder(
-                                                shrinkWrap: true,
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemCount:
-                                                    filteredEmirates.length,
-                                                itemBuilder: (context, index) {
-                                                  bool isSelected =
-                                                      filteredEmirates[index] ==
-                                                          selectedFilter;
-                                                  return GestureDetector(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        selectedFilter =
-                                                            filteredEmirates[
-                                                                index];
-                                                      });
-                                                      print(selectedFilter);
-                                                      print(filteredEmirates[
-                                                          index]);
-                                                    },
-                                                    child: Container(
-                                                      width: 70,
-                                                      // Adjust the width as needed
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 10),
-                                                      decoration:
-                                                          ShapeDecoration(
-                                                        color: isSelected
-                                                            ? AppColors.yellow
-                                                            : AppColors
-                                                                .backgroundColorLight,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          side: const BorderSide(
-                                                              width: 0.50,
-                                                              color: AppColors
-                                                                  .borderColor),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                        ),
-                                                      ),
-                                                      child: Center(
-                                                        child: Text(
-                                                          filteredEmirates[
-                                                              index],
-                                                          style: TextStyle(
-                                                            color: isSelected
-                                                                ? AppColors
-                                                                    .whiteLight
-                                                                : AppColors
-                                                                    .yellow,
-                                                            fontSize: 10,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              );
-                                            }),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          ListView.separated(
-                                            shrinkWrap: true,
-                                            physics:
-                                                NeverScrollableScrollPhysics(),
-                                            itemCount: places.length,
-                                            separatorBuilder: (context, index) {
-                                              return const CustomDivider();
-                                            },
-                                            itemBuilder: (context, index) {
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  setState(() {
-                                                    selectedPlace =
-                                                        places[index];
-                                                    pickUpLocation.text =
-                                                        places[index];
-
-                                                    Navigator.pop(context);
-                                                    Print(
-                                                        "Selected Place ${places[index]}");
-                                                    Print(
-                                                        "Place Name $selectedPlace");
-                                                  });
-                                                },
-                                                child: ListTile(
-                                                  minVerticalPadding: 10,
-                                                  title: Text(places[index]),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ));
-                              },
-                              readOnly: true,
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 13),
-                              obscureText: false,
-                              validator: (value) {
-                                return Validator.requiredValidator(
-                                    pickUpLocation.text);
-                              },
-                            ),
+                          // Padding(
+                          //   padding: const EdgeInsets.symmetric(
+                          //       horizontal: kPadding, vertical: 6),
+                          //   child: RebiInput(
+                          //     hintText: 'Pickup Location'.tra,
+                          //     controller: pickUpLocation,
+                          //     keyboardType: TextInputType.name,
+                          //     textInputAction: TextInputAction.done,
+                          //     autoValidateMode:
+                          //         AutovalidateMode.onUserInteraction,
+                          //     isOptional: false,
+                          //     color: AppColors.formsLabel,
+                          //     onTap: () {
+                          //       List<String> filteredPlaces = [];
+                          //       if (places.containsKey(selectedFilter)) {
+                          //         Print("True");
+                          //         showHospitalsAndPlacesBottomSheet(
+                          //             context: context,
+                          //             title: "Select Place",
+                          //             content: SingleChildScrollView(
+                          //               child: StatefulBuilder(
+                          //                   builder: (context, setState) {
+                          //                 return Column(
+                          //                   children: [
+                          //                     SizedBox(
+                          //                       height: 25,
+                          //                       child: ListView.builder(
+                          //                         shrinkWrap: true,
+                          //                         scrollDirection:
+                          //                             Axis.horizontal,
+                          //                         itemCount:
+                          //                             filteredEmirates.length,
+                          //                         itemBuilder:
+                          //                             (context, index) {
+                          //                           bool isSelected =
+                          //                               filteredEmirates[
+                          //                                       index] ==
+                          //                                   selectedFilter;
+                          //                           return GestureDetector(
+                          //                             onTap: () {
+                          //                               setState(() {
+                          //                                 selectedFilter =
+                          //                                     getFullName(
+                          //                                         filteredEmirates[
+                          //                                             index]);
+                          //                                 filteredPlaces = places[
+                          //                                         selectedFilter] ??
+                          //                                     [''];
+                          //                               });
+                          //                               print(selectedFilter);
+                          //                               print(filteredEmirates[
+                          //                                   index]);
+                          //                               print(places[
+                          //                                   selectedFilter]);
+                          //                               print(
+                          //                                   'filteredPlaces$filteredPlaces');
+                          //                             },
+                          //                             child: Container(
+                          //                               width: 70,
+                          //                               // Adjust the width as needed
+                          //                               margin: const EdgeInsets
+                          //                                       .symmetric(
+                          //                                   horizontal: 10),
+                          //                               decoration:
+                          //                                   ShapeDecoration(
+                          //                                 color: isSelected
+                          //                                     ? AppColors.yellow
+                          //                                     : AppColors
+                          //                                         .backgroundColorLight,
+                          //                                 shape:
+                          //                                     RoundedRectangleBorder(
+                          //                                   side: const BorderSide(
+                          //                                       width: 0.50,
+                          //                                       color: AppColors
+                          //                                           .borderColor),
+                          //                                   borderRadius:
+                          //                                       BorderRadius
+                          //                                           .circular(
+                          //                                               10),
+                          //                                 ),
+                          //                               ),
+                          //                               child: Center(
+                          //                                 child: Text(
+                          //                                   filteredEmirates[
+                          //                                       index],
+                          //                                   style: TextStyle(
+                          //                                     color: isSelected
+                          //                                         ? AppColors
+                          //                                             .whiteLight
+                          //                                         : AppColors
+                          //                                             .yellow,
+                          //                                     fontSize: 10,
+                          //                                     fontWeight:
+                          //                                         FontWeight
+                          //                                             .w500,
+                          //                                   ),
+                          //                                 ),
+                          //                               ),
+                          //                             ),
+                          //                           );
+                          //                         },
+                          //                       ),
+                          //                     ),
+                          //                     const SizedBox(
+                          //                       height: 10,
+                          //                     ),
+                          //                     StatefulBuilder(
+                          //                         builder: (context, setState) {
+                          //                       filteredPlaces =
+                          //                           places[selectedFilter] ??
+                          //                               [];
+                          //                       Print(
+                          //                           'filteredPlaces from list$filteredPlaces');
+                          //                       List<String> filteredForList =
+                          //                           filteredPlaces;
+                          //                       if (filteredForList
+                          //                           .isNotEmpty) {
+                          //                         return ListView.separated(
+                          //                           shrinkWrap: true,
+                          //                           physics:
+                          //                               NeverScrollableScrollPhysics(),
+                          //                           itemCount:
+                          //                               filteredForList.length,
+                          //                           separatorBuilder:
+                          //                               (context, index) {
+                          //                             return const CustomDivider();
+                          //                           },
+                          //                           itemBuilder:
+                          //                               (context, index) {
+                          //                             return GestureDetector(
+                          //                               onTap: () {
+                          //                                 setState(() {
+                          //                                   selectedPlace =
+                          //                                       filteredForList[
+                          //                                           index];
+                          //                                   pickUpLocation
+                          //                                           .text =
+                          //                                       filteredForList[
+                          //                                           index];
+                          //
+                          //                                   Navigator.pop(
+                          //                                       context);
+                          //                                   Print(
+                          //                                       "Selected Place ${places[index]}");
+                          //                                   Print(
+                          //                                       "Place Name $selectedPlace");
+                          //                                 });
+                          //                               },
+                          //                               child: ListTile(
+                          //                                 minVerticalPadding:
+                          //                                     10,
+                          //                                 title: Text(
+                          //                                     filteredForList[
+                          //                                         index]),
+                          //                               ),
+                          //                             );
+                          //                           },
+                          //                         );
+                          //                       } else {
+                          //                         return Column(
+                          //                           mainAxisAlignment:
+                          //                               MainAxisAlignment
+                          //                                   .center,
+                          //                           children: [
+                          //                             Center(
+                          //                               child: Text("Empty"),
+                          //                             ),
+                          //                           ],
+                          //                         );
+                          //                       }
+                          //                     }),
+                          //                   ],
+                          //                 );
+                          //               }),
+                          //             ));
+                          //       } else {
+                          //         Print('false');
+                          //       }
+                          //     },
+                          //     readOnly: true,
+                          //     contentPadding: const EdgeInsets.symmetric(
+                          //         horizontal: 20, vertical: 13),
+                          //     obscureText: false,
+                          //     validator: (value) {
+                          //       return Validator.requiredValidator(
+                          //           pickUpLocation.text);
+                          //     },
+                          //   ),
+                          // ),
+                          SelectPlaceWidget(
+                            location: pickUpLocation,
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -769,159 +797,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                     },
                                   ),
                                 )
-                              : Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: kPadding, vertical: 6),
-                                  child: RebiInput(
-                                    hintText: 'Drop Location'.tra,
-                                    controller: dropLocation,
-                                    keyboardType: TextInputType.name,
-                                    textInputAction: TextInputAction.done,
-                                    autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    isOptional: false,
-                                    color: AppColors.formsLabel,
-                                    onTap: () {
-                                      showHospitalsAndPlacesBottomSheet(
-                                          context: context,
-                                          title: "Select Place",
-                                          content: SingleChildScrollView(
-                                            child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 25,
-                                                  child: StatefulBuilder(
-                                                      builder:
-                                                          (context, setState) {
-                                                    return ListView.builder(
-                                                      shrinkWrap: true,
-                                                      scrollDirection:
-                                                          Axis.horizontal,
-                                                      itemCount:
-                                                          filteredEmirates
-                                                              .length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        bool isSelected =
-                                                            filteredEmirates[
-                                                                    index] ==
-                                                                selectedFilter;
-                                                        return GestureDetector(
-                                                          onTap: () {
-                                                            setState(() {
-                                                              selectedFilter =
-                                                                  filteredEmirates[
-                                                                      index];
-                                                            });
-                                                            print(
-                                                                selectedFilter);
-                                                            print(
-                                                                filteredEmirates[
-                                                                    index]);
-                                                          },
-                                                          child: Container(
-                                                            width: 70,
-                                                            // Adjust the width as needed
-                                                            margin:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        10),
-                                                            decoration:
-                                                                ShapeDecoration(
-                                                              color: isSelected
-                                                                  ? AppColors
-                                                                      .yellow
-                                                                  : AppColors
-                                                                      .backgroundColorLight,
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                side: const BorderSide(
-                                                                    width: 0.50,
-                                                                    color: AppColors
-                                                                        .borderColor),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                              ),
-                                                            ),
-                                                            child: Center(
-                                                              child: Text(
-                                                                filteredEmirates[
-                                                                    index],
-                                                                style:
-                                                                    TextStyle(
-                                                                  color: isSelected
-                                                                      ? AppColors
-                                                                          .whiteLight
-                                                                      : AppColors
-                                                                          .yellow,
-                                                                  fontSize: 10,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    );
-                                                  }),
-                                                ),
-                                                const SizedBox(
-                                                  height: 10,
-                                                ),
-                                                ListView.separated(
-                                                  shrinkWrap: true,
-                                                  physics:
-                                                      NeverScrollableScrollPhysics(),
-                                                  itemCount: places.length,
-                                                  separatorBuilder:
-                                                      (context, index) {
-                                                    return const CustomDivider();
-                                                  },
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          selectedPlace =
-                                                              places[index];
-                                                          dropLocation.text =
-                                                              places[index];
-
-                                                          Navigator.pop(
-                                                              context);
-                                                          Print(
-                                                              "Selected Place ${places[index]}");
-                                                          Print(
-                                                              "Place Name $selectedPlace");
-                                                        });
-                                                      },
-                                                      child: ListTile(
-                                                        minVerticalPadding: 10,
-                                                        title:
-                                                            Text(places[index]),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          ));
-                                    },
-                                    readOnly: true,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 13),
-                                    obscureText: false,
-                                    validator: (value) {
-                                      return Validator.requiredValidator(
-                                          dropLocation.text);
-                                    },
-                                  ),
-                                ),
+                              : SelectPlaceWidget(location: dropLocation),
                           Padding(
                             padding: const EdgeInsets.only(
                                 right: kPadding,
@@ -1271,6 +1147,8 @@ class CreateTripScreenState extends State<CreateTripScreen>
                             const EdgeInsets.symmetric(horizontal: kPadding),
                         child: RebiButton(
                             onPressed: () {
+                              Print("pick up location ${pickUpLocation.text}");
+                              Print("pick up location ${pickUpLocation.text}");
                               Duration timeDifference =
                                   expectedTime!.difference(time!);
 

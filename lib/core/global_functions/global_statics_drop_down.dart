@@ -218,6 +218,32 @@ List<DropdownMenuItem<String>> numberOfHorses = [
     child: Text("4"),
   ),
 ];
+List<DropdownMenuItem<String>> mediaNumberOfHorses = [
+  const DropdownMenuItem(
+    value: "1",
+    child: Text("1"),
+  ),
+  const DropdownMenuItem(
+    value: "2",
+    child: Text("2"),
+  ),
+  const DropdownMenuItem(
+    value: "3",
+    child: Text("3"),
+  ),
+  const DropdownMenuItem(
+    value: "4",
+    child: Text("4"),
+  ),
+  const DropdownMenuItem(
+    value: "5",
+    child: Text("5"),
+  ),
+  const DropdownMenuItem(
+    value: "6",
+    child: Text("6"),
+  ),
+];
 List<DropdownMenuItem<String>> color = [
   const DropdownMenuItem(
     value: "Black",
