@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:proequine/features/notifications/data/booking_details_response_model.dart';
@@ -6,6 +8,7 @@ import 'package:proequine/features/payment/presesntation/screens/payment_screen.
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../horses/presentation/widgets/cards_loading_widget.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -26,12 +29,18 @@ class NotificationsScreenState extends State<NotificationsScreen> {
   List<bool> statusesBool = [true, false, false, true, false, false];
   ScrollController _scrollController = ScrollController();
   bool isScrolled = false;
+  bool isLoading = true;
+  late Timer timer;
 
 
   @override
   void initState() {
     super.initState();
-
+    timer=Timer(const Duration(seconds: 5), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
     _scrollController.addListener(() {
       if (_scrollController.offset > 30) {
         if (!isScrolled) {
@@ -52,6 +61,7 @@ class NotificationsScreenState extends State<NotificationsScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
+    timer.cancel();
     super.dispose();
   }
 
@@ -92,7 +102,12 @@ class NotificationsScreenState extends State<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: MediaQuery(
+      child: isLoading
+          ? CardLoadingWidget(
+        title: "Inbox",
+        isSmallCard: true,
+      )
+          :MediaQuery(
         data: const MediaQueryData(
             viewInsets: EdgeInsets.only(top: 100, bottom: 0)),
         child: CupertinoPageScaffold(

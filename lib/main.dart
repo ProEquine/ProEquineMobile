@@ -18,10 +18,8 @@ import 'package:proequine/features/equine_info/presentation/screens/update_main_
 import 'package:proequine/features/events/domain/event_cubit.dart';
 import 'package:proequine/features/home/data/local_horse.dart';
 import 'package:proequine/features/home/domain/cubits/local_horse_cubit.dart';
-import 'package:proequine/features/home/presentation/screens/create_event_screen.dart';
 import 'package:proequine/features/home/presentation/screens/create_trip_screen.dart';
 import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
-import 'package:proequine/features/manage_account/presentation/widgets/account_management_loading.dart';
 import 'package:proequine/features/nav_bar/domain/inbox_badge.dart';
 import 'package:proequine/features/nav_bar/domain/theme_cubit.dart';
 import 'package:proequine/features/notifications/domain/notifications_cubit.dart';
@@ -35,9 +33,6 @@ import 'package:proequine/features/manage_account/presentation/screens/verify_up
 import 'package:proequine/features/splash/domain/splash_cubit.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/choose_stable_screen.dart';
-import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
-import 'package:proequine/test_countries.dart';
-import 'package:proequine/test_page.dart';
 import 'package:proequine/theme_cubit_provider.dart';
 
 import 'package:sizer/sizer.dart';
@@ -183,6 +178,7 @@ class MyAppState extends State<MyApp> {
         BlocBuilder<ThemeCubit, ThemeCubitMode>(builder: (context, themeMode) {
       Print("theme mode $themeMode");
       return MaterialApp(
+        debugShowCheckedModeBanner: false,
         navigatorKey: MyApp.navigatorKey,
         theme: themeMode == ThemeCubitMode.dark
             ? AppStyles().darkTheme

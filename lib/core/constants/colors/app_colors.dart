@@ -34,7 +34,7 @@ class AppColors {
   static const Color disciplineBackground = Color(0xFFF8F3E6);
   static const Color disciplineText = Color(0xFFC48636);
   static const Color shimmerColors = Color(0xFFF9F8F4);
-  static const Color shimmerColor2 = Color(0xFFFFD700);
+  static Color shimmerColor2 = Color(0xFFDFD9C9).withOpacity(0.5);
   static const Color errorToast = Color(0xFFFFF5F5);
   static const Color successToast = Color(0xFFEBFBEE);
 }

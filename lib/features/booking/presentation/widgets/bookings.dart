@@ -10,9 +10,9 @@ import '../../../../core/constants/colors/app_colors.dart';
 import 'booking_item_widget.dart';
 
 class Booking extends StatelessWidget {
-  String type;
+  final String type;
 
-  Booking({super.key, required this.type});
+  const Booking({super.key, required this.type});
 
   @override
   Widget build(BuildContext context) {

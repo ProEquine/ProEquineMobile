@@ -7,7 +7,6 @@ import 'package:proequine/features/home/presentation/screens/join_show_screen.da
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/widgets/custom_header.dart';
-import '../../../booking/presentation/widgets/booking_item_widget.dart';
 import '../widgets/show_widget_item.dart';
 
 class ShowsScreen extends StatefulWidget {

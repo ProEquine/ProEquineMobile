@@ -20,17 +20,17 @@ class ProfileTwoLinesLoadingState extends State<ProfileTwoLinesLoading> {
       dense: false,
       onTap: () {
       },
-      subtitle: const FadeShimmer(
+      subtitle:  FadeShimmer(
         baseColor: AppColors.shimmerColors,
-        highlightColor: AppColors.borderColor,
+        highlightColor: AppColors.shimmerColor2,
         height: 7,
         width: 80,
         radius:20,
 
       ),
-      title:const FadeShimmer(
+      title: FadeShimmer(
         baseColor: AppColors.shimmerColors,
-        highlightColor: AppColors.borderColor,
+        highlightColor: AppColors.shimmerColor2,
         height: 10,
         width: 100,
         radius: 20,
@@ -39,7 +39,7 @@ class ProfileTwoLinesLoadingState extends State<ProfileTwoLinesLoading> {
       trailing:FadeShimmer.round(
         size: 12,
         baseColor: AppColors.shimmerColors,
-        highlightColor: AppColors.borderColor,
+        highlightColor: AppColors.shimmerColor2,
 
       ),
     );

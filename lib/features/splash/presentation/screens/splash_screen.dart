@@ -2,14 +2,12 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:proequine/app_settings.dart';
 import 'package:proequine/features/notifications/domain/notifications_cubit.dart';
 import 'package:proequine/features/splash/data/refresh_request_model.dart';
 import 'package:proequine/features/splash/domain/splash_cubit.dart';
-import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -169,7 +167,12 @@ class SplashScreenState extends State<SplashScreen> {
           Transform.translate(
             offset: const Offset(0.0, -30.0),
             child: Center(
-              child:SvgPicture.asset(AppSharedPreferences.getTheme=='ThemeCubitMode.dark'?AppIcons.logoDarkMode:AppIcons.logoLight,height: 20.0.h,),
+              child: SvgPicture.asset(
+                AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                    ? AppIcons.logoDarkMode
+                    : AppIcons.logoLight,
+                height: 20.0.h,
+              ),
             ),
           ),
         ],

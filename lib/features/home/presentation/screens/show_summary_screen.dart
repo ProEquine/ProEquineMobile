@@ -63,7 +63,7 @@ class ShowSummaryScreen extends StatelessWidget {
                           height: 5,
                         ),
                         Text(
-                          "${joinShowTransportRequestModel!.pickupDate} • ${joinShowTransportRequestModel!.pickupTime}",
+                          "${joinShowTransportRequestModel!.showingDate} • ${joinShowTransportRequestModel!.pickupTime}",
                           style: AppStyles.summaryDesStyle,
                         ),
                       ],

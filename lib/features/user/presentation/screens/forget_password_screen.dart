@@ -14,6 +14,7 @@ import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_logo_widget.dart';
+import '../../../../core/widgets/phone_number_field_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../widgets/register_header.dart';
@@ -31,7 +32,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final UserCubit cubit = UserCubit();
   String? dob = '';
-  double logoHeight = 18.h;
+  String? phoneNumber;
 
   @override
   void initState() {
@@ -85,72 +86,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: RebiInput(
-                                        hintText: 'CC'.tra,
-                                        controller: _countryCode,
-                                        onTap: () {
+                              PhoneNumberFieldWidget(countryCode: _countryCode, phoneNumber: _phone),
 
-                                        },
-                                        onFieldSubmitted: (size){
-                                        },
-                                        keyboardType: TextInputType.number,
-                                        textInputAction: TextInputAction.done,
-                                        autoValidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        isOptional: false,
-                                        textAlign: TextAlign.center,
-                                        color: AppColors.formsLabel,
-                                        readOnly: false,
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 13),
-                                        obscureText: false,
-                                        validator: (value) {
-                                          return Validator.countryCodeValidator(
-                                              _countryCode.text);
-                                        },
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Expanded(
-                                      flex: 3,
-                                      child: RebiInput(
-                                        hintText: 'Phone'.tra,
-                                        controller: _phone,
-                                        onTap: () {
-                                        },
-                                        onFieldSubmitted: (size){
-
-                                        },
-                                        keyboardType: TextInputType.number,
-                                        textInputAction: TextInputAction.done,
-                                        autoValidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        isOptional: false,
-                                        color: AppColors.formsLabel,
-                                        readOnly: false,
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 13),
-                                        obscureText: false,
-                                        validator: (value) {
-                                          return Validator.phoneValidator(
-                                              _phone.text);
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 20),
@@ -162,6 +99,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                     }
                                     return RebiButton(
                                         onPressed: () {
+                                          phoneNumber=_countryCode.text+_phone.text;
                                           if (_formKey.currentState!
                                               .validate()) {
                                             FocusManager.instance.primaryFocus?.unfocus();
@@ -180,8 +118,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   ResetPasswordScreen(
-                                                    phone: _countryCode.text +
-                                                        _phone.text,
+                                                    phone: phoneNumber,
                                                     token: state.model!.token,
                                                   )));
                                     } else if (state is ForgotPasswordError) {

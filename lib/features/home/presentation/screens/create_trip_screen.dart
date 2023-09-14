@@ -1,17 +1,18 @@
-import 'package:country_picker/country_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
+
 import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
+import 'package:proequine/core/widgets/phone_number_field_widget.dart';
 import 'package:proequine/features/home/data/trip_service_data_model.dart';
 import 'package:proequine/features/home/presentation/screens/chose_horses_trip_screen.dart';
 import 'package:proequine/features/home/presentation/widgets/hospital_bottom_sheet.dart';
-import 'package:sizer/sizer.dart';
+import 'package:proequine/features/home/presentation/widgets/select_date_time_widget.dart';
 
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
@@ -47,11 +48,10 @@ class CreateTripScreenState extends State<CreateTripScreen>
   DateTime focusedDay = DateTime.now();
   TextEditingController? date;
   TextEditingController? expectedDate;
-  bool isWithoutReturn = false;
-  bool isInSameDay = false;
   late DateTime dateTime;
   late DateTime expectedDateTime;
   late DateTime pickDate;
+  late DateTime exDropDate;
   late DateTime expectedPickDate;
 
   String convertToTime(DateTime dateTime) {
@@ -101,6 +101,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
     initializeDateFormatting();
     pickDate = DateTime.now();
     dateTime = DateTime.now();
+    exDropDate = DateTime.now();
     expectedPickDate = DateTime.now().add(const Duration(days: 1));
     expectedDateTime = DateTime.now().add(const Duration(days: 1));
     date = TextEditingController();
@@ -126,8 +127,6 @@ class CreateTripScreenState extends State<CreateTripScreen>
     'Salsabeel vet. establishment '
   ];
 
-  String selectedFilter = "All";
-
   Future<bool> onWillPop() {
     DateTime now = DateTime.now();
     if (currentBackPressTime == null ||
@@ -148,6 +147,8 @@ class CreateTripScreenState extends State<CreateTripScreen>
   }
 
   String? selectedNumber;
+  String? pickPhoneNumber;
+  String? dropPhoneNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -212,13 +213,6 @@ class CreateTripScreenState extends State<CreateTripScreen>
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Padding(
-                          //   padding: const EdgeInsets.symmetric(horizontal: kPadding),
-                          //   child: CreateTripHeader(
-                          //       image: widget.type == 'hospital'
-                          //           ? AppImages.hospitalTransport
-                          //           : AppImages.localTransport),
-                          // ),
                           widget.type == 'hospital'
                               ? const SizedBox(
                                   height: 15,
@@ -308,296 +302,32 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                     ),
                                   ),
                                 ),
-                          // Padding(
-                          //   padding: const EdgeInsets.symmetric(
-                          //       horizontal: kPadding, vertical: 6),
-                          //   child: RebiInput(
-                          //     hintText: 'Pickup Location'.tra,
-                          //     controller: pickUpLocation,
-                          //     keyboardType: TextInputType.name,
-                          //     textInputAction: TextInputAction.done,
-                          //     autoValidateMode:
-                          //         AutovalidateMode.onUserInteraction,
-                          //     isOptional: false,
-                          //     color: AppColors.formsLabel,
-                          //     onTap: () {
-                          //       List<String> filteredPlaces = [];
-                          //       if (places.containsKey(selectedFilter)) {
-                          //         Print("True");
-                          //         showHospitalsAndPlacesBottomSheet(
-                          //             context: context,
-                          //             title: "Select Place",
-                          //             content: SingleChildScrollView(
-                          //               child: StatefulBuilder(
-                          //                   builder: (context, setState) {
-                          //                 return Column(
-                          //                   children: [
-                          //                     SizedBox(
-                          //                       height: 25,
-                          //                       child: ListView.builder(
-                          //                         shrinkWrap: true,
-                          //                         scrollDirection:
-                          //                             Axis.horizontal,
-                          //                         itemCount:
-                          //                             filteredEmirates.length,
-                          //                         itemBuilder:
-                          //                             (context, index) {
-                          //                           bool isSelected =
-                          //                               filteredEmirates[
-                          //                                       index] ==
-                          //                                   selectedFilter;
-                          //                           return GestureDetector(
-                          //                             onTap: () {
-                          //                               setState(() {
-                          //                                 selectedFilter =
-                          //                                     getFullName(
-                          //                                         filteredEmirates[
-                          //                                             index]);
-                          //                                 filteredPlaces = places[
-                          //                                         selectedFilter] ??
-                          //                                     [''];
-                          //                               });
-                          //                               print(selectedFilter);
-                          //                               print(filteredEmirates[
-                          //                                   index]);
-                          //                               print(places[
-                          //                                   selectedFilter]);
-                          //                               print(
-                          //                                   'filteredPlaces$filteredPlaces');
-                          //                             },
-                          //                             child: Container(
-                          //                               width: 70,
-                          //                               // Adjust the width as needed
-                          //                               margin: const EdgeInsets
-                          //                                       .symmetric(
-                          //                                   horizontal: 10),
-                          //                               decoration:
-                          //                                   ShapeDecoration(
-                          //                                 color: isSelected
-                          //                                     ? AppColors.yellow
-                          //                                     : AppColors
-                          //                                         .backgroundColorLight,
-                          //                                 shape:
-                          //                                     RoundedRectangleBorder(
-                          //                                   side: const BorderSide(
-                          //                                       width: 0.50,
-                          //                                       color: AppColors
-                          //                                           .borderColor),
-                          //                                   borderRadius:
-                          //                                       BorderRadius
-                          //                                           .circular(
-                          //                                               10),
-                          //                                 ),
-                          //                               ),
-                          //                               child: Center(
-                          //                                 child: Text(
-                          //                                   filteredEmirates[
-                          //                                       index],
-                          //                                   style: TextStyle(
-                          //                                     color: isSelected
-                          //                                         ? AppColors
-                          //                                             .whiteLight
-                          //                                         : AppColors
-                          //                                             .yellow,
-                          //                                     fontSize: 10,
-                          //                                     fontWeight:
-                          //                                         FontWeight
-                          //                                             .w500,
-                          //                                   ),
-                          //                                 ),
-                          //                               ),
-                          //                             ),
-                          //                           );
-                          //                         },
-                          //                       ),
-                          //                     ),
-                          //                     const SizedBox(
-                          //                       height: 10,
-                          //                     ),
-                          //                     StatefulBuilder(
-                          //                         builder: (context, setState) {
-                          //                       filteredPlaces =
-                          //                           places[selectedFilter] ??
-                          //                               [];
-                          //                       Print(
-                          //                           'filteredPlaces from list$filteredPlaces');
-                          //                       List<String> filteredForList =
-                          //                           filteredPlaces;
-                          //                       if (filteredForList
-                          //                           .isNotEmpty) {
-                          //                         return ListView.separated(
-                          //                           shrinkWrap: true,
-                          //                           physics:
-                          //                               NeverScrollableScrollPhysics(),
-                          //                           itemCount:
-                          //                               filteredForList.length,
-                          //                           separatorBuilder:
-                          //                               (context, index) {
-                          //                             return const CustomDivider();
-                          //                           },
-                          //                           itemBuilder:
-                          //                               (context, index) {
-                          //                             return GestureDetector(
-                          //                               onTap: () {
-                          //                                 setState(() {
-                          //                                   selectedPlace =
-                          //                                       filteredForList[
-                          //                                           index];
-                          //                                   pickUpLocation
-                          //                                           .text =
-                          //                                       filteredForList[
-                          //                                           index];
-                          //
-                          //                                   Navigator.pop(
-                          //                                       context);
-                          //                                   Print(
-                          //                                       "Selected Place ${places[index]}");
-                          //                                   Print(
-                          //                                       "Place Name $selectedPlace");
-                          //                                 });
-                          //                               },
-                          //                               child: ListTile(
-                          //                                 minVerticalPadding:
-                          //                                     10,
-                          //                                 title: Text(
-                          //                                     filteredForList[
-                          //                                         index]),
-                          //                               ),
-                          //                             );
-                          //                           },
-                          //                         );
-                          //                       } else {
-                          //                         return Column(
-                          //                           mainAxisAlignment:
-                          //                               MainAxisAlignment
-                          //                                   .center,
-                          //                           children: [
-                          //                             Center(
-                          //                               child: Text("Empty"),
-                          //                             ),
-                          //                           ],
-                          //                         );
-                          //                       }
-                          //                     }),
-                          //                   ],
-                          //                 );
-                          //               }),
-                          //             ));
-                          //       } else {
-                          //         Print('false');
-                          //       }
-                          //     },
-                          //     readOnly: true,
-                          //     contentPadding: const EdgeInsets.symmetric(
-                          //         horizontal: 20, vertical: 13),
-                          //     obscureText: false,
-                          //     validator: (value) {
-                          //       return Validator.requiredValidator(
-                          //           pickUpLocation.text);
-                          //     },
-                          //   ),
-                          // ),
                           SelectPlaceWidget(
                             location: pickUpLocation,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: kPadding, vertical: 6),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: RebiInput(
-                                    hintText: 'Pickup date'.tra,
-                                    controller: date,
-                                    keyboardType: TextInputType.name,
-                                    textInputAction: TextInputAction.done,
-                                    onTap: () {
-                                      selectDate(
-                                        context: context,
-                                        from: DateTime.now(),
-                                        to: DateTime(2025, 1, 1),
-                                        isSupportChangingYears: false,
-                                        selectedOurDay: dateTime,
-                                        controller: date!,
-                                        focusDay: focusedDay,
-                                      );
-                                    },
-                                    autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    isOptional: false,
-                                    color: AppColors.formsLabel,
-                                    readOnly: true,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 13),
-                                    obscureText: false,
-                                    validator: (value) {
-                                      if (value!.isNotEmpty) {
-                                        DateFormat inputFormat =
-                                            DateFormat("dd MMM yyyy");
-                                        DateTime setUpdatedDate =
-                                            inputFormat.parse(value);
-                                        pickDate = setUpdatedDate;
-                                      } else {
-                                        return '';
-                                      }
+                          SelectDateAndTimeWidget(
+                              time: time!,
+                              timeController: timePicked!,
+                              from: DateTime.now(),
+                              validator: (value) {
+                                if (value!.isNotEmpty) {
+                                  DateFormat inputFormat =
+                                      DateFormat("dd MMM yyyy");
+                                  DateTime setUpdatedDate =
+                                      inputFormat.parse(value);
+                                  pickDate = setUpdatedDate;
+                                } else {
+                                  return '';
+                                }
 
-                                      if (dateTime.isBefore(DateTime.now()) &&
-                                          !dateTime
-                                              .isSameDate(DateTime.now())) {
-                                        return 'correct date please';
-                                      }
-                                      return Validator.requiredValidator(
-                                          date?.text);
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: RebiInput(
-                                    hintText: timePicked!.text.isEmpty
-                                        ? 'Pickup time'
-                                        : timePicked?.text,
-                                    controller: timePicked,
-                                    onTap: () async {
-                                      TimeOfDay? pickedTime =
-                                          await showTimePicker(
-                                        confirmText: "Confirm".tra,
-                                        context: context,
-                                        cancelText: "Cancel".tra,
-                                        initialEntryMode:
-                                            TimePickerEntryMode.dial,
-                                        initialTime: TimeOfDay.fromDateTime(
-                                            DateTime.utc(0, 0, 0, 15, 0)),
-                                      );
-
-                                      Print(pickedTime);
-
-                                      if (pickedTime != null) {
-                                        time = pickedTime.toDateTime();
-                                        //output 10:51 PM
-                                        String parsedTime =
-                                            pickedTime.format(context);
-
-                                        setState(() {
-                                          timePicked?.text = parsedTime;
-                                        });
-                                      } else {}
-                                    },
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 13),
-                                    isOptional: false,
-                                    readOnly: true,
-                                    validator: (value) {
-                                      // return  Validator.requiredValidator(timePicked?.text);
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
+                                if (dateTime.isBefore(DateTime.now()) &&
+                                    !dateTime.isSameDate(DateTime.now())) {
+                                  return 'correct date please';
+                                }
+                                return Validator.requiredValidator(date!.text);
+                              },
+                              pickedDate: pickDate,
+                              dateController: date!),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: kPadding, vertical: 6),
@@ -620,117 +350,9 @@ class CreateTripScreenState extends State<CreateTripScreen>
                               },
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: kPadding, vertical: 7),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: RebiInput(
-                                    hintText: 'CC'.tra,
-                                    controller: pickUpCountryCode,
-                                    keyboardType: TextInputType.number,
-                                    textInputAction: TextInputAction.done,
-                                    autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    onTap: () {
-                                      showCountryPicker(
-                                        context: context,
-                                        showPhoneCode: true,
-                                        countryListTheme: CountryListThemeData(
-                                          flagSize: 25,
-                                          backgroundColor:
-                                              AppColors.backgroundColorLight,
-                                          textStyle: const TextStyle(
-                                              fontSize: 16,
-                                              color: AppColors.blackLight),
-                                          bottomSheetHeight: 85.0.h,
-                                          // Optional. Country list modal height
-                                          //Optional. Sets the border radius for the bottomsheet.
-                                          borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(20.0),
-                                            topRight: Radius.circular(20.0),
-                                          ),
-                                          //Optional. Styles the search field.
-                                          inputDecoration:
-                                              const InputDecoration(
-                                            hintText: 'Search by name or code',
-                                            hintStyle: TextStyle(
-                                              color:
-                                                  AppColors.formsHintFontLight,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            prefixIcon: Icon(
-                                              Icons.search,
-                                              color:
-                                                  AppColors.formsHintFontLight,
-                                            ),
-                                            filled: true,
-                                            fillColor: AppColors.whiteLight,
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8)),
-                                              borderSide: BorderSide(
-                                                color: Color(0xFFDBD4C3),
-                                                width: 0.50,
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8)),
-                                              borderSide: BorderSide(
-                                                color: Color(0xFFDBD4C3),
-                                                width: 0.50,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        onSelect: (Country country) =>
-                                            pickUpCountryCode.text =
-                                                '+${country.phoneCode}',
-                                      );
-                                    },
-                                    isOptional: false,
-                                    color: AppColors.formsLabel,
-                                    readOnly: true,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 13),
-                                    obscureText: false,
-                                    validator: (value) {
-                                      return Validator.countryCodeValidator(
-                                          pickUpCountryCode.text);
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: RebiInput(
-                                    hintText: 'Pickup Contact number'.tra,
-                                    controller: pickUpContactNumber,
-                                    keyboardType: TextInputType.phone,
-                                    textInputAction: TextInputAction.done,
-                                    autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    isOptional: false,
-                                    color: AppColors.formsLabel,
-                                    readOnly: false,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 13),
-                                    obscureText: false,
-                                    validator: (value) {
-                                      return Validator.phoneValidator(
-                                          pickUpContactNumber.text);
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          PhoneNumberFieldWidget(
+                              countryCode: pickUpCountryCode,
+                              phoneNumber: pickUpContactNumber),
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: kPadding),
                             child: CustomDivider(),
@@ -823,118 +445,9 @@ class CreateTripScreenState extends State<CreateTripScreen>
                               },
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: kPadding, vertical: 6),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: RebiInput(
-                                    hintText: 'CC'.tra,
-                                    controller: dropCountryCode,
-                                    keyboardType: TextInputType.number,
-                                    textInputAction: TextInputAction.done,
-                                    autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    isOptional: false,
-                                    onTap: () {
-                                      showCountryPicker(
-                                        context: context,
-                                        showPhoneCode: true,
-                                        countryListTheme: CountryListThemeData(
-                                          flagSize: 25,
-                                          backgroundColor:
-                                              AppColors.backgroundColorLight,
-                                          textStyle: const TextStyle(
-                                              fontSize: 16,
-                                              color: AppColors.blackLight),
-                                          bottomSheetHeight: 85.0.h,
-                                          // Optional. Country list modal height
-                                          //Optional. Sets the border radius for the bottomsheet.
-                                          borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(20.0),
-                                            topRight: Radius.circular(20.0),
-                                          ),
-                                          //Optional. Styles the search field.
-                                          inputDecoration:
-                                              const InputDecoration(
-                                            hintText: 'Search by name or code',
-                                            hintStyle: TextStyle(
-                                              color:
-                                                  AppColors.formsHintFontLight,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            prefixIcon: Icon(
-                                              Icons.search,
-                                              color:
-                                                  AppColors.formsHintFontLight,
-                                            ),
-                                            filled: true,
-                                            fillColor: AppColors.whiteLight,
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8)),
-                                              borderSide: BorderSide(
-                                                color: Color(0xFFDBD4C3),
-                                                width: 0.50,
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8)),
-                                              borderSide: BorderSide(
-                                                color: Color(0xFFDBD4C3),
-                                                width: 0.50,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        onSelect: (Country country) =>
-                                            dropCountryCode.text =
-                                                '+${country.phoneCode}',
-                                      );
-                                    },
-                                    color: AppColors.formsLabel,
-                                    readOnly: true,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 13),
-                                    obscureText: false,
-                                    validator: (value) {
-                                      return Validator.countryCodeValidator(
-                                          dropCountryCode.text);
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: RebiInput(
-                                    hintText: 'Drop Contact Number'.tra,
-                                    controller: dropContactNumber,
-                                    keyboardType: TextInputType.phone,
-                                    textInputAction: TextInputAction.done,
-                                    autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    isOptional: false,
-                                    color: AppColors.formsLabel,
-                                    readOnly: false,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 13),
-                                    obscureText: false,
-                                    validator: (value) {
-                                      return Validator.phoneValidator(
-                                          dropContactNumber.text);
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-
+                          PhoneNumberFieldWidget(
+                              countryCode: dropCountryCode,
+                              phoneNumber: dropContactNumber),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: kPadding, vertical: 6),
@@ -973,11 +486,59 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: kPadding, vertical: 6),
-                                    child: selectedTrip == 'Same day return'
-                                        ? RebiInput(
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: RebiInput(
+                                            hintText: 'Return Date'.tra,
+                                            controller: expectedDate,
+                                            keyboardType: TextInputType.name,
+                                            textInputAction:
+                                                TextInputAction.done,
+                                            onTap: () {
+                                              selectDate(
+                                                context: context,
+                                                from: pickDate.add(
+                                                    const Duration(days: 1)),
+                                                to: DateTime(2025, 1, 1),
+                                                isSupportChangingYears: false,
+                                                selectedOurDay: pickDate.add(
+                                                    const Duration(days: 1)),
+                                                controller: expectedDate!,
+                                                focusDay: focusedDay,
+                                              );
+                                            },
+                                            autoValidateMode: AutovalidateMode
+                                                .onUserInteraction,
+                                            isOptional: false,
+                                            color: AppColors.formsLabel,
+                                            readOnly: true,
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    horizontal: 20,
+                                                    vertical: 13),
+                                            obscureText: false,
+                                            validator: (value) {
+                                              DateFormat inputFormat =
+                                                  DateFormat("dd MMM yyyy");
+                                              DateTime setUpdatedDate =
+                                                  inputFormat.parse(value!);
+                                              exDropDate = setUpdatedDate;
+
+                                              return Validator
+                                                  .requiredValidator(
+                                                      expectedDate?.text);
+                                            },
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                          child: RebiInput(
                                             hintText:
                                                 expectedTimePicked!.text.isEmpty
-                                                    ? 'Time'
+                                                    ? 'Return Time'
                                                     : expectedTimePicked?.text,
                                             controller: expectedTimePicked,
                                             onTap: () async {
@@ -999,6 +560,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                               if (pickedTime != null) {
                                                 expectedTime =
                                                     pickedTime.toDateTime();
+                                                //output 10:51 PM
                                                 String parsedTime =
                                                     pickedTime.format(context);
 
@@ -1022,121 +584,13 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                                       .isBefore(time!)) {
                                                 return 'Correct time please';
                                               }
-                                              // return  Validator.requiredValidator(expectedTimePicked?.text);
+                                              // return Validator.requiredValidator(
+                                              //     expectedTimePicked?.text);
                                             },
-                                          )
-                                        : Row(
-                                            children: [
-                                              Expanded(
-                                                child: RebiInput(
-                                                  hintText: 'Return Date'.tra,
-                                                  controller: expectedDate,
-                                                  keyboardType:
-                                                      TextInputType.name,
-                                                  textInputAction:
-                                                      TextInputAction.done,
-                                                  onTap: () {
-                                                    selectDate(
-                                                      context: context,
-                                                      from: pickDate.add(
-                                                          const Duration(
-                                                              days: 1)),
-                                                      to: DateTime(2025, 1, 1),
-                                                      isSupportChangingYears:
-                                                          false,
-                                                      selectedOurDay: pickDate
-                                                          .add(const Duration(
-                                                              days: 1)),
-                                                      controller: expectedDate!,
-                                                      focusDay: focusedDay,
-                                                    );
-                                                  },
-                                                  autoValidateMode:
-                                                      AutovalidateMode
-                                                          .onUserInteraction,
-                                                  isOptional: false,
-                                                  color: AppColors.formsLabel,
-                                                  readOnly: true,
-                                                  contentPadding:
-                                                      const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 20,
-                                                          vertical: 13),
-                                                  obscureText: false,
-                                                  validator: (value) {
-                                                    return Validator
-                                                        .requiredValidator(
-                                                            expectedDate?.text);
-                                                  },
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Expanded(
-                                                child: RebiInput(
-                                                  hintText: expectedTimePicked!
-                                                          .text.isEmpty
-                                                      ? 'Return Time'
-                                                      : expectedTimePicked
-                                                          ?.text,
-                                                  controller:
-                                                      expectedTimePicked,
-                                                  onTap: () async {
-                                                    TimeOfDay? pickedTime =
-                                                        await showTimePicker(
-                                                      confirmText:
-                                                          "Confirm".tra,
-                                                      context: context,
-                                                      cancelText: "Cancel".tra,
-                                                      initialEntryMode:
-                                                          TimePickerEntryMode
-                                                              .dial,
-                                                      initialTime: TimeOfDay
-                                                          .fromDateTime(
-                                                              DateTime.utc(0, 0,
-                                                                  0, 15, 0)),
-                                                    );
-
-                                                    Print(pickedTime);
-
-                                                    if (pickedTime != null) {
-                                                      expectedTime = pickedTime
-                                                          .toDateTime();
-                                                      //output 10:51 PM
-                                                      String parsedTime =
-                                                          pickedTime
-                                                              .format(context);
-
-                                                      setState(() {
-                                                        expectedTimePicked
-                                                            ?.text = parsedTime;
-                                                      });
-                                                    } else {}
-                                                  },
-                                                  contentPadding:
-                                                      const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 20,
-                                                          vertical: 13),
-                                                  isOptional: false,
-                                                  readOnly: true,
-                                                  validator: (value) {
-                                                    if (value!.isNotEmpty &&
-                                                        expectedPickDate
-                                                            .isSameDate(
-                                                                pickDate) &&
-                                                        expectedTime!
-                                                            .isBefore(time!)) {
-                                                      return 'Correct time please';
-                                                    }
-                                                    // return Validator.requiredValidator(
-                                                    //     expectedTimePicked?.text);
-                                                  },
-                                                ),
-                                              ),
-                                            ],
                                           ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                         ],
@@ -1148,28 +602,31 @@ class CreateTripScreenState extends State<CreateTripScreen>
                         child: RebiButton(
                             onPressed: () {
                               Print("pick up location ${pickUpLocation.text}");
-                              Print("pick up location ${pickUpLocation.text}");
-                              Duration timeDifference =
-                                  expectedTime!.difference(time!);
-
-                              bool isOneHourAfter = timeDifference.inHours >= 1;
+                              Print("PickDate ${pickDate.toString()}");
+                              Print("PickTime ${timePicked!.text}");
+                              Print("DropDate ${exDropDate.toString()}");
+                              Print("DropTime ${expectedTimePicked!.text}");
+                              pickPhoneNumber = pickUpCountryCode.text +
+                                  pickUpContactNumber.text;
+                              dropPhoneNumber =
+                                  dropCountryCode.text + dropContactNumber.text;
                               if (widget.type == 'hospital') {
                                 if (_formKey.currentState!.validate() &&
                                     selectedHospital != null) {
                                   TripServiceDataModel tripServiceModel =
                                       TripServiceDataModel(
                                     expectedTime: expectedTimePicked?.text,
-                                    expectedDate: expectedTimePicked?.text,
+                                    expectedDate: exDropDate,
                                     pickupContactName: pickUpContactName.text,
-                                    pickupContactNumber:
-                                        pickUpContactNumber.text,
+                                    pickupContactNumber: pickPhoneNumber!,
+                                    showingDate: date!.text,
                                     trip: 'hospital',
                                     dropContactName: dropContactName.text,
                                     dropContactNumber: dropContactNumber.text,
                                     hospitalName: selectedHospital,
                                     horsesNumber: numberOfHorses.text,
                                     tripType: selectedTrip!,
-                                    pickupDate: date!.text,
+                                    pickupDate: pickDate,
                                     pickupTime: timePicked!.text,
                                     pickupLocation: pickUpLocation.text,
                                   );
@@ -1185,18 +642,12 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                                 )));
                                   } else if ((selectedTrip ==
                                           "Other day return" &&
-                                      expectedPickDate.isBefore(pickDate))) {
+                                      exDropDate.isBefore(pickDate))) {
                                     RebiMessage.error(
                                         msg:
                                             "please enter the correct expected Date",
                                         context: context);
-                                  } else if ((selectedTrip ==
-                                              "Same day return" &&
-                                          expectedTime!.isAfter(time!) &&
-                                          isOneHourAfter) ||
-                                      (selectedTrip == "Other day return" &&
-                                          expectedPickDate.isAfter(pickDate))) {
-                                    Print("Return");
+                                  } else {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -1205,11 +656,6 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                                   tripServiceDataModel:
                                                       tripServiceModel,
                                                 )));
-                                  } else {
-                                    RebiMessage.error(
-                                        msg:
-                                            "please enter the correct expected Time",
-                                        context: context);
                                   }
                                 } else {
                                   RebiMessage.error(
@@ -1218,27 +664,20 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                 }
                               } else {
                                 if (_formKey.currentState!.validate()) {
-                                  DateFormat inputFormat =
-                                      DateFormat("dd MMM yyyy");
-                                  String formatedDate =
-                                      inputFormat.format(pickDate);
-                                  String expectedDateFormated =
-                                      inputFormat.format(expectedPickDate);
-
                                   TripServiceDataModel tripServiceModel =
                                       TripServiceDataModel(
                                     expectedTime: expectedTimePicked?.text,
-                                    expectedDate: expectedTimePicked?.text,
+                                    expectedDate: exDropDate,
                                     pickupContactName: pickUpContactName.text,
-                                    pickupContactNumber:
-                                        pickUpContactNumber.text,
+                                    pickupContactNumber: pickPhoneNumber!,
                                     trip: 'local',
+                                    showingDate: date!.text,
                                     dropContactName: dropContactName.text,
-                                    dropContactNumber: dropContactNumber.text,
+                                    dropContactNumber: dropPhoneNumber!,
                                     dropLocation: dropLocation.text,
                                     horsesNumber: numberOfHorses.text,
                                     tripType: selectedTrip!,
-                                    pickupDate: date!.text,
+                                    pickupDate: pickDate,
                                     pickupTime: timePicked!.text,
                                     pickupLocation: pickUpLocation.text,
                                   );
@@ -1253,17 +692,12 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                                 )));
                                   } else if ((selectedTrip ==
                                           "Other day return" &&
-                                      expectedPickDate.isBefore(pickDate))) {
+                                      exDropDate.isBefore(pickDate))) {
                                     RebiMessage.error(
                                         msg:
                                             "please enter the correct expected Date",
                                         context: context);
-                                  } else if ((selectedTrip ==
-                                              "Same day return" &&
-                                          expectedTime!.isAfter(time!) &&
-                                          isOneHourAfter) ||
-                                      (selectedTrip == "Other day return" &&
-                                          expectedPickDate.isAfter(pickDate))) {
+                                  } else {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -1272,16 +706,8 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                                   tripServiceDataModel:
                                                       tripServiceModel,
                                                 )));
-                                  } else {
-                                    RebiMessage.error(
-                                        msg:
-                                            "please enter the correct expected Time",
-                                        context: context);
                                   }
                                 } else {
-                                  Print(selectedNumber);
-                                  Print(selectedTrip);
-                                  Print(selectedNumber);
                                   RebiMessage.error(
                                       msg: "please fill all fields correctly",
                                       context: context);

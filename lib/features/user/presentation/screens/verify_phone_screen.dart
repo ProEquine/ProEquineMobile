@@ -1,23 +1,14 @@
-import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:proequine/core/utils/extensions.dart';
-import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
-import 'package:proequine/features/user/data/send_verification_request_model.dart';
+import 'package:proequine/core/widgets/phone_number_field_widget.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
-import 'package:sizer/sizer.dart';
-
-import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/thems/app_styles.dart';
-import '../../../../core/utils/rebi_message.dart';
-import '../../../../core/utils/validator.dart';
-import '../../../../core/widgets/custom_logo_widget.dart';
+
+import '../../../../core/utils/Printer.dart';
 import '../../../../core/widgets/rebi_button.dart';
-import '../../../../core/widgets/rebi_input.dart';
 import '../widgets/register_header.dart';
 
 class VerifyPhoneScreen extends StatefulWidget {
@@ -39,7 +30,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final UserCubit cubit = UserCubit();
   String? dob = '';
-  double logoHeight = 18.h;
+  String? phoneNumber;
 
   @override
   void initState() {
@@ -96,120 +87,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: RebiInput(
-                                        inputFormatters: [
-                                          LengthLimitingTextInputFormatter(4),
-                                        ],
-                                        hintText: 'CC'.tra,
-                                        controller: _countryCode,
-                                        keyboardType: TextInputType.number,
-                                        textInputAction: TextInputAction.done,
-                                        autoValidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        isOptional: false,
-                                        onTap: (){
-                                          showCountryPicker(
-                                            context: context,
-                                            showPhoneCode: true,
-                                            countryListTheme: CountryListThemeData(
-                                              flagSize: 25,
-                                              backgroundColor:
-                                              AppColors.backgroundColorLight,
-                                              textStyle: const TextStyle(
-                                                  fontSize: 16,
-                                                  color: AppColors.blackLight),
-                                              bottomSheetHeight: 85.0.h,
-                                              // Optional. Country list modal height
-                                              //Optional. Sets the border radius for the bottomsheet.
-                                              borderRadius: const BorderRadius.only(
-                                                topLeft: Radius.circular(20.0),
-                                                topRight: Radius.circular(20.0),
-                                              ),
-                                              //Optional. Styles the search field.
-                                              inputDecoration:
-                                              const InputDecoration(
-                                                hintText: 'Search by name or code',
-                                                hintStyle: TextStyle(
-                                                  color: AppColors.formsHintFontLight,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                                prefixIcon: Icon(
-                                                  Icons.search,
-                                                  color: AppColors.formsHintFontLight,
-                                                ),
-                                                filled: true,
-                                                fillColor: AppColors.whiteLight,
-                                                border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(8)),
-                                                  borderSide: BorderSide(
-                                                    color: Color(0xFFDBD4C3),
-                                                    width: 0.50,
-                                                  ),
-                                                ),
-                                                enabledBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(8)),
-                                                  borderSide: BorderSide(
-                                                    color: Color(0xFFDBD4C3),
-                                                    width: 0.50,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            onSelect: (Country country) =>
-                                            _countryCode.text =
-                                            '+${country.phoneCode}',
-                                          );
-                                        },
-                                        color: AppColors.formsLabel,
-                                        readOnly: false,
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 13),
-                                        obscureText: false,
-                                        validator: (value) {
-                                          return Validator.countryCodeValidator(
-                                              _countryCode.text);
-                                        },
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Expanded(
-                                      flex: 3,
-                                      child: RebiInput(
-                                        hintText: 'Phone'.tra,
-                                        controller: _phone,
-                                        keyboardType: TextInputType.number,
-                                        textInputAction: TextInputAction.done,
-                                        autoValidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        isOptional: false,
-                                        color: AppColors.formsLabel,
-                                        readOnly: false,
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 13),
-                                        obscureText: false,
-                                        validator: (value) {
-                                          return Validator.phoneValidator(
-                                              _phone.text);
-                                        },
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                             PhoneNumberFieldWidget(countryCode: _countryCode, phoneNumber: _phone),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 20),
@@ -221,6 +99,10 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                     }
                                     return RebiButton(
                                         onPressed: () {
+                                          phoneNumber=_countryCode
+                                              .text +
+                                              _phone.text;
+                                          Print(phoneNumber);
                                           if (_formKey.currentState!
                                               .validate()) {
                                             FocusManager.instance.primaryFocus
@@ -240,9 +122,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                                             email: widget.email,
                                                             name:
                                                                 widget.fullName,
-                                                            phone: _countryCode
-                                                                    .text +
-                                                                _phone.text,
+                                                            phone: phoneNumber,
                                                             password:
                                                                 widget.password,
                                                             dob: widget.dob)));
@@ -251,6 +131,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                         child: const Text("Verify"));
                                   },
                                   listener: (context, state) {
+
                                     // if (state is SendVerificationSuccessful) {
                                     //   AppSharedPreferences.inputPhoneNumber =
                                     //       _countryCode.text + _phone.text;

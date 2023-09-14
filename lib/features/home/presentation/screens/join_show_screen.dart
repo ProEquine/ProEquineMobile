@@ -1,4 +1,3 @@
-import 'package:country_picker/country_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -6,16 +5,14 @@ import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
-import 'package:proequine/features/home/presentation/widgets/hospital_bottom_sheet.dart';
+import 'package:proequine/core/widgets/phone_number_field_widget.dart';
+import 'package:proequine/features/home/presentation/widgets/select_date_time_widget.dart';
 import 'package:proequine/features/home/presentation/widgets/select_place_form_widget.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../../../core/global_functions/global_statics_drop_down.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
-import '../../../../core/widgets/date_time_picker.dart';
-import '../../../../core/widgets/divider.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
@@ -41,7 +38,6 @@ class JoinShowScreenState extends State<JoinShowScreen>
   TextEditingController pickUpCountryCode = TextEditingController(text: '+971');
   DateTime focusedDay = DateTime.now();
   TextEditingController? date;
-  TextEditingController? expectedDate;
   late DateTime dateTime;
 
   late DateTime pickDate;
@@ -51,10 +47,6 @@ class JoinShowScreenState extends State<JoinShowScreen>
     final time = DateFormat.Hm().format(dateTime);
     return time;
   }
-
-
-  int selectedIndex = 0;
-
   DateTime? time;
   late TextEditingController? timePicked;
 
@@ -68,7 +60,6 @@ class JoinShowScreenState extends State<JoinShowScreen>
     pickDate = DateTime.now();
     dateTime = DateTime.now();
     date = TextEditingController();
-    expectedDate = TextEditingController();
     timePicked = TextEditingController();
     time = DateTime.utc(0, 0, 0, 15, 0);
     selectedTrip = "Other day return";
@@ -83,12 +74,12 @@ class JoinShowScreenState extends State<JoinShowScreen>
   @override
   void dispose() {
     date?.dispose();
-    expectedDate?.dispose();
     timePicked?.dispose();
     super.dispose();
   }
 
   String? selectedNumber;
+  String? pickupPhoneNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -140,103 +131,29 @@ class JoinShowScreenState extends State<JoinShowScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SelectPlaceWidget(location: pickUpLocation),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: kPadding, vertical: 6),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: RebiInput(
-                                  hintText: 'Pickup date'.tra,
-                                  controller: date,
-                                  keyboardType: TextInputType.name,
-                                  textInputAction: TextInputAction.done,
-                                  onTap: () {
-                                    selectDate(
-                                      context: context,
-                                      from: DateTime.now(),
-                                      to: DateTime(2025, 1, 1),
-                                      isSupportChangingYears: false,
-                                      selectedOurDay: dateTime,
-                                      controller: date!,
-                                      focusDay: focusedDay,
-                                    );
-                                  },
-                                  autoValidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                                  isOptional: false,
-                                  color: AppColors.formsLabel,
-                                  readOnly: true,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 13),
-                                  obscureText: false,
-                                  validator: (value) {
-                                    if (value!.isNotEmpty) {
-                                      DateFormat inputFormat =
-                                      DateFormat("dd MMM yyyy");
-                                      DateTime setUpdatedDate =
-                                      inputFormat.parse(value);
-                                      pickDate = setUpdatedDate;
-                                    } else {
-                                      return 'please select date';
-                                    }
+                        SelectDateAndTimeWidget(
+                            time: time!,
+                            timeController: timePicked!,
+                            from: DateTime.now(),
+                            validator: (value) {
+                              if (value!.isNotEmpty) {
+                                DateFormat inputFormat =
+                                DateFormat("dd MMM yyyy");
+                                DateTime setUpdatedDate =
+                                inputFormat.parse(value);
+                                pickDate = setUpdatedDate;
+                              } else {
+                                return '';
+                              }
 
-                                    if (dateTime.isBefore(DateTime.now()) &&
-                                        !dateTime
-                                            .isSameDate(DateTime.now())) {
-                                      return 'correct date please';
-                                    }
-                                    return Validator.requiredValidator(
-                                        date?.text);
-                                  },
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: RebiInput(
-                                  hintText: timePicked!.text.isEmpty
-                                      ? 'Pickup time'
-                                      : timePicked?.text,
-                                  controller: timePicked,
-                                  onTap: () async {
-                                    TimeOfDay? pickedTime =
-                                    await showTimePicker(
-                                      confirmText: "Confirm".tra,
-                                      context: context,
-                                      cancelText: "Cancel".tra,
-                                      initialEntryMode:
-                                      TimePickerEntryMode.dial,
-                                      initialTime: TimeOfDay.fromDateTime(
-                                          DateTime.utc(0, 0, 0, 15, 0)),
-                                    );
-
-                                    Print(pickedTime);
-
-                                    if (pickedTime != null) {
-                                      time = pickedTime.toDateTime();
-                                      //output 10:51 PM
-                                      String parsedTime =
-                                      pickedTime.format(context);
-
-                                      setState(() {
-                                        timePicked?.text = parsedTime;
-                                      });
-                                    } else {}
-                                  },
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 13),
-                                  isOptional: false,
-                                  readOnly: true,
-                                  validator: (value) {
-                                    // return  Validator.requiredValidator(timePicked?.text);
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                              if (dateTime.isBefore(DateTime.now()) &&
+                                  !dateTime.isSameDate(DateTime.now())) {
+                                return 'correct date please';
+                              }
+                              return Validator.requiredValidator(date!.text);
+                            },
+                            pickedDate: pickDate,
+                            dateController: date!),
 
                         Padding(
                           padding: const EdgeInsets.symmetric(
@@ -260,117 +177,7 @@ class JoinShowScreenState extends State<JoinShowScreen>
                             },
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: kPadding, vertical: 7),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: RebiInput(
-                                  hintText: 'CC'.tra,
-                                  controller: pickUpCountryCode,
-                                  keyboardType: TextInputType.number,
-                                  textInputAction: TextInputAction.done,
-                                  autoValidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                                  onTap: () {
-                                    showCountryPicker(
-                                      context: context,
-                                      showPhoneCode: true,
-                                      countryListTheme: CountryListThemeData(
-                                        flagSize: 25,
-                                        backgroundColor:
-                                        AppColors.backgroundColorLight,
-                                        textStyle: const TextStyle(
-                                            fontSize: 16,
-                                            color: AppColors.blackLight),
-                                        bottomSheetHeight: 85.0.h,
-                                        // Optional. Country list modal height
-                                        //Optional. Sets the border radius for the bottomsheet.
-                                        borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(20.0),
-                                          topRight: Radius.circular(20.0),
-                                        ),
-                                        //Optional. Styles the search field.
-                                        inputDecoration:
-                                        const InputDecoration(
-                                          hintText: 'Search by name or code',
-                                          hintStyle: TextStyle(
-                                            color:
-                                            AppColors.formsHintFontLight,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                          prefixIcon: Icon(
-                                            Icons.search,
-                                            color:
-                                            AppColors.formsHintFontLight,
-                                          ),
-                                          filled: true,
-                                          fillColor: AppColors.whiteLight,
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8)),
-                                            borderSide: BorderSide(
-                                              color: Color(0xFFDBD4C3),
-                                              width: 0.50,
-                                            ),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8)),
-                                            borderSide: BorderSide(
-                                              color: Color(0xFFDBD4C3),
-                                              width: 0.50,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      onSelect: (Country country) =>
-                                      pickUpCountryCode.text =
-                                      '+${country.phoneCode}',
-                                    );
-                                  },
-                                  isOptional: false,
-                                  color: AppColors.formsLabel,
-                                  readOnly: true,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 13),
-                                  obscureText: false,
-                                  validator: (value) {
-                                    return Validator.countryCodeValidator(
-                                        pickUpCountryCode.text);
-                                  },
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                flex: 3,
-                                child: RebiInput(
-                                  hintText: 'Pickup Contact number'.tra,
-                                  controller: pickUpContactNumber,
-                                  keyboardType: TextInputType.phone,
-                                  textInputAction: TextInputAction.done,
-                                  autoValidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                                  isOptional: false,
-                                  color: AppColors.formsLabel,
-                                  readOnly: false,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 13),
-                                  obscureText: false,
-                                  validator: (value) {
-                                    return Validator.phoneValidator(
-                                        pickUpContactNumber.text);
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        PhoneNumberFieldWidget(countryCode: pickUpCountryCode, phoneNumber: pickUpContactNumber),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: kPadding, vertical: 6),
@@ -400,15 +207,18 @@ class JoinShowScreenState extends State<JoinShowScreen>
                           onPressed: () {
                             if (_formKey.currentState!.validate() &&
                                 selectedNumber != null) {
+                              pickupPhoneNumber = pickUpCountryCode.text +
+                                  pickUpContactNumber.text;
                               JoinShowTransportRequestModel joinShowModel =
                               JoinShowTransportRequestModel(
                                 pickupContactName: pickUpContactName.text,
                                 pickupContactNumber:
-                                pickUpContactNumber.text,
+                                pickupPhoneNumber!,
                                 trip: 'Show Transport',
+                                showingDate: date!.text,
                                 horsesNumber: selectedNumber!,
                                 tripType: 'On Way',
-                                pickupDate: date!.text,
+                                pickupDate: pickDate,
                                 pickupTime: timePicked!.text,
                                 pickupLocation: pickUpLocation.text,
                               );

@@ -6,8 +6,10 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/widgets/phone_number_field_widget.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/date_time_picker.dart';
@@ -84,6 +86,7 @@ class CreateExportScreenState extends State<CreateExportScreen> {
 
   bool? isEmailVerified = false;
   DateTime? currentBackPressTime;
+  String? phoneNumber;
 
   Future<bool> onWillPop() {
     DateTime now = DateTime.now();
@@ -335,117 +338,7 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                               },
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: kPadding, vertical: 7),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: RebiInput(
-                                    hintText: 'CC'.tra,
-                                    controller: pickUpCountryCode,
-                                    keyboardType: TextInputType.number,
-                                    textInputAction: TextInputAction.done,
-                                    autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    onTap: () {
-                                      showCountryPicker(
-                                        context: context,
-                                        showPhoneCode: true,
-                                        countryListTheme: CountryListThemeData(
-                                          flagSize: 25,
-                                          backgroundColor:
-                                              AppColors.backgroundColorLight,
-                                          textStyle: const TextStyle(
-                                              fontSize: 16,
-                                              color: AppColors.blackLight),
-                                          bottomSheetHeight: 85.0.h,
-                                          // Optional. Country list modal height
-                                          //Optional. Sets the border radius for the bottomsheet.
-                                          borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(20.0),
-                                            topRight: Radius.circular(20.0),
-                                          ),
-                                          //Optional. Styles the search field.
-                                          inputDecoration:
-                                              const InputDecoration(
-                                            hintText: 'Search by name or code',
-                                            hintStyle: TextStyle(
-                                              color:
-                                                  AppColors.formsHintFontLight,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            prefixIcon: Icon(
-                                              Icons.search,
-                                              color:
-                                                  AppColors.formsHintFontLight,
-                                            ),
-                                            filled: true,
-                                            fillColor: AppColors.whiteLight,
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8)),
-                                              borderSide: BorderSide(
-                                                color: Color(0xFFDBD4C3),
-                                                width: 0.50,
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8)),
-                                              borderSide: BorderSide(
-                                                color: Color(0xFFDBD4C3),
-                                                width: 0.50,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        onSelect: (Country country) =>
-                                            pickUpCountryCode.text =
-                                                '+${country.phoneCode}',
-                                      );
-                                    },
-                                    isOptional: false,
-                                    color: AppColors.formsLabel,
-                                    readOnly: true,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 13),
-                                    obscureText: false,
-                                    validator: (value) {
-                                      return Validator.countryCodeValidator(
-                                          pickUpCountryCode.text);
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  flex: 3,
-                                  child: RebiInput(
-                                    hintText: 'Pickup Contact number'.tra,
-                                    controller: pickUpContactNumber,
-                                    keyboardType: TextInputType.phone,
-                                    textInputAction: TextInputAction.done,
-                                    autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    isOptional: false,
-                                    color: AppColors.formsLabel,
-                                    readOnly: false,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 13),
-                                    obscureText: false,
-                                    validator: (value) {
-                                      return Validator.phoneValidator(
-                                          pickUpContactNumber.text);
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                         PhoneNumberFieldWidget(countryCode: pickUpCountryCode, phoneNumber: pickUpContactNumber),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: kPadding, vertical: 6),
@@ -543,6 +436,9 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                             const EdgeInsets.symmetric(horizontal: kPadding),
                         child: RebiButton(
                             onPressed: () {
+
+                              phoneNumber=pickUpCountryCode.text + pickUpContactNumber.text;
+                              Print(phoneNumber);
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -553,7 +449,7 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                                                   pickUpContactName.text,
                                               pickupLocation:
                                                   pickUpLocation.text,
-                                              horsesNumber: numberOfHorses.text,
+                                              horsesNumber: phoneNumber!,
                                               pickupContactNumber:
                                                   pickUpContactNumber.text,
                                               shipmentEstimatedDate: pickDate,

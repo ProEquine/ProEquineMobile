@@ -97,7 +97,9 @@ class _SelectPlaceWidgetState extends State<SelectPlaceWidget> {
                             return Validator.requiredValidator(search.text);
                           },
                         ),
-                        const SizedBox(height: 10,),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         SizedBox(
                           height: 25,
                           child: ListView.builder(
@@ -184,7 +186,7 @@ class _SelectPlaceWidgetState extends State<SelectPlaceWidget> {
                           if (showingList.isNotEmpty) {
                             return ListView.separated(
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               itemCount: showingList.length,
                               separatorBuilder: (context, index) {
                                 return const CustomDivider();
@@ -212,9 +214,12 @@ class _SelectPlaceWidgetState extends State<SelectPlaceWidget> {
                           } else {
                             return Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
+                              children: const [
+                                SizedBox(
+                                  height: 50,
+                                ),
                                 Center(
-                                  child: Text("Empty"),
+                                  child: Text("No Places"),
                                 ),
                               ],
                             );

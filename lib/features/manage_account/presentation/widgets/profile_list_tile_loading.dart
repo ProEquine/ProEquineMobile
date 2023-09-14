@@ -21,9 +21,9 @@ class ProfileListTileLoadingWidgetState extends State<ProfileListTileLoadingWidg
       dense: false,
       onTap: () {
       },
-      title: const FadeShimmer(
+      title:  FadeShimmer(
         baseColor: AppColors.shimmerColors,
-        highlightColor: AppColors.borderColor,
+        highlightColor: AppColors.shimmerColor2,
         height: 10,
         width: 100,
         radius: 20,
@@ -32,7 +32,7 @@ class ProfileListTileLoadingWidgetState extends State<ProfileListTileLoadingWidg
       trailing:FadeShimmer.round(
         size: 12,
         baseColor: AppColors.shimmerColors,
-        highlightColor: AppColors.borderColor,
+        highlightColor: AppColors.shimmerColor2,
 
       ),
     );

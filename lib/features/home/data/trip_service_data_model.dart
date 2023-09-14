@@ -2,7 +2,8 @@ class TripServiceDataModel {
   String pickupLocation;
   String tripType;
   String trip;
-  String pickupDate;
+  DateTime pickupDate;
+  String showingDate;
   String pickupTime;
   String pickupContactName;
   String pickupContactNumber;
@@ -11,7 +12,7 @@ class TripServiceDataModel {
   String dropContactName;
   String? hospitalName;
   String horsesNumber;
-  String? expectedDate;
+  DateTime? expectedDate;
   String? expectedTime;
 
   TripServiceDataModel({
@@ -19,6 +20,7 @@ class TripServiceDataModel {
     required this.tripType,
     required this.trip,
     required this.pickupContactName,
+    required this.showingDate,
     required this.pickupContactNumber,
     required this.pickupDate,
     required this.pickupTime,

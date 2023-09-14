@@ -753,9 +753,9 @@ class _ManageAccountFadeLoadingScreenState
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Row(
                   children: [
-                    const FadeShimmer(
+                     FadeShimmer(
                       baseColor: AppColors.shimmerColors,
-                      highlightColor: AppColors.borderColor,
+                      highlightColor: AppColors.shimmerColor2,
                       height: 62,
                       width: 62,
                       radius: 8,
@@ -765,20 +765,20 @@ class _ManageAccountFadeLoadingScreenState
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children:  [
                         FadeShimmer(
                           baseColor: AppColors.shimmerColors,
-                          highlightColor: AppColors.borderColor,
+                          highlightColor: AppColors.shimmerColor2,
                           height: 15,
                           width: 120,
                           radius: 20,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         FadeShimmer(
                           baseColor: AppColors.shimmerColors,
-                          highlightColor: AppColors.borderColor,
+                          highlightColor: AppColors.shimmerColor2,
                           height: 7,
                           width: 60,
                           radius: 20,
@@ -791,11 +791,11 @@ class _ManageAccountFadeLoadingScreenState
               const SizedBox(
                 height: 20,
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 14),
+               Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: FadeShimmer(
                   baseColor: AppColors.shimmerColors,
-                  highlightColor: AppColors.borderColor,
+                  highlightColor: AppColors.shimmerColor2,
                   height: 15,
                   width: 100,
                   radius: 20,

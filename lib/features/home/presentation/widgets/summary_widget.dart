@@ -51,7 +51,7 @@ class SummaryBoxWidget extends StatelessWidget {
                   height: 5,
                 ),
                 Text(
-                  "${tripServiceDataModel!.pickupDate} • ${tripServiceDataModel!.pickupTime}",
+                  "${tripServiceDataModel!.showingDate} • ${tripServiceDataModel!.pickupTime}",
                   style: AppStyles.summaryDesStyle,
                 ),
                 Text(

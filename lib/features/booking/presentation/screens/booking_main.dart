@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:proequine/features/booking/presentation/widgets/booking_loading_widget.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
@@ -28,11 +31,17 @@ class _BookingMainState extends State<BookingMain> {
   // }
   ScrollController _scrollController = ScrollController();
   bool isScrolled = false;
+  bool isLoading = true;
+  late Timer timer;
 
   @override
   void initState() {
     super.initState();
-
+   timer= Timer(const Duration(seconds: 5), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
     _scrollController.addListener(() {
       if (_scrollController.offset > 30) {
         if (!isScrolled) {
@@ -53,6 +62,7 @@ class _BookingMainState extends State<BookingMain> {
   @override
   void dispose() {
     _scrollController.dispose();
+    timer.cancel();
     super.dispose();
   }
 
@@ -83,7 +93,7 @@ class _BookingMainState extends State<BookingMain> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: MediaQuery(
+      child: isLoading?BookingLoadingWidget():MediaQuery(
         data: const MediaQueryData(
             viewInsets: EdgeInsets.only(top: 100, bottom: 0)),
         child: CupertinoPageScaffold(
@@ -135,12 +145,12 @@ class _BookingMainState extends State<BookingMain> {
                           ThemeData().copyWith(splashColor: Colors.transparent),
                       child: Container(
                         width: 85.0.w,
-                        margin: EdgeInsets.only(bottom: 10),
+                        margin: const EdgeInsets.only(bottom: 10),
                         decoration: BoxDecoration(
                             //This is for background color
                             color: Colors.white.withOpacity(0.0),
                             //This is for bottom border that is needed
-                            border: Border(
+                            border: const Border(
                                 bottom: BorderSide(
                                     color: Color(0XFFDFD9C9), width: 0.8))),
                         child: const TabBar(
@@ -177,22 +187,22 @@ class _BookingMainState extends State<BookingMain> {
                             ]),
                       ),
                     ),
-                     Expanded(
+                     const Expanded(
                         child: TabBarView(children: [
-                        Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: kPadding),
-                         child:Booking(
+                          Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: kPadding),
+                         child: Booking(
                             type: "Transport",
                           ),
                      ),
                        Padding(
-                           padding: const EdgeInsets.symmetric(horizontal: kPadding),
-                           child:Booking(
+                           padding:  EdgeInsets.symmetric(horizontal: kPadding),
+                           child: Booking(
                             type: "Media",
                           ),
                        ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: kPadding),
+                           Padding(
+                            padding: EdgeInsets.symmetric(horizontal: kPadding),
                             child:Booking(
                               type: "Shipping",
                             ),

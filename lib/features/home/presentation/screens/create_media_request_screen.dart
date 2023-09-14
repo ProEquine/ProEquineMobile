@@ -1,7 +1,4 @@
-import 'package:country_picker/country_picker.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/utils/extensions.dart';
