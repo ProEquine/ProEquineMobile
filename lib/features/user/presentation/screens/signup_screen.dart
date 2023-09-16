@@ -282,9 +282,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   obscureText: true,
                                   validator: (value) {
                                     if (value != null && value.isEmpty) {
-                                      return "Please confirm your password".tra;
+                                      return "".tra;
                                     } else if (value != _password.text) {
-                                      return "password does not match".tra;
+                                      return "".tra;
                                     } else {
                                       return null;
                                     }

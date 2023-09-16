@@ -19,15 +19,41 @@ class ShippingWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 22.75.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Image.asset(
-              image!,
-              width: 41.16.w,
-            ),
+          Stack(
+            children:  [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                // Set your desired border radius here
+                child: ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.6), BlendMode.darken),
+                  child: Container(
+                    height: 22.75.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Image.asset(
+                      image!,
+                      width: 41.16.w,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+               const Positioned.fill(
+                child: Align(
+               alignment: Alignment.center,child: Text(
+                  'Coming Soon ',
+                  style: TextStyle(
+                    color: AppColors.whiteLight,
+                    fontSize: 14,
+                    fontFamily: 'notosan',
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+               ),
+            ],
           ),
           const SizedBox(
             height: 10,
@@ -36,7 +62,6 @@ class ShippingWidget extends StatelessWidget {
             title!,
             textAlign: TextAlign.start,
             style: const TextStyle(
-
                 fontFamily: 'notosan',
                 fontWeight: FontWeight.w400,
                 fontSize: 15.0),

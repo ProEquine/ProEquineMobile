@@ -54,28 +54,6 @@ List<DropdownMenuItem<String>> role = [
   ),
 ];
 
-List<DropdownMenuItem<String>> stables = [
-  const DropdownMenuItem(
-    value: "Sharjah Stable",
-    child: Text("Sharjah"),
-  ),
-  const DropdownMenuItem(
-    value: "Malath",
-    child: Text("Malath"),
-  ),
-  const DropdownMenuItem(
-    value: "Malath2",
-    child: Text("Malath2"),
-  ),
-  const DropdownMenuItem(
-    value: "Malath3",
-    child: Text("Malath3"),
-  ),
-  const DropdownMenuItem(
-    value: "Add Your Stable",
-    child: Text("Add Your Stable"),
-  ),
-];
 List<DropdownMenuItem<String>> discipline = [
   const DropdownMenuItem(
     value: "Show Jumping",
@@ -86,12 +64,24 @@ List<DropdownMenuItem<String>> discipline = [
     child: Text("Dressage"),
   ),
   const DropdownMenuItem(
-    value: "Racing",
+    value: "Flat Race",
     child: Text("Racing"),
   ),
   const DropdownMenuItem(
     value: "Endurance",
     child: Text("Endurance"),
+  ),
+  const DropdownMenuItem(
+    value: "Eventing",
+    child: Text("Eventing"),
+  ),
+  const DropdownMenuItem(
+    value: "Tent Pegging",
+    child: Text("Tent Pegging"),
+  ),
+  const DropdownMenuItem(
+    value: "Arabian Show",
+    child: Text("Arabian Show"),
   ),
 ];
 List<DropdownMenuItem<String>> supportSubject = [

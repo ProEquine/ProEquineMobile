@@ -376,7 +376,19 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                       Padding(
                         padding: const EdgeInsets.all(kPadding),
                         child: RebiButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (_formKey.currentState!.validate() &&
+                                country.text.isNotEmpty &&
+                                (selectedCity != null ||
+                                    city.text.isNotEmpty) &&
+                                (selectedState != null ||
+                                    state.text.isNotEmpty)) {
+                              Print("Saved");
+                              Navigator.pop(context);
+                            }else{
+                              RebiMessage.error(msg: "Please fill all of the fields", context: context);
+                            }
+                          },
                           child: const Text(
                             "Add",
                           ),

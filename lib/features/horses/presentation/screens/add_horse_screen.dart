@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/core/global_functions/global_statics_drop_down.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/widgets/chose_picture_bottom_sheet.dart';
 import 'package:proequine/core/widgets/rebi_input.dart';
 import 'package:sizer/sizer.dart';
@@ -500,9 +500,22 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                   alignment: Alignment.bottomCenter,
                   child: RebiButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
+                      if (_formKey.currentState!.validate() &&
+                          selectedGender != null &&
+                          horseImage!=null &&
+                          placeOfBirth.text!='' &&
+                          selectedBloodLine != null &&
+                          selectedBreed != null &&
+                          selectedColor != null &&
+                          selectedDiscipline != null &&
+                          selectedStable != null) {
+                        Navigator.pop(context);
                         Print("Saved");
-                      } else {}
+                      } else {
+                        RebiMessage.error(
+                            msg: "Please fill all of the fields",
+                            context: context);
+                      }
                     },
                     child: const Text("Add"),
                   ),

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:proequine/app_settings.dart';
 import 'package:proequine/features/notifications/domain/notifications_cubit.dart';
@@ -27,7 +28,8 @@ class SplashScreen extends StatefulWidget {
   SplashScreenState createState() => SplashScreenState();
 }
 
-class SplashScreenState extends State<SplashScreen> {
+class SplashScreenState extends State<SplashScreen>  with TickerProviderStateMixin {
+  late final AnimationController _controller;
   final String _appUrl = Platform.isAndroid
       ? 'https://play.google.com/store/apps/details?id=com.findyourteam.mobile'
       : 'https://apps.apple.com/us/app/fyt-find-your-team/id1644097919';
@@ -99,7 +101,7 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> startTimer() async {
-    Timer(const Duration(seconds: 3), () async {
+    Timer(const Duration(seconds: 0), () async {
       await navigateUser();
     });
   }
@@ -128,29 +130,31 @@ class SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
+    _controller = AnimationController(vsync: this);
     AppSettings.setup();
     getVersion();
     if (AppSharedPreferences.getEnvType != '') {
-      startTimer();
+      // startTimer();
     } else {
       getVersion();
-      Timer(const Duration(seconds: 3), () async {
-        await startTimer();
-      });
+      // Timer(const Duration(seconds: 3), () async {
+      //   await startTimer();
+      // });
     }
 
-    deleteSecureStorage();
-    sendRefreshToken();
-    notificationsCubit.configOneSignal();
+    // deleteSecureStorage();
+    // sendRefreshToken();
+    // notificationsCubit.configOneSignal();
 
     super.initState();
   }
 
   @override
   void dispose() {
-    sendRefreshToken();
-    splashCubit.close();
-    notificationsCubit.close();
+    _controller.dispose();
+    // sendRefreshToken();
+    // splashCubit.close();
+    // notificationsCubit.close();
     super.dispose();
   }
 
@@ -164,14 +168,27 @@ class SplashScreenState extends State<SplashScreen> {
           //
           // buildDialogForUpdate(),
           // const BackgroundImage(),
-          Transform.translate(
-            offset: const Offset(0.0, -30.0),
-            child: Center(
-              child: SvgPicture.asset(
-                AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
-                    ? AppIcons.logoDarkMode
-                    : AppIcons.logoLight,
-                height: 20.0.h,
+          Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0.w,),
+              child: Lottie.asset(
+
+
+                'assets/animation/splash.json',
+
+                controller: _controller,
+                onLoaded: (composition) {
+                  // Configure the AnimationController with the duration of the
+                  // Lottie file and start the animation.
+
+                      _controller
+                  ..duration = composition.duration
+                  ..forward().whenComplete(() =>
+                  startTimer());
+
+
+
+                },
               ),
             ),
           ),

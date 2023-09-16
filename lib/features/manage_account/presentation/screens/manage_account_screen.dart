@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:country_picker/country_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -62,6 +64,7 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
   late DateTime dateTime;
 
   var now = DateTime.now();
+  late Timer timer;
 
   int? firstDay = 1;
   int? firstMonth = 1;
@@ -84,9 +87,15 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
     ),
   ];
   String? selectedOption;
+  bool isLoading = true;
 
   @override
   void initState() {
+    timer = Timer(const Duration(seconds: 4), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
     initializeDateFormatting();
     _selectedYear = _selectedDay.year;
     _yearController = TextEditingController(text: _selectedDay.year.toString());
@@ -97,13 +106,16 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
   void dispose() {
     cubit.close();
     reason.dispose();
+    timer.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     // final themeCubit = ThemeCubitProvider.of(context);
-    return Scaffold(
+    return isLoading
+        ? const ManageAccountFadeLoadingScreen()
+        :Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.h),
         child: CustomHeader(
@@ -166,9 +178,6 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
                                           Print(
                                               'selected Option $selectedOption');
                                         });
-                                        // setState(() {
-                                        //
-                                        // });
                                       },
                                       validator: (value) {
                                         // return Validator.requiredValidator(selectedNumber);
@@ -829,29 +838,6 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
               const SizedBox(
                 height: 5,
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const ManageAccountFadeLoadingScreen()));
-                      },
-                      child: Text("Fade Shimmer")),
-                  TextButton(onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                             ManageAccountGradientLoadingScreen()));
-                  }, child: Text("Gradient Shimmer")),
-                ],
-              )
             ],
           ),
         ),

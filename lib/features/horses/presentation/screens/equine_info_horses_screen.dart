@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 
 import 'package:proequine/core/constants/constants.dart';
-import 'package:proequine/core/constants/thems/app_styles.dart';
-import 'package:proequine/features/equine_info/presentation/screens/add_secondary_discipline_screen.dart';
-import 'package:proequine/features/equine_info/presentation/screens/update_discipline_screen.dart';
-import 'package:proequine/features/equine_info/presentation/screens/update_secondary_discipline_screen.dart';
-import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
-
-import 'package:proequine/features/manage_account/presentation/screens/update_username_screen.dart';
+import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/utils/rebi_message.dart';
+import 'package:proequine/core/widgets/stables_widget.dart';
 
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
-import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/global_functions/global_statics_drop_down.dart';
+import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
-import '../../../../core/widgets/profile_two_lines_list_tile.dart';
 import '../../../../core/widgets/rebi_button.dart';
+import '../../../../core/widgets/rebi_input.dart';
 
 class EquineInfoHorsesScreen extends StatefulWidget {
   const EquineInfoHorsesScreen({super.key});
@@ -28,10 +24,28 @@ class EquineInfoHorsesScreen extends StatefulWidget {
 }
 
 class _EquineInfoHorsesScreenState extends State<EquineInfoHorsesScreen> {
+  TextEditingController stable = TextEditingController();
+  TextEditingController stableName = TextEditingController();
+  TextEditingController stableLocation = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? selectedDiscipline;
   String? selectedStable;
   String? selectedCondition;
 
+  String? selectedEmirate;
+  bool isChooseToAddStable = false;
+
+  void changeToTrueValue() {
+    setState(() {
+      isChooseToAddStable = true;
+    });
+  }
+
+  void changeToFalseValue() {
+    setState(() {
+      isChooseToAddStable = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,104 +58,190 @@ class _EquineInfoHorsesScreenState extends State<EquineInfoHorsesScreen> {
           isThereBackButton: true,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(kPadding),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Horse Stable ",
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                color: AppColors.formsHintFontLight,
-                fontSize: 14,
-                fontFamily: 'notosan',
-                fontWeight: FontWeight.w500,
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(kPadding),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                "Horse Stable ",
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  color: AppColors.formsHintFontLight,
+                  fontSize: 14,
+                  fontFamily: 'notosan',
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 7),
-              child: DropDownWidget(
-                items: stables,
-                selected: selectedStable,
-                onChanged: (stable) {
-                  setState(() {
-                    selectedStable = stable;
-                  });
-                },
-                validator: (value) {
-                  return Validator.requiredValidator(selectedStable);
-                },
-                hint: 'Stable',
+              SelectStableWidget(
+                stable: stable,
+                showingStablesList: stables,
+                changeTrue: changeToTrueValue,
+                changeFalse: changeToFalseValue,
               ),
-            ),
-            const Text(
-              "Horse condition",
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                color: AppColors.formsHintFontLight,
-                fontSize: 14,
-                fontFamily: 'notosan',
-                fontWeight: FontWeight.w500,
+              const SizedBox(
+                height: 20,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 7),
-              child: DropDownWidget(
-                items: conditions,
-                selected: selectedCondition,
-                onChanged: (condition) {
-                  setState(() {
-                    selectedCondition = condition;
-                  });
-                },
-                validator: (value) {
-                  return Validator.requiredValidator(selectedCondition);
-                },
-                hint: 'Condition',
+              Visibility(
+                visible: isChooseToAddStable,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 7),
+                  child: RebiInput(
+                    hintText: 'Stable Name'.tra,
+                    controller: stableName,
+                    scrollPadding: const EdgeInsets.only(bottom: 100),
+                    keyboardType: TextInputType.name,
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                    textInputAction: TextInputAction.done,
+                    autoValidateMode: AutovalidateMode.onUserInteraction,
+                    isOptional: false,
+                    color: AppColors.formsLabel,
+                    readOnly: false,
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 13),
+                    obscureText: false,
+                    validator: (value) {
+                      return Validator.requiredValidator(stableName.text);
+                    },
+                  ),
+                ),
               ),
-            ),
-            const Text(
-              "Horse Discipline ",
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                color: AppColors.formsHintFontLight,
-                fontSize: 14,
-                fontFamily: 'notosan',
-                fontWeight: FontWeight.w500,
+              Visibility(
+                visible: isChooseToAddStable,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 7),
+                  child: RebiInput(
+                    hintText: 'Location'.tra,
+                    controller: stableLocation,
+                    scrollPadding: const EdgeInsets.only(bottom: 100),
+                    keyboardType: TextInputType.url,
+                    textInputAction: TextInputAction.done,
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                    autoValidateMode: AutovalidateMode.onUserInteraction,
+                    isOptional: false,
+                    color: AppColors.formsLabel,
+                    readOnly: false,
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 13),
+                    obscureText: false,
+                    validator: (value) {
+                      return Validator.requiredValidator(stableLocation.text);
+                    },
+                  ),
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 7),
-              child: DropDownWidget(
-                items: discipline,
-                selected: selectedDiscipline,
-                onChanged: (disc) {
-                  setState(() {
-                    selectedDiscipline = disc;
-                  });
-                },
-                validator: (value) {
-                  return Validator.requiredValidator(selectedDiscipline);
-                },
-                hint: 'Discipline',
+              Visibility(
+                visible: isChooseToAddStable,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 7),
+                  child: DropDownWidget(
+                    items: emirate,
+                    selected: selectedEmirate,
+                    onChanged: (selectedEmi) {
+                      setState(() {
+                        selectedEmirate = selectedEmi;
+                        Print('selected Emirate $selectedEmirate');
+                      });
+                    },
+                    validator: (value) {
+                      // return Validator.requiredValidator(selectedNumber);
+                    },
+                    hint: 'Emirate',
+                  ),
+                ),
               ),
-            ),
-            Spacer(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: RebiButton(
-                onPressed: () {
+              const Text(
+                "Horse condition",
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  color: AppColors.formsHintFontLight,
+                  fontSize: 14,
+                  fontFamily: 'notosan',
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 7),
+                child: DropDownWidget(
+                  items: conditions,
+                  selected: selectedCondition,
+                  onChanged: (condition) {
+                    setState(() {
+                      selectedCondition = condition;
+                    });
+                  },
+                  validator: (value) {
+                    return Validator.requiredValidator(selectedCondition);
+                  },
+                  hint: 'Condition',
+                ),
+              ),
+              const Text(
+                "Horse Discipline ",
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  color: AppColors.formsHintFontLight,
+                  fontSize: 14,
+                  fontFamily: 'notosan',
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 7),
+                child: DropDownWidget(
+                  items: discipline,
+                  selected: selectedDiscipline,
+                  onChanged: (disc) {
+                    setState(() {
+                      selectedDiscipline = disc;
+                    });
+                  },
+                  validator: (value) {
+                    return Validator.requiredValidator(selectedDiscipline);
+                  },
+                  hint: 'Discipline',
+                ),
+              ),
+              const Spacer(),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: RebiButton(
+                  onPressed: () {
+                    Print(selectedStable);
+                    Print(selectedEmirate);
+                    Print(selectedDiscipline);
+                    Print(selectedCondition);
+                    Print(selectedStable);
+                    if ((stable.text.isNotEmpty &&
+                        stable.text != 'Add Your Stable') ||
+                        (selectedEmirate != null &&
+                                stableName.text.isNotEmpty &&
+                                stableLocation.text.isNotEmpty) &&
+                            selectedCondition != null &&
+                            selectedDiscipline != null) {
 
-                },
-                child: const Text("Save"),
+                      Navigator.pop(context);
+                    } else {
+                      RebiMessage.error(
+                          msg: "Please fill all of the fields",
+                          context: context);
+                    }
+                  },
+                  child: const Text("Save"),
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-          ],
+              const SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
         ),
       ),
     );

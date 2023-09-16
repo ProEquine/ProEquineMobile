@@ -2,16 +2,13 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
-
 import 'package:proequine/features/horses/presentation/widgets/document_widget.dart';
 import 'package:proequine/features/horses/presentation/widgets/horse_card_document_widget.dart';
 import 'package:proequine/features/horses/presentation/widgets/show_document_bottomsheet.dart';
-import 'package:proequine/main.dart';
 
 import 'package:sizer/sizer.dart';
 import '../../../../core/global_functions/global_statics_drop_down.dart';

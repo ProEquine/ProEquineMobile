@@ -13,6 +13,7 @@ import 'package:proequine/features/home/data/trip_service_data_model.dart';
 import 'package:proequine/features/home/presentation/screens/chose_horses_trip_screen.dart';
 import 'package:proequine/features/home/presentation/widgets/hospital_bottom_sheet.dart';
 import 'package:proequine/features/home/presentation/widgets/select_date_time_widget.dart';
+import 'package:proequine/features/home/presentation/widgets/select_place_widget.dart';
 
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
@@ -304,6 +305,8 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                 ),
                           SelectPlaceWidget(
                             location: pickUpLocation,
+                            showingList: placesList,
+                            title: "Pickup Location",
                           ),
                           SelectDateAndTimeWidget(
                               time: time!,
@@ -419,7 +422,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                     },
                                   ),
                                 )
-                              : SelectPlaceWidget(location: dropLocation),
+                              : SelectPlaceWidget(location: dropLocation,showingList: placesList,title: "Drop Location",),
                           Padding(
                             padding: const EdgeInsets.only(
                                 right: kPadding,
@@ -478,7 +481,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
                             ),
                           ),
                           widget.type == 'hospital'
-                              ? SizedBox()
+                              ? const SizedBox()
                               : Visibility(
                                   visible: selectedTrip == 'No Return'
                                       ? false
@@ -595,7 +598,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                 ),
                         ],
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Padding(
                         padding:
                             const EdgeInsets.symmetric(horizontal: kPadding),
@@ -612,7 +615,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                   dropCountryCode.text + dropContactNumber.text;
                               if (widget.type == 'hospital') {
                                 if (_formKey.currentState!.validate() &&
-                                    selectedHospital != null) {
+                                    selectedHospital != null && numberOfHorses.text.isNotEmpty) {
                                   TripServiceDataModel tripServiceModel =
                                       TripServiceDataModel(
                                     expectedTime: expectedTimePicked?.text,
@@ -640,13 +643,6 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                                   tripServiceDataModel:
                                                       tripServiceModel,
                                                 )));
-                                  } else if ((selectedTrip ==
-                                          "Other day return" &&
-                                      exDropDate.isBefore(pickDate))) {
-                                    RebiMessage.error(
-                                        msg:
-                                            "please enter the correct expected Date",
-                                        context: context);
                                   } else {
                                     Navigator.push(
                                         context,
@@ -663,7 +659,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                       context: context);
                                 }
                               } else {
-                                if (_formKey.currentState!.validate()) {
+                                if (_formKey.currentState!.validate()&& numberOfHorses.text.isNotEmpty) {
                                   TripServiceDataModel tripServiceModel =
                                       TripServiceDataModel(
                                     expectedTime: expectedTimePicked?.text,

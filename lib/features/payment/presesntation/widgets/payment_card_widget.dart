@@ -65,32 +65,10 @@ class PaymentCardWidget extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    onPressViewDetails!();
-                  },
-                  child: Row(
-                    children: const [
-                      Icon(
-                        Icons.remove_red_eye_outlined,
-                        color: AppColors.yellow,
-                      ),
-                      SizedBox(
-                        width: 3,
-                      ),
-                      Text(
-                        "View details",
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: AppColors.yellow,
-                          fontSize: 12,
-                          fontFamily: 'notosan',
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+                Text(
+                  date!,
+                  style: AppStyles.bookingContent,
+                ),
               ],
             ),
             const SizedBox(
@@ -110,14 +88,11 @@ class PaymentCardWidget extends StatelessWidget {
                   width: 6,
                 ),
                 Text(
-                  transportType!,
+                  bookingId!,
                   style: AppStyles.bookingContent,
                 ),
                 const Spacer(),
-                Text(
-                  date!,
-                  style: AppStyles.bookingContent,
-                ),
+
               ],
             ),
             const SizedBox(
@@ -145,33 +120,56 @@ class PaymentCardWidget extends StatelessWidget {
                     )
                   ],
                 ),
-                Row(
-                  children: [
-                    Text(
-                      from!,
-                      style: AppStyles.bookingContent,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    SvgPicture.asset(
-                      AppIcons.directArrow,
-                      height: 20,
-                      width: 40,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      to!,
-                      style: AppStyles.bookingContent,
-                    ),
-                  ],
+                // Row(
+                //   children: [
+                //     Text(
+                //       from!,
+                //       style: AppStyles.bookingContent,
+                //     ),
+                //     const SizedBox(
+                //       width: 10,
+                //     ),
+                //     SvgPicture.asset(
+                //       AppIcons.directArrow,
+                //       height: 20,
+                //       width: 40,
+                //     ),
+                //     const SizedBox(
+                //       width: 10,
+                //     ),
+                //     Text(
+                //       to!,
+                //       style: AppStyles.bookingContent,
+                //     ),
+                //   ],
+                // ),
+                GestureDetector(
+                  onTap: () {
+                    onPressViewDetails!();
+                  },
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.remove_red_eye_outlined,
+                        color: AppColors.yellow,
+                      ),
+                      SizedBox(
+                        width: 3,
+                      ),
+                      Text(
+                        "View details",
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: AppColors.yellow,
+                          fontSize: 12,
+                          fontFamily: 'notosan',
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                Text(
-                  bookingId!,
-                  style: AppStyles.bookingContent,
-                ),
+
               ],
             ),
           ],

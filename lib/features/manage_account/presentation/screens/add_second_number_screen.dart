@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/widgets/phone_number_field_widget.dart';
 import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
 import 'package:sizer/sizer.dart';
 
@@ -81,55 +82,7 @@ class _AddSecondaryPhoneScreenState extends State<AddSecondaryPhoneScreen> {
               ),
             ),
             const SizedBox(height: 14,),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: kPadding),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: RebiInput(
-                      hintText: 'CC'.tra,
-                      controller: _countryCode,
-                      keyboardType: TextInputType.number,
-                      textInputAction: TextInputAction.done,
-                      autoValidateMode: AutovalidateMode.onUserInteraction,
-                      isOptional: false,
-                      color: AppColors.formsLabel,
-                      readOnly: false,
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 13),
-                      obscureText: false,
-                      validator: (value) {
-                        return Validator.countryCodeValidator(
-                            _countryCode.text);
-                      },
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: RebiInput(
-                      hintText: 'Phone'.tra,
-                      controller: _phone,
-                      keyboardType: TextInputType.number,
-                      textInputAction: TextInputAction.done,
-                      autoValidateMode: AutovalidateMode.onUserInteraction,
-                      isOptional: false,
-                      color: AppColors.formsLabel,
-                      readOnly: false,
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 13),
-                      obscureText: false,
-                      validator: (value) {
-                        return Validator.phoneValidator(_phone.text);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            PhoneNumberFieldWidget(countryCode: _countryCode, phoneNumber: _phone),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 7,horizontal: 15),
               child: DropDownWidget(

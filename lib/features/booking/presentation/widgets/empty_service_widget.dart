@@ -7,8 +7,9 @@ import '../../../../core/constants/images/app_images.dart';
 
 class EmptyServiceScreen extends StatelessWidget {
   final String serviceType;
+  bool isComingSoon=false;
 
-  const EmptyServiceScreen({Key? key, required this.serviceType})
+  EmptyServiceScreen({Key? key, required this.serviceType, this.isComingSoon=false})
       : super(key: key);
 
   @override
@@ -30,7 +31,18 @@ class EmptyServiceScreen extends StatelessWidget {
           const SizedBox(
             height: 40,
           ),
-          Center(
+          isComingSoon?const Center(
+            child: Text(
+              'Coming Soon ...',
+              style: TextStyle(
+                color: AppColors.blackLight,
+                fontSize: 28.26,
+                fontFamily: 'notosan',
+                fontWeight: FontWeight.w400,
+                letterSpacing: -0.94,
+              ),
+            ),
+          ):Center(
             child: Text(
               'Looks like you don’t have any $serviceType ...',
               style: const TextStyle(
@@ -45,7 +57,7 @@ class EmptyServiceScreen extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          Row(
+          isComingSoon?const SizedBox():Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: const [

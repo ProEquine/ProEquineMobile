@@ -114,7 +114,7 @@ class _PhoneNumberFieldWidgetState extends State<PhoneNumberFieldWidget> {
           Expanded(
             flex: 3,
             child: RebiInput(
-              hintText: 'Pickup Contact number'.tra,
+              hintText: '50 1234567'.tra,
               controller: widget.phoneNumber,
               keyboardType: TextInputType.phone,
               textInputAction: TextInputAction.done,

@@ -36,7 +36,7 @@ class Validator {
   static String? phoneValidator(String? value) {
     if (value != null) {
       if (value.startsWith('0')) {
-        return 'Number should not start with zero';
+        return '';
       }
       if (!RegExp(
         r'(^(?:[+0]9)?[0-9]{8,12}$)',

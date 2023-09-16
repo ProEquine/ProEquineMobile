@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/divider.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:proequine/features/home/presentation/screens/local_summary.dart';
 
 import 'package:sizer/sizer.dart';
+
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../core/global_functions/validate_horse_functions.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../data/trip_service_data_model.dart';
@@ -96,6 +99,23 @@ class _ChoseTripHorseScreenState extends State<ChoseTripHorseScreen> {
     'Add New Horse'
   ];
 
+
+  bool isGenderSelectedEqualHorses(
+      List<TextEditingController> selectedHorse, List<String> genders) {
+    int addNewHorseCount = 0;
+    int genderSelectedCount = 0;
+
+    for (int i = 0; i < selectedHorse.length; i++) {
+      if (selectedHorse[i].text == 'Add New Horse') {
+        addNewHorseCount++;
+      } else if (genders[i].isNotEmpty && genders[i] != '') {
+        genderSelectedCount++;
+      }
+    }
+
+    return addNewHorseCount == genderSelectedCount;
+  }
+
   @override
   void dispose() {
     for (var controller in horsesControllers) {
@@ -162,16 +182,25 @@ class _ChoseTripHorseScreenState extends State<ChoseTripHorseScreen> {
                         Print("Selected horses $selectedHorse");
                         Print("Selected genders $genders");
                         Print("Selected isChosen $isChooseNewHorse");
+
                         final theMap =
                             Map.fromIterables(selectedHorse, genders);
                         Print(theMap);
+                        Print(isListNotEmpty(genders));
 
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LocalSummary(
-                                    tripServiceDataModel:
-                                        widget.tripServiceDataModel)));
+                        if (_formKey.currentState!.validate() &&
+                            validateHorses(horsesControllers) && isListNotEmpty(genders)) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LocalSummary(
+                                      tripServiceDataModel:
+                                          widget.tripServiceDataModel)));
+                        } else {
+                          RebiMessage.error(
+                              msg: "Please select a horse for each field.",
+                              context: context);
+                        }
                       },
                       child: const Text("Next"),
                     ),

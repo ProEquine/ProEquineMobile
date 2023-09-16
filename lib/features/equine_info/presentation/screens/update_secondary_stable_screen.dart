@@ -13,6 +13,7 @@ import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
+import '../../../../core/widgets/stables_widget.dart';
 
 class UpdateSecondaryStableScreen extends StatefulWidget {
    String secondaryStable;
@@ -27,36 +28,26 @@ class _UpdateSecondaryStableScreenState
     extends State<UpdateSecondaryStableScreen> {
   // final UserCubit cubit = UserCubit();
 
-  List<DropdownMenuItem<String>> secondaryStable = [
-    const DropdownMenuItem(
-      value: "Sharjah Stable",
-      child: Text("Sharjah"),
-    ),
-    const DropdownMenuItem(
-      value: "Malath",
-      child: Text("Malath"),
-    ),
-    const DropdownMenuItem(
-      value: "Malalth Paradise",
-      child: Text("Malalth Paradise"),
-    ),
-    const DropdownMenuItem(
-      value: "Malath3",
-      child: Text("Malath3"),
-    ),
-    const DropdownMenuItem(
-      value: "Add Your Stable",
-      child: Text("Add Your Stable"),
-    ),
-  ];
 
   String? selectedSecondaryStable;
   String? selectedEmirate;
   late final TextEditingController _secondaryStableName;
+  late final TextEditingController stable;
   late final TextEditingController _secondaryStableLocation;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool isChooseToAddStable = false;
+  void changeToTrueValue() {
+    setState(() {
+      isChooseToAddStable = true;
+    });
+  }
+
+  void changeToFalseValue() {
+    setState(() {
+      isChooseToAddStable = false;
+    });
+  }
 
   @override
   void initState() {
@@ -64,6 +55,7 @@ class _UpdateSecondaryStableScreenState
     Print('AppSharedPreferences.getEnvType${AppSharedPreferences.getEnvType}');
     _secondaryStableName = TextEditingController();
     _secondaryStableLocation = TextEditingController();
+    stable = TextEditingController(text: widget.secondaryStable);
     selectedSecondaryStable=widget.secondaryStable;
     super.initState();
   }
@@ -72,6 +64,7 @@ class _UpdateSecondaryStableScreenState
   void dispose() {
     _secondaryStableLocation.dispose();
     _secondaryStableName.dispose();
+    stable.dispose();
     // cubit.close();
     super.dispose();
   }
@@ -124,30 +117,11 @@ class _UpdateSecondaryStableScreenState
                               const SizedBox(
                                 height: 5,
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 7),
-                                child: DropDownWidget(
-                                  items: secondaryStable,
-                                  selected: selectedSecondaryStable,
-                                  onChanged: (secondaryStable) {
-                                    setState(() {
-                                      selectedSecondaryStable = secondaryStable;
-                                      if (selectedSecondaryStable ==
-                                          'Add Your Stable') {
-                                        isChooseToAddStable = true;
-                                      } else {
-                                        isChooseToAddStable = false;
-                                      }
-                                      Print(
-                                          'selected secondary stable $selectedSecondaryStable');
-                                    });
-                                  },
-                                  validator: (value) {
-                                    // return Validator.requiredValidator(selectedNumber);
-                                  },
-                                  hint: 'Choose Secondary Stable',
-                                ),
+                              SelectStableWidget(
+                                stable: stable,
+                                showingStablesList: stables,
+                                changeTrue: changeToTrueValue,
+                                changeFalse: changeToFalseValue,
                               ),
                               const SizedBox(
                                 height: 20,
@@ -266,8 +240,8 @@ class _UpdateSecondaryStableScreenState
                             horizontal: 20,
                           ),
                           child: RebiButton(
-                            backgroundColor: (selectedSecondaryStable != null &&
-                                        selectedSecondaryStable !=
+                            backgroundColor: (stable.text.isNotEmpty &&
+                                stable.text !=
                                             'Add Your Stable') ||
                                     (selectedEmirate != null &&
                                         _secondaryStableName.text.isNotEmpty &&
@@ -276,13 +250,14 @@ class _UpdateSecondaryStableScreenState
                                 ? AppColors.yellow
                                 : AppColors.formsLabel,
                             onPressed: () {
-                              if ((selectedSecondaryStable != null &&
-                                      selectedSecondaryStable !=
+                              if ((stable.text.isNotEmpty  &&
+                                  stable.text !=
                                           'Add Your Stable') ||
                                   (selectedEmirate != null &&
                                       _secondaryStableLocation
                                           .text.isNotEmpty &&
                                       _secondaryStableName.text.isNotEmpty)) {
+                                Navigator.pop(context);
                               } else {
                                 RebiMessage.error(
                                     msg: 'Please select your secondary stable',

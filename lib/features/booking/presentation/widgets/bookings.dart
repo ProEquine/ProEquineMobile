@@ -227,22 +227,9 @@ class Booking extends StatelessWidget {
             //   },
             // ),
             type == 'Shipping'
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      SizedBox(height: 200,),
-                      Center(
-                        child: Text(
-                          "Comming Soon",
-                          style: TextStyle(
-                              color: AppColors.blackLight,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 30),
-                        ),
-                      ),
-                    ],
-                  )
+                ? EmptyServiceScreen(serviceType: type,isComingSoon: true,)
+
+
                 : type == 'Transport'
                     ? ListView.builder(
                         shrinkWrap: true,

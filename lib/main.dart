@@ -31,6 +31,7 @@ import 'package:proequine/features/manage_account/presentation/screens/verify_em
 import 'package:proequine/features/manage_account/presentation/screens/verify_update_email_screen.dart';
 
 import 'package:proequine/features/splash/domain/splash_cubit.dart';
+import 'package:proequine/features/splash/presentation/screens/splash_screen.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/choose_stable_screen.dart';
 import 'package:proequine/theme_cubit_provider.dart';
@@ -185,7 +186,7 @@ class MyAppState extends State<MyApp> {
             : AppStyles().lightTheme,
         navigatorObservers: [MyNavigatorObserver()],
         title: 'Pro Equine',
-        home: const BottomNavigation(),
+        home: const SplashScreen(),
         routes: {
           loginRoute: (context) => const LoginScreen(),
           registerRoute: (context) => const RegisterScreen(),

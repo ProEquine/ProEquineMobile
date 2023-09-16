@@ -4,7 +4,9 @@ import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
+
 import 'package:sizer/sizer.dart';
+
 import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/global_functions/global_statics_drop_down.dart';
@@ -12,7 +14,6 @@ import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
-import '../../../../core/widgets/header_text.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/thank_widget.dart';
@@ -41,104 +42,6 @@ class _SupportState extends State<Support> {
 
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   appBar: PreferredSize(
-    //     preferredSize: Size.fromHeight(20.0.h),
-    //     child: CustomHeader(
-    //       title: "Support",
-    //       isThereBackButton: true,
-    //     ),
-    //   ),
-    //   body: Form(
-    //     key: _formKey,
-    //     child: Column(
-    //       children: [
-    //         Row(
-    //           children: [
-    //             const SizedBox(
-    //               width: 14,
-    //             ),
-    //             HeaderText("", "Get in touch, we're here to help", true),
-    //           ],
-    //         ),
-    //         const SizedBox(
-    //           height: 5,
-    //         ),
-    //         Padding(
-    //           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-    //           child: RebiInput(
-    //             hintText: 'Reference number if applicable'.tra,
-    //             controller: referenceNumber,
-    //             keyboardType: TextInputType.text,
-    //             textInputAction: TextInputAction.done,
-    //             autoValidateMode: AutovalidateMode.onUserInteraction,
-    //             isOptional: true,
-    //             readOnly: false,
-    //             contentPadding:
-    //                 const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
-    //             obscureText: false,
-    //             validator: (value) {
-    //               return Validator.requiredValidator(referenceNumber.text);
-    //             },
-    //           ),
-    //         ),
-    //         Padding(
-    //           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-    //           child: RebiInput(
-    //             hintText: 'Your Inquiry'.tra,
-    //             controller: descriptionIssue,
-    //             keyboardType: TextInputType.multiline,
-    //             maxLines: 5,
-    //             textInputAction: TextInputAction.done,
-    //             autoValidateMode: AutovalidateMode.onUserInteraction,
-    //             isOptional: false,
-    //             readOnly: false,
-    //             contentPadding:
-    //                 const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
-    //             obscureText: false,
-    //             validator: (value) {
-    //               return Validator.requiredValidator(descriptionIssue.text);
-    //             },
-    //           ),
-    //         ),
-    //         const Spacer(),
-    //         Padding(
-    //           padding: const EdgeInsets.symmetric(horizontal: 14),
-    //           child: BlocConsumer<SupportCubit, SupportState>(
-    //             bloc: cubit,
-    //             listener: (context, state) {
-    //               if (state is ContactSupportSuccessful) {
-    //                 Navigator.pushReplacement(
-    //                     context,
-    //                     MaterialPageRoute(
-    //                         builder: (context) => const ThanksWidget()));
-    //               } else if (state is ContactSupportError) {
-    //                 RebiMessage.error(msg: state.message!, context: context);
-    //               }
-    //             },
-    //             builder: (context, state) {
-    //               if (state is ContactSupportLoading) {
-    //                 return const LoadingCircularWidget();
-    //               }
-    //               return RebiButton(
-    //                   onPressed: () {
-    //                     if (_formKey.currentState!.validate()) {
-    //                       FocusManager.instance.primaryFocus?.unfocus();
-    //                       onPressSend();
-    //                     } else {}
-    //                   },
-    //                   child: const Text("Send"));
-    //             },
-    //           ),
-    //         ),
-    //         const SizedBox(
-    //           height: 40,
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.h),
@@ -197,7 +100,7 @@ class _SupportState extends State<Support> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.symmetric(vertical: 7),
+                                    const EdgeInsets.symmetric(vertical: 7),
                                 child: DropDownWidget(
                                   items: supportDivision,
                                   selected: selectedDivision,
@@ -205,7 +108,8 @@ class _SupportState extends State<Support> {
                                     setState(() {
                                       selectedDivision = division;
 
-                                      Print('selectedDivision $selectedDivision');
+                                      Print(
+                                          'selectedDivision $selectedDivision');
                                     });
                                   },
                                   validator: (value) {
@@ -218,39 +122,45 @@ class _SupportState extends State<Support> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 7,horizontal: kPadding),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 7, horizontal: kPadding),
                           child: RebiInput(
                             hintText: 'Reference number if applicable'.tra,
                             controller: referenceNumber,
                             keyboardType: TextInputType.text,
                             textInputAction: TextInputAction.done,
-                            autoValidateMode: AutovalidateMode.onUserInteraction,
+                            autoValidateMode:
+                                AutovalidateMode.onUserInteraction,
                             isOptional: true,
                             readOnly: false,
-                            contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 13),
                             obscureText: false,
                             validator: (value) {
-                              return Validator.requiredValidator(referenceNumber.text);
+                              return Validator.requiredValidator(
+                                  referenceNumber.text);
                             },
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 7,horizontal: kPadding),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 7, horizontal: kPadding),
                           child: RebiInput(
                             hintText: 'Your Inquiry'.tra,
                             controller: descriptionIssue,
                             keyboardType: TextInputType.multiline,
                             maxLines: 5,
                             textInputAction: TextInputAction.done,
-                            autoValidateMode: AutovalidateMode.onUserInteraction,
+                            autoValidateMode:
+                                AutovalidateMode.onUserInteraction,
                             isOptional: false,
                             readOnly: false,
-                            contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 13),
                             obscureText: false,
                             validator: (value) {
-                              return Validator.requiredValidator(descriptionIssue.text);
+                              return Validator.requiredValidator(
+                                  descriptionIssue.text);
                             },
                           ),
                         ),
@@ -264,9 +174,11 @@ class _SupportState extends State<Support> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => const ThanksWidget()));
+                                        builder: (context) =>
+                                            const ThanksWidget()));
                               } else if (state is ContactSupportError) {
-                                RebiMessage.error(msg: state.message!, context: context);
+                                RebiMessage.error(
+                                    msg: state.message!, context: context);
                               }
                             },
                             builder: (context, state) {
@@ -275,10 +187,21 @@ class _SupportState extends State<Support> {
                               }
                               return RebiButton(
                                   onPressed: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      FocusManager.instance.primaryFocus?.unfocus();
+                                    if (_formKey.currentState!.validate() &&
+                                        selectedDivision != null &&
+                                        selectedSubject != null) {
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
                                       onPressSend();
-                                    } else {}
+                                    } else if (selectedSubject == null) {
+                                      RebiMessage.error(
+                                          msg: "Please select the subject",
+                                          context: context);
+                                    } else if (selectedDivision == null) {
+                                      RebiMessage.error(
+                                          msg: "Please select the division",
+                                          context: context);
+                                    }
                                   },
                                   child: const Text("Send"));
                             },

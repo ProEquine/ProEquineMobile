@@ -815,26 +815,6 @@ class _ManageAccountFadeLoadingScreenState
               const SizedBox(
                 height: 10,
               ),
-              Row(
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const ManageAccountScreen()));
-                      },
-                      child: Text("Base Screen")),
-                  TextButton(onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ManageAccountGradientLoadingScreen()));
-                  }, child: Text("Gradient Shimmer")),
-                ],
-              )
             ],
           ),
         ),

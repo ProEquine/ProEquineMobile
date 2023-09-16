@@ -148,12 +148,12 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
                           },
                         ),
                         SelectableTypeContainer(
-                          label: 'Arabian Horse Show',
+                          label: 'Arabian Show',
                           index: 6,
                           isSelected: _isInterestsSelected[6],
                           onSelected: (bool value) {
                             _handleSelected(6, value, _isInterestsSelected);
-                            interest = 'Arabian Horse Show';
+                            interest = 'Arabian Show';
                             Print("Selected type $interest");
                           },
                         ),

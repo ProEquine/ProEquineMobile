@@ -7,18 +7,13 @@ import 'package:proequine/core/utils/Printer.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/utils/secure_storage/secure_storage_helper.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
-import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:proequine/features/equine_info/presentation/screens/equine_info_screen.dart';
 import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
-
-import 'package:proequine/core/widgets/profile_header_widget.dart';
 import 'package:proequine/features/splash/presentation/screens/splash_screen.dart';
 
-import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/routes/routes.dart';
-import '../../../../core/widgets/custom_header.dart';
-import '../../../history/presentation/screens/history_screen.dart';
+
 import '../../../support/presentation/screens/legal.dart';
 import '../../../support/presentation/screens/social_media_screen.dart';
 import '../../../support/presentation/screens/support.dart';
@@ -90,29 +85,6 @@ class _UserProfileState extends State<UserProfile> {
               notificationList: false,
               isThereNewNotification: false,
             ),
-            // ProfileListTileWidget(
-            //   title: "Bills",
-            //   onTap: () {
-            //     // Navigator.push(
-            //     //     context,
-            //     //     MaterialPageRoute(
-            //     //         builder: (context) => const HistoryScreen()));
-            //   },
-            //   notificationList: false,
-            //   isThereNewNotification: false,
-            // ),
-            // // ProfileDivider(),
-            // ProfileListTileWidget(
-            //   title: "History",
-            //   onTap: () {
-            //     Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //             builder: (context) => const HistoryScreen()));
-            //   },
-            //   notificationList: false,
-            //   isThereNewNotification: false,
-            // ),
             const SizedBox(
               height: 5,
             ),
@@ -130,7 +102,7 @@ class _UserProfileState extends State<UserProfile> {
               title: "Support",
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Support()));
+                    MaterialPageRoute(builder: (context) => const Support()));
               },
               notificationList: false,
               isThereNewNotification: false,

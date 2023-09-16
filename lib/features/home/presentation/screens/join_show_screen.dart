@@ -17,6 +17,7 @@ import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
 import '../../data/join_show_request_model.dart';
+import '../widgets/select_place_widget.dart';
 import 'chose_horses_shows_screen.dart';
 
 class JoinShowScreen extends StatefulWidget {
@@ -42,11 +43,11 @@ class JoinShowScreenState extends State<JoinShowScreen>
 
   late DateTime pickDate;
 
-
   String convertToTime(DateTime dateTime) {
     final time = DateFormat.Hm().format(dateTime);
     return time;
   }
+
   DateTime? time;
   late TextEditingController? timePicked;
 
@@ -67,9 +68,7 @@ class JoinShowScreenState extends State<JoinShowScreen>
     super.initState();
   }
 
-
   String selectedFilter = "All";
-
 
   @override
   void dispose() {
@@ -86,8 +85,7 @@ class JoinShowScreenState extends State<JoinShowScreen>
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text(
-            "Show Transport",
+        title: Text("Show Transport",
             style: TextStyle(
                 fontSize: 17,
                 fontFamily: "notosan",
@@ -96,8 +94,7 @@ class JoinShowScreenState extends State<JoinShowScreen>
                     ? Colors.white
                     : AppColors.blackLight)),
         centerTitle: true,
-        backgroundColor:
-        AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+        backgroundColor: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
             ? Colors.transparent
             : AppColors.backgroundColorLight,
         leading: Padding(
@@ -110,8 +107,7 @@ class JoinShowScreenState extends State<JoinShowScreen>
                 },
                 child: Icon(
                   Icons.arrow_back_ios_new,
-                  color:
-                  AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                  color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
                       ? Colors.white
                       : AppColors.backgroundColor,
                 ),
@@ -130,7 +126,11 @@ class JoinShowScreenState extends State<JoinShowScreen>
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SelectPlaceWidget(location: pickUpLocation),
+                        SelectPlaceWidget(
+                          showingList: placesList,
+                          location: pickUpLocation,
+                          title: "Pickup Location",
+                        ),
                         SelectDateAndTimeWidget(
                             time: time!,
                             timeController: timePicked!,
@@ -138,9 +138,9 @@ class JoinShowScreenState extends State<JoinShowScreen>
                             validator: (value) {
                               if (value!.isNotEmpty) {
                                 DateFormat inputFormat =
-                                DateFormat("dd MMM yyyy");
+                                    DateFormat("dd MMM yyyy");
                                 DateTime setUpdatedDate =
-                                inputFormat.parse(value);
+                                    inputFormat.parse(value);
                                 pickDate = setUpdatedDate;
                               } else {
                                 return '';
@@ -154,7 +154,6 @@ class JoinShowScreenState extends State<JoinShowScreen>
                             },
                             pickedDate: pickDate,
                             dateController: date!),
-
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: kPadding, vertical: 6),
@@ -164,7 +163,7 @@ class JoinShowScreenState extends State<JoinShowScreen>
                             keyboardType: TextInputType.name,
                             textInputAction: TextInputAction.done,
                             autoValidateMode:
-                            AutovalidateMode.onUserInteraction,
+                                AutovalidateMode.onUserInteraction,
                             isOptional: false,
                             color: AppColors.formsLabel,
                             readOnly: false,
@@ -177,7 +176,9 @@ class JoinShowScreenState extends State<JoinShowScreen>
                             },
                           ),
                         ),
-                        PhoneNumberFieldWidget(countryCode: pickUpCountryCode, phoneNumber: pickUpContactNumber),
+                        PhoneNumberFieldWidget(
+                            countryCode: pickUpCountryCode,
+                            phoneNumber: pickUpContactNumber),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: kPadding, vertical: 6),
@@ -196,13 +197,11 @@ class JoinShowScreenState extends State<JoinShowScreen>
                             hint: 'Number of horses',
                           ),
                         ),
-
                       ],
                     ),
                     const Spacer(),
                     Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: kPadding),
+                      padding: const EdgeInsets.symmetric(horizontal: kPadding),
                       child: RebiButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate() &&
@@ -210,10 +209,9 @@ class JoinShowScreenState extends State<JoinShowScreen>
                               pickupPhoneNumber = pickUpCountryCode.text +
                                   pickUpContactNumber.text;
                               JoinShowTransportRequestModel joinShowModel =
-                              JoinShowTransportRequestModel(
+                                  JoinShowTransportRequestModel(
                                 pickupContactName: pickUpContactName.text,
-                                pickupContactNumber:
-                                pickupPhoneNumber!,
+                                pickupContactNumber: pickupPhoneNumber!,
                                 trip: 'Show Transport',
                                 showingDate: date!.text,
                                 horsesNumber: selectedNumber!,
@@ -222,10 +220,14 @@ class JoinShowScreenState extends State<JoinShowScreen>
                                 pickupTime: timePicked!.text,
                                 pickupLocation: pickUpLocation.text,
                               );
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) =>
-                                      ChoseShowsHorseScreen(
-                                        joinShowTransportRequestModel: joinShowModel,)));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ChoseShowsHorseScreen(
+                                            joinShowTransportRequestModel:
+                                                joinShowModel,
+                                          )));
                             } else {
                               RebiMessage.error(
                                   msg: "please fill all fields correctly",
