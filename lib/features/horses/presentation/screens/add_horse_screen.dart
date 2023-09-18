@@ -280,9 +280,16 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                             horizontal: 20, vertical: 13),
                         obscureText: false,
                         validator: (value) {
-                          DateFormat inputFormat = DateFormat("dd MMM yyyy");
-                          DateTime dateTime = inputFormat.parse(value!);
-                          _selectedDay = dateTime;
+                          try{
+                            DateFormat inputFormat = DateFormat("dd MMM yyyy");
+                            DateTime dateTime = inputFormat.parse(value!);
+                            _selectedDay = dateTime;
+                          }catch(_){
+                            RebiMessage.error(
+                                msg: "Please Add the date of birth of your horse",
+                                context: context);
+                          }
+
                           return Validator.requiredValidator(_dateOfBirth.text);
                         },
                       ),
@@ -500,10 +507,12 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                   alignment: Alignment.bottomCenter,
                   child: RebiButton(
                     onPressed: () {
+                      Print(_selectedDay.toIso8601String());
                       if (_formKey.currentState!.validate() &&
                           selectedGender != null &&
-                          horseImage!=null &&
-                          placeOfBirth.text!='' &&
+                          _selectedDay.toString().isNotEmpty &&
+                          horseImage != null &&
+                          placeOfBirth.text != '' &&
                           selectedBloodLine != null &&
                           selectedBreed != null &&
                           selectedColor != null &&
@@ -511,7 +520,15 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                           selectedStable != null) {
                         Navigator.pop(context);
                         Print("Saved");
-                      } else {
+                      } else if (_dateOfBirth.text.isEmpty) {
+                        RebiMessage.error(
+                            msg: "Please Add the date of birth of your horse",
+                            context: context);
+                      } else if(horseImage ==null) {
+                        RebiMessage.error(
+                            msg: "Please add a picture to your horse",
+                            context: context);
+                      }else{
                         RebiMessage.error(
                             msg: "Please fill all of the fields",
                             context: context);

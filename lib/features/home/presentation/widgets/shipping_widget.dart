@@ -34,7 +34,7 @@ class ShippingWidget extends StatelessWidget {
                     ),
                     child: Image.asset(
                       image!,
-                      width: 41.16.w,
+                      width: 42.16.w,
                       fit: BoxFit.cover,
                     ),
                   ),

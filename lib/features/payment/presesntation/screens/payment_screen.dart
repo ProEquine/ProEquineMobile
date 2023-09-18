@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
+import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:proequine/features/notifications/data/booking_details_response_model.dart';
 import 'package:proequine/features/payment/presesntation/screens/test_apple_pay_result.dart';
@@ -33,9 +34,11 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   String? paymentMethod = 'null';
   String? selectedValue;
+
   // String? appleValue = 'ApplePay';
   String? creditValue = 'Credit';
   PaymentCubit cubit = PaymentCubit();
+  bool isLoading = false;
 
   // bool isApplePayAvailable = true;
 
@@ -54,6 +57,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     super.initState();
+    selectedValue = 'Credit';
 
     // _payClient = Pay({
     //   PayProvider.apple_pay: PaymentConfiguration.fromJsonString(
@@ -78,6 +82,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     // var _paymentItems = [
     //   PaymentItem(
     //     label: 'Total for ${widget.bookingDetailsResponseModel.bookingId}',
@@ -150,65 +155,62 @@ class _PaymentScreenState extends State<PaymentScreen> {
             const SizedBox(
               height: 20,
             ),
-            // const Text(
-            //   "Payment Method",
-            //   style: AppStyles.profileBlackTitles,
-            //   textAlign: TextAlign.start,
-            // ),
-            // SizedBox(
-            //   height: 20,
-            // ),
-            // Padding(
-            //   padding: const EdgeInsets.all(5.0),
-            //   child: Container(
-            //     width: double.infinity,
-            //     padding: const EdgeInsets.symmetric(
-            //       vertical: 5,
-            //       horizontal: kPadding,
-            //     ),
-            //     clipBehavior: Clip.antiAlias,
-            //     decoration: ShapeDecoration(
-            //       color: Colors.white,
-            //       shape: RoundedRectangleBorder(
-            //         side: const BorderSide(
-            //             width: 0.50, color: AppColors.backgroundColorLight),
-            //         borderRadius: BorderRadius.circular(8),
-            //       ),
-            //     ),
-            //     child: Row(
-            //       mainAxisSize: MainAxisSize.min,
-            //       mainAxisAlignment: MainAxisAlignment.start,
-            //       crossAxisAlignment: CrossAxisAlignment.center,
-            //       children: [
-            //         Radio(
-            //           activeColor: AppColors.yellow,
-            //           toggleable: true,
-            //           value: creditValue,
-            //           groupValue: selectedValue,
-            //           onChanged: (value) {
-            //             setState(() {
-            //               selectedValue = value;
-            //               paymentMethod = selectedValue ?? 'null';
-            //               Print("Selected value $selectedValue");
-            //               Print("value $value");
-            //               Print("payment method is $paymentMethod");
-            //             });
-            //           },
-            //         ),
-            //         SvgPicture.asset(AppIcons.creditCard),
-            //         const Text(
-            //           '  Debit / Credit Card',
-            //           style: TextStyle(
-            //             color: AppColors.blackLight,
-            //             fontSize: 14,
-            //             fontFamily: 'notosan',
-            //             fontWeight: FontWeight.w500,
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
+            const Text(
+              "Payment Method",
+              style: AppStyles.profileBlackTitles,
+              textAlign: TextAlign.start,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  vertical: 5,
+                  horizontal: kPadding,
+                ),
+                clipBehavior: Clip.antiAlias,
+                decoration: ShapeDecoration(
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(
+                        width: 0.50, color: AppColors.backgroundColorLight),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Radio(
+                      activeColor: AppColors.yellow,
+                      toggleable: true,
+                      value: creditValue,
+                      groupValue: selectedValue,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedValue = value;
+                          paymentMethod = selectedValue ?? 'null';
+                        });
+                      },
+                    ),
+                    SvgPicture.asset(AppIcons.creditCard),
+                    const Text(
+                      '  Debit / Credit Card',
+                      style: TextStyle(
+                        color: AppColors.blackLight,
+                        fontSize: 14,
+                        fontFamily: 'notosan',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             // Padding(
             //   padding: const EdgeInsets.all(5.0),
             //   child: Container(
@@ -282,43 +284,54 @@ class _PaymentScreenState extends State<PaymentScreen> {
               height: 15,
             ),
             BlocConsumer<PaymentCubit, PaymentState>(
-                    bloc: cubit,
-                    listener: (context, state) {
-                      // TODO: implement listener
+              bloc: cubit,
+              listener: (context, state) {
+                // TODO: implement listener
+              },
+              builder: (context, state) {
+                return isLoading?const LoadingCircularWidget():RebiButton(
+
+                    backgroundColor: selectedValue != 'Credit'
+                        ? AppColors.formsLabel
+                        : AppColors.yellow,
+                    onPressed: () {
+                      setState(() {
+                        isLoading = true;
+                      });
+
+                      // Print("method from main $paymentMethod");
+                      if (selectedValue == 'ApplePay' ||
+                          selectedValue != 'Credit') {
+                      } else {
+                        onPressPayStripe(
+                            widget.bookingDetailsResponseModel.total, context);
+                        setState(() {
+                          isLoading = false;
+                        });
+                      }
                     },
-                    builder: (context, state) {
-                      return RebiButton(
-                          onPressed: () {
-                            Print("method from main $paymentMethod");
-                            if (paymentMethod == 'ApplePay') {
-                            } else {
-                              onPressPayStripe(
-                                  widget.bookingDetailsResponseModel.total,
-                                  context);
-                            }
-                          },
-                          child: Text(
-                              "Pay ${widget.bookingDetailsResponseModel.total} AED"));
-                    },
-                  ),
-                // : paymentMethod == 'ApplePay'
-                //     ? ApplePayButton(
-                //         height: 50,
-                //         width: double.infinity,
-                //         paymentConfiguration:
-                //             PaymentConfiguration.fromJsonString(
-                //                 payment_configuration.defaultApplePay),
-                //         paymentItems: _paymentItems,
-                //         style: ApplePayButtonStyle.automatic,
-                //         // type: ApplePayButtonType.checkout,
-                //
-                //         margin: const EdgeInsets.only(top: 10.0),
-                //         onPaymentResult: onApplePayResult,
-                //         loadingIndicator: const Center(
-                //           child: CircularProgressIndicator(),
-                //         ),
-                //       )
-                //     : const SizedBox(),
+                    child: Text(
+                        "Pay ${widget.bookingDetailsResponseModel.total} AED"));
+              },
+            ),
+            // : paymentMethod == 'ApplePay'
+            //     ? ApplePayButton(
+            //         height: 50,
+            //         width: double.infinity,
+            //         paymentConfiguration:
+            //             PaymentConfiguration.fromJsonString(
+            //                 payment_configuration.defaultApplePay),
+            //         paymentItems: _paymentItems,
+            //         style: ApplePayButtonStyle.automatic,
+            //         // type: ApplePayButtonType.checkout,
+            //
+            //         margin: const EdgeInsets.only(top: 10.0),
+            //         onPaymentResult: onApplePayResult,
+            //         loadingIndicator: const Center(
+            //           child: CircularProgressIndicator(),
+            //         ),
+            //       )
+            //     : const SizedBox(),
             const SizedBox(
               height: 30,
             ),

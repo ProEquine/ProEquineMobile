@@ -56,7 +56,6 @@ class _ChooseStableScreenState extends State<ChooseStableScreen> {
     AppSharedPreferences.firstTime = true;
     Print('AppSharedPreferences.getEnvType${AppSharedPreferences.getEnvType}');
     _mainStableLocation = TextEditingController();
-    isChooseToAddStable = false;
     stable = TextEditingController();
     _mainStableName = TextEditingController();
     super.initState();

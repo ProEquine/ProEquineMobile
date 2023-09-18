@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:proequine/core/utils/extensions.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
@@ -62,21 +63,23 @@ class _SelectStableWidgetState extends State<SelectStableWidget> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-
                         setState(() {
                           selectedStable = widget.showingStablesList[index];
+                          if(widget.showingStablesList[index]=='Add Your Stable'){
+
+                            widget.changeTrue!.call();
+                            Navigator.pop(context);
+
+                          }else{
+
+                            widget.changeFalse!.call();
+                            Navigator.pop(context);
+
+                            // Print(widget.changeFalse);
+                          }
 
                           widget.stable.text = widget.showingStablesList[index];
-                          if(selectedStable=='Add Your Stable'){
 
-                            Navigator.pop(context);
-                            widget.changeTrue!;
-                            Print(widget.changeTrue);
-                          }else{
-                            Navigator.pop(context);
-                            widget.changeFalse!;
-                            Print(widget.changeFalse);
-                          }
 
 
                           Print("Selected stable ${stables[index]}");

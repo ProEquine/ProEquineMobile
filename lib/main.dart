@@ -186,7 +186,7 @@ class MyAppState extends State<MyApp> {
             : AppStyles().lightTheme,
         navigatorObservers: [MyNavigatorObserver()],
         title: 'Pro Equine',
-        home: const SplashScreen(),
+        home: const BottomNavigation(),
         routes: {
           loginRoute: (context) => const LoginScreen(),
           registerRoute: (context) => const RegisterScreen(),

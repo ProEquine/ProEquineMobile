@@ -170,6 +170,7 @@ class _MainScreenState extends State<MainScreen> {
                       height: 8,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ShippingWidget(
                           image: AppImages.export,
@@ -182,9 +183,7 @@ class _MainScreenState extends State<MainScreen> {
                                         const CreateImportScreen()));
                           },
                         ),
-                        const SizedBox(
-                          width: 26,
-                        ),
+
                         ShippingWidget(
                           image: AppImages.import,
                           title: 'Export',

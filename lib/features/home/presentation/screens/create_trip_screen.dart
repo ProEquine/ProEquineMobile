@@ -403,9 +403,13 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                                             "hospital Name $selectedHospital");
                                                       });
                                                     },
-                                                    child: ListTile(
-                                                      title: Text(
-                                                          hospitals[index]),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(hospitals[index])
+                                                      ],
                                                     ),
                                                   );
                                                 },
@@ -422,7 +426,11 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                     },
                                   ),
                                 )
-                              : SelectPlaceWidget(location: dropLocation,showingList: placesList,title: "Drop Location",),
+                              : SelectPlaceWidget(
+                                  location: dropLocation,
+                                  showingList: placesList,
+                                  title: "Drop Location",
+                                ),
                           Padding(
                             padding: const EdgeInsets.only(
                                 right: kPadding,
@@ -615,7 +623,8 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                   dropCountryCode.text + dropContactNumber.text;
                               if (widget.type == 'hospital') {
                                 if (_formKey.currentState!.validate() &&
-                                    selectedHospital != null && numberOfHorses.text.isNotEmpty) {
+                                    selectedHospital != null &&
+                                    numberOfHorses.text.isNotEmpty) {
                                   TripServiceDataModel tripServiceModel =
                                       TripServiceDataModel(
                                     expectedTime: expectedTimePicked?.text,
@@ -659,7 +668,8 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                       context: context);
                                 }
                               } else {
-                                if (_formKey.currentState!.validate()&& numberOfHorses.text.isNotEmpty) {
+                                if (_formKey.currentState!.validate() &&
+                                    numberOfHorses.text.isNotEmpty) {
                                   TripServiceDataModel tripServiceModel =
                                       TripServiceDataModel(
                                     expectedTime: expectedTimePicked?.text,

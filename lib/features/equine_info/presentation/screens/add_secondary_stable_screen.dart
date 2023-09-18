@@ -246,8 +246,8 @@ class _AddSecondaryStableScreenState extends State<AddSecondaryStableScreen> {
                                 ? AppColors.yellow
                                 : AppColors.formsLabel,
                             onPressed: () {
-                              if ((selectedSecondaryStable != null&&
-                                  selectedSecondaryStable != 'Add Your Stable') ||
+                              if ((stable.text.isNotEmpty &&
+                                  stable.text  != 'Add Your Stable') ||
                                   (selectedEmirate != null &&
                                       _secondaryStableLocation.text.isNotEmpty &&
                                       _secondaryStableName.text.isNotEmpty)) {
