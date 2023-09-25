@@ -93,7 +93,7 @@ class _BookingMainState extends State<BookingMain> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: isLoading?BookingLoadingWidget():MediaQuery(
+      child: MediaQuery(
         data: const MediaQueryData(
             viewInsets: EdgeInsets.only(top: 100, bottom: 0)),
         child: CupertinoPageScaffold(
@@ -187,24 +187,27 @@ class _BookingMainState extends State<BookingMain> {
                             ]),
                       ),
                     ),
-                     const Expanded(
+                      Expanded(
                         child: TabBarView(children: [
                           Padding(
                         padding:  EdgeInsets.symmetric(horizontal: kPadding),
                          child: Booking(
                             type: "Transport",
+                           isLoading: isLoading,
                           ),
                      ),
                        Padding(
                            padding:  EdgeInsets.symmetric(horizontal: kPadding),
                            child: Booking(
                             type: "Media",
+                             isLoading: isLoading,
                           ),
                        ),
                            Padding(
                             padding: EdgeInsets.symmetric(horizontal: kPadding),
                             child:Booking(
                               type: "Shipping",
+                              isLoading: isLoading,
                             ),
                           ),
               ],

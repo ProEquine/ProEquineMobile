@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
+import 'package:proequine/features/manage_account/presentation/screens/update_secondary_phone_number.dart';
 
 import 'package:proequine/features/manage_account/presentation/screens/update_username_screen.dart';
 
@@ -89,15 +90,18 @@ class _ChoosePhoneUpdateScreenState extends State<ChoosePhoneUpdateScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => UpdateUserNameScreen()));
+                          builder: (context) => UpdateSecondaryPhoneScreen(type: "Whatsapp")));
                 },
                 ableToEdit: true,
               ),
               ProfileTwoLineListTile(
-                title: "Office",
+                title: "Calling",
                 subTitle: "+9715-509887889",
                 onTap: () {
-                  Navigator.pushNamed(context, updatePhone);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => UpdateSecondaryPhoneScreen(type: "Calling")));
                 },
                 ableToEdit: true,
               ),

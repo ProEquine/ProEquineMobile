@@ -203,6 +203,7 @@ Map<String, List<String>> places = {
 };
 
  List<String> placesList=[
+   'New place',
    'Flopster beach Ghantoot',
    'Dubai Polo & Equestrian Club',
    'Sustainable City Equestrian Club',

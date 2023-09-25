@@ -93,7 +93,7 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                       const SizedBox(height: 20,),
 
                       Text(
-                        "A 6 digit verification code has been sent to your registered email address.",
+                        "A 4 digit verification code has been sent to your registered email address.",
                         style: AppStyles.descriptions,
                       ),
                       const SizedBox(

@@ -76,6 +76,7 @@ class _EquineInfoHorsesScreenState extends State<EquineInfoHorsesScreen> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
+              const SizedBox(height: 5,),
               SelectStableWidget(
                 stable: stable,
                 showingStablesList: stables,

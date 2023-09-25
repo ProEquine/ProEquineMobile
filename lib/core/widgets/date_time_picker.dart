@@ -133,7 +133,7 @@ void selectDate({
                                                           inputtedYear! <
                                                               1950 ||
                                                           inputtedYear > 2010) {
-                                                        return 'Enter your correct age';
+                                                        return 'Enter your correct year';
                                                       }
                                                     }
                                                   },

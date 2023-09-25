@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
+import 'package:proequine/core/widgets/shimmer.dart';
 import 'package:proequine/features/booking/presentation/screens/timeline.dart';
 import 'package:proequine/features/booking/presentation/widgets/bookingitem.dart';
 import 'package:proequine/features/booking/presentation/widgets/empty_service_widget.dart';
@@ -11,8 +12,9 @@ import 'booking_item_widget.dart';
 
 class Booking extends StatelessWidget {
   final String type;
+  bool isLoading=false;
 
-  const Booking({super.key, required this.type});
+  Booking({super.key, required this.type,this.isLoading=false});
 
   @override
   Widget build(BuildContext context) {
@@ -228,15 +230,29 @@ class Booking extends StatelessWidget {
             // ),
             type == 'Shipping'
                 ? EmptyServiceScreen(serviceType: type,isComingSoon: true,)
-
-
                 : type == 'Transport'
                     ? ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: 5,
                         itemBuilder: (context, index) {
-                          return const Padding(
+                          return isLoading?const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 3),
+                            child: Shimmer(
+                              child: ShimmerLoading(
+                                isLoading: true,
+                                child: BookingItemWidget(
+                                  status: "Pending",
+                                  date: '15 Sep • 04:30 pm',
+                                  horsesCount: 2,
+                                  from: "DEC",
+                                  to: "DEH",
+                                  transportType: "Hospital Transport",
+                                  bookingId: 'LT9677',
+                                ),
+                              ),
+                            ),
+                          ):const Padding(
                             padding: EdgeInsets.symmetric(vertical: 3),
                             child: BookingItemWidget(
                               status: "Pending",

@@ -33,6 +33,7 @@ class JoinShowScreenState extends State<JoinShowScreen>
     with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController pickUpLocation = TextEditingController();
+  TextEditingController pickUpLocationUrl = TextEditingController();
   TextEditingController pickUpContactName = TextEditingController();
   TextEditingController dropContactName = TextEditingController();
   TextEditingController pickUpContactNumber = TextEditingController();
@@ -127,9 +128,12 @@ class JoinShowScreenState extends State<JoinShowScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SelectPlaceWidget(
-                          showingList: placesList,
                           location: pickUpLocation,
+                          showingList: placesList,
                           title: "Pickup Location",
+                          hintText: 'Pickup Name',
+                          newPlaceUrl: pickUpLocationUrl,
+                          type: 'Shows Transport'
                         ),
                         SelectDateAndTimeWidget(
                             time: time!,
@@ -210,6 +214,7 @@ class JoinShowScreenState extends State<JoinShowScreen>
                                   pickUpContactNumber.text;
                               JoinShowTransportRequestModel joinShowModel =
                                   JoinShowTransportRequestModel(
+                                    pickupLocationUrl: pickUpLocationUrl.text,
                                 pickupContactName: pickUpContactName.text,
                                 pickupContactNumber: pickupPhoneNumber!,
                                 trip: 'Show Transport',

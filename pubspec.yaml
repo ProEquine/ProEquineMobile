@@ -68,6 +68,7 @@ dependencies:
   hive_flutter: ^1.1.0
   uuid: ^3.0.7
   csc_picker: ^0.2.7
+  myfatoorah_flutter:
 
 
 

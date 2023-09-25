@@ -1,5 +1,6 @@
 class JoinShowTransportRequestModel {
   String pickupLocation;
+  String? pickupLocationUrl;
   String tripType;
   String trip;
   DateTime pickupDate;
@@ -12,6 +13,7 @@ class JoinShowTransportRequestModel {
   JoinShowTransportRequestModel({
     required this.pickupLocation,
     required this.tripType,
+     this.pickupLocationUrl,
     required this.trip,
     required this.showingDate,
     required this.pickupContactName,

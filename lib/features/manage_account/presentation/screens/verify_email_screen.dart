@@ -114,7 +114,7 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                     children: [
                       const SizedBox(height: 20,),
                       Text(
-                        "A 6 digit verification code has been sent to your email $email.",
+                        "A 4 digit verification code has been sent to your email $email.",
                         style: AppStyles.descriptions,
                       ),
                       const SizedBox(

@@ -247,6 +247,11 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                         autoValidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         isOptional: false,
+                                        onChanged: (value){
+                                          setState(() {
+
+                                          });
+                                        },
                                         color: AppColors.formsLabel,
                                         readOnly: false,
                                         contentPadding:

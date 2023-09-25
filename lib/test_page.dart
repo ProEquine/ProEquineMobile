@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 
-class TestPage extends StatelessWidget {
+class TestPage extends StatefulWidget {
   const TestPage({Key? key}) : super(key: key);
 
+  @override
+  State<TestPage> createState() => _TestPageState();
+}
+
+class _TestPageState extends State<TestPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

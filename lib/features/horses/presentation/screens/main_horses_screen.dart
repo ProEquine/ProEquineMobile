@@ -140,7 +140,7 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
                         largeTitle: const Text(
                           'Horses',
                           style: TextStyle(
-                              fontWeight: FontWeight.w700, fontSize: 30),
+                              fontWeight: FontWeight.w700, fontSize: 30,fontFamily: 'notosan'),
                         ),
                         middle: const Text(
                           'Horses',

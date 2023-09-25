@@ -1,9 +1,7 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fade_shimmer/fade_shimmer.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:proequine/core/constants/constants.dart';
@@ -12,7 +10,6 @@ import 'package:proequine/core/utils/Printer.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/validator.dart';
 import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
-import 'package:proequine/features/manage_account/presentation/screens/manage_account_screen.dart';
 import 'package:proequine/features/manage_account/presentation/widgets/profile_list_tile_gradient.dart';
 import 'package:proequine/features/manage_account/presentation/widgets/profile_two_lines_gradient.dart';
 
@@ -21,18 +18,15 @@ import 'package:proequine/main.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
-import '../../../../core/constants/images/app_images.dart';
-import '../../../../core/constants/routes/routes.dart';
+
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/date_time_picker.dart';
 import '../../../../core/widgets/global_bottom_sheet.dart';
-import '../../../../core/widgets/profile_two_lines_list_tile.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
 import '../../../../core/widgets/profile_list_tile_widget.dart';
 import '../../../../core/widgets/shimmer.dart';
-import 'account_management_loading.dart';
 
 class ManageAccountGradientLoadingScreen extends StatefulWidget {
   const ManageAccountGradientLoadingScreen({super.key});
@@ -712,7 +706,7 @@ class _ManageAccountGradientLoadingScreenState
                                     validator: (value) {},
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Padding(
@@ -773,7 +767,7 @@ class _ManageAccountGradientLoadingScreenState
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         ShimmerLoading(
@@ -815,7 +809,6 @@ class _ManageAccountGradientLoadingScreenState
               ProfileTwoLineGradientLoading(),
               ProfileTwoLineGradientLoading(),
               ProfileTwoLineGradientLoading(),
-
               ProfileListTileGradient(),
               ProfileListTileGradient(),
               const SizedBox(
@@ -824,22 +817,22 @@ class _ManageAccountGradientLoadingScreenState
               const SizedBox(
                 height: 10,
               ),
-              Row(
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const ManageAccountFadeLoadingScreen()));
-                      },
-                      child: Text("Fade Shimmer")),
-                  TextButton(onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>ManageAccountScreen()));
-                  }, child: Text("Base Screen")),
-                ],
-              )
+              // Row(
+              //   children: [
+              //     TextButton(
+              //         onPressed: () {
+              //           Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                   builder: (context) =>
+              //                       const ManageAccountFadeLoadingScreen()));
+              //         },
+              //         child: Text("Fade Shimmer")),
+              //     TextButton(onPressed: () {
+              //       Navigator.push(context, MaterialPageRoute(builder: (context)=>ManageAccountScreen()));
+              //     }, child: Text("Base Screen")),
+              //   ],
+              // )
             ],
           ),
         ),

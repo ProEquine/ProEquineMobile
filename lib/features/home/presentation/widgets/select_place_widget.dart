@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/features/home/data/new_place_model.dart';
+import 'package:proequine/features/home/presentation/screens/add_new_place_screen.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
@@ -11,13 +13,19 @@ import 'hospital_bottom_sheet.dart';
 
 class SelectPlaceWidget extends StatefulWidget {
   TextEditingController location = TextEditingController();
+  TextEditingController? newPlaceUrl = TextEditingController();
   final String title;
+  String? hintText;
+   String? type;
   List<String> showingList;
 
   SelectPlaceWidget(
       {Key? key,
       required this.location,
       required this.title,
+      this.newPlaceUrl,
+      this.hintText,
+        this.type,
       required this.showingList})
       : super(key: key);
 
@@ -26,6 +34,7 @@ class SelectPlaceWidget extends StatefulWidget {
 }
 
 class _SelectPlaceWidgetState extends State<SelectPlaceWidget> {
+  NewPlaceModel? result;
   String? selectedPlace;
 
   @override
@@ -56,22 +65,56 @@ class _SelectPlaceWidgetState extends State<SelectPlaceWidget> {
                     },
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedPlace = widget.showingList[index];
+                        onTap: () async {
+                          if (widget.showingList[index] == 'New place') {
+                            result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddNewPlaceScreen(
+                                      title: widget.title=="Pickup Location"?'Pickup new place':'Drop off new place',
+                                      type: widget.type!,
+                                      titleHint: widget.hintText!)),
+                            ).then((value) {
+                              setState(() {
+                                result = value;
+                              });
+                              return value;
+                            });
 
-                            widget.location.text = widget.showingList[index];
+// Use the 'result' variable to access the data sent back from ChooseStableScreen
+                            setState(() {
+                              selectedPlace = result!.name;
+                              widget.location.text = result!.name;
+                              widget.newPlaceUrl!.text = result!.locationUrl;
 
-                            Navigator.pop(context);
-                            Print("Selected Place ${places[index]}");
-                            Print("Place Name $selectedPlace");
-                          });
+                              Print(
+                                  "Received data from add New place: ${result!.name}");
+
+                              Print("selected place: ${result!.name}");
+                              Print(
+                                  "selected  location url: ${result!.locationUrl}");
+                            });
+
+                            // Handle the received data
+                            Print(
+                                "Received data from add New place: ${result!.name}");
+                            Print(
+                                "Received data from add New place: ${result!.locationUrl}");
+                          } else {
+                            setState(() {
+                              selectedPlace = widget.showingList[index];
+
+                              widget.location.text = widget.showingList[index];
+
+                              Navigator.pop(context);
+                              Print("Selected Place ${places[index]}");
+                              Print("Place Name $selectedPlace");
+                            });
+                          }
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(widget.showingList[index])
-                          ],
+                          children: [Text(widget.showingList[index])],
                         ),
                       );
                     },

@@ -114,7 +114,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                               height: 1.h,
                             ),
                             Text(
-                              "A 6 digit verification code has been sent to your registered phone number.",
+                              "A 4 digit verification code has been sent to your registered phone number.",
                               style: AppStyles.descriptions,
                             ),
                             const SizedBox(

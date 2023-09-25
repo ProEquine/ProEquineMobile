@@ -1,5 +1,7 @@
 class TripServiceDataModel {
   String pickupLocation;
+  String? pickupLocationUrl;
+  String? dropOffLocationUrl;
   String tripType;
   String trip;
   DateTime pickupDate;
@@ -27,6 +29,8 @@ class TripServiceDataModel {
     required this.dropContactName,
     required this.dropContactNumber,
     this.dropLocation,
+    this.pickupLocationUrl,
+    this.dropOffLocationUrl,
     this.hospitalName,
     required this.horsesNumber,
     this.expectedDate,

@@ -37,6 +37,9 @@ class CreateTripScreenState extends State<CreateTripScreen>
     with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController pickUpLocation = TextEditingController();
+  TextEditingController pickUpLocationUrl = TextEditingController();
+  TextEditingController dropOfLocationUrl = TextEditingController();
+
   TextEditingController dropLocation = TextEditingController();
   TextEditingController selectHospital = TextEditingController();
   TextEditingController pickUpContactName = TextEditingController();
@@ -307,6 +310,11 @@ class CreateTripScreenState extends State<CreateTripScreen>
                             location: pickUpLocation,
                             showingList: placesList,
                             title: "Pickup Location",
+                            hintText: 'Pickup Name',
+                            newPlaceUrl: pickUpLocationUrl,
+                            type: widget.type == 'hospital'
+                                ? "Hospital Transport"
+                                : "Local Transport",
                           ),
                           SelectDateAndTimeWidget(
                               time: time!,
@@ -430,6 +438,11 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                   location: dropLocation,
                                   showingList: placesList,
                                   title: "Drop Location",
+                                  hintText: 'Drop off Name',
+                                  newPlaceUrl: dropOfLocationUrl,
+                                  type: widget.type == 'hospital'
+                                      ? "Hospital Transport"
+                                      : "Local Transport",
                                 ),
                           Padding(
                             padding: const EdgeInsets.only(
@@ -612,11 +625,13 @@ class CreateTripScreenState extends State<CreateTripScreen>
                             const EdgeInsets.symmetric(horizontal: kPadding),
                         child: RebiButton(
                             onPressed: () {
-                              Print("pick up location ${pickUpLocation.text}");
-                              Print("PickDate ${pickDate.toString()}");
-                              Print("PickTime ${timePicked!.text}");
-                              Print("DropDate ${exDropDate.toString()}");
-                              Print("DropTime ${expectedTimePicked!.text}");
+                              Print("NewLocationname ${pickUpLocation.text}");
+                              Print(
+                                  "New Drop Locationname ${dropLocation.text}");
+                              Print(
+                                  "New PickUpLocationUrl ${pickUpLocationUrl.text}");
+                              Print(
+                                  "New Drop Off LocationUrl ${dropOfLocationUrl.text}");
                               pickPhoneNumber = pickUpCountryCode.text +
                                   pickUpContactNumber.text;
                               dropPhoneNumber =
@@ -629,6 +644,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                       TripServiceDataModel(
                                     expectedTime: expectedTimePicked?.text,
                                     expectedDate: exDropDate,
+                                    pickupLocationUrl: pickUpLocationUrl.text,
                                     pickupContactName: pickUpContactName.text,
                                     pickupContactNumber: pickPhoneNumber!,
                                     showingDate: date!.text,
@@ -672,6 +688,8 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                     numberOfHorses.text.isNotEmpty) {
                                   TripServiceDataModel tripServiceModel =
                                       TripServiceDataModel(
+                                    pickupLocationUrl: pickUpLocationUrl.text,
+                                    dropOffLocationUrl: dropOfLocationUrl.text,
                                     expectedTime: expectedTimePicked?.text,
                                     expectedDate: exDropDate,
                                     pickupContactName: pickUpContactName.text,

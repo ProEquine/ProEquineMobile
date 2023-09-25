@@ -92,7 +92,7 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
                     children: [
                       const SizedBox(height: 20,),
                       Text(
-                        "A 6 digit verification code has been sent to your registered phone number.",
+                        "A 4 digit verification code has been sent to your registered phone number.",
                         style: AppStyles.descriptions,
                       ),
                       const SizedBox(

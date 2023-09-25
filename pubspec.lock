@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
+  back_button_interceptor:
+    dependency: transitive
+    description:
+      name: back_button_interceptor
+      sha256: "2feecc291fb74b25b0513700e804e543ed2104c25c0a8748183b869ae59573cf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.4.2"
   bloc:
     dependency: transitive
     description:
@@ -265,6 +273,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.10.1"
+  device_info:
+    dependency: transitive
+    description:
+      name: device_info
+      sha256: f4a8156cb7b7480d969cb734907d18b333c8f0bc0b1ad0b342cdcecf30d62c48
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.3"
+  device_info_platform_interface:
+    dependency: transitive
+    description:
+      name: device_info_platform_interface
+      sha256: b148e0bf9640145d09a4f8dea96614076f889e7f7f8b5ecab1c7e5c2dbc73c1b
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   dio:
     dependency: "direct main"
     description:
@@ -509,6 +533,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_webview_plugin:
+    dependency: transitive
+    description:
+      name: flutter_webview_plugin
+      sha256: "158d87eed165e3491b3d74ff47bebd260ddb1b1ad4f739dd230a76d30e07302a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.11"
   fluttertoast:
     dependency: "direct main"
     description:
@@ -789,6 +821,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.8"
+  myfatoorah_flutter:
+    dependency: "direct main"
+    description:
+      name: myfatoorah_flutter
+      sha256: e70238386647645a92561aebbea3ab1b9836603ffed3e2bc8749c017af0f6eff
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.20"
   nested:
     dependency: transitive
     description:

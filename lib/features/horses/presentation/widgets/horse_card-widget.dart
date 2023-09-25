@@ -10,6 +10,7 @@ class HorseCardWidget extends StatelessWidget {
   String horseName;
   String age;
   String gender;
+  bool isLoading = false;
   String breed;
   String placeOfBirth;
   String horseStatus;
@@ -28,6 +29,7 @@ class HorseCardWidget extends StatelessWidget {
       required this.horseStable,
       required this.horseStatus,
       this.isVerified = false,
+      this.isLoading = false,
       required this.placeOfBirth});
 
   @override
@@ -42,7 +44,18 @@ class HorseCardWidget extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Image.asset(horsePic),
+          // this boolean added to avoid the problem in border radius in shimmer loading
+          isLoading
+              ? Transform.translate(
+                  offset: Offset(0.0, 40),
+                  child: Image.asset(
+                    horsePic,
+                    fit: BoxFit.cover,
+                  ))
+              : Image.asset(
+                  horsePic,
+                  fit: BoxFit.cover,
+                ),
           Column(
             children: [
               const SizedBox(
@@ -65,8 +78,8 @@ class HorseCardWidget extends StatelessWidget {
                     ),
                     isVerified
                         ? SvgPicture.asset(
-                      AppIcons.verifiedHorse,
-                    )
+                            AppIcons.verifiedHorse,
+                          )
                         : HorseCardStatusWidget(
                             title: "Not Verified",
                             type: 'verify',
