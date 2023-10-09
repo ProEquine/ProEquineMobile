@@ -8,8 +8,6 @@ import 'package:proequine/features/manage_account/domain/manage_account_cubit.da
 
 import 'package:proequine/features/manage_account/presentation/screens/change_password_screen.dart';
 import 'package:proequine/features/manage_account/presentation/screens/update_email_screen.dart';
-
-import 'package:proequine/features/manage_account/presentation/widgets/account_info_loading.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';

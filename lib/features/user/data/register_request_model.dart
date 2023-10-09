@@ -1,7 +1,10 @@
 class RegisterRequestModel {
-  String? email;
+  String? emailAddress;
   String? password;
-  String? fullName;
+  String? confirmPassword;
+  String? firstName;
+  String? middleName;
+  String? lastName;
   String? gender;
   String? nationality;
   String? dob;
@@ -9,9 +12,12 @@ class RegisterRequestModel {
   String? verificationCode;
 
   RegisterRequestModel(
-      {this.email,
+      {this.emailAddress,
       this.password,
-      this.fullName,
+      this.confirmPassword,
+      this.firstName,
+      this.middleName,
+      this.lastName,
       this.dob,
       this.phoneNumber,
       this.verificationCode,
@@ -19,25 +25,31 @@ class RegisterRequestModel {
       this.gender});
 
   RegisterRequestModel.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
+    emailAddress = json['emailAddress'];
     password = json['password'];
-    fullName = json['fullName'];
-    dob = json['dob'];
-    phoneNumber = json['phoneNumber'];
+    confirmPassword = json['confirmPassword'];
+    firstName = json['firstName'];
+    middleName = json['middleName'];
+    lastName = json['lastName'];
     gender = json['gender'];
     nationality = json['nationality'];
+    dob = json['dob'];
+    phoneNumber = json['mobileNumber'];
     verificationCode = json['verificationCode'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['email'] = email;
+    data['emailAddress'] = emailAddress;
     data['password'] = password;
-    data['fullName'] = fullName;
-    data['dob'] = dob;
+    data['confirmPassword'] = confirmPassword;
+    data['firstName'] = firstName;
+    data['middleName'] = middleName;
+    data['lastName'] = lastName;
     data['gender'] = gender;
     data['nationality'] = nationality;
-    data['phoneNumber'] = phoneNumber;
+    data['dob'] = dob;
+    data['mobileNumber'] = phoneNumber;
     data['verificationCode'] = verificationCode;
     return data;
   }

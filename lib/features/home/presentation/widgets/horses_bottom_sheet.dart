@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
@@ -28,7 +29,7 @@ void showHorsesBottomSheet({
           padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom),
           child:  SizedBox(
-
+height: 80.0.h,
             child: Padding(
               padding:  const EdgeInsets.only(
                   top: kPadding, left: kPadding, right: kPadding),

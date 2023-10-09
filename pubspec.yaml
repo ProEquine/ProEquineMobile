@@ -17,7 +17,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   font_awesome_flutter: ^10.2.1
   video_player: ^2.4.7
-  intl: ^0.17.0
+  intl: ^0.18.1
   http: ^0.13.5
   flutter_dash: ^1.0.0
   dio: ^4.0.0
@@ -68,7 +68,7 @@ dependencies:
   hive_flutter: ^1.1.0
   uuid: ^3.0.7
   csc_picker: ^0.2.7
-  myfatoorah_flutter:
+#  myfatoorah_flutter:
 
 
 

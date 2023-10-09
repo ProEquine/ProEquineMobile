@@ -33,6 +33,7 @@ class _ChooseStableScreenState extends State<ChooseStableScreen> {
   String? selectedEmirate;
   late final TextEditingController _mainStableName;
   late final TextEditingController stable;
+  late final TextEditingController stableId;
   late final TextEditingController _mainStableLocation;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -43,20 +44,23 @@ class _ChooseStableScreenState extends State<ChooseStableScreen> {
       isChooseToAddStable = true;
     });
   }
+
   void changeToFalseValue() {
     setState(() {
       isChooseToAddStable = false;
     });
   }
 
-
-
   @override
   void initState() {
     AppSharedPreferences.firstTime = true;
+    Print("stables ${cubit.stablesNames}");
+    Print("stables two ${context.read<UserCubit>().stablesNames}");
+    // Print("stables  ${context.read<UserCubit>().stablesNames}");
     Print('AppSharedPreferences.getEnvType${AppSharedPreferences.getEnvType}');
     _mainStableLocation = TextEditingController();
     stable = TextEditingController();
+    stableId = TextEditingController();
     _mainStableName = TextEditingController();
     super.initState();
   }
@@ -66,13 +70,13 @@ class _ChooseStableScreenState extends State<ChooseStableScreen> {
     _mainStableLocation.dispose();
     _mainStableName.dispose();
     stable.dispose();
+    stableId.dispose();
     cubit.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
       onWillPop: () => BlocProvider.of<NavbarCubit>(context).onWillPop(context),
       child: Scaffold(
@@ -85,172 +89,170 @@ class _ChooseStableScreenState extends State<ChooseStableScreen> {
                   child: ConstrainedBox(
                     constraints:
                         BoxConstraints(minHeight: constraint.maxHeight),
-                    child: StatefulBuilder(
-                      builder: (context,setState) {
-                        setState((){
-                          Print(isChooseToAddStable);
-                        });
-                        return IntrinsicHeight(
-                          child: Column(
-                            children: [
-                              RegistrationHeader(isThereBackButton: false),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: kPadding),
-                                child: Column(
-                                  children: [
-                                    Align(
+                    child: StatefulBuilder(builder: (context, setState) {
+                      setState(() {
+                        Print(isChooseToAddStable);
+                      });
+                      return IntrinsicHeight(
+                        child: Column(
+                          children: [
+                            RegistrationHeader(isThereBackButton: false),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: kPadding),
+                              child: Column(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text("Chose Your main Stable",
+                                        style: AppStyles.mainTitle),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                        "This feature is available in UAE only , once its added we will update your profile ",
+                                        style: AppStyles.descriptions),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  SelectStableWidget(
+                                    stableId: stableId,
+                                    stableName: stable,
+                                    showingStablesList: cubit.stablesNames,
+                                    changeTrue: changeToTrueValue,
+                                    changeFalse: changeToFalseValue,
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Visibility(
+                                    visible: isChooseToAddStable,
+                                    child: Align(
                                       alignment: Alignment.centerLeft,
-                                      child: Text("Chose Your main Stable",
-                                          style: AppStyles.mainTitle),
+                                      child: Text("Add Your Stable ",
+                                          style: AppStyles.mainTitle2),
                                     ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Align(
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Visibility(
+                                    visible: isChooseToAddStable,
+                                    child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: Text(
-                                          "This feature is available in UAE only , once its added we will update your profile ",
+                                          "in order to update your main discipline - you need to submit this form and wait for the request approval",
                                           style: AppStyles.descriptions),
                                     ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    SelectStableWidget(
-                                      stable: stable,
-                                      showingStablesList: stables,
-                                      changeTrue: changeToTrueValue,
-                                      changeFalse: changeToFalseValue,
-                                    ),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    Visibility(
-                                      visible: isChooseToAddStable,
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text("Add Your Stable ",
-                                            style: AppStyles.mainTitle2),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Visibility(
+                                    visible: isChooseToAddStable,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 7),
+                                      child: RebiInput(
+                                        hintText: 'Stable Name'.tra,
+                                        controller: _mainStableName,
+                                        scrollPadding:
+                                            const EdgeInsets.only(bottom: 100),
+                                        keyboardType: TextInputType.name,
+                                        textInputAction: TextInputAction.done,
+                                        autoValidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        isOptional: false,
+                                        onChanged: (value) {
+                                          setState(() {});
+                                        },
+                                        color: AppColors.formsLabel,
+                                        readOnly: false,
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 13),
+                                        obscureText: false,
+                                        validator: (value) {
+                                          return Validator.requiredValidator(
+                                              _mainStableName.text);
+                                        },
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Visibility(
-                                      visible: isChooseToAddStable,
-                                      child: Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                            "in order to update your main discipline - you need to submit this form and wait for the request approval",
-                                            style: AppStyles.descriptions),
+                                  ),
+                                  Visibility(
+                                    visible: isChooseToAddStable,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 7),
+                                      child: RebiInput(
+                                        hintText: 'Location'.tra,
+                                        controller: _mainStableLocation,
+                                        scrollPadding:
+                                            const EdgeInsets.only(bottom: 100),
+                                        keyboardType: TextInputType.url,
+                                        textInputAction: TextInputAction.done,
+                                        autoValidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        isOptional: false,
+                                        color: AppColors.formsLabel,
+                                        onChanged: (value) {
+                                          setState(() {});
+                                        },
+                                        readOnly: false,
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 13),
+                                        obscureText: false,
+                                        validator: (value) {
+                                          return Validator.requiredValidator(
+                                              _mainStableLocation.text);
+                                        },
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Visibility(
-                                      visible: isChooseToAddStable,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.symmetric(vertical: 7),
-                                        child: RebiInput(
-                                          hintText: 'Stable Name'.tra,
-
-                                          controller: _mainStableName,
-                                          scrollPadding:
-                                              const EdgeInsets.only(bottom: 100),
-                                          keyboardType: TextInputType.name,
-                                          textInputAction: TextInputAction.done,
-                                          autoValidateMode:
-                                              AutovalidateMode.onUserInteraction,
-                                          isOptional: false,
-                                          onChanged: (value) {
-                                            setState(() {});
-                                          },
-                                          color: AppColors.formsLabel,
-                                          readOnly: false,
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 20, vertical: 13),
-                                          obscureText: false,
-                                          validator: (value) {
-                                            return Validator.requiredValidator(
-                                                _mainStableName.text);
-                                          },
-                                        ),
+                                  ),
+                                  Visibility(
+                                    visible: isChooseToAddStable,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 7),
+                                      child: DropDownWidget(
+                                        items: emirate,
+                                        selected: selectedEmirate,
+                                        onChanged: (selectedEmi) {
+                                          setState(() {
+                                            selectedEmirate = selectedEmi;
+                                            Print(
+                                                'selected Emirate $selectedEmirate');
+                                          });
+                                        },
+                                        validator: (value) {
+                                          // return Validator.requiredValidator(selectedNumber);
+                                        },
+                                        hint: 'Emirate',
                                       ),
                                     ),
-                                    Visibility(
-                                      visible: isChooseToAddStable,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.symmetric(vertical: 7),
-                                        child: RebiInput(
-                                          hintText: 'Location'.tra,
-                                          controller: _mainStableLocation,
-                                          scrollPadding:
-                                              const EdgeInsets.only(bottom: 100),
-                                          keyboardType: TextInputType.url,
-                                          textInputAction: TextInputAction.done,
-                                          autoValidateMode:
-                                              AutovalidateMode.onUserInteraction,
-                                          isOptional: false,
-                                          color: AppColors.formsLabel,
-                                          onChanged: (value) {
-                                            setState(() {});
-                                          },
-                                          readOnly: false,
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 20, vertical: 13),
-                                          obscureText: false,
-                                          validator: (value) {
-                                            return Validator.requiredValidator(
-                                                _mainStableLocation.text);
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    Visibility(
-                                      visible: isChooseToAddStable,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.symmetric(vertical: 7),
-                                        child: DropDownWidget(
-                                          items: emirate,
-                                          selected: selectedEmirate,
-                                          onChanged: (selectedEmi) {
-                                            setState(() {
-                                              selectedEmirate = selectedEmi;
-                                              Print(
-                                                  'selected Emirate $selectedEmirate');
-                                            });
-                                          },
-                                          validator: (value) {
-                                            // return Validator.requiredValidator(selectedNumber);
-                                          },
-                                          hint: 'Emirate',
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              const Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                ),
-                                child: _buildChooseStableConsumer(),
+                            ),
+                            const Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                    ),
+                              child: _buildChooseStableConsumer(),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
                   ),
                 ),
               );
@@ -271,20 +273,20 @@ class _ChooseStableScreenState extends State<ChooseStableScreen> {
             RebiMessage.error(msg: state.message!, context: context);
           }
           {
-            final isButtonEnabled = (stable.text.isNotEmpty &&
-                stable.text != 'Add Your Stable') ||
-                (selectedEmirate != null &&
-                    _mainStableName.text.isNotEmpty &&
-                    _mainStableLocation.text.isNotEmpty);
+            final isButtonEnabled =
+                (stable.text.isNotEmpty && stable.text != 'Add Your Stable') ||
+                    (selectedEmirate != null &&
+                        _mainStableName.text.isNotEmpty &&
+                        _mainStableLocation.text.isNotEmpty);
             return RebiButton(
-              backgroundColor: isButtonEnabled
-                  ? AppColors.yellow
-                  : AppColors.formsLabel,
+              backgroundColor:
+                  isButtonEnabled ? AppColors.yellow : AppColors.formsLabel,
               onPressed: () {
                 Print(stable.text);
+                Print(stableId.text);
                 Print(isChooseToAddStable);
                 if ((stable.text.isNotEmpty &&
-                    stable.text != 'Add Your Stable') ||
+                        stable.text != 'Add Your Stable') ||
                     (selectedEmirate != null &&
                         _mainStableName.text.isNotEmpty &&
                         _mainStableLocation.text.isNotEmpty)) {
@@ -292,7 +294,6 @@ class _ChooseStableScreenState extends State<ChooseStableScreen> {
                 } else {
                   Print("chose add stable $isChooseToAddStable");
                   RebiMessage.error(
-
                       msg: 'Please select your main stable', context: context);
                 }
               },

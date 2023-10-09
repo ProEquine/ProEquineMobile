@@ -6,14 +6,16 @@ class ApiURLs {
   static  String basicApiUrl = "$baseUrl/api";
 
   /// Auth URLs
-  static  String loginUSER = "$basicApiUrl/Auth/login";
-  static  String registerUSER = "$basicApiUrl/Auth/userregister";
-  static  String getNewToken = "$basicApiUrl/Auth/refresh";
-  static  String sendVerificationCode = "$basicApiUrl/Auth/sendverificationcode";
+  static  String loginUSER = "$baseUrl/login";
+  static  String registerUSER = "$baseUrl/User/userRegister";
+  static  String getNewToken = "$baseUrl/refreshToken";
+  static  String sendVerificationCode = "$baseUrl/User/sendPhoneOtp";
+  static  String updateUserName = "$baseUrl/User/updateUserName";
   static  String checkVerificationCode = "$basicApiUrl/Auth/checkverificationcode";
   static  String forgotPassword = "$basicApiUrl/Auth/forgot-password";
   static  String resetPassword = "$basicApiUrl/Auth/reset-password";
-  static  String interests = "$basicApiUrl/Auth/saveinterestandtype";
+  static  String interests = "$baseUrl/User/saveInterestandType";
+  static  String getStables = "$baseUrl/getMainStable";
 
 
 

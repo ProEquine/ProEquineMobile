@@ -17,9 +17,20 @@ import '../widgets/register_header.dart';
 
 class SignUpScreen extends StatefulWidget {
   final String? dob;
-  final String? name;
+  final String? firstName;
+  final String? middleName;
+  final String? lastName;
+  final String? gender;
+  final String? nationality;
 
-  const SignUpScreen({super.key, this.dob, this.name});
+  const SignUpScreen(
+      {super.key,
+      this.dob,
+      this.firstName,
+      this.middleName,
+      this.lastName,
+      this.gender,
+      this.nationality});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -153,7 +164,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         ? AppIcons.check
                                         : AppIcons.info,
                                     height: isCoverAllCases ? 25 : 40,
-                                    color: isCoverAllCases ? AppColors.greenLight : AppColors.yellow,
+                                    color: isCoverAllCases
+                                        ? AppColors.greenLight
+                                        : AppColors.yellow,
                                   ),
                                   SecurityCasesWidget(
                                     header: "Aa",
@@ -177,7 +190,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 7,),
+                              const SizedBox(
+                                height: 7,
+                              ),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 7),
@@ -239,8 +254,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   keyboardType: TextInputType.visiblePassword,
                                   textInputAction: TextInputAction.done,
                                   isOptional: false,
-                                  autoValidateMode:
-                                      AutovalidateMode.disabled,
+                                  autoValidateMode: AutovalidateMode.disabled,
                                   color: AppColors.formsLabel,
                                   readOnly: false,
                                   contentPadding: const EdgeInsets.symmetric(
@@ -307,10 +321,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => VerifyPhoneScreen(
-                                              fullName: widget.name,
+                                              firstName: widget.firstName,
+                                              middleName: widget.middleName,
+                                              lastName: widget.lastName,
                                               dob: widget.dob,
                                               password: _password.text,
                                               email: _email.text,
+                                              confirmPassword:
+                                                  _confirmPassword.text,
+                                              gender: widget.gender,
+                                              nationality: widget.nationality,
                                             )));
                               } else {}
                             },

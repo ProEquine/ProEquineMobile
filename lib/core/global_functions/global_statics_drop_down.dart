@@ -84,6 +84,31 @@ List<DropdownMenuItem<String>> discipline = [
     child: Text("Arabian Show"),
   ),
 ];
+
+List<DropdownMenuItem<String>> equipments = [
+  const DropdownMenuItem(
+    value: "Equipment 1",
+    child: Text("Equipment 1"),
+  ),
+  const DropdownMenuItem(
+    value: "Equipment 2",
+    child: Text("Equipment 2"),
+  ),
+  const DropdownMenuItem(
+    value: "Equipment 3",
+    child: Text("Equipment 3"),
+  ),
+  const DropdownMenuItem(
+    value: "Equipment 4",
+    child: Text("Equipment 4"),
+  ),
+  const DropdownMenuItem(
+    value: "Equipment 5",
+    child: Text("Equipment 5"),
+  ),
+
+
+];
 List<DropdownMenuItem<String>> supportSubject = [
   const DropdownMenuItem(
     value: "Local Transport",

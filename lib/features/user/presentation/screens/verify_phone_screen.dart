@@ -8,17 +8,34 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 
 import '../../../../core/utils/Printer.dart';
+import '../../../../core/utils/rebi_message.dart';
+import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/widgets/rebi_button.dart';
+import '../../data/send_verification_request_model.dart';
 import '../widgets/register_header.dart';
 
 class VerifyPhoneScreen extends StatefulWidget {
-  String? fullName;
+  String? firstName;
+  String? lastName;
+  String? middleName;
   String? dob;
   String? email;
   String? password;
+  String? confirmPassword;
+  String? gender;
+  String? nationality;
 
   VerifyPhoneScreen(
-      {super.key, this.fullName, this.dob, this.email, this.password});
+      {super.key,
+      this.firstName,
+      this.middleName,
+      this.lastName,
+      this.dob,
+      this.email,
+      this.password,
+      this.confirmPassword,
+      this.gender,
+      this.nationality});
 
   @override
   State<VerifyPhoneScreen> createState() => _VerifyPhoneScreenState();
@@ -87,7 +104,9 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                               const SizedBox(
                                 height: 10,
                               ),
-                             PhoneNumberFieldWidget(countryCode: _countryCode, phoneNumber: _phone),
+                              PhoneNumberFieldWidget(
+                                  countryCode: _countryCode,
+                                  phoneNumber: _phone),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 20),
@@ -99,57 +118,58 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                     }
                                     return RebiButton(
                                         onPressed: () {
-                                          phoneNumber=_countryCode
-                                              .text +
-                                              _phone.text;
+                                          phoneNumber =
+                                              _countryCode.text + _phone.text;
                                           Print(phoneNumber);
                                           if (_formKey.currentState!
                                               .validate()) {
                                             FocusManager.instance.primaryFocus
                                                 ?.unfocus();
-                                            // cubit.sendVerificationCode(
-                                            //     SendVerificationRequestModel(
-                                            //         phoneNumber:
-                                            //             _countryCode.text +
-                                            //                 _phone.text,
-                                            //         channel: "sms"));
+                                            cubit.sendVerificationCode(
+                                                SendVerificationRequestModel(
+                                                    phoneNumber:
+                                                        _countryCode.text +
+                                                            _phone.text,
+                                                ));
 
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        VerificationScreen(
-                                                            email: widget.email,
-                                                            name:
-                                                                widget.fullName,
-                                                            phone: phoneNumber,
-                                                            password:
-                                                                widget.password,
-                                                            dob: widget.dob)));
+
                                           } else {}
                                         },
                                         child: const Text("Verify"));
                                   },
                                   listener: (context, state) {
+                                    if (state is SendVerificationSuccessful) {
+                                      AppSharedPreferences.inputPhoneNumber =
+                                          _countryCode.text + _phone.text;
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  VerificationScreen(
+                                                      email: widget.email,
+                                                      gender: widget
+                                                          .gender,
+                                                      nationality: widget
+                                                          .nationality,
+                                                      confirmPassword: widget
+                                                          .confirmPassword,
+                                                      firstName: widget
+                                                          .firstName,
+                                                      middleName:
+                                                      widget
+                                                          .middleName,
+                                                      lastName:
+                                                      widget.lastName,
+                                                      phone: phoneNumber,
+                                                      password:
+                                                      widget.password,
+                                                      dob: widget.dob)));
 
-                                    // if (state is SendVerificationSuccessful) {
-                                    //   AppSharedPreferences.inputPhoneNumber =
-                                    //       _countryCode.text + _phone.text;
-                                    //   Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //           builder: (context) =>
-                                    //               VerificationScreen(
-                                    //                   email: widget.email,
-                                    //                   name: widget.fullName,
-                                    //                   phone: _countryCode.text +
-                                    //                       _phone.text,
-                                    //                   password: widget.password,
-                                    //                   dob: widget.dob)));
-                                    // } else if (state is SendVerificationError) {
-                                    //   RebiMessage.error(
-                                    //       msg: state.message!,
-                                    //       context: context);
+                                    } else if (state is SendVerificationError) {
+                                      RebiMessage.error(
+                                          msg: state.message!,
+                                          context: context);
+                                    }
                                   },
                                 ),
                               ),

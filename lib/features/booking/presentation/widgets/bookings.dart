@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/core/widgets/shimmer.dart';
 import 'package:proequine/features/booking/presentation/screens/timeline.dart';
 import 'package:proequine/features/booking/presentation/widgets/bookingitem.dart';
+import 'package:proequine/features/booking/presentation/widgets/draft_list_item.dart';
 import 'package:proequine/features/booking/presentation/widgets/empty_service_widget.dart';
 import 'package:proequine/features/booking/presentation/widgets/peniding_booking_items.dart';
+import 'package:proequine/features/home/domain/cubits/local_horse_cubit.dart';
+import 'package:proequine/features/home/domain/repo/local_storage_repository.dart';
 import '../../../../core/constants/colors/app_colors.dart';
+import '../../../../core/constants/thems/app_styles.dart';
+import '../../../../core/utils/Printer.dart';
 import 'booking_item_widget.dart';
 
 class Booking extends StatelessWidget {
   final String type;
-  bool isLoading=false;
+  bool isLoading = false;
 
-  Booking({super.key, required this.type,this.isLoading=false});
+  Booking({super.key, required this.type, this.isLoading = false});
 
   @override
   Widget build(BuildContext context) {
+    LocalHorseCubit localHorseCubit =
+        LocalHorseCubit(localStorageRepository: LocalStorageRepository());
     String getGroupName(String groupByValue) {
       // Map numeric values to group names
       switch (groupByValue) {
@@ -229,41 +237,112 @@ class Booking extends StatelessWidget {
             //   },
             // ),
             type == 'Shipping'
-                ? EmptyServiceScreen(serviceType: type,isComingSoon: true,)
+                ? Column(
+                    children: [
+                      BlocConsumer<LocalHorseCubit, LocalHorseState>(
+                          bloc: localHorseCubit..getAllTrips(),
+                          builder: (context, state) {
+                            Print('state $state');
+
+                            if (state is GetTripsSuccessfully) {
+                              if (state.items.isEmpty) {
+                                return const SizedBox();
+                              }
+
+                              return DraftListItem(items: state.items);
+                            } else if (state is GetTripsLoading) {
+                              // return const LoadingCircularWidget();
+                            } else if (state is GetTripsError) {
+                              return Container(
+                                height: 50,
+                                width: 50,
+                                color: AppColors.gold,
+                              );
+                            }
+                            return Container();
+                          },
+                          listener: (context, state) {
+                            if (state is DeleteTripSuccessfully) {
+                              localHorseCubit.getAllTrips();
+                            }
+                          }),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return isLoading
+                                ? const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 3),
+                                    child: Shimmer(
+                                      child: ShimmerLoading(
+                                        isLoading: true,
+                                        child: BookingItemWidget(
+                                          status: "Pending",
+                                          date: '15 Sep • 04:30 pm',
+                                          horsesCount: 2,
+                                          from: "DEC",
+                                          to: "DEH",
+                                          transportType: "Shipping Transport",
+                                          bookingId: 'LT9677',
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 3),
+                                    child: BookingItemWidget(
+                                      status: "Pending",
+                                      date: '15 Sep • 04:30 pm',
+                                      horsesCount: 2,
+                                      from: "DEC",
+                                      to: "DEH",
+                                      transportType: "Hospital Transport",
+                                      bookingId: 'LT9677',
+                                    ),
+                                  );
+                          })
+                    ],
+                  )
                 : type == 'Transport'
                     ? ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: 5,
                         itemBuilder: (context, index) {
-                          return isLoading?const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 3),
-                            child: Shimmer(
-                              child: ShimmerLoading(
-                                isLoading: true,
-                                child: BookingItemWidget(
-                                  status: "Pending",
-                                  date: '15 Sep • 04:30 pm',
-                                  horsesCount: 2,
-                                  from: "DEC",
-                                  to: "DEH",
-                                  transportType: "Hospital Transport",
-                                  bookingId: 'LT9677',
-                                ),
-                              ),
-                            ),
-                          ):const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 3),
-                            child: BookingItemWidget(
-                              status: "Pending",
-                              date: '15 Sep • 04:30 pm',
-                              horsesCount: 2,
-                              from: "DEC",
-                              to: "DEH",
-                              transportType: "Hospital Transport",
-                              bookingId: 'LT9677',
-                            ),
-                          );
+                          return isLoading
+                              ? const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 3),
+                                  child: Shimmer(
+                                    child: ShimmerLoading(
+                                      isLoading: true,
+                                      child: BookingItemWidget(
+                                        status: "Pending",
+                                        date: '15 Sep • 04:30 pm',
+                                        horsesCount: 2,
+                                        from: "DEC",
+                                        to: "DEH",
+                                        transportType: "Hospital Transport",
+                                        bookingId: 'LT9677',
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 3),
+                                  child: BookingItemWidget(
+                                    status: "Pending",
+                                    date: '15 Sep • 04:30 pm',
+                                    horsesCount: 2,
+                                    from: "DEC",
+                                    to: "DEH",
+                                    transportType: "Hospital Transport",
+                                    bookingId: 'LT9677',
+                                  ),
+                                );
                         })
                     : EmptyServiceScreen(serviceType: type),
             const SizedBox(

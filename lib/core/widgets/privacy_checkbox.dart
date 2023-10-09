@@ -15,11 +15,13 @@ class PrivacyCheckBox extends StatelessWidget {
   final bool? value;
   final Function(bool? val)? onChanged;
   final bool? isTherePrivacy;
+  final bool isItForShipping;
   final Function? onTap;
 
   const PrivacyCheckBox({super.key,
     this.onTap,
     this.value,
+    this.isItForShipping=false,
     this.isTherePrivacy = false,
     this.onChanged,
   });
@@ -55,16 +57,16 @@ class PrivacyCheckBox extends StatelessWidget {
                 text: TextSpan(
                   text: 'Agree with '.tra,
                   style: TextStyle(
-                    fontSize: 12.5.sp,
+                    fontSize: isItForShipping?11.5.sp:12.5.sp,
                     fontFamily: 'nonotosan',
                     fontWeight: FontWeight.w500,
                     color: AppSharedPreferences.getTheme=='ThemeCubitMode.dark'?Colors.white:AppColors.blackLight,
                   ),
                   children: [
                     TextSpan(
-                      text: 'privacy policy & terms of use'.tra,
+                      text: isItForShipping?'shipping policy & terms of use'.tra:'privacy policy & terms of use'.tra,
                       style: TextStyle(
-                        fontSize: 12.5.sp,
+                        fontSize: isItForShipping?11.5.sp:12.5.sp,
                         fontFamily: 'nonotosan',
                         fontWeight: FontWeight.w400,
                         decoration: TextDecoration.underline,

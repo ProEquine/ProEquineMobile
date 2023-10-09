@@ -31,6 +31,15 @@ class RegisterError extends UserState{
   final String? message;
   RegisterError({this.message});
 }
+class CheckUsernameSuccessful extends UserState{
+  final String? message;
+  CheckUsernameSuccessful({required this.message});
+}
+class CheckUsernameLoading extends UserState{}
+class CheckUsernameError extends UserState{
+  final String? message;
+  CheckUsernameError({this.message});
+}
 class SendVerificationSuccessful extends UserState{
   final String? message;
   SendVerificationSuccessful({required this.message});
@@ -39,6 +48,16 @@ class SendVerificationLoading extends UserState{}
 class SendVerificationError extends UserState{
   final String? message;
   SendVerificationError({this.message});
+}
+
+class GetStablesSuccessful extends UserState{
+  final List<Stable> getStablesResponseModel;
+  GetStablesSuccessful({required this.getStablesResponseModel});
+}
+class GetStablesLoading extends UserState{}
+class GetStablesError extends UserState{
+  final String? message;
+  GetStablesError({this.message});
 }
 
 class CheckVerificationSuccessful extends UserState{

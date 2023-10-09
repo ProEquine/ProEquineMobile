@@ -8,18 +8,32 @@ import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/widgets/phone_number_field_widget.dart';
 import 'package:sizer/sizer.dart';
+import 'package:uuid/uuid.dart';
 
+import '../../../../core/global_functions/global_statics_drop_down.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/date_time_picker.dart';
+import '../../../../core/widgets/divider.dart';
+import '../../../../core/widgets/drop_down_menu_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
+import '../../data/local_trip.dart';
 import '../../data/shipping_service_model.dart';
+import '../../domain/cubits/local_horse_cubit.dart';
+import '../../domain/repo/local_storage_repository.dart';
+import '../widgets/select_place_widget.dart';
 import 'chose_horses_shipping_screen.dart';
 
 class CreateExportScreen extends StatefulWidget {
-  const CreateExportScreen({
+  bool isFromEditing=false;
+  String? exportCountry ;
+  String? importCountry ;
+      CreateExportScreen({
+        this.isFromEditing=false,
+        this.exportCountry,
+        this.importCountry,
     super.key,
   });
 
@@ -31,8 +45,14 @@ class CreateExportScreenState extends State<CreateExportScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> checkBoxKey = GlobalKey<FormState>();
   TextEditingController pickUpLocation = TextEditingController();
+  TextEditingController pickUpLocationUrl = TextEditingController();
+  TextEditingController dropLocation = TextEditingController();
   TextEditingController notes = TextEditingController();
   TextEditingController pickUpContactName = TextEditingController();
+  TextEditingController dropContactName = TextEditingController();
+  TextEditingController dropContactNumber = TextEditingController();
+  TextEditingController dropContactCountryCode = TextEditingController(text: "+971");
+
   TextEditingController numberOfHorses = TextEditingController();
   TextEditingController exportingCountry = TextEditingController();
   TextEditingController pickupCountry = TextEditingController();
@@ -55,6 +75,7 @@ class CreateExportScreenState extends State<CreateExportScreen> {
   }
 
   String? selectedTrip;
+  String? selectedEquipment;
   String? selectedCountryIso2;
 
   @override
@@ -106,9 +127,18 @@ class CreateExportScreenState extends State<CreateExportScreen> {
 
   String? selectedNumber;
   bool equipmentValue = false;
+  LocalHorseCubit localHorseCubit =
+  LocalHorseCubit(localStorageRepository: LocalStorageRepository());
 
   @override
   Widget build(BuildContext context) {
+    var uuid = const Uuid();
+    var v1 = uuid.v1(options: {
+      'node': [0x01, 0x23, 0x45, 0x67, 0x89, 0xab],
+      'clockSeq': 0x1234,
+      'mSecs': DateTime.now().millisecondsSinceEpoch,
+      'nSecs': 5678
+    });
     isEmailVerified = ModalRoute.of(context)?.settings.arguments as bool?;
     isEmailVerified ??= false;
     return WillPopScope(
@@ -167,7 +197,7 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: kPadding, vertical: 6),
+                                horizontal: kPadding, vertical: 7),
                             child: RebiInput(
                               hintText: 'Shipping Estemated Date '.tra,
                               controller: estimatedDate,
@@ -212,109 +242,27 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                               },
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: kPadding, vertical: 7),
-                            child: RebiInput(
-                              hintText: 'Exporting country'.tra,
-                              controller: exportingCountry,
-                              keyboardType: TextInputType.number,
-                              textInputAction: TextInputAction.done,
-                              autoValidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              onTap: () {
-                                showCountryPicker(
-                                  context: context,
-                                  showPhoneCode: true,
-                                  countryListTheme: CountryListThemeData(
-                                    flagSize: 25,
-                                    backgroundColor:
-                                        AppColors.backgroundColorLight,
-                                    textStyle: const TextStyle(
-                                        fontSize: 16,
-                                        color: AppColors.blackLight),
-                                    bottomSheetHeight: 85.0.h,
-                                    // Optional. Country list modal height
-                                    //Optional. Sets the border radius for the bottomsheet.
-                                    borderRadius: const BorderRadius.only(
-                                      topLeft: Radius.circular(20.0),
-                                      topRight: Radius.circular(20.0),
-                                    ),
-                                    //Optional. Styles the search field.
-                                    inputDecoration: const InputDecoration(
-                                      hintText: 'Search by name or code',
-                                      hintStyle: TextStyle(
-                                        color: AppColors.formsHintFontLight,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      prefixIcon: Icon(
-                                        Icons.search,
-                                        color: AppColors.formsHintFontLight,
-                                      ),
-                                      filled: true,
-                                      fillColor: AppColors.whiteLight,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8)),
-                                        borderSide: BorderSide(
-                                          color: Color(0xFFDBD4C3),
-                                          width: 0.50,
-                                        ),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8)),
-                                        borderSide: BorderSide(
-                                          color: Color(0xFFDBD4C3),
-                                          width: 0.50,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  onSelect: (Country country) {
-                                    exportingCountry.text = country.name;
-                                    setState(() {
-                                      selectedCountryIso2=country.countryCode;
-                                    });
-
-                                  }
-
-                                );
-                              },
-                              isOptional: false,
-                              color: AppColors.formsLabel,
-                              readOnly: true,
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 13),
-                              obscureText: false,
-                              validator: (value) {
-                                return Validator.countryCodeValidator(
-                                    pickUpCountryCode.text);
-                              },
+                          const Padding(
+                            padding:  EdgeInsets.symmetric(horizontal: 17,vertical: 20),
+                            child:  Text(
+                              'Pick Up Address in UAE',
+                              style: TextStyle(
+                                color: AppColors.formsHintFontLight,
+                                fontSize: 14,
+                                fontFamily: 'notosan',
+                                fontWeight: FontWeight.w500,
+                                height: 0.11,
+                              ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: kPadding, right: kPadding, bottom: 6),
-                            child: RebiInput(
-                              hintText: 'Pickup Location'.tra,
-                              controller: pickUpLocation,
-                              keyboardType: TextInputType.name,
-                              textInputAction: TextInputAction.done,
-                              autoValidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              isOptional: false,
-                              color: AppColors.formsLabel,
-                              readOnly: false,
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 13),
-                              obscureText: false,
-                              validator: (value) {
-                                return Validator.requiredValidator(
-                                    pickUpLocation.text);
-                              },
-                            ),
+
+                          SelectPlaceWidget(
+                            location: pickUpLocation,
+                            showingList: placesList,
+                            title: "Pickup Location",
+                            hintText: 'Place',
+                            newPlaceUrl: pickUpLocationUrl,
+                            type: "Shipping Export",
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -368,77 +316,189 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: kPadding, vertical: 10),
-                            child: Row(
-                              children: [
-                                Theme(
-                                  data: Theme.of(context).copyWith(
-                                    unselectedWidgetColor:
-                                        AppColors.formsBackground,
-                                    primaryColor: AppColors.formsBackground,
-                                  ),
-                                  child: Transform.scale(
-                                    scale: 1.2,
-                                    child: Checkbox(
-                                      key: checkBoxKey,
-                                      checkColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5),
+                            padding: const EdgeInsets.symmetric(vertical: 7,horizontal: kPadding),
+                            child: DropDownWidget(
+                              items: equipments,
+                              selected: selectedEquipment,
+                              onChanged: (equipment) {
+                                setState(() {
+                                  selectedEquipment = equipment;
+                                });
+                              },
+                              validator: (value) {
+                                return Validator.requiredValidator(selectedEquipment);
+                              },
+                              hint: 'Equipment Tack',
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: kPadding,vertical: 5),
+                            child: CustomDivider(),
+                          ),
+                          Visibility(
+                            visible: !widget.isFromEditing,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: kPadding, vertical: 7),
+                              child: RebiInput(
+                                hintText: 'Exporting country'.tra,
+                                controller: exportingCountry,
+                                keyboardType: TextInputType.number,
+                                textInputAction: TextInputAction.done,
+                                autoValidateMode:
+                                AutovalidateMode.onUserInteraction,
+                                onTap: () {
+                                  showCountryPicker(
+                                      context: context,
+                                      showPhoneCode: true,
+                                      countryListTheme: CountryListThemeData(
+                                        flagSize: 25,
+                                        backgroundColor:
+                                        AppColors.backgroundColorLight,
+                                        textStyle: const TextStyle(
+                                            fontSize: 16,
+                                            color: AppColors.blackLight),
+                                        bottomSheetHeight: 85.0.h,
+                                        // Optional. Country list modal height
+                                        //Optional. Sets the border radius for the bottomsheet.
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(20.0),
+                                          topRight: Radius.circular(20.0),
+                                        ),
+                                        //Optional. Styles the search field.
+                                        inputDecoration: const InputDecoration(
+                                          hintText: 'Search by name or code',
+                                          hintStyle: TextStyle(
+                                            color: AppColors.formsHintFontLight,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                          prefixIcon: Icon(
+                                            Icons.search,
+                                            color: AppColors.formsHintFontLight,
+                                          ),
+                                          filled: true,
+                                          fillColor: AppColors.whiteLight,
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8)),
+                                            borderSide: BorderSide(
+                                              color: Color(0xFFDBD4C3),
+                                              width: 0.50,
+                                            ),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8)),
+                                            borderSide: BorderSide(
+                                              color: Color(0xFFDBD4C3),
+                                              width: 0.50,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                      activeColor: AppColors.yellow,
-                                      value: equipmentValue,
-                                      onChanged: (bool? val) {
+                                      onSelect: (Country country) {
+                                        exportingCountry.text = country.name;
                                         setState(() {
-                                          equipmentValue = val!;
+                                          selectedCountryIso2=country.countryCode;
                                         });
-                                      },
-                                    ),
-                                  ),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    text:
-                                        'There are another equipment tack'.tra,
-                                    style: TextStyle(
-                                      fontSize: 12.5.sp,
-                                      color: AppColors.blackLight,
-                                    ),
-                                  ),
-                                ),
-                              ],
+
+                                      }
+
+                                  );
+                                },
+                                isOptional: false,
+                                color: AppColors.formsLabel,
+                                readOnly: true,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 13),
+                                obscureText: false,
+                                validator: (value) {
+                                  return Validator.countryCodeValidator(
+                                      pickUpCountryCode.text);
+                                },
+                              ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 7, horizontal: kPadding),
+                            padding: const EdgeInsets.only(
+                                left: kPadding, right: kPadding, bottom: 6),
                             child: RebiInput(
-                              hintText: 'Notes'.tra,
-                              controller: notes,
-                              keyboardType: TextInputType.multiline,
-                              maxLines: 5,
+                              hintText: 'Drop Location'.tra,
+                              controller: dropLocation,
+                              keyboardType: TextInputType.name,
                               textInputAction: TextInputAction.done,
                               autoValidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              isOptional: true,
+                              AutovalidateMode.onUserInteraction,
+                              isOptional: false,
+                              color: AppColors.formsLabel,
                               readOnly: false,
                               contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 13),
                               obscureText: false,
-                              validator: (value) {},
+                              validator: (value) {
+                                return Validator.requiredValidator(
+                                    dropLocation.text);
+                              },
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: kPadding, vertical: 6),
+                            child: RebiInput(
+                              hintText: 'Drop contact name'.tra,
+                              controller: dropContactName,
+                              keyboardType: TextInputType.name,
+                              textInputAction: TextInputAction.done,
+                              autoValidateMode:
+                              AutovalidateMode.onUserInteraction,
+                              isOptional: false,
+                              color: AppColors.formsLabel,
+                              readOnly: false,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 13),
+                              obscureText: false,
+                              validator: (value) {
+                                return Validator.requiredValidator(
+                                    dropContactName.text);
+                              },
+                            ),
+                          ),
+                          PhoneNumberFieldWidget(
+                              countryCode: dropContactCountryCode,
+                              phoneNumber: dropContactNumber),
                         ],
                       ),
+                      const SizedBox(height: 14,),
                       const Spacer(),
                       Padding(
                         padding:
                             const EdgeInsets.symmetric(horizontal: kPadding),
                         child: RebiButton(
                             onPressed: () {
-
                               phoneNumber=pickUpCountryCode.text + pickUpContactNumber.text;
-                              Print(phoneNumber);
+
+                              localHorseCubit
+                                  .createTrip(CreateTripSuccessfully(
+                                  item: Trip(
+                                    tripId: v1,
+                                    shippingEstimatedDate: estimatedDate!.text,
+                                    exportingCountry: widget.isFromEditing?widget.exportCountry!:selectedCountryIso2 ?? 'AE',
+                                    pickupLocation:
+                                    pickUpLocation.text,
+                                    pickupContactName: pickUpContactName.text,
+                                    equipmentTask: selectedEquipment.toString(),
+                                    numberOfHorses: int.parse(numberOfHorses.text),
+                                    importingCountry: widget.isFromEditing?widget.importCountry!:selectedCountryIso2??"AE",
+                                    type: 'export',
+                                    pickupCountryCode: pickUpCountryCode.text,
+                                    pickupPhoneNumber: pickUpContactNumber.text,
+                                    dropLocation: dropLocation.text,
+                                    dropContactName: dropContactName.text,
+                                    dropCountryCode: dropContactCountryCode.text,
+                                    dropPhoneNumber: dropContactNumber.text,
+                                    horses: [],
+                                  )));
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -449,15 +509,16 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                                                   pickUpContactName.text,
                                               pickupLocation:
                                                   pickUpLocation.text,
-                                              horsesNumber: phoneNumber!,
+                                              horsesNumber: numberOfHorses.text,
                                               pickupContactNumber:
                                                   pickUpContactNumber.text,
                                               shipmentEstimatedDate: pickDate,
+                                                tripId: v1,
 
                                               notes: notes.text,
-                                              isThereAreEquipment:
-                                                  equipmentValue,
-                                              selectedCountry: selectedCountryIso2!,
+                                              equipment:
+                                                  selectedEquipment,
+                                              selectedCountry: widget.isFromEditing?widget.exportCountry!:selectedCountryIso2??"AE",
                                               serviceType: 'Export'
                                             ),
                                           )));

@@ -1,21 +1,21 @@
 class InterestsRequestModel {
-  String? interest;
-  String? type;
-  String? phoneNumber;
+  String? discipline;
+  String? userType;
+  int? personId;
 
-  InterestsRequestModel({this.interest, this.type, this.phoneNumber});
+  InterestsRequestModel({this.discipline, this.userType, this.personId});
 
   InterestsRequestModel.fromJson(Map<String, dynamic> json) {
-    interest = json['interest'];
-    type = json['type'];
-    phoneNumber = json['phoneNumber'];
+    discipline = json['Discipline'];
+    userType = json['UserType'];
+    personId = json['PersonId'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['interest'] = interest;
-    data['type'] = type;
-    data['phoneNumber'] = phoneNumber;
+    data['Discipline'] = discipline;
+    data['UserType'] = userType;
+    data['PersonId'] = personId;
     return data;
   }
 }

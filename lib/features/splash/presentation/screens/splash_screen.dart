@@ -49,17 +49,6 @@ class SplashScreenState extends State<SplashScreen>  with TickerProviderStateMix
     version = 'version: ${packageInfo.version}';
     buildVersion = "${packageInfo.version}.${packageInfo.buildNumber}";
     packageName = packageInfo.packageName;
-    if (context.mounted) {
-      setState(() {
-        context
-            .read<SplashCubit>()
-            .getEnv("${packageInfo.version}.${packageInfo.buildNumber}");
-        BlocProvider.of<SplashCubit>(context)
-            .getEnv("${packageInfo.version}.${packageInfo.buildNumber}");
-
-        Print("bloc provider ${BlocProvider.of<SplashCubit>(context).envUrl}");
-      });
-    }
     Print('AppSharedPreferences.getEnvType${AppSharedPreferences.getEnvType}');
 
     Print('version: ${packageInfo.version}');
@@ -131,7 +120,6 @@ class SplashScreenState extends State<SplashScreen>  with TickerProviderStateMix
   @override
   void initState() {
     _controller = AnimationController(vsync: this);
-    AppSettings.setup();
     getVersion();
     if (AppSharedPreferences.getEnvType != '') {
       // startTimer();
@@ -152,7 +140,7 @@ class SplashScreenState extends State<SplashScreen>  with TickerProviderStateMix
   @override
   void dispose() {
     _controller.dispose();
-    // sendRefreshToken();
+    sendRefreshToken();
     // splashCubit.close();
     // notificationsCubit.close();
     super.dispose();

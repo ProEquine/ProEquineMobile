@@ -26,6 +26,7 @@ class EquineInfoHorsesScreen extends StatefulWidget {
 class _EquineInfoHorsesScreenState extends State<EquineInfoHorsesScreen> {
   TextEditingController stable = TextEditingController();
   TextEditingController stableName = TextEditingController();
+  TextEditingController stableId = TextEditingController();
   TextEditingController stableLocation = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String? selectedDiscipline;
@@ -78,7 +79,8 @@ class _EquineInfoHorsesScreenState extends State<EquineInfoHorsesScreen> {
               ),
               const SizedBox(height: 5,),
               SelectStableWidget(
-                stable: stable,
+                stableId: stableId,
+                stableName: stable,
                 showingStablesList: stables,
                 changeTrue: changeToTrueValue,
                 changeFalse: changeToFalseValue,

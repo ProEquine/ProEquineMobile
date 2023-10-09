@@ -58,6 +58,7 @@ class AppIcons {
 
   static const event = 'assets/icons/calendar.svg';
   static const events = 'assets/icons/events.svg';
+  static const shipping = 'assets/icons/shipping.svg';
 
   static const transportType = 'assets/icons/transType.svg';
   static const info = 'assets/icons/info.svg';

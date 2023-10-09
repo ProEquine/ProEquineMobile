@@ -33,6 +33,7 @@ class _AddSecondaryStableScreenState extends State<AddSecondaryStableScreen> {
   String? selectedEmirate;
   late final TextEditingController _secondaryStableName;
   late final TextEditingController stable;
+  late final TextEditingController stableId;
   late final TextEditingController _secondaryStableLocation;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -110,7 +111,8 @@ class _AddSecondaryStableScreenState extends State<AddSecondaryStableScreen> {
                                 height: 5,
                               ),
                               SelectStableWidget(
-                                stable: stable,
+                                stableName: stable,
+                                stableId: stableId,
                                 showingStablesList: stables,
                                 changeTrue: changeToTrueValue,
                                 changeFalse: changeToFalseValue,

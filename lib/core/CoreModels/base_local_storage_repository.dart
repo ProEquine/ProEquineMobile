@@ -1,13 +1,20 @@
 
 import 'package:hive/hive.dart';
-import 'package:proequine/features/home/data/local_horse.dart';
+import 'package:proequine/features/home/data/local_trip.dart';
 
 abstract class BaseLocalStorageRepository {
   Future<Box> openBox();
 
-  List<Horse> getHorses(Box box);
+  List<Trip> getAllTrips(Box box);
+  Future<Trip?> getSpecificTrip(String tripId);
 
-  Future<void> createHorse(Box box, Horse item);
+  Future<void> createTrip(Box box, Trip item);
+  Future<void> deleteTrip(Box box, Trip item);
+
+  Future<void> addHorseToTrip(String id, Horse horse);
+
+  Future<void> editSpecificHorse(String tripIndex,String horseIndex, Horse horse);
+  Future<void> editSpecificTrip(String tripIndex, Trip trip);
   //
   // Future<void> deleteAuction(Box box, Auction item);
   //

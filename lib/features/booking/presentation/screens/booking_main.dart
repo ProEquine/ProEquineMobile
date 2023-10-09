@@ -2,7 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/features/booking/presentation/widgets/booking_loading_widget.dart';
+import 'package:proequine/features/home/domain/cubits/local_horse_cubit.dart';
+import 'package:proequine/features/home/domain/repo/local_storage_repository.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
@@ -20,6 +23,9 @@ class BookingMain extends StatefulWidget {
 }
 
 class _BookingMainState extends State<BookingMain> {
+  LocalHorseCubit localHorseCubit = LocalHorseCubit(
+      localStorageRepository: LocalStorageRepository());
+
   // Future<bool> checkVerificationStatus() async {
   //   if (AppSharedPreferences.getEmailVerified!) {
   //     return true;
@@ -29,6 +35,7 @@ class _BookingMainState extends State<BookingMain> {
   //     return false;
   //   }
   // }
+
   ScrollController _scrollController = ScrollController();
   bool isScrolled = false;
   bool isLoading = true;
@@ -37,7 +44,7 @@ class _BookingMainState extends State<BookingMain> {
   @override
   void initState() {
     super.initState();
-   timer= Timer(const Duration(seconds: 5), () {
+    timer = Timer(const Duration(seconds: 5), () {
       setState(() {
         isLoading = false;
       });
@@ -125,97 +132,105 @@ class _BookingMainState extends State<BookingMain> {
                 ),
               ];
             },
-            body: DefaultTabController(
-              length: 3,
-              child:
-                  // body:Padding(
-                  //     padding:
-                  //         EdgeInsets.only(left: kPadding, right: kPadding, bottom: 20),
-                  //     child: Booking(),
-                  //   ),
-                  Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                    SizedBox(
-                      height: isScrolled ? 30 : 2,
-                    ),
-                    Theme(
-                      data:
-                          ThemeData().copyWith(splashColor: Colors.transparent),
-                      child: Container(
-                        width: 85.0.w,
-                        margin: const EdgeInsets.only(bottom: 10),
-                        decoration: BoxDecoration(
-                            //This is for background color
-                            color: Colors.white.withOpacity(0.0),
-                            //This is for bottom border that is needed
-                            border: const Border(
-                                bottom: BorderSide(
-                                    color: Color(0XFFDFD9C9), width: 0.8))),
-                        child: const TabBar(
-                            labelColor: AppColors.blackLight,
-                            indicatorColor: Colors.yellow,
-                            labelStyle: TextStyle(
-                              color: AppColors.blackLight,
-                              fontSize: 18,
-                              fontFamily: 'notosan',
-                              fontWeight: FontWeight.w500,
-                            ),
-                            unselectedLabelColor: AppColors.blackLight,
-                            indicatorSize: TabBarIndicatorSize.label,
-                            indicator: BoxDecoration(
-                              color: AppColors.yellow,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5),
-                              ),
-                            ),
-                            indicatorPadding: EdgeInsets.only(top: 47),
-                            indicatorWeight: 5,
-                            isScrollable: true,
-                            labelPadding: EdgeInsets.symmetric(horizontal: 20),
-                            tabs: [
-                              Tab(
-                                text: "Transport",
-                              ),
-                              Tab(
-                                text: "Media",
-                              ),
-                              Tab(
-                                text: "Shipping",
-                              )
-                            ]),
+            body: BlocListener<LocalHorseCubit, LocalHorseState>(
+              listener: (context, state) {
+                if(state is DeleteTripSuccessfully){
+                  localHorseCubit.getAllTrips();
+                }
+              },
+              child: DefaultTabController(
+                length: 3,
+                child:
+                // body:Padding(
+                //     padding:
+                //         EdgeInsets.only(left: kPadding, right: kPadding, bottom: 20),
+                //     child: Booking(),
+                //   ),
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: isScrolled ? 30 : 2,
                       ),
-                    ),
+                      Theme(
+                        data:
+                        ThemeData().copyWith(splashColor: Colors.transparent),
+                        child: Container(
+                          width: 85.0.w,
+                          margin: const EdgeInsets.only(bottom: 10),
+                          decoration: BoxDecoration(
+                            //This is for background color
+                              color: Colors.white.withOpacity(0.0),
+                              //This is for bottom border that is needed
+                              border: const Border(
+                                  bottom: BorderSide(
+                                      color: Color(0XFFDFD9C9), width: 0.8))),
+                          child: const TabBar(
+                              labelColor: AppColors.blackLight,
+                              indicatorColor: Colors.yellow,
+                              labelStyle: TextStyle(
+                                color: AppColors.blackLight,
+                                fontSize: 18,
+                                fontFamily: 'notosan',
+                                fontWeight: FontWeight.w500,
+                              ),
+                              unselectedLabelColor: AppColors.blackLight,
+                              indicatorSize: TabBarIndicatorSize.label,
+                              indicator: BoxDecoration(
+                                color: AppColors.yellow,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5),
+                                ),
+                              ),
+                              indicatorPadding: EdgeInsets.only(top: 47),
+                              indicatorWeight: 5,
+                              isScrollable: true,
+                              labelPadding: EdgeInsets.symmetric(
+                                  horizontal: 20),
+                              tabs: [
+                                Tab(
+                                  text: "Transport",
+                                ),
+                                Tab(
+                                  text: "Media",
+                                ),
+                                Tab(
+                                  text: "Shipping",
+                                )
+                              ]),
+                        ),
+                      ),
                       Expanded(
                         child: TabBarView(children: [
                           Padding(
-                        padding:  EdgeInsets.symmetric(horizontal: kPadding),
-                         child: Booking(
-                            type: "Transport",
-                           isLoading: isLoading,
-                          ),
-                     ),
-                       Padding(
-                           padding:  EdgeInsets.symmetric(horizontal: kPadding),
-                           child: Booking(
-                            type: "Media",
-                             isLoading: isLoading,
-                          ),
-                       ),
-                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: kPadding),
-                            child:Booking(
+                            child: Booking(
+                              type: "Transport",
+                              isLoading: isLoading,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: kPadding),
+                            child: Booking(
+                              type: "Media",
+                              isLoading: isLoading,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: kPadding),
+                            child: Booking(
                               type: "Shipping",
                               isLoading: isLoading,
                             ),
                           ),
-              ],
+                        ],
                         ),
 
                       ),
 
-                  ]),
+                    ]),
+              ),
             ),
             //TODO: CHANGE HERE IF THE BOOKINGS IS EMPTY
             //     body: const SafeArea(

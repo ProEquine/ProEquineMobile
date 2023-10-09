@@ -9,12 +9,14 @@ class AppSharedPreferences {
   static const keyLanguage = "PREF_KEY_LANGUAGE";
   static const keyUserPhoneNumber = "PREF_KEY_USER_PHONE_NUMBER";
   static const keyUserEmailAddress = "PREF_KEY_USER_EMAIL_ADDRESS";
+  static const keyPersonId = "PREF_KEY_PERSON_ID";
   static const keyEnv = "PREF_KEY_ENV";
   static const keyUserType = "PREF_KEY_USER_TYPE";
   static const keyUserInterests = "PREF_KEY_INTERESTS";
 
   static const keyIsPhoneVerified = "PREF_KEY_VERIFICATION_PHONE";
   static const keyIsEmailVerified = "PREF_KEY_VERIFICATION_EMAIL";
+  static const isStableChose = "PREF_KEY_CHOSE_STABLE";
 
   static const themeMode = "PREF_KEY_THEME_MODE";
 
@@ -45,6 +47,16 @@ class AppSharedPreferences {
   static bool get hasPhoneNumber => _pref?.contains(keyUserPhoneNumber);
 
   static removePhoneNumber() => _pref?.remove(keyUserPhoneNumber);
+
+  ///  Store person id
+  static String get personId => _pref?.read(keyPersonId) ?? '';
+
+  static set setPersonId(String personId) =>
+      _pref?.save(keyPersonId, personId);
+
+  static bool get hasPersonId => _pref?.contains(keyPersonId);
+
+  static removePersonId() => _pref?.remove(keyPersonId);
 
   ///  Store User Email Address
   static String get userEmailAddress => _pref?.read(keyUserEmailAddress) ?? '';
@@ -119,6 +131,17 @@ class AppSharedPreferences {
 
   static set emailVerified(bool? verified) =>
       _pref?.saveBoolean(keyIsEmailVerified, verified) ?? false;
+
+
+  /// is chose stable
+  static bool? get isStableChosen {
+    if (_pref?.readBoolean(isStableChose) == null) choseStable = false;
+
+    return _pref?.readBoolean(isStableChose) ?? false;
+  }
+
+  static set choseStable(bool? verified) =>
+      _pref?.saveBoolean(isStableChose, verified) ?? false;
 
   /// is user type selected
   static bool? get getIsITypeSelected {

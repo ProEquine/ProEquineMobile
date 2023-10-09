@@ -7,6 +7,7 @@ import 'package:proequine/features/home/presentation/screens/create_export_scree
 import 'package:proequine/features/home/presentation/screens/create_import_screen.dart';
 import 'package:proequine/features/home/presentation/screens/create_trip_screen.dart';
 import 'package:proequine/features/home/presentation/screens/media_list_screen.dart';
+import 'package:proequine/features/home/presentation/screens/shipping_list_screen.dart';
 import 'package:proequine/features/home/presentation/screens/shows_screen.dart';
 import 'package:proequine/features/home/presentation/widgets/service_widget.dart';
 import 'package:proequine/features/home/presentation/widgets/shipping_widget.dart';
@@ -180,7 +181,7 @@ class _MainScreenState extends State<MainScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const CreateImportScreen()));
+                                        ShippingListScreen(type: "Import")));
                           },
                         ),
 
@@ -192,7 +193,7 @@ class _MainScreenState extends State<MainScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const CreateExportScreen()));
+                                        ShippingListScreen(type: "Export")));
                           },
                         ),
                       ],

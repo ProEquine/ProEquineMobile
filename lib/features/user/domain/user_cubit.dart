@@ -13,6 +13,7 @@ import 'package:proequine/features/user/data/register_request_model.dart';
 import 'package:proequine/features/user/data/reset_password_request_model.dart';
 import 'package:proequine/features/user/data/send_mail_request_model.dart';
 import 'package:proequine/features/user/data/send_verification_request_model.dart';
+import 'package:proequine/features/user/data/stable-model.dart';
 import 'package:proequine/features/user/data/update_email_request_model.dart';
 import 'package:proequine/features/user/domain/repo/user_repository.dart';
 
@@ -21,6 +22,7 @@ import '../../../core/errors/base_error.dart';
 import '../../../core/utils/Printer.dart';
 import '../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../data/check_mail_request_model.dart';
+import '../data/get_stables_response_model.dart';
 import '../data/login_request_model.dart';
 import '../data/register_response_model.dart';
 
@@ -28,6 +30,9 @@ part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
   UserCubit() : super(UserInitial());
+
+  List<StableModel> itemList = [];
+  List<String> stablesNames = [];
 
   Future<void> login(LoginRequestModel loginRequestModel) async {
     /// here we emit loading state while contact with server
@@ -42,14 +47,15 @@ class UserCubit extends Cubit<UserState> {
       await SecureStorage().setRefreshToken(response.refreshToken!.token!);
       await SecureStorage().setToken(response.accessToken!);
       await SecureStorage().setUserId(response.refreshToken!.userId!);
-    String? refreshToken= await SecureStorage().getRefreshToken();
-    String? accessToken= await SecureStorage().getToken();
-    String? userId= await SecureStorage().getUserId();
+      String? refreshToken = await SecureStorage().getRefreshToken();
+      String? accessToken = await SecureStorage().getToken();
+      String? userId = await SecureStorage().getUserId();
       AppSharedPreferences.phoneVerified = response.isPhoneNumberVerified;
       AppSharedPreferences.emailVerified = response.isEmailVerified;
-      AppSharedPreferences.typeSelected=response.isTypeSelected;
-      AppSharedPreferences.inputPhoneNumber=response.phoneNumber!;
-      AppSharedPreferences.inputEmailAddress=loginRequestModel.email!;
+      AppSharedPreferences.choseStable = response.isChooseMainStable;
+      AppSharedPreferences.typeSelected = response.isTypeSelected;
+      AppSharedPreferences.inputPhoneNumber = response.phoneNumber!;
+      AppSharedPreferences.inputEmailAddress = loginRequestModel.email!;
       Print("access token $accessToken");
       Print("refresh token $refreshToken");
       Print("userId $userId");
@@ -77,13 +83,12 @@ class UserCubit extends Cubit<UserState> {
       await SecureStorage().setRefreshToken(response.refreshToken!.token!);
       await SecureStorage().setToken(response.accessToken!);
       await SecureStorage().setUserId(response.refreshToken!.userId!);
-      AppSharedPreferences.inputPhoneNumber=registerRequestModel.phoneNumber!;
-      AppSharedPreferences.inputEmailAddress=registerRequestModel.email!;
+      AppSharedPreferences.inputPhoneNumber = registerRequestModel.phoneNumber!;
+      AppSharedPreferences.inputEmailAddress = registerRequestModel.emailAddress!;
 
-
-      String? refreshToken= await SecureStorage().getRefreshToken();
-      String? accessToken= await SecureStorage().getToken();
-      String? userId= await SecureStorage().getUserId();
+      String? refreshToken = await SecureStorage().getRefreshToken();
+      String? accessToken = await SecureStorage().getToken();
+      String? userId = await SecureStorage().getUserId();
       Print("access token $accessToken");
       Print("refresh token $refreshToken");
       Print("userId $userId");
@@ -110,6 +115,20 @@ class UserCubit extends Cubit<UserState> {
       emit(SendVerificationError(message: response.message));
     } else if (response is Message) {
       emit(SendVerificationError(message: response.content));
+    }
+  }
+
+  Future<void> checkUsername(String userName) async {
+    emit(CheckUsernameLoading());
+    var response = await UserRepository.checkUsername(userName);
+    if (response is EmptyModel) {
+      emit(CheckUsernameSuccessful(
+          message: "Username has added successfully ".tra));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(CheckUsernameError(message: response.message));
+    } else if (response is Message) {
+      emit(CheckUsernameError(message: response.content));
     }
   }
 
@@ -177,8 +196,8 @@ class UserCubit extends Cubit<UserState> {
   Future<void> sendMailVerificationCode(
       SendMailVerificationRequestModel sendMailVerificationRequestModel) async {
     emit(SendMailVerificationLoading());
-    var response =
-    await UserRepository.sendMailVerification(sendMailVerificationRequestModel);
+    var response = await UserRepository.sendMailVerification(
+        sendMailVerificationRequestModel);
     if (response is EmptyModel) {
       emit(SendMailVerificationSuccessful(
           message: "Code has sent successfully ".tra));
@@ -191,10 +210,11 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> checkMailVerificationCode(
-      CheckMailVerificationRequestModel checkMailVerificationRequestModel) async {
+      CheckMailVerificationRequestModel
+          checkMailVerificationRequestModel) async {
     emit(CheckMailVerificationLoading());
-    var response =
-    await UserRepository.checkMailVerification(checkMailVerificationRequestModel);
+    var response = await UserRepository.checkMailVerification(
+        checkMailVerificationRequestModel);
     if (response is EmptyModel) {
       AppSharedPreferences.emailVerified = true;
       emit(CheckMailVerificationSuccessful(
@@ -206,14 +226,12 @@ class UserCubit extends Cubit<UserState> {
       emit(CheckMailVerificationError(message: response.content));
     }
   }
-  Future<void> updateMail(
-      UpdateMailRequestModel updateMailRequestModel) async {
+
+  Future<void> updateMail(UpdateMailRequestModel updateMailRequestModel) async {
     emit(UpdateMailLoading());
-    var response =
-    await UserRepository.updateMail(updateMailRequestModel);
+    var response = await UserRepository.updateMail(updateMailRequestModel);
     if (response is EmptyModel) {
-      emit(UpdateMailSuccessful(
-          message: "code has been sent".tra));
+      emit(UpdateMailSuccessful(message: "code has been sent".tra));
     } else if (response is BaseError) {
       Print("messaggeeeeeeeee${response.message}");
       emit(UpdateMailError(message: response.message));
@@ -221,11 +239,12 @@ class UserCubit extends Cubit<UserState> {
       emit(UpdateMailError(message: response.content));
     }
   }
-  Future<void> checkUpdatedMail (
+
+  Future<void> checkUpdatedMail(
       CheckUpdateEmailRequestModel checkUpdateEmailRequestModel) async {
     emit(CheckUpdateMailLoading());
     var response =
-    await UserRepository.checkUpdateMail(checkUpdateEmailRequestModel);
+        await UserRepository.checkUpdateMail(checkUpdateEmailRequestModel);
     if (response is EmptyModel) {
       AppSharedPreferences.emailVerified = true;
       emit(CheckUpdateMailSuccessful(
@@ -237,6 +256,7 @@ class UserCubit extends Cubit<UserState> {
       emit(CheckUpdateMailError(message: response.content));
     }
   }
+
   Future<void> deleteAccount(String userPhoneNumber) async {
     emit(DeleteAccountLoading());
     var response = await UserRepository.deleteAccount(userPhoneNumber);
@@ -245,6 +265,34 @@ class UserCubit extends Cubit<UserState> {
     } else if (response is BaseError) {
       Print("Account Delete Error${response.message}");
       emit(DeleteAccountError(message: response.message));
+    }
+  }
+
+  Future<void> getStables() async {
+    emit(GetStablesLoading());
+    var response = await UserRepository.getStables();
+    if (response is GetStablesResponseModel) {
+      stablesNames.clear();
+      itemList.clear();
+      Print(response.data);
+      Print(response.data!.length);
+
+      for (var apiItem in response.data!) {
+        String name = apiItem.stableName!;
+        int id = apiItem.stableId!;
+
+        // Create a new Item instance and add it to itemList
+        StableModel newItem = StableModel(id: id, name: name);
+        itemList.add(newItem);
+        stablesNames.add(newItem.name);
+      }
+
+      emit(GetStablesSuccessful(getStablesResponseModel: response.data!));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(SelectInterestsError(message: response.message));
+    } else if (response is Message) {
+      emit(SelectInterestsError(message: response.content));
     }
   }
 }

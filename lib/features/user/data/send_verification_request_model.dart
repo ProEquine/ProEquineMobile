@@ -1,18 +1,18 @@
 class SendVerificationRequestModel {
   String? phoneNumber;
-  String? channel;
 
-  SendVerificationRequestModel({this.phoneNumber, this.channel});
+  SendVerificationRequestModel({
+    this.phoneNumber,
+  });
 
   SendVerificationRequestModel.fromJson(Map<String, dynamic> json) {
-    phoneNumber = json['phoneNumber'];
-    channel = json['channel'];
+    phoneNumber = json['PhoneNumber'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
-    data['phoneNumber'] = phoneNumber;
-    data['channel'] = channel;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['PhoneNumber'] = phoneNumber;
+
     return data;
   }
 }

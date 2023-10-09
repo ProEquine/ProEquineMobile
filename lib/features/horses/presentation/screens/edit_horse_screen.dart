@@ -62,28 +62,6 @@ class EditHorseScreenState extends State<EditHorseScreen> {
 
   var now = DateTime.now();
   List<bool> isGenderSelected = [false, false, false];
-  List<DropdownMenuItem<String>> stables = [
-    const DropdownMenuItem(
-      value: "Sharjah Stable",
-      child: Text("Sharjah"),
-    ),
-    const DropdownMenuItem(
-      value: "Malath",
-      child: Text("Malath"),
-    ),
-    const DropdownMenuItem(
-      value: "Malath2",
-      child: Text("Malath2"),
-    ),
-    const DropdownMenuItem(
-      value: "Malath3",
-      child: Text("Malath3"),
-    ),
-    const DropdownMenuItem(
-      value: "Add Your Stable",
-      child: Text("Add Your Stable"),
-    ),
-  ];
   String? interest;
   int? firstDay = 1;
   int? firstMonth = 1;

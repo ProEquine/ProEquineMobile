@@ -7,8 +7,10 @@ import 'package:proequine/features/user/presentation/screens/choose_stable_scree
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/thems/app_styles.dart';
+import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../nav_bar/domain/navbar_cubit.dart';
+import '../../data/interests_request_model.dart';
 import '../../domain/user_cubit.dart';
 import '../widgets/register_header.dart';
 import '../widgets/selectable_type_container.dart';
@@ -171,7 +173,7 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
                     ),
                     GridView.count(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       crossAxisCount: 2,
                       childAspectRatio: (5 / 1.2),
                       mainAxisSpacing: 14,
@@ -230,7 +232,7 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
                   ],
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 20,
@@ -275,25 +277,23 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
           }
         },
         listener: (context, state) {
-          // if (state is SelectInterestsSuccessful) {
-          //   AppSharedPreferences.typeSelected = true;
-          //   Navigator.push(context,
-          //       MaterialPageRoute(builder: (context) => const BottomNavigation()));
-          // } else if (state is SelectInterestsError) {
-          //   RebiMessage.error(msg: state.message!,context: context);
-          // }
+          if (state is SelectInterestsSuccessful) {
+            AppSharedPreferences.typeSelected = true;
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const ChooseStableScreen()));
+          } else if (state is SelectInterestsError) {
+            RebiMessage.error(msg: state.message!,context: context);
+          }
         });
   }
 
   _onPressConfirm() {
-    // return cubit
-    //   ..interests(InterestsRequestModel(
-    //     phoneNumber: AppSharedPreferences.userPhoneNumber,
-    //     interest: interest,
-    //     type: userType,
-    //   ));
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const ChooseStableScreen()));
+    return cubit
+      ..interests(InterestsRequestModel(
+        personId: int.parse(AppSharedPreferences.personId),
+        discipline: interest,
+        userType: userType,
+      ));
   }
 
   void _handleSelected(int index, bool value, var _isSelected) {

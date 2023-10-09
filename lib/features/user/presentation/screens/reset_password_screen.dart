@@ -237,7 +237,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                                     SendVerificationRequestModel(
                                                         phoneNumber:
                                                             widget.phone,
-                                                        channel: "sms"));
+                                                    ));
                                             isResendCode = true;
                                           });
 

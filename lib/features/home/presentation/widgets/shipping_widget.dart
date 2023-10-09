@@ -19,15 +19,16 @@ class ShippingWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Stack(
-            children:  [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                // Set your desired border radius here
-                child: ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.6), BlendMode.darken),
-                  child: Container(
+          // Stack(
+          //   children:  [
+          //     ClipRRect(
+          //       borderRadius: BorderRadius.circular(8),
+          //       // Set your desired border radius here
+          //       child: ColorFiltered(
+          //         colorFilter: ColorFilter.mode(
+          //             Colors.black.withOpacity(0.6), BlendMode.darken),
+          //         child:
+      Container(
                     height: 22.75.h,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
@@ -38,23 +39,23 @@ class ShippingWidget extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                ),
-              ),
-               const Positioned.fill(
-                child: Align(
-               alignment: Alignment.center,child: Text(
-                  'Coming Soon ',
-                  style: TextStyle(
-                    color: AppColors.whiteLight,
-                    fontSize: 14,
-                    fontFamily: 'notosan',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-               ),
-            ],
-          ),
+                // ),
+              // ),
+              //  const Positioned.fill(
+              //   child: Align(
+              //  alignment: Alignment.center,child: Text(
+              //     'Coming Soon ',
+              //     style: TextStyle(
+              //       color: AppColors.whiteLight,
+              //       fontSize: 14,
+              //       fontFamily: 'notosan',
+              //       fontWeight: FontWeight.w500,
+              //     ),
+              //   ),
+              // ),
+              //  ),
+          //   ],
+          // ),
           const SizedBox(
             height: 10,
           ),

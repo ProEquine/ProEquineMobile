@@ -51,11 +51,11 @@ class _SelectableTypeContainerState extends State<SelectableTypeContainer> {
         child: Center(
           child: widget.padding!=null?Text(
             widget.label!,
-            style:  TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              fontFamily: "notosan",
-              color: widget.isSelected ?Colors.white:AppColors.formsHintFontLight
+            style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
+                fontFamily: "notosan",
+                color: widget.isSelected ?Colors.white:AppColors.formsHintFontLight
             ),
           ):Text(
             widget.label!,

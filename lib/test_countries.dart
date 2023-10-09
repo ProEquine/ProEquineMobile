@@ -1,8 +1,6 @@
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 
-import 'core/utils/Printer.dart';
-
 class TestCountries extends StatefulWidget {
   const TestCountries({Key? key}) : super(key: key);
 

@@ -16,7 +16,7 @@ import 'package:proequine/core/widgets/success_state_widget.dart';
 import 'package:proequine/features/equine_info/presentation/screens/chose_discilpine_update_screen.dart';
 import 'package:proequine/features/equine_info/presentation/screens/update_main_role_screen.dart';
 import 'package:proequine/features/events/domain/event_cubit.dart';
-import 'package:proequine/features/home/data/local_horse.dart';
+import 'package:proequine/features/home/data/local_trip.dart';
 import 'package:proequine/features/home/domain/cubits/local_horse_cubit.dart';
 import 'package:proequine/features/home/presentation/screens/create_trip_screen.dart';
 import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
@@ -33,6 +33,7 @@ import 'package:proequine/features/manage_account/presentation/screens/verify_up
 import 'package:proequine/features/splash/domain/splash_cubit.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/choose_stable_screen.dart';
+import 'package:proequine/features/user/presentation/screens/create_user_name_screen.dart';
 import 'package:proequine/theme_cubit_provider.dart';
 
 import 'package:sizer/sizer.dart';
@@ -67,11 +68,11 @@ void main() async {
   await di.init();
   final document = await getApplicationDocumentsDirectory();
   await Hive.initFlutter(document.path);
+  Hive.registerAdapter(TripAdapter());
   Hive.registerAdapter(HorseAdapter());
   await Hive.openBox("horse");
   // await Firebase.initializeApp();
   StartUp.setup();
-  AppSettings.setup();
   String? defaultLocale = Platform.localeName;
   if (defaultLocale.substring(0, 2) == 'en') {
     defaultLocale = 'en';
@@ -229,4 +230,3 @@ class MyNavigatorObserver extends NavigatorObserver {
     }
   }
 }
-String apiKeyFatoora='rLtt6JWvbUHDDhsZnfpAhpYk4dxYDQkbcPTyGaKp2TYqQgG7FGZ5Th_WD53Oq8Ebz6A53njUoo1w3pjU1D4vs_ZMqFiz_j0urb_BH9Oq9VZoKFoJEDAbRZepGcQanImyYrry7Kt6MnMdgfG5jn4HngWoRdKduNNyP4kzcp3mRv7x00ahkm9LAK7ZRieg7k1PDAnBIOG3EyVSJ5kK4WLMvYr7sCwHbHcu4A5WwelxYK0GMJy37bNAarSJDFQsJ2ZvJjvMDmfWwDVFEVe_5tOomfVNt6bOg9mexbGjMrnHBnKnZR1vQbBtQieDlQepzTZMuQrSuKn-t5XZM7V6fCW7oP-uXGX-sMOajeX65JOf6XVpk29DP6ro8WTAflCDANC193yof8-f5_EYY-3hXhJj7RBXmizDpneEQDSaSz5sFk0sV5qPcARJ9zGG73vuGFyenjPPmtDtXtpx35A-BVcOSBYVIWe9kndG3nclfefjKEuZ3m4jL9Gg1h2JBvmXSMYiZtp9MR5I6pvbvylU_PP5xJFSjVTIz7IQSjcVGO41npnwIxRXNRxFOdIUHn0tjQ-7LwvEcTXyPsHXcMD8WtgBh-wxR8aKX7WPSsT1O8d8reb2aR7K3rkV3K82K_0OgawImEpwSvp9MNKynEAJQS6ZHe_J_l77652xwPNxMRTMASk1ZsJL';

@@ -10,6 +10,7 @@ import 'package:proequine/core/widgets/custom_logo_widget.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:proequine/core/widgets/rebi_input.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
+import 'package:proequine/features/user/presentation/screens/choose_stable_screen.dart';
 import 'package:proequine/features/user/presentation/screens/forget_password_screen.dart';
 import 'package:proequine/features/user/presentation/screens/interests_screen.dart';
 import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
@@ -271,13 +272,6 @@ class _LoginScreenState extends State<LoginScreen> {
             return RebiButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    if (_email.text == 'abdalla@proequine.ae' &&
-                        _password.text == 'Abdalla*123') {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const BottomNavigation()));
-                    }
                     FocusManager.instance.primaryFocus?.unfocus();
                     _onPressLogin();
                   } else {}
@@ -300,12 +294,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => const EquineInfoScreen()));
-            } else {
+            } else if (!AppSharedPreferences.isStableChosen!) {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const BottomNavigation()));
+                      builder: (context) => const ChooseStableScreen()));
             }
+          else {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const BottomNavigation()));
+          }
           } else if (state is LoginError) {
             RebiMessage.error(msg: state.message!, context: context);
           }

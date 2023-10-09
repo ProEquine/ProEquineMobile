@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
-import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
-import 'package:proequine/features/user/data/send_verification_request_model.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/interests_screen.dart';
-import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/Printer.dart';
-import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/utils/validator.dart';
-import '../../../../core/widgets/custom_logo_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../widgets/register_header.dart';
@@ -39,6 +33,7 @@ class _CreateUserNameScreenState extends State<CreateUserNameScreen> {
   @override
   void initState() {
     _userName = TextEditingController();
+    cubit.getStables();
 
     super.initState();
   }
@@ -151,7 +146,7 @@ class _CreateUserNameScreenState extends State<CreateUserNameScreen> {
                                   child: BlocConsumer<UserCubit, UserState>(
                                     bloc: cubit,
                                     builder: (context, state) {
-                                      if (state is SendVerificationLoading) {
+                                      if (state is CheckUsernameLoading) {
                                         return const LoadingCircularWidget();
                                       }
                                       return RebiButton(
@@ -160,16 +155,25 @@ class _CreateUserNameScreenState extends State<CreateUserNameScreen> {
                                                 .validate()) {
                                               FocusManager.instance.primaryFocus
                                                   ?.unfocus();
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const EquineInfoScreen()));
+                                              _onPressCheck(_userName.text);
+
                                             } else {}
                                           },
                                           child: const Text("Next"));
                                     },
-                                    listener: (context, state) {},
+                                    listener: (context, state) {
+                                      if (state is CheckUsernameSuccessful) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const EquineInfoScreen()));
+                                      } else if (state is CheckUsernameError) {
+                                        RebiMessage.error(
+                                            msg: state.message!,
+                                            context: context);
+                                      }
+                                    },
                                   ),
                                 ),
                               ),
@@ -189,5 +193,8 @@ class _CreateUserNameScreenState extends State<CreateUserNameScreen> {
         ),
       ),
     );
+  }
+  _onPressCheck(String userName){
+    cubit.checkUsername(userName);
   }
 }

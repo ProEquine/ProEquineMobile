@@ -11,7 +11,6 @@ import 'dart:ui' as ui;
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../core/constants/images/app_images.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/constants/thems/pin_put_theme.dart';
 import '../../../../core/utils/rebi_message.dart';
@@ -25,12 +24,27 @@ import '../widgets/register_header.dart';
 class VerificationScreen extends StatefulWidget {
   final String? phone;
   final String? email;
-  final String? name;
+  final String? firstName;
+  final String? middleName;
+  final String? lastName;
   final String? password;
+  final String? confirmPassword;
+  final String? gender;
+  final String? nationality;
   final String? dob;
 
   const VerificationScreen(
-      {super.key, this.phone, this.email, this.name, this.password, this.dob});
+      {super.key,
+      this.phone,
+      this.email,
+      this.firstName,
+      this.middleName,
+      this.lastName,
+      this.password,
+      this.dob,
+      this.gender,
+      this.nationality,
+      this.confirmPassword});
 
   @override
   State<VerificationScreen> createState() => _VerificationScreenState();
@@ -215,7 +229,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                                               .phone ??
                                                           AppSharedPreferences
                                                               .userPhoneNumber,
-                                                      channel: "sms"));
+                                                  ));
                                           isResendCode = true;
                                         });
 
@@ -230,15 +244,18 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                         //         ? AppColors.backgroundColor
                                         //         : AppColors.backgroundColorLight,
 
-                                          decoration: ShapeDecoration(
-                                            shape: RoundedRectangleBorder(
-                                              side: const BorderSide(width: 0.50, color: AppColors.yellow),
-                                              borderRadius: BorderRadius.circular(8),
-                                            ),
+                                        decoration: ShapeDecoration(
+                                          shape: RoundedRectangleBorder(
+                                            side: const BorderSide(
+                                                width: 0.50,
+                                                color: AppColors.yellow),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
                                         ),
-                                        child: Row(
+                                        child: const Row(
                                           mainAxisSize: MainAxisSize.min,
-                                          children: const [
+                                          children: [
                                             Text(
                                               "Resend Code",
                                               style: TextStyle(
@@ -291,19 +308,20 @@ class _VerificationScreenState extends State<VerificationScreen> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   FocusManager.instance.primaryFocus?.unfocus();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const VerificationSubmit()));
-                  // _sendRegisterData(
-                  //   email: widget.email,
-                  //   dob: widget.dob,
-                  //   phone: widget.phone,
-                  //   password: widget.password,
-                  //   name: widget.name,
-                  //   verificationCode: _pinPutController.text,
-                  //
-                  // );
+
+                  _sendRegisterData(
+                    email: widget.email,
+                    dob: widget.dob,
+                    phone: widget.phone,
+                    password: widget.password,
+                    confirmPassword: widget.confirmPassword,
+                    gender: widget.gender,
+                    nationality: widget.nationality,
+                    firstName: widget.firstName,
+                    middleName: widget.middleName,
+                    lastName: widget.lastName,
+                    verificationCode: _pinPutController.text,
+                  );
                 } else {}
               },
               child: const Text("Verify"),
@@ -311,28 +329,38 @@ class _VerificationScreenState extends State<VerificationScreen> {
           }
         },
         listener: (context, state) {
-          // if (state is RegisterSuccessful) {
-          //   Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //           builder: (context) => const VerificationSubmit()));
-          // } else if (state is RegisterError) {
-          //   RebiMessage.error(msg: state.message!, context: context);
-          // }
+          if (state is RegisterSuccessful) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const VerificationSubmit()));
+          } else if (state is RegisterError) {
+            RebiMessage.error(msg: state.message!, context: context);
+          }
         });
   }
 
   _sendRegisterData(
       {String? email,
-      String? name,
+      String? firstName,
+      String? middleName,
+      String? lastName,
       String? verificationCode,
       String? phone,
+      String? gender,
+      String? nationality,
       String? password,
+      String? confirmPassword,
       String? dob}) {
     return cubit.register(RegisterRequestModel(
-      email: email,
-      fullName: name,
+      emailAddress: email,
+      firstName: firstName,
+      middleName: middleName,
+      lastName: lastName,
       password: password,
+      confirmPassword: confirmPassword,
+      gender: gender,
+      nationality: nationality,
       verificationCode: verificationCode,
       phoneNumber: phone,
       dob: dob,

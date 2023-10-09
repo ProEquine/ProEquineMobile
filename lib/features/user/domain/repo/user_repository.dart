@@ -4,6 +4,7 @@ import 'package:proequine/features/user/data/check_mail_request_model.dart';
 import 'package:proequine/features/user/data/check_update_email_request_model.dart';
 import 'package:proequine/features/user/data/check_verification_request_model.dart';
 import 'package:proequine/features/user/data/forgot_pass_response_model.dart';
+import 'package:proequine/features/user/data/get_stables_response_model.dart';
 import 'package:proequine/features/user/data/interests_request_model.dart';
 import 'package:proequine/features/user/data/login_request_model.dart';
 import 'package:proequine/features/user/data/login_response_model.dart';
@@ -35,7 +36,7 @@ class UserRepository {
     return await RemoteDataSource.request<RegisterResponseModel>(
         converter: (json) => RegisterResponseModel.fromJson(json),
         method: HttpMethod.POST,
-        data: registerRequestModel.toJson(),
+        queryParameters: registerRequestModel.toJson(),
         withAuthentication: false,
         thereDeviceId: false,
         url: ApiURLs.registerUSER);
@@ -46,10 +47,20 @@ class UserRepository {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.POST,
-        data: sendVerificationRequestModel.toJson(),
-        withAuthentication: true,
+        queryParameters: sendVerificationRequestModel.toJson(),
+        withAuthentication: false,
         thereDeviceId: false,
         url: ApiURLs.sendVerificationCode);
+  }
+  static Future<BaseResultModel?> checkUsername(
+      String username) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.POST,
+        queryParameters: {'Username':username,},
+        withAuthentication: true,
+        thereDeviceId: false,
+        url: ApiURLs.updateUserName);
   }
   static Future<BaseResultModel?> checkVerification(
       CheckVerificationRequestModel checkVerificationRequestModel) async {
@@ -92,6 +103,17 @@ class UserRepository {
         withAuthentication: true,
         thereDeviceId: true,
         url: ApiURLs.interests);
+  }
+
+  static Future<BaseResultModel?> getStables() async {
+    return await RemoteDataSource.request<GetStablesResponseModel>(
+        converter: (json) => GetStablesResponseModel.fromJson(json),
+        method: HttpMethod.GET,
+        withAuthentication: true,
+        policy: CachePolicy.refresh,
+        refreshDuration: const Duration(seconds: 20),
+        thereDeviceId: true,
+        url: ApiURLs.getStables);
   }
 
   static Future<BaseResultModel?> sendMailVerification(

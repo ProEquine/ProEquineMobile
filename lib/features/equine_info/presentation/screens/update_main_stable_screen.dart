@@ -41,6 +41,7 @@ class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
   String? selectedEmirate;
   late final TextEditingController _mainStableName;
   late final TextEditingController _mainStableLocation;
+  late final TextEditingController stableId;
   late final TextEditingController stable;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -51,6 +52,7 @@ class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
     AppSharedPreferences.firstTime = true;
     Print('AppSharedPreferences.getEnvType${AppSharedPreferences.getEnvType}');
     _mainStableLocation = TextEditingController();
+    stableId = TextEditingController();
     _mainStableName = TextEditingController();
     stable = TextEditingController(text: widget.mainStable);
     selectedMainStable=widget.mainStable;
@@ -61,6 +63,7 @@ class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
   void dispose() {
     _mainStableLocation.dispose();
     _mainStableName.dispose();
+    stableId.dispose();
     stable.dispose();
     // cubit.close();
     super.dispose();
@@ -113,7 +116,8 @@ class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
                                 height: 10,
                               ),
                               SelectStableWidget(
-                                stable: stable,
+                                stableId: stableId,
+                                stableName: stable,
                                 showingStablesList: stables,
                                 changeTrue: changeToTrueValue,
                                 changeFalse: changeToFalseValue,

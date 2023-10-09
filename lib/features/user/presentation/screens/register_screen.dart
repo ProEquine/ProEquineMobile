@@ -376,8 +376,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                       SignUpScreen(
                                                         dob: _selectedDay
                                                             .toIso8601String(),
-                                                        name:
-                                                            '${"${_firstName.text} ${_middleName.text} ${_lastName.text}"} ',
+                                                        firstName: _firstName.text,
+                                                        middleName: _middleName.text,
+                                                        lastName: _lastName.text,
+                                                        gender: selectedGender,
+                                                        nationality: nationality.text,
                                                       )));
                                         } else {}
                                       },

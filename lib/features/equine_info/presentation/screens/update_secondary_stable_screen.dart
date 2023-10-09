@@ -33,6 +33,7 @@ class _UpdateSecondaryStableScreenState
   String? selectedEmirate;
   late final TextEditingController _secondaryStableName;
   late final TextEditingController stable;
+  late final TextEditingController stableId;
   late final TextEditingController _secondaryStableLocation;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -55,6 +56,7 @@ class _UpdateSecondaryStableScreenState
     Print('AppSharedPreferences.getEnvType${AppSharedPreferences.getEnvType}');
     _secondaryStableName = TextEditingController();
     _secondaryStableLocation = TextEditingController();
+    stableId = TextEditingController();
     stable = TextEditingController(text: widget.secondaryStable);
     selectedSecondaryStable=widget.secondaryStable;
     super.initState();
@@ -65,6 +67,7 @@ class _UpdateSecondaryStableScreenState
     _secondaryStableLocation.dispose();
     _secondaryStableName.dispose();
     stable.dispose();
+    stableId.dispose();
     // cubit.close();
     super.dispose();
   }
@@ -118,7 +121,8 @@ class _UpdateSecondaryStableScreenState
                                 height: 5,
                               ),
                               SelectStableWidget(
-                                stable: stable,
+                                stableId: stableId,
+                                stableName: stable,
                                 showingStablesList: stables,
                                 changeTrue: changeToTrueValue,
                                 changeFalse: changeToFalseValue,
