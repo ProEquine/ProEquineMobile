@@ -38,7 +38,7 @@ class _ChoseShippingHorseScreenState extends State<ChoseShippingHorseScreen> {
   List<TextEditingController> horsesControllers = [];
   Map<String, String> horses = {};
   LocalHorseCubit localHorseCubit =
-  LocalHorseCubit(localStorageRepository: LocalStorageRepository());
+      LocalHorseCubit(localStorageRepository: LocalStorageRepository());
   LocalStorageRepository localStorageRepository = LocalStorageRepository();
 
   @override
@@ -46,7 +46,7 @@ class _ChoseShippingHorseScreenState extends State<ChoseShippingHorseScreen> {
     super.initState();
     var controllersTexts = List<String>.generate(
         int.parse(widget.serviceModel!.horsesNumber),
-            (counter) => "Select a horse");
+        (counter) => "Select a horse");
     for (var str in controllersTexts) {
       var textEditingController = TextEditingController(text: str);
       horsesControllers.add(textEditingController);
@@ -100,19 +100,15 @@ class _ChoseShippingHorseScreenState extends State<ChoseShippingHorseScreen> {
     var v1 = uuid.v1(options: {
       'node': [0x01, 0x23, 0x45, 0x67, 0x89, 0xab],
       'clockSeq': 0x1234,
-      'mSecs': DateTime
-          .now()
-          .millisecondsSinceEpoch,
+      'mSecs': DateTime.now().millisecondsSinceEpoch,
       'nSecs': 5678
     });
     List<bool> isChoseNewHorse = List<bool>.generate(
         int.parse(widget.serviceModel!.horsesNumber), (counter) => false);
     List<String> selectedHorse = List<String>.generate(
-        int.parse(widget.serviceModel!.horsesNumber),
-            (counter) => "");
+        int.parse(widget.serviceModel!.horsesNumber), (counter) => "");
     List<String> selectedGender = List<String>.generate(
-        int.parse(widget.serviceModel!.horsesNumber),
-            (counter) => "");
+        int.parse(widget.serviceModel!.horsesNumber), (counter) => "");
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
@@ -129,130 +125,343 @@ class _ChoseShippingHorseScreenState extends State<ChoseShippingHorseScreen> {
             child: SingleChildScrollView(
               child: widget.isItFromEditing
                   ? BlocConsumer<LocalHorseCubit, LocalHorseState>(
-                bloc: localHorseCubit..getTrip(widget.serviceModel!.tripId),
-                listener: (context, state) {
-                  // TODO: implement listener
-                },
-                builder: (context, state) {
-                  if (state is GetTripSuccessfully) {
-                    return Column(
+                      bloc: localHorseCubit
+                        ..getTrip(widget.serviceModel!.tripId),
+                      listener: (context, state) {
+                        // TODO: implement listener
+                      },
+                      builder: (context, state) {
+                        if (state is GetTripSuccessfully) {
+                          return Column(
+                            children: [
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              ListView.separated(
+                                  shrinkWrap: true,
+                                  physics: const BouncingScrollPhysics(),
+                                  separatorBuilder: (context, index) {
+                                    return const CustomDivider();
+                                  },
+                                  itemCount: state.trip.numberOfHorses,
+                                  itemBuilder: (context, currentIndex) {
+                                    if (state.trip.horses.isNotEmpty) {
+                                      horsesControllers[currentIndex].text =
+                                          state.trip.horses[currentIndex]
+                                              .horseName;
+                                    } else {}
+
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: kPadding),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 7),
+                                            child: RebiInput(
+                                              hintText: 'Select Your Horse',
+                                              controller: horsesControllers[
+                                                  currentIndex],
+                                              keyboardType: TextInputType.name,
+                                              textInputAction:
+                                                  TextInputAction.done,
+                                              autoValidateMode: AutovalidateMode
+                                                  .onUserInteraction,
+                                              isOptional: false,
+                                              color: AppColors.formsLabel,
+                                              onTap: () {
+                                                showHorsesBottomSheet(
+                                                  context: context,
+                                                  title: "Select Your horse",
+                                                  content: ListView.separated(
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        NeverScrollableScrollPhysics(),
+                                                    itemCount:
+                                                        horsesNames.length,
+                                                    separatorBuilder:
+                                                        (context, index) {
+                                                      return const CustomDivider();
+                                                    },
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return GestureDetector(
+                                                        onTap: () {
+                                                          selectedHorse[
+                                                                  currentIndex] =
+                                                              horsesNames[
+                                                                  index];
+                                                          horsesControllers[
+                                                                      currentIndex]
+                                                                  .text =
+                                                              selectedHorse[
+                                                                  currentIndex];
+
+                                                          Navigator.pop(
+                                                              context);
+                                                          Print(
+                                                              "Selected horse ${selectedHorse[currentIndex]}");
+                                                          Print(
+                                                              "Horse Name ${horsesNames[index]}");
+
+                                                          if (selectedHorse[
+                                                                  currentIndex] ==
+                                                              'Add New Horse') {
+                                                            isChoseNewHorse[
+                                                                    currentIndex] =
+                                                                true;
+                                                            Print("true");
+                                                          } else {
+                                                            isChoseNewHorse[
+                                                                    currentIndex] =
+                                                                false;
+                                                            Print("false");
+                                                            // selectedHorse[index] =
+                                                            //     horsesControllers[currentIndex]
+                                                            //         .text;
+                                                          }
+                                                        },
+                                                        child: ListTile(
+                                                          title: Text(
+                                                              horsesNames[
+                                                                  index]),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                );
+                                              },
+                                              readOnly: true,
+                                              contentPadding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 20,
+                                                      vertical: 13),
+                                              obscureText: false,
+                                              validator: (value) {
+                                                return Validator
+                                                    .requiredValidator(
+                                                        horsesControllers[
+                                                                currentIndex]
+                                                            .text);
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: kPadding,
+                                ),
+                                child: RebiButton(
+                                  backgroundColor: AppColors.yellow,
+                                  onPressed: () async {
+                                    for (int i = 0;
+                                        i <
+                                            int.parse(widget
+                                                .serviceModel!.horsesNumber);
+                                        i++) {
+                                      if (state.trip.horses.isEmpty) {
+                                        await localStorageRepository
+                                            .addHorseToTrip(
+                                                widget.serviceModel!.tripId,
+                                                Horse(
+                                                    horseId: v1 + i.toString(),
+                                                    horseName: selectedHorse[i],
+                                                    color: '',
+                                                    yearOfBirth: 2000,
+                                                    gender: '',
+                                                    bloodline: '',
+                                                    breed: '',
+                                                    discipline: '',
+                                                    ownership: '',
+                                                    staying: ''));
+                                      } else {
+                                        await localStorageRepository
+                                            .editSpecificHorse(
+                                                widget.serviceModel!.tripId,
+                                                state.trip.horses[i].horseId,
+                                                Horse(
+                                                    horseId: state
+                                                        .trip.horses[i].horseId,
+                                                    horseName:
+                                                        selectedHorse[i].isEmpty
+                                                            ? state
+                                                                .trip
+                                                                .horses[i]
+                                                                .horseName
+                                                            : selectedHorse[i],
+                                                    color: state
+                                                        .trip.horses[i].color,
+                                                    yearOfBirth: state.trip
+                                                        .horses[i].yearOfBirth,
+                                                    gender: state
+                                                        .trip.horses[i].gender,
+                                                    bloodline: state.trip
+                                                        .horses[i].bloodline,
+                                                    breed: state
+                                                        .trip.horses[i].breed,
+                                                    discipline: state.trip
+                                                        .horses[i].discipline,
+                                                    ownership: state.trip
+                                                        .horses[i].ownership,
+                                                    staying: state.trip
+                                                        .horses[i].staying));
+                                      }
+                                    }
+
+                                    if (context.mounted) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ConfirmHorsesScreen(
+                                                    horsesNames: selectedHorse,
+                                                    isNewHorses:
+                                                        isChoseNewHorse,
+                                                    serviceModel:
+                                                        widget.serviceModel,
+                                                  )));
+                                    }
+
+                                    // Print("Selected horses $selectedHorse");
+                                    // Print("Selected isChosen $isChoseNewHorse");
+                                    // final theMap =
+                                    //     Map.fromIterables(selectedHorse, selectedGender);
+                                    // Print(theMap);
+                                  },
+                                  child: const Text("Next"),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          );
+                        }
+                        return Container();
+                      },
+                    )
+                  : Column(
                       children: [
                         const SizedBox(
                           height: 10,
                         ),
-                        ListView.separated(
-                            shrinkWrap: true,
-                            physics: const BouncingScrollPhysics(),
-                            separatorBuilder: (context, index) {
-                              return const CustomDivider();
-                            },
-                            itemCount: state.trip.numberOfHorses,
-                            itemBuilder: (context, currentIndex) {
-                              horsesControllers[currentIndex].text =
-                                  state.trip.horses[currentIndex].horseName;
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: kPadding),
-                                child: Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          bottom: 7),
-                                      child: RebiInput(
-                                        hintText: 'Select Your Horse',
-                                        controller: horsesControllers[
-                                        currentIndex],
-                                        keyboardType: TextInputType.name,
-                                        textInputAction:
-                                        TextInputAction.done,
-                                        autoValidateMode: AutovalidateMode
-                                            .onUserInteraction,
-                                        isOptional: false,
-                                        color: AppColors.formsLabel,
-                                        onTap: () {
-                                          showHorsesBottomSheet(
-                                            context: context,
-                                            title: "Select Your horse",
-                                            content: ListView.separated(
-                                              shrinkWrap: true,
-                                              physics:
-                                              NeverScrollableScrollPhysics(),
-                                              itemCount:
-                                              horsesNames.length,
-                                              separatorBuilder:
-                                                  (context, index) {
-                                                return const CustomDivider();
-                                              },
-                                              itemBuilder:
-                                                  (context, index) {
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    selectedHorse[
-                                                    currentIndex] =
-                                                    horsesNames[
-                                                    index];
-                                                    horsesControllers[
-                                                    currentIndex]
-                                                        .text =
-                                                    selectedHorse[
-                                                    currentIndex];
+                        StatefulBuilder(builder: (context, setState) {
+                          return ListView.separated(
+                              shrinkWrap: true,
+                              physics: const BouncingScrollPhysics(),
+                              separatorBuilder: (context, index) {
+                                return const CustomDivider();
+                              },
+                              itemCount: horsesNumbers!,
+                              itemBuilder: (context, currentIndex) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: kPadding),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 7),
+                                        child: RebiInput(
+                                          hintText: 'Select Your Horse',
+                                          controller:
+                                              horsesControllers[currentIndex],
+                                          keyboardType: TextInputType.name,
+                                          textInputAction: TextInputAction.done,
+                                          autoValidateMode: AutovalidateMode
+                                              .onUserInteraction,
+                                          isOptional: false,
+                                          color: AppColors.formsLabel,
+                                          onTap: () {
+                                            showHorsesBottomSheet(
+                                              context: context,
+                                              title: "Select Your horse",
+                                              content: ListView.separated(
+                                                shrinkWrap: true,
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                itemCount: horsesNames.length,
+                                                separatorBuilder:
+                                                    (context, index) {
+                                                  return const CustomDivider();
+                                                },
+                                                itemBuilder: (context, index) {
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      setState(() {
+                                                        selectedHorse[
+                                                                currentIndex] =
+                                                            horsesNames[index];
+                                                        horsesControllers[
+                                                                    currentIndex]
+                                                                .text =
+                                                            selectedHorse[
+                                                                currentIndex];
 
-                                                    Navigator.pop(
-                                                        context);
-                                                    Print(
-                                                        "Selected horse ${selectedHorse[currentIndex]}");
-                                                    Print(
-                                                        "Horse Name ${horsesNames[index]}");
-
-                                                    if (selectedHorse[
-                                                    currentIndex] ==
-                                                        'Add New Horse') {
-                                                      isChoseNewHorse[
-                                                      currentIndex] =
-                                                      true;
-                                                      Print("true");
-                                                    } else {
-                                                      isChoseNewHorse[
-                                                      currentIndex] =
-                                                      false;
-                                                      Print("false");
-                                                      // selectedHorse[index] =
-                                                      //     horsesControllers[currentIndex]
-                                                      //         .text;
-
-                                                    }
-                                                  },
-                                                  child: ListTile(
-                                                    title: Text(
-                                                        horsesNames[
-                                                        index]),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          );
-                                        },
-                                        readOnly: true,
-                                        contentPadding:
-                                        const EdgeInsets.symmetric(
-                                            horizontal: 20,
-                                            vertical: 13),
-                                        obscureText: false,
-                                        validator: (value) {
-                                          return Validator
-                                              .requiredValidator(
-                                              horsesControllers[
-                                              currentIndex]
-                                                  .text);
-                                        },
+                                                        Navigator.pop(context);
+                                                        Print(
+                                                            "Selected horse ${selectedHorse[currentIndex]}");
+                                                        Print(
+                                                            "Horse Name ${horsesNames[index]}");
+                                                      });
+                                                      if (selectedHorse[
+                                                              currentIndex] ==
+                                                          'Add New Horse') {
+                                                        setState(() {
+                                                          isChoseNewHorse[
+                                                                  currentIndex] =
+                                                              true;
+                                                          Print("true");
+                                                        });
+                                                      } else {
+                                                        setState(() {
+                                                          isChoseNewHorse[
+                                                                  currentIndex] =
+                                                              false;
+                                                          Print("false");
+                                                          // selectedHorse[index] =
+                                                          //     horsesControllers[currentIndex]
+                                                          //         .text;
+                                                        });
+                                                      }
+                                                    },
+                                                    child: ListTile(
+                                                      title: Text(
+                                                          horsesNames[index]),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
+                                          readOnly: true,
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 20, vertical: 13),
+                                          obscureText: false,
+                                          validator: (value) {
+                                            return Validator.requiredValidator(
+                                                horsesControllers[currentIndex]
+                                                    .text);
+                                          },
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }),
+                                    ],
+                                  ),
+                                );
+                              });
+                        }),
                         const SizedBox(
                           height: 20,
                         ),
@@ -264,28 +473,24 @@ class _ChoseShippingHorseScreenState extends State<ChoseShippingHorseScreen> {
                             backgroundColor: AppColors.yellow,
                             onPressed: () async {
                               for (int i = 0;
-                              i <
-                                  int.parse(widget
-                                      .serviceModel!.horsesNumber);
-                              i++) {
-                                await localStorageRepository.editSpecificHorse(
+                                  i <
+                                      int.parse(
+                                          widget.serviceModel!.horsesNumber);
+                                  i++) {
+                                await localStorageRepository.addHorseToTrip(
                                     widget.serviceModel!.tripId,
-                                    state.trip.horses[i].horseId,
-                                    Horse(horseId: state.trip.horses[i].horseId,
-                                        horseName: selectedHorse[i].isEmpty?state.trip.horses[i].horseName:selectedHorse[i],
-                                        color: state.trip.horses[i].color,
-                                        yearOfBirth: state.trip.horses[i]
-                                            .yearOfBirth,
-                                        gender: state.trip.horses[i].gender,
-                                        bloodline: state.trip.horses[i].bloodline,
-                                        breed: state.trip.horses[i].breed,
-                                        discipline: state.trip.horses[i]
-                                            .discipline,
-                                        ownership: state.trip.horses[i].ownership,
-                                        staying: state.trip.horses[i].staying));
-
-
-                                    Print(i);
+                                    Horse(
+                                        horseId: v1 + i.toString(),
+                                        horseName: selectedHorse[i],
+                                        color: '',
+                                        yearOfBirth: 2000,
+                                        gender: '',
+                                        bloodline: '',
+                                        breed: '',
+                                        discipline: '',
+                                        ownership: '',
+                                        staying: ''));
+                                Print(i);
                               }
 
                               if (context.mounted) {
@@ -296,16 +501,9 @@ class _ChoseShippingHorseScreenState extends State<ChoseShippingHorseScreen> {
                                             ConfirmHorsesScreen(
                                               horsesNames: selectedHorse,
                                               isNewHorses: isChoseNewHorse,
-                                              serviceModel:
-                                              widget.serviceModel,
+                                              serviceModel: widget.serviceModel,
                                             )));
                               }
-
-                              // Print("Selected horses $selectedHorse");
-                              // Print("Selected isChosen $isChoseNewHorse");
-                              // final theMap =
-                              //     Map.fromIterables(selectedHorse, selectedGender);
-                              // Print(theMap);
                             },
                             child: const Text("Next"),
                           ),
@@ -314,175 +512,7 @@ class _ChoseShippingHorseScreenState extends State<ChoseShippingHorseScreen> {
                           height: 20,
                         ),
                       ],
-                    );
-                  }
-                  return Container();
-                },
-              )
-                  : Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  StatefulBuilder(builder: (context, setState) {
-                    return ListView.separated(
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        separatorBuilder: (context, index) {
-                          return const CustomDivider();
-                        },
-                        itemCount: horsesNumbers!,
-                        itemBuilder: (context, currentIndex) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: kPadding),
-                            child: Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
-                                  const EdgeInsets.only(bottom: 7),
-                                  child: RebiInput(
-                                    hintText: 'Select Your Horse',
-                                    controller:
-                                    horsesControllers[currentIndex],
-                                    keyboardType: TextInputType.name,
-                                    textInputAction: TextInputAction.done,
-                                    autoValidateMode: AutovalidateMode
-                                        .onUserInteraction,
-                                    isOptional: false,
-                                    color: AppColors.formsLabel,
-                                    onTap: () {
-                                      showHorsesBottomSheet(
-                                        context: context,
-                                        title: "Select Your horse",
-                                        content: ListView.separated(
-                                          shrinkWrap: true,
-                                          physics:
-                                          NeverScrollableScrollPhysics(),
-                                          itemCount: horsesNames.length,
-                                          separatorBuilder:
-                                              (context, index) {
-                                            return const CustomDivider();
-                                          },
-                                          itemBuilder: (context, index) {
-                                            return GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  selectedHorse[
-                                                  currentIndex] =
-                                                  horsesNames[index];
-                                                  horsesControllers[
-                                                  currentIndex]
-                                                      .text =
-                                                  selectedHorse[
-                                                  currentIndex];
-
-                                                  Navigator.pop(context);
-                                                  Print(
-                                                      "Selected horse ${selectedHorse[currentIndex]}");
-                                                  Print(
-                                                      "Horse Name ${horsesNames[index]}");
-                                                });
-                                                if (selectedHorse[
-                                                currentIndex] ==
-                                                    'Add New Horse') {
-                                                  setState(() {
-                                                    isChoseNewHorse[
-                                                    currentIndex] =
-                                                    true;
-                                                    Print("true");
-                                                  });
-                                                } else {
-                                                  setState(() {
-                                                    isChoseNewHorse[
-                                                    currentIndex] =
-                                                    false;
-                                                    Print("false");
-                                                    // selectedHorse[index] =
-                                                    //     horsesControllers[currentIndex]
-                                                    //         .text;
-                                                  });
-                                                }
-                                              },
-                                              child: ListTile(
-                                                title: Text(
-                                                    horsesNames[index]),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      );
-                                    },
-                                    readOnly: true,
-                                    contentPadding:
-                                    const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 13),
-                                    obscureText: false,
-                                    validator: (value) {
-                                      return Validator.requiredValidator(
-                                          horsesControllers[currentIndex]
-                                              .text);
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        });
-                  }),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: kPadding,
                     ),
-                    child: RebiButton(
-                      backgroundColor: AppColors.yellow,
-                      onPressed: () async {
-                        for (int i = 0;
-                        i <
-                            int.parse(
-                                widget.serviceModel!.horsesNumber);
-                        i++) {
-                          await localStorageRepository.addHorseToTrip(
-                              widget.serviceModel!.tripId,
-                              Horse(
-                                  horseId: v1 + i.toString(),
-                                  horseName: selectedHorse[i],
-                                  color: '',
-                                  yearOfBirth: 2000,
-                                  gender: '',
-                                  bloodline: '',
-                                  breed: '',
-                                  discipline: '',
-                                  ownership: '',
-                                  staying: ''));
-                          Print(i);
-                        }
-
-                        if (context.mounted) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ConfirmHorsesScreen(
-                                        horsesNames: selectedHorse,
-                                        isNewHorses: isChoseNewHorse,
-                                        serviceModel: widget.serviceModel,
-                                      )));
-                        }
-                      },
-                      child: const Text("Next"),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
             ),
           ),
         ),
