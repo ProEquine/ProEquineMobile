@@ -86,7 +86,7 @@ class _ShippingListScreenState extends State<ShippingListScreen> {
                         from: randomfrom,
                         to: randomTo,
                         date: "18-8-2024",
-                        shipmentNumber: '12345',
+                        jobId: '12345',
                         onTap: () {
                           if (widget.type == "Import") {
                             if (status[randomIndex] == 'Available') {

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/features/manage_account/data/add_secondary_number_request_model.dart';
+import 'package:proequine/features/manage_account/data/add_secondary_number_response_model.dart';
 import 'package:proequine/features/manage_account/domain/repo/manage_account_repository.dart';
 import '../../../core/CoreModels/base_response_model.dart';
 import '../../../core/CoreModels/empty_model.dart';
@@ -66,10 +68,28 @@ class ManageAccountCubit extends Cubit<ManageAccountState> {
     }
   }
 
-  Future<void> getUser(String phone) async {
+
+  Future<void> addSecondaryNumber(
+      AddSecondaryNumberRequestModel addSecondaryNumberRequestModel) async {
+    emit(AddSecondaryPhoneLoading());
+    var response =
+    await ManageAccountRepository.addSecondaryNumber(addSecondaryNumberRequestModel);
+    if (response is AddSecondaryNumberResponseModel) {
+
+      emit(AddSecondaryPhoneSuccessful(
+          responseModel: response));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(AddSecondaryPhoneError(message: response.message));
+    } else if (response is Message) {
+      emit(AddSecondaryPhoneError(message: response.content));
+    }
+  }
+
+  Future<void> getUser() async {
     emit(GetUserLoading());
     var response =
-    await ManageAccountRepository.getUserData(phone);
+    await ManageAccountRepository.getUserData();
     if (response is UserDataResponseModel) {
       emit(GetUserSuccessful(
           responseModel: response));

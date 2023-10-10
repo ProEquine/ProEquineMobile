@@ -6,16 +6,17 @@ class ApiURLs {
   static  String basicApiUrl = "$baseUrl/api";
 
   /// Auth URLs
-  static  String loginUSER = "$baseUrl/login";
+  static  String loginUSER = "$baseUrl/Auth/login";
   static  String registerUSER = "$baseUrl/User/userRegister";
-  static  String getNewToken = "$baseUrl/refreshToken";
+  static  String getNewToken = "$baseUrl/Auth/refreshToken";
   static  String sendVerificationCode = "$baseUrl/User/sendPhoneOtp";
   static  String updateUserName = "$baseUrl/User/updateUserName";
   static  String checkVerificationCode = "$basicApiUrl/Auth/checkverificationcode";
   static  String forgotPassword = "$basicApiUrl/Auth/forgot-password";
   static  String resetPassword = "$basicApiUrl/Auth/reset-password";
   static  String interests = "$baseUrl/User/saveInterestandType";
-  static  String getStables = "$baseUrl/getMainStable";
+  static  String getStables = "$baseUrl/Master/getMainStables";
+  static  String choseStables = "$baseUrl/User/SaveMainStable";
 
 
 
@@ -28,7 +29,7 @@ class ApiURLs {
   static  String sendPhone = "$basicApiUrl/User/editphonenumber";
   static  String updatePhone = "$basicApiUrl/User/updatephonenumber";
   static  String contactSupport = "$basicApiUrl/User/supportquery";
-  static  String getUserData = "$basicApiUrl/User/getuserdata";
+  static  String getUserData = "$baseUrl/Account/getUserData";
   static  String sendVerificationEmail = "$basicApiUrl/User/sendemailverificationcode";
   static  String checkVerificationEmail = "$basicApiUrl/User/checkemailverificationcode";
   static  String updateMail = "$basicApiUrl/User/editemailaddress";

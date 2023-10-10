@@ -1,8 +1,10 @@
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:proequine/core/CoreModels/empty_model.dart';
+import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/features/user/data/check_mail_request_model.dart';
 import 'package:proequine/features/user/data/check_update_email_request_model.dart';
 import 'package:proequine/features/user/data/check_verification_request_model.dart';
+import 'package:proequine/features/user/data/chose_stable_request_model.dart';
 import 'package:proequine/features/user/data/forgot_pass_response_model.dart';
 import 'package:proequine/features/user/data/get_stables_response_model.dart';
 import 'package:proequine/features/user/data/interests_request_model.dart';
@@ -19,6 +21,7 @@ import '../../../../core/CoreModels/base_result_model.dart';
 import '../../../../core/data_source/remote_data_source.dart';
 import '../../../../core/http/api_urls.dart';
 import '../../../../core/http/http_method.dart';
+import '../../data/chose_stable_response_model.dart';
 
 class UserRepository {
   static Future<BaseResultModel?> login(
@@ -31,12 +34,13 @@ class UserRepository {
         thereDeviceId: false,
         url: ApiURLs.loginUSER);
   }
+
   static Future<BaseResultModel?> register(
       RegisterRequestModel registerRequestModel) async {
     return await RemoteDataSource.request<RegisterResponseModel>(
         converter: (json) => RegisterResponseModel.fromJson(json),
         method: HttpMethod.POST,
-        queryParameters: registerRequestModel.toJson(),
+        data: registerRequestModel.toJson(),
         withAuthentication: false,
         thereDeviceId: false,
         url: ApiURLs.registerUSER);
@@ -52,16 +56,20 @@ class UserRepository {
         thereDeviceId: false,
         url: ApiURLs.sendVerificationCode);
   }
-  static Future<BaseResultModel?> checkUsername(
-      String username) async {
+
+  static Future<BaseResultModel?> checkUsername(String username) async {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.POST,
-        queryParameters: {'Username':username,},
+        data: {
+          'UserName': username,
+          "personId": int.parse(AppSharedPreferences.personId)
+        },
         withAuthentication: true,
         thereDeviceId: false,
         url: ApiURLs.updateUserName);
   }
+
   static Future<BaseResultModel?> checkVerification(
       CheckVerificationRequestModel checkVerificationRequestModel) async {
     return await RemoteDataSource.request<EmptyModel>(
@@ -94,6 +102,7 @@ class UserRepository {
         thereDeviceId: false,
         url: ApiURLs.resetPassword);
   }
+
   static Future<BaseResultModel?> interests(
       InterestsRequestModel interestsRequestModel) async {
     return await RemoteDataSource.request<EmptyModel>(
@@ -103,6 +112,17 @@ class UserRepository {
         withAuthentication: true,
         thereDeviceId: true,
         url: ApiURLs.interests);
+  }
+
+  static Future<BaseResultModel?> choseStable(
+      ChoseStableRequestModel choseStableRequestModel) async {
+    return await RemoteDataSource.request<ChoseMainStableResponseModel>(
+        converter: (json) => ChoseMainStableResponseModel.fromJson(json),
+        method: HttpMethod.POST,
+        data: choseStableRequestModel.toJson(),
+        withAuthentication: true,
+        thereDeviceId: true,
+        url: ApiURLs.choseStables);
   }
 
   static Future<BaseResultModel?> getStables() async {
@@ -126,8 +146,10 @@ class UserRepository {
         thereDeviceId: false,
         url: ApiURLs.sendVerificationEmail);
   }
+
   static Future<BaseResultModel?> checkMailVerification(
-      CheckMailVerificationRequestModel checkMailVerificationRequestModel) async {
+      CheckMailVerificationRequestModel
+          checkMailVerificationRequestModel) async {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.POST,
@@ -137,6 +159,7 @@ class UserRepository {
         thereDeviceId: false,
         url: ApiURLs.checkVerificationEmail);
   }
+
   static Future<BaseResultModel?> updateMail(
       UpdateMailRequestModel updateMailRequestModel) async {
     return await RemoteDataSource.request<EmptyModel>(
@@ -148,6 +171,7 @@ class UserRepository {
         thereDeviceId: false,
         url: ApiURLs.updateMail);
   }
+
   static Future<BaseResultModel?> checkUpdateMail(
       CheckUpdateEmailRequestModel checkUpdateEmailRequestModel) async {
     return await RemoteDataSource.request<EmptyModel>(
@@ -159,6 +183,7 @@ class UserRepository {
         thereDeviceId: false,
         url: ApiURLs.checkUpdateMail);
   }
+
   static Future<BaseResultModel?> deleteAccount(String userPhoneNumber) async {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),

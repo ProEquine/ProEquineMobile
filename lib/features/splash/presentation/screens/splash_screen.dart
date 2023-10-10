@@ -131,7 +131,7 @@ class SplashScreenState extends State<SplashScreen>  with TickerProviderStateMix
     }
 
     // deleteSecureStorage();
-    // sendRefreshToken();
+    sendRefreshToken();
     // notificationsCubit.configOneSignal();
 
     super.initState();

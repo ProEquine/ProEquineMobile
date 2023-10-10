@@ -280,7 +280,7 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
           if (state is SelectInterestsSuccessful) {
             AppSharedPreferences.typeSelected = true;
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const ChooseStableScreen()));
+                MaterialPageRoute(builder: (context) => const ChoseStableScreen()));
           } else if (state is SelectInterestsError) {
             RebiMessage.error(msg: state.message!,context: context);
           }

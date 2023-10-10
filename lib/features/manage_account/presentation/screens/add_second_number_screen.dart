@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/constants/routes/routes.dart';
-import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/phone_number_field_widget.dart';
+import 'package:proequine/features/manage_account/data/add_secondary_number_request_model.dart';
 import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
 import 'package:sizer/sizer.dart';
 
@@ -23,14 +24,15 @@ class AddSecondaryPhoneScreen extends StatefulWidget {
   AddSecondaryPhoneScreen({Key? key}) : super(key: key);
 
   @override
-  State<AddSecondaryPhoneScreen> createState() => _AddSecondaryPhoneScreenState();
+  State<AddSecondaryPhoneScreen> createState() =>
+      _AddSecondaryPhoneScreenState();
 }
 
 class _AddSecondaryPhoneScreenState extends State<AddSecondaryPhoneScreen> {
   final TextEditingController _phone = TextEditingController();
 
   final TextEditingController _countryCode =
-  TextEditingController(text: "+971");
+      TextEditingController(text: "+971");
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -77,14 +79,18 @@ class _AddSecondaryPhoneScreenState extends State<AddSecondaryPhoneScreen> {
               padding: const EdgeInsets.symmetric(horizontal: kPadding),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text("Add a secondary mobile number for enhanced security, account recovery, and backup notifications",
+                child: Text(
+                    "Add a secondary mobile number for enhanced security, account recovery, and backup notifications",
                     style: AppStyles.descriptions),
               ),
             ),
-            const SizedBox(height: 14,),
-            PhoneNumberFieldWidget(countryCode: _countryCode, phoneNumber: _phone),
+            const SizedBox(
+              height: 14,
+            ),
+            PhoneNumberFieldWidget(
+                countryCode: _countryCode, phoneNumber: _phone),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 7,horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
               child: DropDownWidget(
                 items: phoneTypes,
                 selected: selectedSecondaryType,
@@ -106,7 +112,7 @@ class _AddSecondaryPhoneScreenState extends State<AddSecondaryPhoneScreen> {
               child: BlocConsumer<ManageAccountCubit, ManageAccountState>(
                 bloc: cubit,
                 builder: (context, state) {
-                  if (state is SendPhoneLoading) {
+                  if (state is AddSecondaryPhoneLoading) {
                     return const LoadingCircularWidget();
                   }
                   return RebiButton(
@@ -119,16 +125,11 @@ class _AddSecondaryPhoneScreenState extends State<AddSecondaryPhoneScreen> {
                       child: const Text("Add"));
                 },
                 listener: (context, state) {
-                  if (state is SendPhoneSuccessful) {
-                    Navigator.pushReplacementNamed(context, verifyUpdatePhone,
-                        arguments: _countryCode.text + _phone.text);
-                    // Navigator.pushReplacement(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => VerifyUpdatedPhoneScreen(
-                    //               phone: _countryCode.text + _phone.text,
-                    //             )));
-                  } else if (state is SendPhoneError) {
+                  if (state is AddSecondaryPhoneSuccessful) {
+                    RebiMessage.success(
+                        msg: "Phone added successfully", context: context);
+
+                  } else if (state is AddSecondaryPhoneError) {
                     RebiMessage.error(msg: state.message!, context: context);
                   }
                 },
@@ -144,8 +145,9 @@ class _AddSecondaryPhoneScreenState extends State<AddSecondaryPhoneScreen> {
   }
 
   onSendPhone() {
-    return cubit.sendPhoneNumber(EditPhoneRequestModel(
-      newPhoneNumber: _countryCode.text + _phone.text,
+    return cubit.addSecondaryNumber(AddSecondaryNumberRequestModel(
+      personId: int.parse(AppSharedPreferences.personId),
+      personPhoneNumber: _countryCode.text + _phone.text,
     ));
   }
 }

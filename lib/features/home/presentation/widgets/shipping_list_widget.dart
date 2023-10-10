@@ -12,7 +12,7 @@ class ShippingWidgetItem extends StatelessWidget {
   final String? date;
   final String? from;
   final String? to;
-  final String? shipmentNumber;
+  final String? jobId;
   final Function? onTap;
 
   const ShippingWidgetItem(
@@ -20,7 +20,7 @@ class ShippingWidgetItem extends StatelessWidget {
       this.title,
       this.type,
       this.date,
-      this.shipmentNumber,
+      this.jobId,
       this.from,
       this.to,
       required this.status,
@@ -103,7 +103,7 @@ class ShippingWidgetItem extends StatelessWidget {
                           height: 20,
                         ),
                         Text(
-                          'Shipment number $shipmentNumber',
+                          'Job id: $jobId',
                           style: AppStyles.bookingContent,
                         ),
                         const SizedBox(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pinput/pinput.dart';
+import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/divider.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
@@ -472,38 +474,53 @@ class _ChoseShippingHorseScreenState extends State<ChoseShippingHorseScreen> {
                           child: RebiButton(
                             backgroundColor: AppColors.yellow,
                             onPressed: () async {
-                              for (int i = 0;
-                                  i <
-                                      int.parse(
-                                          widget.serviceModel!.horsesNumber);
-                                  i++) {
-                                await localStorageRepository.addHorseToTrip(
-                                    widget.serviceModel!.tripId,
-                                    Horse(
-                                        horseId: v1 + i.toString(),
-                                        horseName: selectedHorse[i],
-                                        color: '',
-                                        yearOfBirth: 2000,
-                                        gender: '',
-                                        bloodline: '',
-                                        breed: '',
-                                        discipline: '',
-                                        ownership: '',
-                                        staying: ''));
-                                Print(i);
+                              bool allHorsesSelected = true;
+                              for (int i = 0; i < int.parse(widget.serviceModel!.horsesNumber); i++) {
+                                if (selectedHorse[i].isEmpty) {
+                                  allHorsesSelected = false;
+                                  break; // If any horse is not selected, break the loop
+                                }
+                              }
+                              Print("All horses selected $allHorsesSelected");
+                              if(allHorsesSelected){
+                                for (int i = 0;
+                                i <
+                                    int.parse(
+                                        widget.serviceModel!.horsesNumber);
+                                i++) {
+                                  await localStorageRepository.addHorseToTrip(
+                                      widget.serviceModel!.tripId,
+                                      Horse(
+                                          horseId: v1 + i.toString(),
+                                          horseName: selectedHorse[i],
+                                          color: '',
+                                          yearOfBirth: 2000,
+                                          gender: '',
+                                          bloodline: '',
+                                          breed: '',
+                                          discipline: '',
+                                          ownership: '',
+                                          staying: ''));
+                                  Print(i);
+
+                                }
+                                if (context.mounted) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ConfirmHorsesScreen(
+                                                horsesNames: selectedHorse,
+                                                isNewHorses: isChoseNewHorse,
+                                                serviceModel: widget.serviceModel,
+                                              )));
+                                }
+                              }else{
+                                RebiMessage.error(msg: "Please select all of the horses", context: context);
                               }
 
-                              if (context.mounted) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ConfirmHorsesScreen(
-                                              horsesNames: selectedHorse,
-                                              isNewHorses: isChoseNewHorse,
-                                              serviceModel: widget.serviceModel,
-                                            )));
-                              }
+
+
                             },
                             child: const Text("Next"),
                           ),

@@ -37,20 +37,20 @@ class SplashCubit extends Cubit<SplashState> {
     }
   }
 
-  Future<void> getEnv(String buildNumber) async {
-    var response = await SplashRepository.getTheEnvironment(buildNumber);
-    if (response is EnvResponseModel) {
-      await SecureStorage().setUrl(response.environmentURL!);
-      AppSharedPreferences.setEnvType=response.environmentURL!;
-      Print('AppSharedPreferences.getEnvType${SecureStorage().getUrl()}');
-      envUrl = response.environmentURL!;
-      if (response is BaseError) {
-        Print(response);
-      } else if (response is Message) {
-        Print(response);
-      }
-    }
-  }
+  // Future<void> getEnv(String buildNumber) async {
+  //   var response = await SplashRepository.getTheEnvironment(buildNumber);
+  //   if (response is EnvResponseModel) {
+  //     await SecureStorage().setUrl(response.environmentURL!);
+  //     AppSharedPreferences.setEnvType=response.environmentURL!;
+  //     Print('AppSharedPreferences.getEnvType${SecureStorage().getUrl()}');
+  //     envUrl = response.environmentURL!;
+  //     if (response is BaseError) {
+  //       Print(response);
+  //     } else if (response is Message) {
+  //       Print(response);
+  //     }
+  //   }
+  // }
 // Future<void> getVersion()async{
 //   var response= await SplashRepository.versionModel();
 //   print('this is response for all getVersion');

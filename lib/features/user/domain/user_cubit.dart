@@ -6,6 +6,8 @@ import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/secure_storage/secure_storage_helper.dart';
 import 'package:proequine/features/user/data/check_update_email_request_model.dart';
 import 'package:proequine/features/user/data/check_verification_request_model.dart';
+import 'package:proequine/features/user/data/chose_stable_request_model.dart';
+import 'package:proequine/features/user/data/chose_stable_response_model.dart';
 import 'package:proequine/features/user/data/forgot_pass_response_model.dart';
 import 'package:proequine/features/user/data/interests_request_model.dart';
 import 'package:proequine/features/user/data/login_response_model.dart';
@@ -84,6 +86,7 @@ class UserCubit extends Cubit<UserState> {
       await SecureStorage().setToken(response.accessToken!);
       await SecureStorage().setUserId(response.refreshToken!.userId!);
       AppSharedPreferences.inputPhoneNumber = registerRequestModel.phoneNumber!;
+      AppSharedPreferences.setPersonId = response.personId.toString();
       AppSharedPreferences.inputEmailAddress = registerRequestModel.emailAddress!;
 
       String? refreshToken = await SecureStorage().getRefreshToken();
@@ -190,6 +193,20 @@ class UserCubit extends Cubit<UserState> {
       emit(SelectInterestsError(message: response.message));
     } else if (response is Message) {
       emit(SelectInterestsError(message: response.content));
+    }
+  }
+
+
+  Future<void> choseStable(ChoseStableRequestModel choseStableRequestModel) async {
+    emit(ChoseStableLoading());
+    var response = await UserRepository.choseStable(choseStableRequestModel);
+    if (response is ChoseMainStableResponseModel) {
+      emit(ChoseStableSuccessful(message: "Selected Successfully".tra));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(ChoseStableError(message: response.message));
+    } else if (response is Message) {
+      emit(ChoseStableError(message: response.content));
     }
   }
 

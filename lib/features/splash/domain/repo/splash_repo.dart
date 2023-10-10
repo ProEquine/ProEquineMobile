@@ -7,35 +7,36 @@ import '../../../../core/http/http_method.dart';
 import '../../data/refresh_request_model.dart';
 import '../../data/refresh_token_response.dart';
 
-class SplashRepository{
+class SplashRepository {
   static Future<BaseResultModel?> refreshToken(
       RefreshRequestModel refreshRequestModel) async {
     return await RemoteDataSource.request<RefreshTokenResponse>(
         converter: (json) => RefreshTokenResponse.fromJson(json),
         method: HttpMethod.POST,
-   data: refreshRequestModel.toJson(),
+        queryParameters: refreshRequestModel.toJson(),
         withAuthentication: true,
         thereDeviceId: false,
         url: ApiURLs.getNewToken);
   }
-  static Future<BaseResultModel?> getTheEnvironment(
-      String buildNumber) async {
+
+  static Future<BaseResultModel?> getTheEnvironment(String buildNumber) async {
     return await RemoteDataSource.request<EnvResponseModel>(
         converter: (json) => EnvResponseModel.fromJson(json),
         method: HttpMethod.GET,
         queryParameters: {
-          "buildNumber":buildNumber,
+          "buildNumber": buildNumber,
         },
         withAuthentication: false,
         thereDeviceId: false,
-        url: "https://pet-webapi-uaeno-dev-001.azurewebsites.net/api/User/getbuildnumber");
+        url:
+            "https://pet-webapi-uaeno-dev-001.azurewebsites.net/api/User/getbuildnumber");
   }
 
-  // static Future<BaseResultModel?> versionModel() async {
-  //   return await RemoteDataSource.request<VersionResponseModel>(
-  //       converter: (json) => VersionResponseModel.fromJson(json),
-  //       method: HttpMethod.GET,
-  //       withAuthentication: true,
-  //       url: ApiURLs.forceUpdate);
-  // }
+// static Future<BaseResultModel?> versionModel() async {
+//   return await RemoteDataSource.request<VersionResponseModel>(
+//       converter: (json) => VersionResponseModel.fromJson(json),
+//       method: HttpMethod.GET,
+//       withAuthentication: true,
+//       url: ApiURLs.forceUpdate);
+// }
 }

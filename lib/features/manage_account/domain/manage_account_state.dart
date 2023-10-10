@@ -34,6 +34,15 @@ class UpdatePhoneError extends ManageAccountState{
   final String? message;
   UpdatePhoneError({this.message});
 }
+class AddSecondaryPhoneSuccessful extends ManageAccountState{
+  final AddSecondaryNumberResponseModel? responseModel;
+  AddSecondaryPhoneSuccessful({required this.responseModel});
+}
+class AddSecondaryPhoneLoading extends ManageAccountState{}
+class AddSecondaryPhoneError extends ManageAccountState{
+  final String? message;
+  AddSecondaryPhoneError({this.message});
+}
 
 
 class GetUserSuccessful extends ManageAccountState{

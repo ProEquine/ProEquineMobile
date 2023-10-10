@@ -80,7 +80,7 @@ class _SelectStableWidgetState extends State<SelectStableWidget> {
                               setState(() {
                                 selectedStable = state.getStablesResponseModel[index];
                                 if (state.getStablesResponseModel[index].stableName ==
-                                    'Add Your Stable') {
+                                    'Add Main Stable') {
                                   widget.changeTrue!.call();
                                   Navigator.pop(context);
                                 } else {

@@ -31,6 +31,7 @@ import 'package:proequine/features/manage_account/presentation/screens/verify_em
 import 'package:proequine/features/manage_account/presentation/screens/verify_update_email_screen.dart';
 
 import 'package:proequine/features/splash/domain/splash_cubit.dart';
+import 'package:proequine/features/splash/presentation/screens/splash_screen.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/choose_stable_screen.dart';
 import 'package:proequine/features/user/presentation/screens/create_user_name_screen.dart';
@@ -186,7 +187,7 @@ class MyAppState extends State<MyApp> {
             : AppStyles().lightTheme,
         navigatorObservers: [MyNavigatorObserver()],
         title: 'Pro Equine',
-        home: const BottomNavigation(),
+        home:  SplashScreen(),
         routes: {
           loginRoute: (context) => const LoginScreen(),
           registerRoute: (context) => const RegisterScreen(),
@@ -199,17 +200,17 @@ class MyAppState extends State<MyApp> {
               ),
           // createEvent: ((context) => const CreateEventScreen()),
           createTrip: ((context) => const CreateTripScreen()),
-          accountInfo: (context) => AccountInfoScreen(),
+          // accountInfo: (context) => AccountInfoScreen(),
           editProfile: (context) => const ManageAccountScreen(),
           userProfile: (context) => const UserProfile(),
           updatePhone: (context) => UpdatePhoneScreen(),
           choseDiscipline: (context) => const ChooseDisciplineScreen(),
-          choseStable: (context) => const ChooseStableScreen(),
+          choseStable: (context) => const ChoseStableScreen(),
           choseUpdateStable: (context) => const ChooseUpdateStableScreen(),
           updateRole: (context) => const UpdateMainRole(),
           // updatePhone: (context) => UpdatePhoneScreen(),
           addSecondaryPhone: (context) => AddSecondaryPhoneScreen(),
-          chooseUpdatePhone: (context) => const ChoosePhoneUpdateScreen(),
+          chooseUpdatePhone: (context) => ChoseUpdatePhoneScreen(),
           verifyUpdatePhone: (context) => const VerifyUpdatedPhoneScreen(),
           verifyUpdateEmail: (context) => const VerifyUpdateEmailScreen(),
           submitVerifyEmail: (context) => SubmitVerifyEmail(),

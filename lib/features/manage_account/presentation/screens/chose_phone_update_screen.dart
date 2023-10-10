@@ -13,18 +13,20 @@ import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/profile_list_tile_widget.dart';
 import '../../../../core/widgets/profile_two_lines_list_tile.dart';
+import '../../data/user_data_response_model.dart';
 
-class ChoosePhoneUpdateScreen extends StatefulWidget {
-  const ChoosePhoneUpdateScreen({super.key});
+class ChoseUpdatePhoneScreen extends StatefulWidget {
+  String? mainPhoneNumber;
+  List<SecondaryPhoneNumbers>? secondaryNumbers;
+  ChoseUpdatePhoneScreen({super.key,this.mainPhoneNumber,this.secondaryNumbers});
 
   @override
-  State<ChoosePhoneUpdateScreen> createState() =>
-      _ChoosePhoneUpdateScreenState();
+  State<ChoseUpdatePhoneScreen> createState() =>
+      _ChoseUpdatePhoneScreenState();
 }
 
-class _ChoosePhoneUpdateScreenState extends State<ChoosePhoneUpdateScreen> {
+class _ChoseUpdatePhoneScreenState extends State<ChoseUpdatePhoneScreen> {
   ManageAccountCubit cubit = ManageAccountCubit();
-  String? email;
 
   @override
   void dispose() {
@@ -65,7 +67,7 @@ class _ChoosePhoneUpdateScreenState extends State<ChoosePhoneUpdateScreen> {
                 ),
               ),
               ProfileListTileWidget(
-                title: "+9715-509887889",
+                title: widget.mainPhoneNumber,
                 onTap: () {
                   Navigator.pushNamed(context, updatePhone);
                 },
@@ -75,36 +77,42 @@ class _ChoosePhoneUpdateScreenState extends State<ChoosePhoneUpdateScreen> {
               const SizedBox(
                 height: 5,
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 14),
-                child: Text(
-                  "Secondary Number",
-                  style: AppStyles.profileTitles,
-                  textAlign: TextAlign.start,
+              Visibility(
+                visible: widget.secondaryNumbers!.isNotEmpty?true:false,
+                child: Column(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 14),
+                      child: Text(
+                        "Secondary Number",
+                        style: AppStyles.profileTitles,
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                    ListView.builder(
+                      itemCount: widget.secondaryNumbers!.length,
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+
+                        itemBuilder: (context,index){
+
+                      return ProfileTwoLineListTile(
+                        title: widget.secondaryNumbers![index].title,
+                        subTitle: widget.secondaryNumbers![index].phoneNumber,
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UpdateSecondaryPhoneScreen(type: "Whatsapp")));
+                        },
+                        ableToEdit: true,
+                      );
+                    })
+
+                  ],
                 ),
               ),
-              ProfileTwoLineListTile(
-                title: "Whatsapp",
-                subTitle: "+9715-45049937",
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => UpdateSecondaryPhoneScreen(type: "Whatsapp")));
-                },
-                ableToEdit: true,
-              ),
-              ProfileTwoLineListTile(
-                title: "Calling",
-                subTitle: "+9715-509887889",
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => UpdateSecondaryPhoneScreen(type: "Calling")));
-                },
-                ableToEdit: true,
-              ),
+
             ],
           ),
         ),

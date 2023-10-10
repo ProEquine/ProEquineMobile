@@ -150,3 +150,15 @@ class DeleteAccountError extends UserState {
   DeleteAccountError({this.message});
 }
 
+class ChoseStableSuccessful extends UserState {
+  final String? message;
+  ChoseStableSuccessful({required this.message});
+}
+
+class ChoseStableLoading extends UserState {}
+
+class ChoseStableError extends UserState {
+  final String? message;
+  ChoseStableError({this.message});
+}
+
