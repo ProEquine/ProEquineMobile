@@ -125,12 +125,14 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: isLoading
-          ? CardLoadingWidget(
-              title: "Horses",
-              isSmallCard: false,
-            )
-          : MediaQuery(
+      child:
+      // isLoading
+      //     ? CardLoadingWidget(
+      //         title: "Horses",
+      //         isSmallCard: false,
+      //       )
+      //     :
+      MediaQuery(
               data: const MediaQueryData(
                   viewInsets: EdgeInsets.only(top: 100, bottom: 0)),
               child: CupertinoPageScaffold(

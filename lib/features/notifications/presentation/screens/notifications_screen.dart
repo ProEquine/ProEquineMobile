@@ -99,12 +99,14 @@ class NotificationsScreenState extends State<NotificationsScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: isLoading
-          ? CardLoadingWidget(
-        title: "Inbox",
-        isSmallCard: true,
-      )
-          :MediaQuery(
+      child:
+      // isLoading
+      //     ? CardLoadingWidget(
+      //   title: "Inbox",
+      //   isSmallCard: true,
+      // )
+      //     :
+      MediaQuery(
         data: const MediaQueryData(
             viewInsets: EdgeInsets.only(top: 100, bottom: 0)),
         child: CupertinoPageScaffold(

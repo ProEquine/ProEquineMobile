@@ -225,21 +225,21 @@ class _BookingMainState extends State<BookingMain> {
                             padding: EdgeInsets.symmetric(horizontal: kPadding),
                             child: Booking(
                               type: "Transport",
-                              isLoading: isLoading,
+                              isLoading: false,
                             ),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: kPadding),
                             child: Booking(
                               type: "Media",
-                              isLoading: isLoading,
+                              isLoading: false,
                             ),
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: kPadding),
                             child: Booking(
                               type: "Shipping",
-                              isLoading: isLoading,
+                              isLoading: false,
                             ),
                           ),
                         ],
