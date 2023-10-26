@@ -75,6 +75,7 @@ class AppIcons {
 
 /// Light Theme
   static const proEquineLight = 'assets/icons/pro-equine-light.svg';
+  static const errorIcon = 'assets/icons/error.svg';
   static const logo = "assets/icons/PE-primary-logo.png";
   static const logoLight = 'assets/icons/PE Primary Logo.svg';
   static const verifiedHorse = 'assets/icons/verifed_horse.svg';

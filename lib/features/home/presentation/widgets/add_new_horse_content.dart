@@ -123,7 +123,7 @@ class _AddHorseContentWidgetState extends State<AddHorseContentWidget> {
                 hintText: 'Horse Name'.tra,
                 controller: widget.newHorsesController,
                 scrollPadding: const EdgeInsets.only(bottom: 100),
-                keyboardType: TextInputType.name,
+                keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
                 onFieldSubmitted: (submited){
                   widget.selectedHorses[widget.currentIndex!]='New horse : ${widget.newHorsesController.text}';

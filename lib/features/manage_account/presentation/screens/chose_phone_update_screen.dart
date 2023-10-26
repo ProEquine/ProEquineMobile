@@ -18,11 +18,12 @@ import '../../data/user_data_response_model.dart';
 class ChoseUpdatePhoneScreen extends StatefulWidget {
   String? mainPhoneNumber;
   List<SecondaryPhoneNumbers>? secondaryNumbers;
-  ChoseUpdatePhoneScreen({super.key,this.mainPhoneNumber,this.secondaryNumbers});
+
+  ChoseUpdatePhoneScreen(
+      {super.key, this.mainPhoneNumber, this.secondaryNumbers});
 
   @override
-  State<ChoseUpdatePhoneScreen> createState() =>
-      _ChoseUpdatePhoneScreenState();
+  State<ChoseUpdatePhoneScreen> createState() => _ChoseUpdatePhoneScreenState();
 }
 
 class _ChoseUpdatePhoneScreenState extends State<ChoseUpdatePhoneScreen> {
@@ -78,8 +79,9 @@ class _ChoseUpdatePhoneScreenState extends State<ChoseUpdatePhoneScreen> {
                 height: 5,
               ),
               Visibility(
-                visible: widget.secondaryNumbers!.isNotEmpty?true:false,
+                visible: widget.secondaryNumbers!.isNotEmpty ? true : false,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 14),
@@ -90,29 +92,34 @@ class _ChoseUpdatePhoneScreenState extends State<ChoseUpdatePhoneScreen> {
                       ),
                     ),
                     ListView.builder(
-                      itemCount: widget.secondaryNumbers!.length,
+                        itemCount: widget.secondaryNumbers!.length,
                         shrinkWrap: true,
                         physics: const AlwaysScrollableScrollPhysics(),
-
-                        itemBuilder: (context,index){
-
-                      return ProfileTwoLineListTile(
-                        title: widget.secondaryNumbers![index].title,
-                        subTitle: widget.secondaryNumbers![index].phoneNumber,
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => UpdateSecondaryPhoneScreen(type: "Whatsapp")));
-                        },
-                        ableToEdit: true,
-                      );
-                    })
-
+                        itemBuilder: (context, index) {
+                          return ProfileTwoLineListTile(
+                            title: widget.secondaryNumbers![index].title,
+                            subTitle:
+                                widget.secondaryNumbers![index].phoneNumber,
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          UpdateSecondaryPhoneScreen(
+                                            type: widget
+                                                .secondaryNumbers![index]
+                                                .title!,
+                                            phoneNumber: widget
+                                                .secondaryNumbers![index]
+                                                .phoneNumber!,
+                                          )));
+                            },
+                            ableToEdit: true,
+                          );
+                        })
                   ],
                 ),
               ),
-
             ],
           ),
         ),

@@ -4,6 +4,7 @@ import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
+import 'package:proequine/features/support/presentation/widgets/support_custom_dialog.dart';
 
 import 'package:sizer/sizer.dart';
 
@@ -17,6 +18,7 @@ import '../../../../core/widgets/drop_down_menu_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/thank_widget.dart';
+
 import '../../data/support_request_model.dart';
 import '../../domain/support_cubit.dart';
 
@@ -171,11 +173,14 @@ class _SupportState extends State<Support> {
                             bloc: cubit,
                             listener: (context, state) {
                               if (state is ContactSupportSuccessful) {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ThanksWidget()));
+                                // Navigator.pushReplacement(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             const ThanksWidget()));
+                                showThanksSupportDialog(
+                                    context: context,
+                                    onPressHome: () {});
                               } else if (state is ContactSupportError) {
                                 RebiMessage.error(
                                     msg: state.message!, context: context);
@@ -223,10 +228,10 @@ class _SupportState extends State<Support> {
   }
 
   onPressSend() {
-    return cubit.contactSupport(SupportRequestModel(
-      referenceNumber: referenceNumber.text,
-      description: descriptionIssue.text,
-      phoneNumber: AppSharedPreferences.userPhoneNumber,
-    ));
+    return cubit.contactSupport(CreateSupportRequestModel(
+        referenceNumber: referenceNumber.text,
+        subject: selectedSubject,
+        division: selectedDivision,
+        inquiry: descriptionIssue.text));
   }
 }

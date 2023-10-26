@@ -9,6 +9,7 @@ import 'package:proequine/core/widgets/phone_number_field_widget.dart';
 import 'package:proequine/features/home/presentation/widgets/select_date_time_widget.dart';
 import 'package:proequine/features/home/presentation/widgets/select_place_form_widget.dart';
 
+import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/global_functions/global_statics_drop_down.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
@@ -16,6 +17,8 @@ import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
+import '../../../../core/widgets/verify_dialog.dart';
+import '../../../manage_account/data/verify_email_route.dart';
 import '../../data/join_show_request_model.dart';
 import '../widgets/select_place_widget.dart';
 import 'chose_horses_shows_screen.dart';
@@ -55,9 +58,35 @@ class JoinShowScreenState extends State<JoinShowScreen>
   String? selectedTrip;
   String? selectedHospital;
   String? selectedPlace;
-
+  Future<bool> checkVerificationStatus() async {
+    if (AppSharedPreferences.getEmailVerified!) {
+      return true;
+    } else {
+      await Future.delayed(
+          const Duration(milliseconds: 50)); // Simulating an asynchronous call
+      return false;
+    }
+  }
   @override
   void initState() {
+    checkVerificationStatus().then((verified) {
+      if (!verified) {
+        // If the account is not verified, show a dialog after a delay.
+        Future.delayed(const Duration(milliseconds: 50), () {
+          showUnverifiedAccountDialog(
+            context: context,
+            isThereNavigationBar: true,
+            onPressVerify: () {
+              Navigator.pushNamed(context, verifyEmail,
+                  arguments: VerifyEmailRoute(
+                      type: 'createEvent',
+                      email: AppSharedPreferences.userEmailAddress))
+                  .then((value) {});
+            },
+          );
+        });
+      }
+    });
     initializeDateFormatting();
     pickDate = DateTime.now();
     dateTime = DateTime.now();
@@ -80,10 +109,24 @@ class JoinShowScreenState extends State<JoinShowScreen>
 
   String? selectedNumber;
   String? pickupPhoneNumber;
-
+  DateTime? currentBackPressTime;
+  bool? isEmailVerified = false;
+  Future<bool> onWillPop() {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime!) > const Duration(seconds: 0)) {
+      currentBackPressTime = now;
+      return Future.value(true);
+    }
+    return Future.value(true);
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    isEmailVerified = ModalRoute.of(context)?.settings.arguments as bool?;
+    isEmailVerified ??= false;
+    return WillPopScope(
+        onWillPop: onWillPop,
+        child:Scaffold(
       appBar: AppBar(
         elevation: 0,
         title: Text("Show Transport",
@@ -104,7 +147,13 @@ class JoinShowScreenState extends State<JoinShowScreen>
               alignment: Alignment.centerLeft,
               child: InkWell(
                 onTap: () {
-                  Navigator.pop(context);
+                  if (isEmailVerified!) {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  } else {
+                    Navigator.pop(context);
+                  }
                 },
                 child: Icon(
                   Icons.arrow_back_ios_new,
@@ -164,7 +213,7 @@ class JoinShowScreenState extends State<JoinShowScreen>
                           child: RebiInput(
                             hintText: 'Pickup contact name'.tra,
                             controller: pickUpContactName,
-                            keyboardType: TextInputType.name,
+                            keyboardType: TextInputType.text,
                             textInputAction: TextInputAction.done,
                             autoValidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -251,6 +300,7 @@ class JoinShowScreenState extends State<JoinShowScreen>
           ),
         );
       }),
+        ),
     );
   }
 }

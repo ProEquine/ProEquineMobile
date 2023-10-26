@@ -15,6 +15,7 @@ import 'package:proequine/features/home/presentation/screens/chose_horses_shippi
 import 'package:sizer/sizer.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
@@ -22,17 +23,21 @@ import '../../../../core/widgets/date_time_picker.dart';
 import '../../../../core/widgets/phone_number_field_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
+import '../../../../core/widgets/verify_dialog.dart';
+import '../../../manage_account/data/verify_email_route.dart';
 import '../widgets/select_place_widget.dart';
 
 class CreateImportScreen extends StatefulWidget {
   bool isFromEditing = false;
   String? exportCountry ;
   String? importCountry ;
+  DateTime? estimatedDate;
 
   CreateImportScreen({
     this.isFromEditing = false,
     this.exportCountry,
     this.importCountry,
+    this.estimatedDate,
     super.key,
   });
 
@@ -83,24 +88,24 @@ class CreateImportScreenState extends State<CreateImportScreen> {
 
   @override
   void initState() {
-    // checkVerificationStatus().then((verified) {
-    //   if (!verified) {
-    //     // If the account is not verified, show a dialog after a delay.
-    //     Future.delayed(const Duration(milliseconds: 50), () {
-    //       showUnverifiedAccountDialog(
-    //         context: context,
-    //         isThereNavigationBar: true,
-    //         onPressVerify: () {
-    //           Navigator.pushNamed(context, verifyEmail,
-    //               arguments: VerifyEmailRoute(
-    //                   type: 'Booking',
-    //                   email: AppSharedPreferences.userEmailAddress))
-    //               .then((value) {});
-    //         },
-    //       );
-    //     });
-    //   }
-    // });
+    checkVerificationStatus().then((verified) {
+      if (!verified) {
+        // If the account is not verified, show a dialog after a delay.
+        Future.delayed(const Duration(milliseconds: 50), () {
+          showUnverifiedAccountDialog(
+            context: context,
+            isThereNavigationBar: true,
+            onPressVerify: () {
+              Navigator.pushNamed(context, verifyEmail,
+                  arguments: VerifyEmailRoute(
+                      type: 'import',
+                      email: AppSharedPreferences.userEmailAddress))
+                  .then((value) {});
+            },
+          );
+        });
+      }
+    });
     initializeDateFormatting();
     if(widget.isFromEditing){
 
@@ -109,6 +114,7 @@ class CreateImportScreenState extends State<CreateImportScreen> {
     dateTime = DateTime.now();
     estimatedDate = TextEditingController();
     selectedTrip = "Other day return";
+
 
     super.initState();
   }
@@ -125,6 +131,7 @@ class CreateImportScreenState extends State<CreateImportScreen> {
     }
     return Future.value(true);
   }
+  String? formatted;
 
   @override
   void dispose() {
@@ -201,51 +208,54 @@ class CreateImportScreenState extends State<CreateImportScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: kPadding, vertical: 6),
-                            child: RebiInput(
-                              hintText: 'Shipping Estemated Date '.tra,
-                              controller: estimatedDate,
-                              keyboardType: TextInputType.name,
-                              textInputAction: TextInputAction.done,
-                              onTap: () {
-                                selectDate(
-                                  context: context,
-                                  from: DateTime.now(),
-                                  to: DateTime(2025, 1, 1),
-                                  isSupportChangingYears: false,
-                                  selectedOurDay: dateTime,
-                                  controller: estimatedDate!,
-                                  focusDay: focusedDay,
-                                );
-                              },
-                              autoValidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              isOptional: false,
-                              color: AppColors.formsLabel,
-                              readOnly: true,
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 13),
-                              obscureText: false,
-                              validator: (value) {
-                                if (value!.isNotEmpty) {
-                                  DateFormat inputFormat =
-                                      DateFormat("dd MMM yyyy");
-                                  DateTime setUpdatedDate =
-                                      inputFormat.parse(value);
-                                  pickDate = setUpdatedDate;
-                                } else {
-                                  return 'please select date';
-                                }
+                          Visibility(
+                            visible: !widget.isFromEditing,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: kPadding, vertical: 6),
+                              child: RebiInput(
+                                hintText: 'Shipping Estemated Date '.tra,
+                                controller: estimatedDate,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.done,
+                                onTap: () {
+                                  selectDate(
+                                    context: context,
+                                    from: DateTime.now(),
+                                    to: DateTime(2025, 1, 1),
+                                    isSupportChangingYears: false,
+                                    selectedOurDay: dateTime,
+                                    controller: estimatedDate!,
+                                    focusDay: focusedDay,
+                                  );
+                                },
+                                autoValidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                isOptional: false,
+                                color: AppColors.formsLabel,
+                                readOnly: true,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 13),
+                                obscureText: false,
+                                validator: (value) {
+                                  if (value!.isNotEmpty) {
+                                    DateFormat inputFormat =
+                                        DateFormat("dd MMM yyyy");
+                                    DateTime setUpdatedDate =
+                                        inputFormat.parse(value);
+                                    pickDate = setUpdatedDate;
+                                  } else {
+                                    return 'please select date';
+                                  }
 
-                                if (dateTime.isBefore(DateTime.now()) &&
-                                    !dateTime.isSameDate(DateTime.now())) {
-                                  return 'correct date please';
-                                }
-                                return Validator.requiredValidator(
-                                    estimatedDate?.text);
-                              },
+                                  if (dateTime.isBefore(DateTime.now()) &&
+                                      !dateTime.isSameDate(DateTime.now())) {
+                                    return 'correct date please';
+                                  }
+                                  return Validator.requiredValidator(
+                                      estimatedDate?.text);
+                                },
+                              ),
                             ),
                           ),
                           Visibility(
@@ -256,7 +266,7 @@ class CreateImportScreenState extends State<CreateImportScreen> {
                               child: RebiInput(
                                 hintText: 'Importing country'.tra,
                                 controller: pickupCountry,
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.done,
                                 autoValidateMode:
                                     AutovalidateMode.onUserInteraction,
@@ -337,7 +347,7 @@ class CreateImportScreenState extends State<CreateImportScreen> {
                             child: RebiInput(
                               hintText: 'Pickup Location'.tra,
                               controller: pickUpLocation,
-                              keyboardType: TextInputType.name,
+                              keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.done,
                               autoValidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -359,7 +369,7 @@ class CreateImportScreenState extends State<CreateImportScreen> {
                             child: RebiInput(
                               hintText: 'Pickup contact name'.tra,
                               controller: pickUpContactName,
-                              keyboardType: TextInputType.name,
+                              keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.done,
                               autoValidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -439,7 +449,7 @@ class CreateImportScreenState extends State<CreateImportScreen> {
                             child: RebiInput(
                               hintText: 'Drop contact name'.tra,
                               controller: dropContactName,
-                              keyboardType: TextInputType.name,
+                              keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.done,
                               autoValidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -469,12 +479,17 @@ class CreateImportScreenState extends State<CreateImportScreen> {
                               if (_formKey.currentState!.validate()) {
                                 phoneNumber = pickUpCountryCode.text +
                                     pickUpContactNumber.text;
+                                if(widget.isFromEditing){
+                                  DateFormat formatter = DateFormat('dd MMM yyyy');
+                                  formatted =
+                                  formatter.format(widget.estimatedDate!);
+                                }
                                 Print(phoneNumber);
                                 localHorseCubit
                                     .createTrip(CreateTripSuccessfully(
                                         item: Trip(
                                   tripId: v1,
-                                  shippingEstimatedDate: estimatedDate!.text,
+                                  shippingEstimatedDate: widget.isFromEditing?formatted!:estimatedDate!.text,
                                   exportingCountry: widget.isFromEditing?widget.importCountry!: selectedCountryIso2 ?? 'AE',
                                   pickupLocation:
                                       pickUpLocation.text,

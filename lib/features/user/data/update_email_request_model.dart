@@ -4,12 +4,12 @@ class UpdateMailRequestModel {
   UpdateMailRequestModel({this.newEmail});
 
   UpdateMailRequestModel.fromJson(Map<String, dynamic> json) {
-    newEmail = json['newEmail'];
+    newEmail = json['emailAddress'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['newEmail'] = newEmail;
+    data['emailAddress'] = newEmail;
     return data;
   }
 }

@@ -1,26 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
-import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
-import 'package:proequine/features/user/data/send_verification_request_model.dart';
+import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
-import 'package:proequine/features/user/presentation/screens/interests_screen.dart';
-import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/constants/thems/app_styles.dart';
-import '../../../../core/utils/Printer.dart';
-import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
-import '../../../../core/widgets/custom_logo_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
-
+import '../../data/basic_account_management_route.dart';
 
 class UpdateUserNameScreen extends StatefulWidget {
   UpdateUserNameScreen({
@@ -61,9 +56,6 @@ class _UpdateUserNameScreenState extends State<UpdateUserNameScreen> {
           title: "Username",
           isThereBackButton: true,
           isThereChangeWithNavigate: false,
-          isThereThirdOption: true,
-          thirdOptionTitle: 'check',
-          onPressThirdOption: (){},
         ),
       ),
       body: SafeArea(
@@ -80,7 +72,7 @@ class _UpdateUserNameScreenState extends State<UpdateUserNameScreen> {
                       children: [
                         Padding(
                           padding:
-                          const EdgeInsets.symmetric(horizontal: kPadding),
+                              const EdgeInsets.symmetric(horizontal: kPadding),
                           child: Column(
                             children: [
                               Align(
@@ -102,7 +94,7 @@ class _UpdateUserNameScreenState extends State<UpdateUserNameScreen> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.symmetric(vertical: 10),
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: Row(
                                   children: [
                                     const Expanded(
@@ -122,16 +114,16 @@ class _UpdateUserNameScreenState extends State<UpdateUserNameScreen> {
                                       child: RebiInput(
                                         hintText: 'Username'.tra,
                                         controller: _userName,
-                                        keyboardType: TextInputType.name,
+                                        keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.done,
                                         autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
+                                            AutovalidateMode.onUserInteraction,
                                         isOptional: false,
                                         color: AppColors.formsLabel,
                                         readOnly: false,
                                         contentPadding:
-                                        const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 13),
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 13),
                                         obscureText: false,
                                         validator: (value) {
                                           return Validator.requiredValidator(
@@ -146,11 +138,11 @@ class _UpdateUserNameScreenState extends State<UpdateUserNameScreen> {
                                 alignment: Alignment.bottomCenter,
                                 child: Padding(
                                   padding:
-                                  const EdgeInsets.symmetric(vertical: 20),
+                                      const EdgeInsets.symmetric(vertical: 20),
                                   child: BlocConsumer<UserCubit, UserState>(
                                     bloc: cubit,
                                     builder: (context, state) {
-                                      if (state is SendVerificationLoading) {
+                                      if (state is CheckUsernameLoading) {
                                         return const LoadingCircularWidget();
                                       }
                                       return RebiButton(
@@ -159,16 +151,25 @@ class _UpdateUserNameScreenState extends State<UpdateUserNameScreen> {
                                                 .validate()) {
                                               FocusManager.instance.primaryFocus
                                                   ?.unfocus();
-                                              // Navigator.push(
-                                              //     context,
-                                              //     MaterialPageRoute(
-                                              //         builder: (context) =>
-                                              //         const EquineInfoScreen()));
+                                              onPressUpdateUserName();
                                             } else {}
                                           },
                                           child: const Text("Update"));
                                     },
-                                    listener: (context, state) {},
+                                    listener: (context, state) {
+                                      if (state is CheckUsernameSuccessful) {
+                                        Navigator.pushReplacementNamed(
+                                            context, successScreen,
+                                            arguments: BasicAccountManagementRoute(
+                                                type: 'manageAccount',
+                                                title:
+                                                    "Username updated successfully"));
+                                      } else if (state is CheckUsernameError) {
+                                        RebiMessage.error(
+                                            msg: state.message!,
+                                            context: context);
+                                      }
+                                    },
                                   ),
                                 ),
                               ),
@@ -188,5 +189,9 @@ class _UpdateUserNameScreenState extends State<UpdateUserNameScreen> {
         ),
       ),
     );
+  }
+
+  onPressUpdateUserName() {
+    cubit.checkUsername(_userName.text);
   }
 }

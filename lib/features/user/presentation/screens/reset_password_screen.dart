@@ -7,6 +7,7 @@ import 'package:pinput/pinput.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/widgets/submit_reset_password_page.dart';
 import 'package:proequine/features/user/data/reset_password_request_model.dart';
+import 'package:proequine/features/user/data/send_mail_request_model.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui' as ui;
 
@@ -28,10 +29,12 @@ import '../widgets/register_header.dart';
 import '../widgets/security_cases_widget.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
-  final String? phone;
-  final String? token;
+  final String? email;
 
-  const ResetPasswordScreen({super.key, this.phone, this.token});
+  const ResetPasswordScreen({
+    super.key,
+    this.email,
+  });
 
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
@@ -110,8 +113,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      floatingActionButtonLocation:
-      FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: _buildVerifyConsumer(),
       body: SafeArea(
         child: LayoutBuilder(
@@ -148,7 +150,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 child: Directionality(
                                   textDirection: ui.TextDirection.ltr,
                                   child: Pinput(
-                                    scrollPadding: EdgeInsets.only(bottom: 50.h),
+                                    keyboardType: TextInputType.text,
+                                    scrollPadding:
+                                        EdgeInsets.only(bottom: 50.h),
                                     preFilledWidget: Container(
                                       width: 30,
                                       height: 5,
@@ -159,34 +163,34 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                           bottom: BorderSide(
                                             width: 2.0,
                                             color:
-                                            AppSharedPreferences.getTheme ==
-                                                'ThemeCubitMode.dark'
-                                                ? AppColors.greyLight
-                                                : AppColors.blackLight,
+                                                AppSharedPreferences.getTheme ==
+                                                        'ThemeCubitMode.dark'
+                                                    ? AppColors.greyLight
+                                                    : AppColors.blackLight,
                                           ),
                                         ),
                                         color: AppSharedPreferences.getTheme ==
-                                            'ThemeCubitMode.dark'
+                                                'ThemeCubitMode.dark'
                                             ? AppColors.formsBackground
                                             : AppColors.formsBackgroundLight,
                                       ),
                                     ),
                                     androidSmsAutofillMethod:
-                                    AndroidSmsAutofillMethod
-                                        .smsUserConsentApi,
-                                    length: 4,
+                                        AndroidSmsAutofillMethod
+                                            .smsUserConsentApi,
+                                    length: 6,
                                     closeKeyboardWhenCompleted: true,
                                     isCursorAnimationEnabled: true,
                                     controller: _pinPutController,
                                     defaultPinTheme:
-                                    PinThemeConst.defaultPinTheme,
+                                        PinThemeConst.defaultPinTheme,
                                     focusedPinTheme:
-                                    PinThemeConst.focusedPinTheme,
+                                        PinThemeConst.focusedPinTheme,
                                     submittedPinTheme:
-                                    PinThemeConst.submittedPinTheme,
+                                        PinThemeConst.submittedPinTheme,
                                     pinAnimationType: PinAnimationType.rotation,
                                     pinputAutovalidateMode:
-                                    PinputAutovalidateMode.onSubmit,
+                                        PinputAutovalidateMode.onSubmit,
                                     validator: (value) {
                                       if (value!.isEmpty || value.length < 4) {
                                         return 'please enter your code';
@@ -234,10 +238,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                             context
                                                 .read<UserCubit>()
                                                 .forgotPassword(
-                                                    SendVerificationRequestModel(
-                                                        phoneNumber:
-                                                            widget.phone,
-                                                    ));
+                                                    SendMailVerificationRequestModel(
+                                                  email: widget.email,
+                                                ));
                                             isResendCode = true;
                                           });
 
@@ -257,9 +260,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                                   BorderRadius.circular(8),
                                             ),
                                           ),
-                                          child: Row(
+                                          child: const Row(
                                             mainAxisSize: MainAxisSize.min,
-                                            children: const [
+                                            children: [
                                               Text(
                                                 "Resend Code",
                                                 style: TextStyle(
@@ -321,7 +324,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 10,),
+                              SizedBox(
+                                height: 10,
+                              ),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 7),
@@ -496,10 +501,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   _onPressVerify() {
     return cubit.resetPassword(ResetPasswordRequestModel(
-        phoneNumber: widget.phone,
-        code: _pinPutController.text,
-        token: widget.token,
-        password: _password.text,
-        confirmPassword: _confirmPassword.text));
+      email: widget.email,
+      verificationCode: _pinPutController.text,
+      newPassword: _password.text,
+    ));
   }
 }

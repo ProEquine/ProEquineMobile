@@ -7,7 +7,7 @@ import '../../data/support_request_model.dart';
 
 class SupportRepository{
   static Future<BaseResultModel?> contactSupport(
-      SupportRequestModel supportRequestModel) async {
+      CreateSupportRequestModel supportRequestModel) async {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.POST,

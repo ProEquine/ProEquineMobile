@@ -15,7 +15,7 @@ class SupportCubit extends Cubit<SupportState> {
   SupportCubit() : super(SupportInitial());
 
 
-  Future<void> contactSupport(SupportRequestModel supportRequestModel) async {
+  Future<void> contactSupport(CreateSupportRequestModel supportRequestModel) async {
     emit(ContactSupportLoading());
     var response =
     await SupportRepository.contactSupport(supportRequestModel);

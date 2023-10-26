@@ -1,18 +1,13 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:proequine/app_settings.dart';
 import 'package:proequine/features/notifications/domain/notifications_cubit.dart';
 import 'package:proequine/features/splash/data/refresh_request_model.dart';
 import 'package:proequine/features/splash/domain/splash_cubit.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../../core/constants/images/app_images.dart';
 import '../../../../core/utils/printer.dart';
 import '../../../../core/utils/secure_storage/secure_storage_helper.dart';
 import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
@@ -76,7 +71,7 @@ class SplashScreenState extends State<SplashScreen>  with TickerProviderStateMix
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const EquineInfoScreen()));
+                    builder: (context) => const UserInfoScreen()));
           }
         }
       } else {
@@ -90,7 +85,7 @@ class SplashScreenState extends State<SplashScreen>  with TickerProviderStateMix
   }
 
   Future<void> startTimer() async {
-    Timer(const Duration(seconds: 0), () async {
+    Timer(const Duration(seconds: 2), () async {
       await navigateUser();
     });
   }

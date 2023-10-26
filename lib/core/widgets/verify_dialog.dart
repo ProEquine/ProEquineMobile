@@ -18,11 +18,12 @@ void showUnverifiedAccountDialog(
       context: context,
       builder: (context) {
         return BackdropFilter(
+
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Padding(
             padding: const EdgeInsets.all(40),
             child: Dialog(
-              backgroundColor: AppColors.formsBackground,
+              backgroundColor: AppColors.whiteLight,
               insetPadding: const EdgeInsets.all(20),
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
@@ -43,7 +44,7 @@ void showUnverifiedAccountDialog(
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Colors.white),
+                          color: AppColors.blackLight),
                     ),
                     const SizedBox(height: 19),
                     Row(
@@ -59,7 +60,7 @@ void showUnverifiedAccountDialog(
                           style: OutlinedButton.styleFrom(
                             minimumSize: const Size(100, 33),
                             side: const BorderSide(
-                              color: Colors.white,
+                              color: AppColors.blackLight,
                               width: 1,
                             ),
                             shape: const RoundedRectangleBorder(
@@ -70,7 +71,7 @@ void showUnverifiedAccountDialog(
                           ),
                           child: const Text(
                             "Close",
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: AppColors.blackLight),
                           ),
                         ),
                         ElevatedButton(

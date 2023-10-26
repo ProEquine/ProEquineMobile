@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/features/home/presentation/screens/create_export_screen.dart';
@@ -20,6 +21,8 @@ class ShippingListScreen extends StatefulWidget {
 
 class _ShippingListScreenState extends State<ShippingListScreen> {
   List<String> status = ['Available', 'Closed', 'Available', 'Closed'];
+  DateTime date = DateTime.now();
+
   List<String> title = [
     'Emirates Longines League',
     'SERC 8th Training Show',
@@ -33,6 +36,11 @@ class _ShippingListScreenState extends State<ShippingListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String? dateInString = date.toIso8601String();
+    DateFormat formatter = DateFormat('dd MMM yyyy');
+    final String formatted =
+    formatter.format(date);
+
 // Generate a random index to select a random item
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -85,7 +93,7 @@ class _ShippingListScreenState extends State<ShippingListScreen> {
                         type: widget.type,
                         from: randomfrom,
                         to: randomTo,
-                        date: "18-8-2024",
+                        date: formatted,
                         jobId: '12345',
                         onTap: () {
                           if (widget.type == "Import") {
@@ -95,8 +103,9 @@ class _ShippingListScreenState extends State<ShippingListScreen> {
                                   MaterialPageRoute(
                                       builder: (context) => CreateImportScreen(
                                             isFromEditing: true,
-                                        importCountry:from[index] ,
-                                        exportCountry: "AE",
+                                            importCountry: from[index],
+                                            exportCountry: "AE",
+                                        estimatedDate: date,
                                           )));
                             } else {}
                           } else {
@@ -106,8 +115,8 @@ class _ShippingListScreenState extends State<ShippingListScreen> {
                                   MaterialPageRoute(
                                       builder: (context) => CreateExportScreen(
                                             isFromEditing: true,
-                                        exportCountry:from[index] ,
-                                        importCountry: "AE",
+                                            exportCountry: from[index],
+                                            importCountry: "AE",
                                           )));
                             } else {}
                           }

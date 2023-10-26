@@ -5,14 +5,14 @@ class CheckMailVerificationRequestModel {
   CheckMailVerificationRequestModel({this.email, this.code});
 
   CheckMailVerificationRequestModel.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
-    code = json['code'];
+    email = json['Email'];
+    code = json['VerificationCode'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['email'] = email;
-    data['code'] = code;
+    data['Email'] = email;
+    data['VerificationCode'] = code;
     return data;
   }
 }

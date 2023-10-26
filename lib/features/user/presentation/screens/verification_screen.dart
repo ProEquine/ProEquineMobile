@@ -138,6 +138,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                               child: Directionality(
                                 textDirection: ui.TextDirection.ltr,
                                 child: Pinput(
+                                  keyboardType: TextInputType.text,
                                   scrollPadding: EdgeInsets.only(bottom: 50.h),
                                   preFilledWidget: Container(
                                     width: 30,

@@ -167,7 +167,7 @@ class _ChoseShippingHorseScreenState extends State<ChoseShippingHorseScreen> {
                                               hintText: 'Select Your Horse',
                                               controller: horsesControllers[
                                                   currentIndex],
-                                              keyboardType: TextInputType.name,
+                                              keyboardType: TextInputType.text,
                                               textInputAction:
                                                   TextInputAction.done,
                                               autoValidateMode: AutovalidateMode
@@ -379,7 +379,7 @@ class _ChoseShippingHorseScreenState extends State<ChoseShippingHorseScreen> {
                                           hintText: 'Select Your Horse',
                                           controller:
                                               horsesControllers[currentIndex],
-                                          keyboardType: TextInputType.name,
+                                          keyboardType: TextInputType.text,
                                           textInputAction: TextInputAction.done,
                                           autoValidateMode: AutovalidateMode
                                               .onUserInteraction,

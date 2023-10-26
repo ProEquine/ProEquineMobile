@@ -78,18 +78,6 @@ class AddHorseScreenState extends State<AddHorseScreen> {
   late int _selectedYear;
   late TextEditingController _yearController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  // List<DropdownMenuItem<String>> status = [
-  //   const DropdownMenuItem(
-  //     value: "Active",
-  //     child: Text("Active"),
-  //   ),
-  //   const DropdownMenuItem(
-  //     value: "inActive",
-  //     child: Text("inActive"),
-  //   ),
-  // ];
-
   Future getImage(ImageSource src, BuildContext? context) async {
     XFile? image = await picker.pickImage(source: src);
     setState(() {
@@ -189,9 +177,9 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                                   title: "Chose the horse picture",
                                 );
                               },
-                              child: Row(
+                              child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
+                                children:  [
                                   Icon(
                                     Icons.camera_alt,
                                     color: AppColors.grey,
@@ -238,7 +226,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                       child: RebiInput(
                         hintText: 'Horse Name'.tra,
                         controller: horseName,
-                        keyboardType: TextInputType.name,
+                        keyboardType: TextInputType.text,
                         textInputAction: TextInputAction.done,
                         autoValidateMode: AutovalidateMode.onUserInteraction,
                         isOptional: false,
@@ -257,7 +245,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                       child: RebiInput(
                         hintText: 'Date Of Birth'.tra,
                         controller: _dateOfBirth,
-                        keyboardType: TextInputType.name,
+                        keyboardType: TextInputType.text,
                         textInputAction: TextInputAction.done,
                         onTap: () {
                           selectDate(
@@ -299,7 +287,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                       child: RebiInput(
                         hintText: 'Place of birth'.tra,
                         controller: placeOfBirth,
-                        keyboardType: TextInputType.name,
+                        keyboardType: TextInputType.text,
                         textInputAction: TextInputAction.done,
                         onTap: () {
                           showCountryPicker(

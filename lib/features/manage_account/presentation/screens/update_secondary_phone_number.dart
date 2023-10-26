@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/constants/routes/routes.dart';
+import 'package:proequine/features/manage_account/data/update_secondary_number_request_model.dart';
 import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
 import 'package:sizer/sizer.dart';
 
@@ -11,15 +12,20 @@ import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/phone_number_field_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
+import '../../data/basic_account_management_route.dart';
 import '../../data/edit_phone_request_model.dart';
 
 class UpdateSecondaryPhoneScreen extends StatelessWidget {
   final String type;
-  UpdateSecondaryPhoneScreen({Key? key, required this.type}) : super(key: key);
+  final String phoneNumber;
+
+  UpdateSecondaryPhoneScreen(
+      {Key? key, required this.type, required this.phoneNumber})
+      : super(key: key);
 
   final TextEditingController _phone = TextEditingController();
   final TextEditingController _countryCode =
-  TextEditingController(text: "+971");
+      TextEditingController(text: "+971");
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   ManageAccountCubit cubit = ManageAccountCubit();
 
@@ -55,34 +61,38 @@ class UpdateSecondaryPhoneScreen extends StatelessWidget {
                     style: AppStyles.descriptions),
               ),
             ),
-            const SizedBox(height: 14,),
-            PhoneNumberFieldWidget(countryCode: _countryCode, phoneNumber: _phone),
-
+            const SizedBox(
+              height: 14,
+            ),
+            PhoneNumberFieldWidget(
+                countryCode: _countryCode, phoneNumber: _phone),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.all(kPadding),
               child: BlocConsumer<ManageAccountCubit, ManageAccountState>(
                 bloc: cubit,
                 builder: (context, state) {
-                  if (state is SendPhoneLoading) {
+                  if (state is UpdateSecondaryPhoneLoading) {
                     return const LoadingCircularWidget();
                   }
                   return RebiButton(
                       onPressed: () {
-
                         if (_formKey.currentState!.validate()) {
                           FocusManager.instance.primaryFocus?.unfocus();
-                          onSendPhone();
+                          onUpdatePhoneNumber();
                         } else {}
                       },
                       child: const Text("Update"));
                 },
                 listener: (context, state) {
-                  if (state is SendPhoneSuccessful) {
-                    Navigator.pushReplacementNamed(context, verifyUpdatePhone,
-                        arguments: _countryCode.text + _phone.text);
-
-                  } else if (state is SendPhoneError) {
+                  if (state is UpdatePhoneSecondarySuccessful) {
+                    Navigator.pushReplacementNamed(
+                        context, successScreen,
+                        arguments: BasicAccountManagementRoute(
+                            type: 'manageAccount',
+                            title:
+                            "Phone number has been updated successfully"));
+                  } else if (state is UpdatePhoneSecondaryError) {
                     RebiMessage.error(msg: state.message!, context: context);
                   }
                 },
@@ -97,9 +107,10 @@ class UpdateSecondaryPhoneScreen extends StatelessWidget {
     );
   }
 
-  onSendPhone() {
-    return cubit.sendPhoneNumber(EditPhoneRequestModel(
-      newPhoneNumber: _countryCode.text + _phone.text,
-    ));
+  onUpdatePhoneNumber() {
+    return cubit.updateSecondaryNumber(UpdateSecondaryNumberRequestModel(
+        phoneNumberType: type,
+        newSecondaryNumber: _countryCode.text + _phone.text,
+        oldSecondaryNumber: phoneNumber));
   }
 }

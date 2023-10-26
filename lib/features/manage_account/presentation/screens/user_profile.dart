@@ -11,7 +11,6 @@ import 'package:proequine/features/equine_info/presentation/screens/equine_info_
 import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
 import 'package:proequine/features/splash/presentation/screens/splash_screen.dart';
 
-
 import '../../../../core/constants/routes/routes.dart';
 
 import '../../../support/presentation/screens/legal.dart';
@@ -47,11 +46,11 @@ class _UserProfileState extends State<UserProfile> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(
-              height: 95,
+              height: 110,
             ),
-            const Text(
-              'Hi, Abdalla',
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 28),
+            Text(
+              'Hi, ${AppSharedPreferences.getName}',
+              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 28),
             ),
             const SizedBox(
               height: 20,
@@ -67,7 +66,7 @@ class _UserProfileState extends State<UserProfile> {
             ProfileListTileWidget(
               title: "Manage Account",
               onTap: () async {
-                Navigator.pushNamed(context, editProfile, arguments: false)
+                Navigator.pushNamed(context, manageAccount, arguments: false)
                     .then((value) => email = value.toString());
                 Print(email);
               },
@@ -96,8 +95,6 @@ class _UserProfileState extends State<UserProfile> {
                 textAlign: TextAlign.start,
               ),
             ),
-            // ProfileDivider(),
-
             ProfileListTileWidget(
               title: "Support",
               onTap: () {
@@ -148,7 +145,6 @@ class _UserProfileState extends State<UserProfile> {
                     RebiMessage.success(
                         msg: "Logout Successfully", context: context);
                   }
-
                   if (context.mounted) {
                     Navigator.pushReplacement(
                         context,
@@ -179,32 +175,9 @@ class _UserProfileState extends State<UserProfile> {
                 ),
               ])),
             ),
-
             const Spacer(
               flex: 2,
             ),
-
-            // Text(
-            //   context
-            //       .watch<ThemeCubit>()
-            //       .state
-            //       .toString(),
-            //   style: const TextStyle(
-            //       fontSize: 24,
-            //       fontWeight: FontWeight.bold,
-            //       color: AppColors.gold),
-            // ),
-            // const SizedBox(height: 16),
-            // Switch(
-            //
-            //   onChanged: (value) {
-            //     themeCubit.toggleTheme();
-            //   },
-            //   value: context.watch<ThemeCubit>().state.toString() ==
-            //           'ThemeCubitMode.dark'
-            //       ? true
-            //       : false,
-            // ),
           ],
         ),
       ),

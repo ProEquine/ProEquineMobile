@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:proequine/core/utils/extensions.dart';
-import 'package:proequine/core/utils/rebi_message.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
+import 'package:proequine/features/equine_info/data/delete_secondary_stable_request_model.dart';
+import 'package:proequine/features/equine_info/domain/equine_info_cubit.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/constants/thems/app_styles.dart';
-import '../../../../core/global_functions/global_statics_drop_down.dart';
 import '../../../../core/utils/Printer.dart';
-import '../../../../core/utils/validator.dart';
+import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/widgets/custom_header.dart';
-import '../../../../core/widgets/rebi_input.dart';
-import '../../../../core/widgets/drop_down_menu_widget.dart';
 import '../../../../core/widgets/stables_widget.dart';
+import '../../../manage_account/data/basic_account_management_route.dart';
 
 class UpdateSecondaryStableScreen extends StatefulWidget {
-   String secondaryStable;
-   UpdateSecondaryStableScreen({Key? key,required this.secondaryStable}) : super(key: key);
+  final String secondaryStable;
+  final int personStableId;
+
+  const UpdateSecondaryStableScreen(
+      {Key? key, required this.secondaryStable, required this.personStableId})
+      : super(key: key);
 
   @override
   State<UpdateSecondaryStableScreen> createState() =>
@@ -26,9 +31,6 @@ class UpdateSecondaryStableScreen extends StatefulWidget {
 
 class _UpdateSecondaryStableScreenState
     extends State<UpdateSecondaryStableScreen> {
-  // final UserCubit cubit = UserCubit();
-
-
   String? selectedSecondaryStable;
   String? selectedEmirate;
   late final TextEditingController _secondaryStableName;
@@ -38,6 +40,8 @@ class _UpdateSecondaryStableScreenState
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool isChooseToAddStable = false;
+  EquineInfoCubit cubit = EquineInfoCubit();
+
   void changeToTrueValue() {
     setState(() {
       isChooseToAddStable = true;
@@ -58,7 +62,7 @@ class _UpdateSecondaryStableScreenState
     _secondaryStableLocation = TextEditingController();
     stableId = TextEditingController();
     stable = TextEditingController(text: widget.secondaryStable);
-    selectedSecondaryStable=widget.secondaryStable;
+    selectedSecondaryStable = widget.secondaryStable;
     super.initState();
   }
 
@@ -81,15 +85,7 @@ class _UpdateSecondaryStableScreenState
           title: "Secondary Stable",
           isThereBackButton: true,
           isThereChangeWithNavigate: false,
-          isThereThirdOption: true,
-          thirdOptionTitle: 'Remove',
-          isThereThirdOptionDelete: true,
-          onPressThirdOption: () {
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => const AddSecondaryStableScreen()));
-          },
+          isThereThirdOption: false,
         ),
       ),
       resizeToAvoidBottomInset: true,
@@ -122,119 +118,119 @@ class _UpdateSecondaryStableScreenState
                               ),
                               SelectStableWidget(
                                 stableId: stableId,
+                                readOnly: true,
                                 stableName: stable,
-                                showingStablesList: stables,
                                 changeTrue: changeToTrueValue,
                                 changeFalse: changeToFalseValue,
                               ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Visibility(
-                                visible: isChooseToAddStable,
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text("Add Your Stable ",
-                                      style: AppStyles.mainTitle2),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Visibility(
-                                visible: isChooseToAddStable,
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                      "in order to update your secondary stable - you need to submit this form and wait for the request approval",
-                                      style: AppStyles.descriptions),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Visibility(
-                                visible: isChooseToAddStable,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 7),
-                                  child: RebiInput(
-                                    hintText: 'Stable Name'.tra,
-                                    controller: _secondaryStableName,
-                                    scrollPadding:
-                                        const EdgeInsets.only(bottom: 100),
-                                    keyboardType: TextInputType.name,
-                                    textInputAction: TextInputAction.done,
-                                    autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    isOptional: false,
-                                    onChanged: (value) {
-                                      setState(() {});
-                                    },
-                                    color: AppColors.formsLabel,
-                                    readOnly: false,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 13),
-                                    obscureText: false,
-                                    validator: (value) {
-                                      return Validator.requiredValidator(
-                                          _secondaryStableName.text);
-                                    },
-                                  ),
-                                ),
-                              ),
-                              Visibility(
-                                visible: isChooseToAddStable,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 7),
-                                  child: RebiInput(
-                                    hintText: 'Location'.tra,
-                                    controller: _secondaryStableLocation,
-                                    onChanged: (value) {
-                                      setState(() {});
-                                    },
-                                    scrollPadding:
-                                        const EdgeInsets.only(bottom: 100),
-                                    keyboardType: TextInputType.url,
-                                    textInputAction: TextInputAction.done,
-                                    autoValidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    isOptional: false,
-                                    color: AppColors.formsLabel,
-                                    readOnly: false,
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 13),
-                                    obscureText: false,
-                                    validator: (value) {
-                                      return Validator.requiredValidator(
-                                          _secondaryStableLocation.text);
-                                    },
-                                  ),
-                                ),
-                              ),
-                              Visibility(
-                                visible: isChooseToAddStable,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 7),
-                                  child: DropDownWidget(
-                                    items: emirate,
-                                    selected: selectedEmirate,
-                                    onChanged: (selectedEmi) {
-                                      setState(() {
-                                        selectedEmirate = selectedEmi;
-                                        Print(
-                                            'selected Emirate $selectedEmirate');
-                                      });
-                                    },
-                                    validator: (value) {
-                                      // return Validator.requiredValidator(selectedNumber);
-                                    },
-                                    hint: 'Emirate',
-                                  ),
-                                ),
-                              ),
+                              // const SizedBox(
+                              //   height: 20,
+                              // ),
+                              // Visibility(
+                              //   visible: isChooseToAddStable,
+                              //   child: Align(
+                              //     alignment: Alignment.centerLeft,
+                              //     child: Text("Add Your Stable ",
+                              //         style: AppStyles.mainTitle2),
+                              //   ),
+                              // ),
+                              // const SizedBox(
+                              //   height: 10,
+                              // ),
+                              // Visibility(
+                              //   visible: isChooseToAddStable,
+                              //   child: Align(
+                              //     alignment: Alignment.centerLeft,
+                              //     child: Text(
+                              //         "in order to update your secondary stable - you need to submit this form and wait for the request approval",
+                              //         style: AppStyles.descriptions),
+                              //   ),
+                              // ),
+                              // const SizedBox(
+                              //   height: 10,
+                              // ),
+                              // Visibility(
+                              //   visible: isChooseToAddStable,
+                              //   child: Padding(
+                              //     padding:
+                              //         const EdgeInsets.symmetric(vertical: 7),
+                              //     child: RebiInput(
+                              //       hintText: 'Stable Name'.tra,
+                              //       controller: _secondaryStableName,
+                              //       scrollPadding:
+                              //           const EdgeInsets.only(bottom: 100),
+                              //       keyboardType: TextInputType.text,
+                              //       textInputAction: TextInputAction.done,
+                              //       autoValidateMode:
+                              //           AutovalidateMode.onUserInteraction,
+                              //       isOptional: false,
+                              //       onChanged: (value) {
+                              //         setState(() {});
+                              //       },
+                              //       color: AppColors.formsLabel,
+                              //       readOnly: false,
+                              //       contentPadding: const EdgeInsets.symmetric(
+                              //           horizontal: 20, vertical: 13),
+                              //       obscureText: false,
+                              //       validator: (value) {
+                              //         return Validator.requiredValidator(
+                              //             _secondaryStableName.text);
+                              //       },
+                              //     ),
+                              //   ),
+                              // ),
+                              // Visibility(
+                              //   visible: isChooseToAddStable,
+                              //   child: Padding(
+                              //     padding:
+                              //         const EdgeInsets.symmetric(vertical: 7),
+                              //     child: RebiInput(
+                              //       hintText: 'Location'.tra,
+                              //       controller: _secondaryStableLocation,
+                              //       onChanged: (value) {
+                              //         setState(() {});
+                              //       },
+                              //       scrollPadding:
+                              //           const EdgeInsets.only(bottom: 100),
+                              //       keyboardType: TextInputType.text,
+                              //       textInputAction: TextInputAction.done,
+                              //       autoValidateMode:
+                              //           AutovalidateMode.onUserInteraction,
+                              //       isOptional: false,
+                              //       color: AppColors.formsLabel,
+                              //       readOnly: false,
+                              //       contentPadding: const EdgeInsets.symmetric(
+                              //           horizontal: 20, vertical: 13),
+                              //       obscureText: false,
+                              //       validator: (value) {
+                              //         return Validator.requiredValidator(
+                              //             _secondaryStableLocation.text);
+                              //       },
+                              //     ),
+                              //   ),
+                              // ),
+                              // Visibility(
+                              //   visible: isChooseToAddStable,
+                              //   child: Padding(
+                              //     padding:
+                              //         const EdgeInsets.symmetric(vertical: 7),
+                              //     child: DropDownWidget(
+                              //       items: emirate,
+                              //       selected: selectedEmirate,
+                              //       onChanged: (selectedEmi) {
+                              //         setState(() {
+                              //           selectedEmirate = selectedEmi;
+                              //           Print(
+                              //               'selected Emirate $selectedEmirate');
+                              //         });
+                              //       },
+                              //       validator: (value) {
+                              //         // return Validator.requiredValidator(selectedNumber);
+                              //       },
+                              //       hint: 'Emirate',
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -243,32 +239,48 @@ class _UpdateSecondaryStableScreenState
                           padding: const EdgeInsets.symmetric(
                             horizontal: 20,
                           ),
-                          child: RebiButton(
-                            backgroundColor: (stable.text.isNotEmpty &&
-                                stable.text !=
-                                            'Add Your Stable') ||
-                                    (selectedEmirate != null &&
-                                        _secondaryStableName.text.isNotEmpty &&
-                                        _secondaryStableLocation
-                                            .text.isNotEmpty)
-                                ? AppColors.yellow
-                                : AppColors.formsLabel,
-                            onPressed: () {
-                              if ((stable.text.isNotEmpty  &&
-                                  stable.text !=
-                                          'Add Your Stable') ||
-                                  (selectedEmirate != null &&
-                                      _secondaryStableLocation
-                                          .text.isNotEmpty &&
-                                      _secondaryStableName.text.isNotEmpty)) {
-                                Navigator.pop(context);
-                              } else {
+                          child: BlocConsumer<EquineInfoCubit, EquineInfoState>(
+                            bloc: cubit,
+                            listener: (context, state) {
+                              if (state is DeleteSecondaryStableSuccessful) {
+                                Navigator.pushReplacementNamed(
+                                    context, successScreen,
+                                    arguments: BasicAccountManagementRoute(
+                                        type: 'manageAccount',
+                                        title: state.message));
+                              } else if (state is DeleteSecondaryStableError) {
                                 RebiMessage.error(
-                                    msg: 'Please select your secondary stable',
-                                    context: context);
+                                    msg: state.message!, context: context);
                               }
                             },
-                            child: const Text("Save"),
+                            builder: (context, state) {
+                              if (state is DeleteSecondaryStableLoading) {
+                                return const LoadingCircularWidget();
+                              }
+                              return RebiButton(
+                                backgroundColor: (stable.text.isNotEmpty &&
+                                            stable.text != 'Add Your Stable') ||
+                                        (selectedEmirate != null &&
+                                            _secondaryStableName
+                                                .text.isNotEmpty &&
+                                            _secondaryStableLocation
+                                                .text.isNotEmpty)
+                                    ? AppColors.yellow
+                                    : AppColors.formsLabel,
+                                onPressed: () {
+                                  if ((stable.text.isNotEmpty &&
+                                          stable.text != 'Add Your Stable') ||
+                                      (selectedEmirate != null &&
+                                          _secondaryStableLocation
+                                              .text.isNotEmpty &&
+                                          _secondaryStableName
+                                              .text.isNotEmpty)) {
+                                    onPressRemove();
+                                  }
+                                },
+                                child: const Text("Remove"),
+                              );
+                            },
                           ),
                         ),
                         const SizedBox(
@@ -286,67 +298,9 @@ class _UpdateSecondaryStableScreenState
     );
   }
 
-// _buildChooseStableConsumer() {
-//   return BlocConsumer<UserCubit, UserState>(
-//       bloc: cubit,
-//       builder: (context, state) {
-//         if (state is SelectInterestsLoading) {
-//           return const LoadingCircularWidget();
-//         } else if (state is SelectInterestsError) {
-//           RebiMessage.error(msg: state.message!, context: context);
-//         }
-//         {
-//           return RebiButton(
-//             backgroundColor: (selectedMainStable != null &&
-//                 selectedMainStable != 'Add Your Stable') ||
-//                 (selectedEmirate != null &&
-//                     _mainStableName.text.isNotEmpty &&
-//                     _mainStableLocation.text.isNotEmpty)
-//                 ? AppColors.yellow
-//                 : AppColors.formsLabel,
-//             onPressed: () {
-//               if ((selectedMainStable != null&&
-//                   selectedMainStable != 'Add Your Stable') ||
-//                   (selectedEmirate != null &&
-//                       _mainStableName.text.isNotEmpty &&
-//                       _mainStableLocation.text.isNotEmpty)) {
-//                 _onPressConfirm();
-//               } else {
-//                 RebiMessage.error(
-//                     msg: 'Please select your main stable', context: context);
-//               }
-//             },
-//             child: const Text("Next"),
-//           );
-//         }
-//       },
-//       listener: (context, state) {
-//         // if (state is SelectInterestsSuccessful) {
-//         //   AppSharedPreferences.typeSelected = true;
-//         //   Navigator.push(
-//         //       context,
-//         //       MaterialPageRoute(
-//         //           builder: (context) => const BottomNavigation()));
-//         // } else if (state is SelectInterestsError) {
-//         //   RebiMessage.error(msg: state.message!, context: context);
-//         // }
-//       });
-// }
-//
-// _onPressConfirm() {
-//   Print("selected location ${_mainStableLocation.text}");
-//   Print("selected main stable ${_mainStableName.text}");
-//   Print("selected emirate $selectedEmirate");
-//   Print("selected main $selectedMainStable");
-//   Navigator.push(
-//       context,
-//       MaterialPageRoute(
-//           builder: (context) => const BottomNavigation()));
-//   // return cubit
-//   //   ..interests(InterestsRequestModel(
-//   //     phoneNumber: AppSharedPreferences.userPhoneNumber,
-//   //     interest: 'interest',
-//   //     type: 'userType',
-//   //   ));
-// }
+  onPressRemove() {
+    cubit.deleteSecondaryStable(DeleteSecondaryStableRequestModel(
+      personStableId: widget.personStableId,
+    ));
+  }
 }

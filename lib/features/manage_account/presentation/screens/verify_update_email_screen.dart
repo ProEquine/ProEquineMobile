@@ -8,6 +8,7 @@ import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/features/user/data/check_update_email_request_model.dart';
+import 'package:proequine/features/user/data/send_mail_request_model.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui' as ui;
@@ -18,6 +19,8 @@ import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/constants/thems/pin_put_theme.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/rebi_button.dart';
+import '../../../../core/widgets/success_state_widget.dart';
+import '../../data/basic_account_management_route.dart';
 import '../../data/update_email_route.dart';
 import '../../data/verify_email_route.dart';
 
@@ -103,6 +106,7 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                         child: Directionality(
                           textDirection: ui.TextDirection.ltr,
                           child: Pinput(
+                            keyboardType: TextInputType.text,
                             scrollPadding: EdgeInsets.only(bottom: 50.h),
                             preFilledWidget: Container(
                               width: 30,
@@ -129,7 +133,7 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                             androidSmsAutofillMethod:
                             AndroidSmsAutofillMethod
                                 .smsUserConsentApi,
-                            length: 4,
+                            length: 6,
                             closeKeyboardWhenCompleted: true,
                             isCursorAnimationEnabled: true,
                             controller: _pinPutController,
@@ -143,7 +147,7 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                             pinputAutovalidateMode:
                             PinputAutovalidateMode.onSubmit,
                             validator: (value) {
-                              if (value!.isEmpty || value.length < 4) {
+                              if (value!.isEmpty || value.length < 6) {
                                 return 'please enter your code';
                               } else {
                                 return null;
@@ -184,13 +188,14 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                             _formatDuration(Duration(seconds: _secondsLeft))
                                 .toString(),
                             style: const TextStyle(
-                                color: AppColors.white,
+                                color: AppColors.yellow,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700),
                           ))
                           : Center(
                         child: InkWell(
                           onTap: () {
+                            cubit.sendMailVerificationCode(SendMailVerificationRequestModel(email: emails.newEmail!));
                             setState(() {
                               isResendCode = true;
                             });
@@ -202,21 +207,28 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 25, vertical: 7),
-                            decoration: BoxDecoration(
-                              color: const Color(0xff161616),
-                              borderRadius: BorderRadius.circular(8.0),
-                              boxShadow: const [
-                                BoxShadow(
-                                    color: Colors.white, spreadRadius: 1),
-                              ],
+                            clipBehavior: Clip.antiAlias,
+                            // decoration: BoxDecoration(
+                            //     color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                            //         ? AppColors.backgroundColor
+                            //         : AppColors.backgroundColorLight,
+
+                            decoration: ShapeDecoration(
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    width: 0.50,
+                                    color: AppColors.yellow),
+                                borderRadius:
+                                BorderRadius.circular(8),
+                              ),
                             ),
-                            child: Row(
+                            child: const Row(
                               mainAxisSize: MainAxisSize.min,
-                              children: const [
+                              children: [
                                 Text(
                                   "Resend Code",
                                   style: TextStyle(
-                                      color: AppColors.white,
+                                      color: AppColors.yellow,
                                       fontFamily: "notosan"),
                                 ),
                                 SizedBox(
@@ -224,8 +236,8 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                                 ),
                                 Icon(
                                   Icons.refresh,
-                                  color: AppColors.white,
                                   size: 20,
+                                  color: AppColors.yellow,
                                 )
                               ],
                             ),
@@ -241,7 +253,10 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                           if (state is CheckUpdateMailSuccessful) {
                             AppSharedPreferences.inputEmailAddress=emails.newEmail!;
                             Navigator.pushReplacementNamed(
-                                context,submitVerifyEmail,arguments: VerifyEmailRoute(email:"Email Updated Successfully!",type: 'updateEmail'));
+                                context, successScreen,
+                                arguments: BasicAccountManagementRoute(
+                                    type: 'manageAccount',
+                                    title: "Email Updated Successfully"));
                             // Navigator.pushReplacement(
                             //     context,
                             //     MaterialPageRoute(
@@ -265,7 +280,7 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                                 onPressVerify(previousEmail:emails.previousEmail!,newEmail:emails.newEmail!);
                               } else {}
                             },
-                            backgroundColor: AppColors.white,
+                            // backgroundColor: AppColors.white,
                             child: const Text("Confirm"),
                           );
                         },
@@ -290,7 +305,7 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
   }) {
     return cubit
       ..checkUpdatedMail(CheckUpdateEmailRequestModel(
-        previousEmail: previousEmail,
+        // previousEmail: previousEmail,
         newEmail: newEmail,
         code: _pinPutController.text,
       ));

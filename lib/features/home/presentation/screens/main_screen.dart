@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
-import 'package:proequine/features/home/presentation/screens/create_export_screen.dart';
-import 'package:proequine/features/home/presentation/screens/create_import_screen.dart';
 import 'package:proequine/features/home/presentation/screens/create_trip_screen.dart';
 import 'package:proequine/features/home/presentation/screens/media_list_screen.dart';
 import 'package:proequine/features/home/presentation/screens/shipping_list_screen.dart';
@@ -78,8 +76,8 @@ class _MainScreenState extends State<MainScreen> {
                   largeTitle: SvgPicture.asset(
                     AppIcons.proEquineLight,
                     alignment: Alignment.centerLeft,
-                    height: 30,
-                    width: 40,
+                    height: 28,
+                    width: 38,
                     fit: BoxFit.contain,
                   ),
                   middle: SvgPicture.asset(
@@ -98,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const SizedBox(
-                      height: 15,
+                      height: 10,
                     ),
                     const HomeCardFull(),
                     const SizedBox(

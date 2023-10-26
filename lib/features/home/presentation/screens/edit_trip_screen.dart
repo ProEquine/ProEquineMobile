@@ -237,7 +237,7 @@ class EditTripScreenState extends State<EditTripScreen> {
                                     child: RebiInput(
                                       hintText: 'Shipping Estimated Date '.tra,
                                       controller: estimatedDate,
-                                      keyboardType: TextInputType.name,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.done,
                                       onTap: () {
                                         selectDate(
@@ -287,7 +287,7 @@ class EditTripScreenState extends State<EditTripScreen> {
 
                                       hintText: 'Importing country'.tra,
                                       controller: pickupCountry,
-                                      keyboardType: TextInputType.number,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.done,
                                       autoValidateMode:
                                           AutovalidateMode.onUserInteraction,
@@ -312,7 +312,7 @@ class EditTripScreenState extends State<EditTripScreen> {
                                     child: RebiInput(
                                       hintText: 'Pickup Location'.tra,
                                       controller: pickUpLocation,
-                                      keyboardType: TextInputType.name,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.done,
                                       autoValidateMode:
                                           AutovalidateMode.onUserInteraction,
@@ -335,7 +335,7 @@ class EditTripScreenState extends State<EditTripScreen> {
                                     child: RebiInput(
                                       hintText: 'Pickup contact name'.tra,
                                       controller: pickUpContactName,
-                                      keyboardType: TextInputType.name,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.done,
                                       autoValidateMode:
                                           AutovalidateMode.onUserInteraction,
@@ -417,7 +417,7 @@ class EditTripScreenState extends State<EditTripScreen> {
                                     child: RebiInput(
                                       hintText: 'Drop contact name'.tra,
                                       controller: dropContactName,
-                                      keyboardType: TextInputType.name,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.done,
                                       autoValidateMode:
                                           AutovalidateMode.onUserInteraction,
@@ -533,7 +533,7 @@ class EditTripScreenState extends State<EditTripScreen> {
                                     child: RebiInput(
                                       hintText: 'Shipping Estemated Date '.tra,
                                       controller: estimatedDate,
-                                      keyboardType: TextInputType.name,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.done,
                                       onTap: () {
                                         selectDate(
@@ -604,7 +604,7 @@ class EditTripScreenState extends State<EditTripScreen> {
                                     child: RebiInput(
                                       hintText: 'Pickup contact name'.tra,
                                       controller: pickUpContactName,
-                                      keyboardType: TextInputType.name,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.done,
                                       autoValidateMode:
                                           AutovalidateMode.onUserInteraction,
@@ -682,7 +682,7 @@ class EditTripScreenState extends State<EditTripScreen> {
                                     child: RebiInput(
                                       hintText: 'Exporting country'.tra,
                                       controller: exportingCountry,
-                                      keyboardType: TextInputType.number,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.done,
                                       autoValidateMode:
                                           AutovalidateMode.onUserInteraction,
@@ -707,7 +707,7 @@ class EditTripScreenState extends State<EditTripScreen> {
                                     child: RebiInput(
                                       hintText: 'Drop Location'.tra,
                                       controller: dropLocation,
-                                      keyboardType: TextInputType.name,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.done,
                                       autoValidateMode:
                                           AutovalidateMode.onUserInteraction,
@@ -730,7 +730,7 @@ class EditTripScreenState extends State<EditTripScreen> {
                                     child: RebiInput(
                                       hintText: 'Drop contact name'.tra,
                                       controller: dropContactName,
-                                      keyboardType: TextInputType.name,
+                                      keyboardType: TextInputType.text,
                                       textInputAction: TextInputAction.done,
                                       autoValidateMode:
                                           AutovalidateMode.onUserInteraction,

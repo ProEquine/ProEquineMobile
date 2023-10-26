@@ -10,8 +10,8 @@ import 'package:proequine/core/widgets/phone_number_field_widget.dart';
 import 'package:sizer/sizer.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/global_functions/global_statics_drop_down.dart';
-import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/date_time_picker.dart';
@@ -19,6 +19,8 @@ import '../../../../core/widgets/divider.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
+import '../../../../core/widgets/verify_dialog.dart';
+import '../../../manage_account/data/verify_email_route.dart';
 import '../../data/local_trip.dart';
 import '../../data/shipping_service_model.dart';
 import '../../domain/cubits/local_horse_cubit.dart';
@@ -27,13 +29,18 @@ import '../widgets/select_place_widget.dart';
 import 'chose_horses_shipping_screen.dart';
 
 class CreateExportScreen extends StatefulWidget {
-  bool isFromEditing=false;
-  String? exportCountry ;
-  String? importCountry ;
-      CreateExportScreen({
-        this.isFromEditing=false,
-        this.exportCountry,
-        this.importCountry,
+  bool isFromEditing = false;
+  String? exportCountry;
+
+  String? importCountry;
+
+  DateTime? estimatedDate;
+
+  CreateExportScreen({
+    this.isFromEditing = false,
+    this.exportCountry,
+    this.importCountry,
+    this.estimatedDate,
     super.key,
   });
 
@@ -51,7 +58,8 @@ class CreateExportScreenState extends State<CreateExportScreen> {
   TextEditingController pickUpContactName = TextEditingController();
   TextEditingController dropContactName = TextEditingController();
   TextEditingController dropContactNumber = TextEditingController();
-  TextEditingController dropContactCountryCode = TextEditingController(text: "+971");
+  TextEditingController dropContactCountryCode =
+      TextEditingController(text: "+971");
 
   TextEditingController numberOfHorses = TextEditingController();
   TextEditingController exportingCountry = TextEditingController();
@@ -60,6 +68,7 @@ class CreateExportScreenState extends State<CreateExportScreen> {
   TextEditingController pickUpCountryCode = TextEditingController(text: '+971');
   DateTime focusedDay = DateTime.now();
   TextEditingController? estimatedDate;
+
 
   late DateTime dateTime;
   late DateTime pickDate;
@@ -77,27 +86,28 @@ class CreateExportScreenState extends State<CreateExportScreen> {
   String? selectedTrip;
   String? selectedEquipment;
   String? selectedCountryIso2;
+  String? formatted;
 
   @override
   void initState() {
-    // checkVerificationStatus().then((verified) {
-    //   if (!verified) {
-    //     // If the account is not verified, show a dialog after a delay.
-    //     Future.delayed(const Duration(milliseconds: 50), () {
-    //       showUnverifiedAccountDialog(
-    //         context: context,
-    //         isThereNavigationBar: true,
-    //         onPressVerify: () {
-    //           Navigator.pushNamed(context, verifyEmail,
-    //               arguments: VerifyEmailRoute(
-    //                   type: 'Booking',
-    //                   email: AppSharedPreferences.userEmailAddress))
-    //               .then((value) {});
-    //         },
-    //       );
-    //     });
-    //   }
-    // });
+    checkVerificationStatus().then((verified) {
+      if (!verified) {
+        // If the account is not verified, show a dialog after a delay.
+        Future.delayed(const Duration(milliseconds: 50), () {
+          showUnverifiedAccountDialog(
+            context: context,
+            isThereNavigationBar: true,
+            onPressVerify: () {
+              Navigator.pushNamed(context, verifyEmail,
+                  arguments: VerifyEmailRoute(
+                      type: 'export',
+                      email: AppSharedPreferences.userEmailAddress))
+                  .then((value) {});
+            },
+          );
+        });
+      }
+    });
     initializeDateFormatting();
     dateTime = DateTime.now();
     estimatedDate = TextEditingController();
@@ -128,7 +138,7 @@ class CreateExportScreenState extends State<CreateExportScreen> {
   String? selectedNumber;
   bool equipmentValue = false;
   LocalHorseCubit localHorseCubit =
-  LocalHorseCubit(localStorageRepository: LocalStorageRepository());
+      LocalHorseCubit(localStorageRepository: LocalStorageRepository());
 
   @override
   Widget build(BuildContext context) {
@@ -195,56 +205,60 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: kPadding, vertical: 7),
-                            child: RebiInput(
-                              hintText: 'Shipping Estemated Date '.tra,
-                              controller: estimatedDate,
-                              keyboardType: TextInputType.name,
-                              textInputAction: TextInputAction.done,
-                              onTap: () {
-                                selectDate(
-                                  context: context,
-                                  from: DateTime.now(),
-                                  to: DateTime(2025, 1, 1),
-                                  isSupportChangingYears: false,
-                                  selectedOurDay: dateTime,
-                                  controller: estimatedDate!,
-                                  focusDay: focusedDay,
-                                );
-                              },
-                              autoValidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              isOptional: false,
-                              color: AppColors.formsLabel,
-                              readOnly: true,
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 13),
-                              obscureText: false,
-                              validator: (value) {
-                                if (value!.isNotEmpty) {
-                                  DateFormat inputFormat =
-                                      DateFormat("dd MMM yyyy");
-                                  DateTime setUpdatedDate =
-                                      inputFormat.parse(value);
-                                  pickDate = setUpdatedDate;
-                                } else {
-                                  return 'please select date';
-                                }
+                          Visibility(
+                            visible: !widget.isFromEditing,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: kPadding, vertical: 7),
+                              child: RebiInput(
+                                hintText: 'Shipping Estemated Date '.tra,
+                                controller: estimatedDate,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.done,
+                                onTap: () {
+                                  selectDate(
+                                    context: context,
+                                    from: DateTime.now(),
+                                    to: DateTime(2025, 1, 1),
+                                    isSupportChangingYears: false,
+                                    selectedOurDay: dateTime,
+                                    controller: estimatedDate!,
+                                    focusDay: focusedDay,
+                                  );
+                                },
+                                autoValidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                isOptional: false,
+                                color: AppColors.formsLabel,
+                                readOnly: true,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 13),
+                                obscureText: false,
+                                validator: (value) {
+                                  if (value!.isNotEmpty) {
+                                    DateFormat inputFormat =
+                                        DateFormat("dd MMM yyyy");
+                                    DateTime setUpdatedDate =
+                                        inputFormat.parse(value);
+                                    pickDate = setUpdatedDate;
+                                  } else {
+                                    return 'please select date';
+                                  }
 
-                                if (dateTime.isBefore(DateTime.now()) &&
-                                    !dateTime.isSameDate(DateTime.now())) {
-                                  return 'correct date please';
-                                }
-                                return Validator.requiredValidator(
-                                    estimatedDate?.text);
-                              },
+                                  if (dateTime.isBefore(DateTime.now()) &&
+                                      !dateTime.isSameDate(DateTime.now())) {
+                                    return 'correct date please';
+                                  }
+                                  return Validator.requiredValidator(
+                                      estimatedDate?.text);
+                                },
+                              ),
                             ),
                           ),
                           const Padding(
-                            padding:  EdgeInsets.symmetric(horizontal: 17,vertical: 20),
-                            child:  Text(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 17, vertical: 20),
+                            child: Text(
                               'Pick Up Address in UAE',
                               style: TextStyle(
                                 color: AppColors.formsHintFontLight,
@@ -255,7 +269,6 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                               ),
                             ),
                           ),
-
                           SelectPlaceWidget(
                             location: pickUpLocation,
                             showingList: placesList,
@@ -270,7 +283,7 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                             child: RebiInput(
                               hintText: 'Pickup contact name'.tra,
                               controller: pickUpContactName,
-                              keyboardType: TextInputType.name,
+                              keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.done,
                               autoValidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -286,7 +299,9 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                               },
                             ),
                           ),
-                         PhoneNumberFieldWidget(countryCode: pickUpCountryCode, phoneNumber: pickUpContactNumber),
+                          PhoneNumberFieldWidget(
+                              countryCode: pickUpCountryCode,
+                              phoneNumber: pickUpContactNumber),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: kPadding, vertical: 6),
@@ -316,7 +331,8 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 7,horizontal: kPadding),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 7, horizontal: kPadding),
                             child: DropDownWidget(
                               items: equipments,
                               selected: selectedEquipment,
@@ -326,13 +342,15 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                                 });
                               },
                               validator: (value) {
-                                return Validator.requiredValidator(selectedEquipment);
+                                return Validator.requiredValidator(
+                                    selectedEquipment);
                               },
                               hint: 'Equipment Tack',
                             ),
                           ),
                           const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: kPadding,vertical: 5),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: kPadding, vertical: 5),
                             child: CustomDivider(),
                           ),
                           Visibility(
@@ -343,10 +361,10 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                               child: RebiInput(
                                 hintText: 'Exporting country'.tra,
                                 controller: exportingCountry,
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.done,
                                 autoValidateMode:
-                                AutovalidateMode.onUserInteraction,
+                                    AutovalidateMode.onUserInteraction,
                                 onTap: () {
                                   showCountryPicker(
                                       context: context,
@@ -354,7 +372,7 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                                       countryListTheme: CountryListThemeData(
                                         flagSize: 25,
                                         backgroundColor:
-                                        AppColors.backgroundColorLight,
+                                            AppColors.backgroundColorLight,
                                         textStyle: const TextStyle(
                                             fontSize: 16,
                                             color: AppColors.blackLight),
@@ -400,12 +418,10 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                                       onSelect: (Country country) {
                                         exportingCountry.text = country.name;
                                         setState(() {
-                                          selectedCountryIso2=country.countryCode;
+                                          selectedCountryIso2 =
+                                              country.countryCode;
                                         });
-
-                                      }
-
-                                  );
+                                      });
                                 },
                                 isOptional: false,
                                 color: AppColors.formsLabel,
@@ -426,10 +442,10 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                             child: RebiInput(
                               hintText: 'Drop Location'.tra,
                               controller: dropLocation,
-                              keyboardType: TextInputType.name,
+                              keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.done,
                               autoValidateMode:
-                              AutovalidateMode.onUserInteraction,
+                                  AutovalidateMode.onUserInteraction,
                               isOptional: false,
                               color: AppColors.formsLabel,
                               readOnly: false,
@@ -448,10 +464,10 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                             child: RebiInput(
                               hintText: 'Drop contact name'.tra,
                               controller: dropContactName,
-                              keyboardType: TextInputType.name,
+                              keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.done,
                               autoValidateMode:
-                              AutovalidateMode.onUserInteraction,
+                                  AutovalidateMode.onUserInteraction,
                               isOptional: false,
                               color: AppColors.formsLabel,
                               readOnly: false,
@@ -469,58 +485,73 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                               phoneNumber: dropContactNumber),
                         ],
                       ),
-                      const SizedBox(height: 14,),
+                      const SizedBox(
+                        height: 14,
+                      ),
                       const Spacer(),
                       Padding(
                         padding:
                             const EdgeInsets.symmetric(horizontal: kPadding),
                         child: RebiButton(
                             onPressed: () {
-                              phoneNumber=pickUpCountryCode.text + pickUpContactNumber.text;
+                              phoneNumber = pickUpCountryCode.text +
+                                  pickUpContactNumber.text;
+                              if (widget.isFromEditing) {
+                                DateFormat formatter =
+                                    DateFormat('dd MMM yyyy');
+                                formatted =
+                                    formatter.format(widget.estimatedDate!);
+                              }
 
-                              localHorseCubit
-                                  .createTrip(CreateTripSuccessfully(
+                              localHorseCubit.createTrip(CreateTripSuccessfully(
                                   item: Trip(
-                                    tripId: v1,
-                                    shippingEstimatedDate: estimatedDate!.text,
-                                    exportingCountry: widget.isFromEditing?widget.exportCountry!:selectedCountryIso2 ?? 'AE',
-                                    pickupLocation:
-                                    pickUpLocation.text,
-                                    pickupContactName: pickUpContactName.text,
-                                    equipmentTask: selectedEquipment.toString(),
-                                    numberOfHorses: int.parse(numberOfHorses.text),
-                                    importingCountry: widget.isFromEditing?widget.importCountry!:selectedCountryIso2??"AE",
-                                    type: 'export',
-                                    pickupCountryCode: pickUpCountryCode.text,
-                                    pickupPhoneNumber: pickUpContactNumber.text,
-                                    dropLocation: dropLocation.text,
-                                    dropContactName: dropContactName.text,
-                                    dropCountryCode: dropContactCountryCode.text,
-                                    dropPhoneNumber: dropContactNumber.text,
-                                    horses: [],
-                                  )));
+                                tripId: v1,
+                                shippingEstimatedDate: widget.isFromEditing
+                                    ? formatted!
+                                    : estimatedDate!.text,
+                                exportingCountry: widget.isFromEditing
+                                    ? widget.exportCountry!
+                                    : selectedCountryIso2 ?? 'AE',
+                                pickupLocation: pickUpLocation.text,
+                                pickupContactName: pickUpContactName.text,
+                                equipmentTask: selectedEquipment.toString(),
+                                numberOfHorses: int.parse(numberOfHorses.text),
+                                importingCountry: widget.isFromEditing
+                                    ? widget.importCountry!
+                                    : selectedCountryIso2 ?? "AE",
+                                type: 'export',
+                                pickupCountryCode: pickUpCountryCode.text,
+                                pickupPhoneNumber: pickUpContactNumber.text,
+                                dropLocation: dropLocation.text,
+                                dropContactName: dropContactName.text,
+                                dropCountryCode: dropContactCountryCode.text,
+                                dropPhoneNumber: dropContactNumber.text,
+                                horses: [],
+                              )));
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           ChoseShippingHorseScreen(
                                             serviceModel: ShippingServiceModel(
-                                              pickupContactName:
-                                                  pickUpContactName.text,
-                                              pickupLocation:
-                                                  pickUpLocation.text,
-                                              horsesNumber: numberOfHorses.text,
-                                              pickupContactNumber:
-                                                  pickUpContactNumber.text,
-                                              shipmentEstimatedDate: pickDate,
+                                                pickupContactName:
+                                                    pickUpContactName.text,
+                                                pickupLocation:
+                                                    pickUpLocation.text,
+                                                horsesNumber:
+                                                    numberOfHorses.text,
+                                                pickupContactNumber:
+                                                    pickUpContactNumber.text,
+                                                shipmentEstimatedDate: pickDate,
                                                 tripId: v1,
-
-                                              notes: notes.text,
-                                              equipment:
-                                                  selectedEquipment,
-                                              selectedCountry: widget.isFromEditing?widget.exportCountry!:selectedCountryIso2??"AE",
-                                              serviceType: 'Export'
-                                            ),
+                                                notes: notes.text,
+                                                equipment: selectedEquipment,
+                                                selectedCountry:
+                                                    widget.isFromEditing
+                                                        ? widget.exportCountry!
+                                                        : selectedCountryIso2 ??
+                                                            "AE",
+                                                serviceType: 'Export'),
                                           )));
                             },
                             child: const Text("Next")),

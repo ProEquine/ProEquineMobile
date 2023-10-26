@@ -7,11 +7,13 @@ import 'package:proequine/features/horses/presentation/screens/add_horse_screen.
 import 'package:proequine/features/horses/presentation/screens/horse_profile_screen.dart';
 import 'package:proequine/features/horses/presentation/widgets/horse_card-widget.dart';
 import 'package:proequine/features/horses/presentation/widgets/cards_loading_widget.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../core/widgets/custom_header.dart';
+import '../../../../core/constants/routes/routes.dart';
+import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import '../../../../core/widgets/verify_dialog.dart';
+import '../../../manage_account/data/verify_email_route.dart';
 
 class MainHorsesScreen extends StatefulWidget {
   const MainHorsesScreen({Key? key}) : super(key: key);
@@ -58,9 +60,37 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
   bool isScrolled = false;
   late Timer timer;
 
+  Future<bool> checkVerificationStatus() async {
+    if (AppSharedPreferences.getEmailVerified!) {
+      return true;
+    } else {
+      await Future.delayed(
+          const Duration(milliseconds: 50)); // Simulating an asynchronous call
+      return false;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    checkVerificationStatus().then((verified) {
+      if (!verified) {
+        // If the account is not verified, show a dialog after a delay.
+        Future.delayed(const Duration(milliseconds: 50), () {
+          showUnverifiedAccountDialog(
+            context: context,
+            isThereNavigationBar: true,
+            onPressVerify: () {
+              Navigator.pushNamed(context, verifyEmail,
+                  arguments: VerifyEmailRoute(
+                      type: 'Horses',
+                      email: AppSharedPreferences.userEmailAddress))
+                  .then((value) {});
+            },
+          );
+        });
+      }
+    });
     // Set a timer for 3 seconds
     timer = Timer(const Duration(seconds: 5), () {
       setState(() {

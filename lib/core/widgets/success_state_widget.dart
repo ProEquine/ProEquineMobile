@@ -4,14 +4,14 @@ import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../features/manage_account/data/verify_phone_route.dart';
+import '../../features/manage_account/data/basic_account_management_route.dart';
 import '../constants/colors/app_colors.dart';
 import '../constants/constants.dart';
 
 class SuccessStateScreen extends StatefulWidget {
   String? title;
   bool isThereButton = false;
-  bool isItVerifyPhone=true;
+  bool isItVerifyPhone = true;
   Function? onButtonPressed;
   String? buttonText;
 
@@ -19,7 +19,7 @@ class SuccessStateScreen extends StatefulWidget {
       {Key? key,
       this.title,
       this.isThereButton = false,
-        this.isItVerifyPhone=true,
+      this.isItVerifyPhone = true,
       this.onButtonPressed,
       this.buttonText})
       : super(key: key);
@@ -44,14 +44,15 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
     _controller.dispose();
     super.dispose();
   }
-  VerifyPhoneRoute? verifyPhoneRoute=VerifyPhoneRoute();
+
+  BasicAccountManagementRoute? verifyPhoneRoute = BasicAccountManagementRoute();
 
   @override
   Widget build(BuildContext context) {
-    if(widget.isItVerifyPhone){
-      verifyPhoneRoute = ModalRoute.of(context)?.settings.arguments as VerifyPhoneRoute;
+    if (widget.isItVerifyPhone) {
+      verifyPhoneRoute = ModalRoute.of(context)?.settings.arguments
+          as BasicAccountManagementRoute;
     }
-
 
     return Scaffold(
       body: Column(
@@ -63,9 +64,12 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
           ),
           Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25.0.w, vertical: 10),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
               child: Lottie.asset(
-                'assets/animation/PE Success.json',
+                'assets/animation/Success.json',
+                height: 250,
+                width: 250,
                 controller: _controller,
                 onLoaded: (composition) {
                   // Configure the AnimationController with the duration of the
@@ -75,19 +79,16 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
                       ..duration = composition.duration
                       ..forward();
                   } else {
-
-                    if(verifyPhoneRoute?.type=='accountInfo'){
+                    if (verifyPhoneRoute?.type == 'manageAccount') {
                       _controller
                         ..duration = composition.duration
                         ..forward().whenComplete(() =>
-                            Navigator.popAndPushNamed(context, accountInfo,arguments: true));
-                    }else{
+                            Navigator.popUntil(context, (route) => route.isFirst));
+                    } else {
                       _controller
                         ..duration = composition.duration
-                        ..forward().whenComplete(() =>
-                            Navigator.pop(context));
+                        ..forward().whenComplete(() => Navigator.pop(context));
                     }
-
                   }
                 },
               ),
@@ -97,11 +98,10 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0.w),
               child: Text(
-
-                widget.title??verifyPhoneRoute!.title!,
+                widget.title ?? verifyPhoneRoute!.title!,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    color: AppColors.white,
+                    color: AppColors.blackLight,
                     fontWeight: FontWeight.w600,
                     fontSize: 20),
               ),

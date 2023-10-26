@@ -4,12 +4,12 @@ class SendMailVerificationRequestModel {
   SendMailVerificationRequestModel({this.email});
 
   SendMailVerificationRequestModel.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
+    email = json['Email'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['email'] = email;
+    data['Email'] = email;
     return data;
   }
 }

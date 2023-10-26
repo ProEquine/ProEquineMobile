@@ -3,10 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
+import 'package:proequine/features/equine_info/data/update_main_stable_request_model.dart';
+import 'package:proequine/features/equine_info/domain/equine_info_cubit.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/global_functions/global_statics_drop_down.dart';
 import '../../../../core/utils/Printer.dart';
@@ -15,16 +19,21 @@ import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
 import '../../../../core/widgets/stables_widget.dart';
+import '../../../manage_account/data/basic_account_management_route.dart';
 
 class UpdateMainStableScreen extends StatefulWidget {
   String mainStable;
-  UpdateMainStableScreen({Key? key,required this.mainStable}) : super(key: key);
+
+  UpdateMainStableScreen({Key? key, required this.mainStable})
+      : super(key: key);
 
   @override
   State<UpdateMainStableScreen> createState() => _UpdateMainStableScreenState();
 }
 
 class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
+  EquineInfoCubit cubit = EquineInfoCubit();
+
   // final UserCubit cubit = UserCubit();
   void changeToTrueValue() {
     setState(() {
@@ -37,6 +46,7 @@ class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
       isChooseToAddStable = false;
     });
   }
+
   String? selectedMainStable;
   String? selectedEmirate;
   late final TextEditingController _mainStableName;
@@ -55,7 +65,7 @@ class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
     stableId = TextEditingController();
     _mainStableName = TextEditingController();
     stable = TextEditingController(text: widget.mainStable);
-    selectedMainStable=widget.mainStable;
+    selectedMainStable = widget.mainStable;
     super.initState();
   }
 
@@ -88,14 +98,13 @@ class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
               key: _formKey,
               child: SingleChildScrollView(
                 child: ConstrainedBox(
-                  constraints:
-                  BoxConstraints(minHeight: constraint.maxHeight),
+                  constraints: BoxConstraints(minHeight: constraint.maxHeight),
                   child: IntrinsicHeight(
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: kPadding),
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: kPadding),
                           child: Column(
                             children: [
                               Align(
@@ -118,7 +127,6 @@ class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
                               SelectStableWidget(
                                 stableId: stableId,
                                 stableName: stable,
-                                showingStablesList: stables,
                                 changeTrue: changeToTrueValue,
                                 changeFalse: changeToFalseValue,
                               ),
@@ -152,26 +160,23 @@ class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
                                 visible: isChooseToAddStable,
                                 child: Padding(
                                   padding:
-                                  const EdgeInsets.symmetric(vertical: 7),
+                                      const EdgeInsets.symmetric(vertical: 7),
                                   child: RebiInput(
                                     hintText: 'Stable Name'.tra,
                                     controller: _mainStableName,
                                     scrollPadding:
-                                    const EdgeInsets.only(bottom: 100),
-                                    keyboardType: TextInputType.name,
+                                        const EdgeInsets.only(bottom: 100),
+                                    keyboardType: TextInputType.text,
                                     textInputAction: TextInputAction.done,
                                     autoValidateMode:
-                                    AutovalidateMode.onUserInteraction,
+                                        AutovalidateMode.onUserInteraction,
                                     isOptional: false,
-                                    onChanged: (value){
-                                      setState(() {
-
-                                      });
+                                    onChanged: (value) {
+                                      setState(() {});
                                     },
                                     color: AppColors.formsLabel,
                                     readOnly: false,
-                                    contentPadding:
-                                    const EdgeInsets.symmetric(
+                                    contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 13),
                                     obscureText: false,
                                     validator: (value) {
@@ -185,26 +190,23 @@ class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
                                 visible: isChooseToAddStable,
                                 child: Padding(
                                   padding:
-                                  const EdgeInsets.symmetric(vertical: 7),
+                                      const EdgeInsets.symmetric(vertical: 7),
                                   child: RebiInput(
                                     hintText: 'Location'.tra,
                                     controller: _mainStableLocation,
-                                    onChanged: (value){
-                                      setState(() {
-
-                                      });
+                                    onChanged: (value) {
+                                      setState(() {});
                                     },
                                     scrollPadding:
-                                    const EdgeInsets.only(bottom: 100),
-                                    keyboardType: TextInputType.url,
+                                        const EdgeInsets.only(bottom: 100),
+                                    keyboardType: TextInputType.text,
                                     textInputAction: TextInputAction.done,
                                     autoValidateMode:
-                                    AutovalidateMode.onUserInteraction,
+                                        AutovalidateMode.onUserInteraction,
                                     isOptional: false,
                                     color: AppColors.formsLabel,
                                     readOnly: false,
-                                    contentPadding:
-                                    const EdgeInsets.symmetric(
+                                    contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 13),
                                     obscureText: false,
                                     validator: (value) {
@@ -218,7 +220,7 @@ class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
                                 visible: isChooseToAddStable,
                                 child: Padding(
                                   padding:
-                                  const EdgeInsets.symmetric(vertical: 7),
+                                      const EdgeInsets.symmetric(vertical: 7),
                                   child: DropDownWidget(
                                     items: emirate,
                                     selected: selectedEmirate,
@@ -244,29 +246,51 @@ class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
                           padding: const EdgeInsets.symmetric(
                             horizontal: 20,
                           ),
-                          child: RebiButton(
-                            backgroundColor: (stable.text.isNotEmpty  &&
-                                stable.text != 'Add Your Stable') ||
-                                (selectedEmirate != null &&
-                                    _mainStableName.text.isNotEmpty &&
-                                    _mainStableLocation.text.isNotEmpty)
-                                ? AppColors.yellow
-                                : AppColors.formsLabel,
-                            onPressed: () {
-                              if ((stable.text.isNotEmpty  &&
-                                  stable.text  != 'Add Your Stable') ||
-                                  (selectedEmirate != null &&
-                                      _mainStableName.text.isNotEmpty &&
-                                      _mainStableLocation.text.isNotEmpty)) {
-
-                                Navigator.pop(context);
-
-                              } else {
-                                RebiMessage.error(
-                                    msg: 'Please select your main stable', context: context);
-                              }
+                          child: BlocConsumer<EquineInfoCubit, EquineInfoState>(
+                            bloc: cubit,
+                            listener: (context, state) {
+                            if(state is UpdateMainStableSuccessful){
+                              Navigator.pushReplacementNamed(
+                                  context, successScreen,
+                                  arguments: BasicAccountManagementRoute(
+                                      type: 'manageAccount',
+                                      title:
+                                      "Support Request has been created."));
+                            }else if(state is UpdateMainStableError){
+                              RebiMessage.error(msg: state.message!, context: context);
+                            }
                             },
-                            child: const Text("Submit"),
+                            builder: (context, state) {
+                              if(state is UpdateMainStableLoading){
+                                return LoadingCircularWidget();
+                              }
+                              return RebiButton(
+                                backgroundColor: (stable.text.isNotEmpty &&
+                                            stable.text != 'Add Your Stable') ||
+                                        (selectedEmirate != null &&
+                                            _mainStableName.text.isNotEmpty &&
+                                            _mainStableLocation.text.isNotEmpty)
+                                    ? AppColors.yellow
+                                    : AppColors.formsLabel,
+                                onPressed: () {
+                                  if ((stable.text.isNotEmpty &&
+                                          stable.text != 'Add Your Stable') ||
+                                      (selectedEmirate != null &&
+                                          _mainStableName.text.isNotEmpty &&
+                                          _mainStableLocation
+                                              .text.isNotEmpty)) {
+                                    _onPressUpdate();
+
+                                    // Navigator.pop(context);
+                                  } else {
+                                    RebiMessage.error(
+                                        msg: 'Please select your main stable',
+                                        context: context);
+                                  }
+                                },
+                                child: const Text("Submit"),
+                              );
+                            },
                           ),
                         ),
                         const SizedBox(
@@ -284,67 +308,13 @@ class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
     );
   }
 
-  // _buildChooseStableConsumer() {
-  //   return BlocConsumer<UserCubit, UserState>(
-  //       bloc: cubit,
-  //       builder: (context, state) {
-  //         if (state is SelectInterestsLoading) {
-  //           return const LoadingCircularWidget();
-  //         } else if (state is SelectInterestsError) {
-  //           RebiMessage.error(msg: state.message!, context: context);
-  //         }
-  //         {
-  //           return RebiButton(
-  //             backgroundColor: (selectedMainStable != null &&
-  //                 selectedMainStable != 'Add Your Stable') ||
-  //                 (selectedEmirate != null &&
-  //                     _mainStableName.text.isNotEmpty &&
-  //                     _mainStableLocation.text.isNotEmpty)
-  //                 ? AppColors.yellow
-  //                 : AppColors.formsLabel,
-  //             onPressed: () {
-  //               if ((selectedMainStable != null&&
-  //                   selectedMainStable != 'Add Your Stable') ||
-  //                   (selectedEmirate != null &&
-  //                       _mainStableName.text.isNotEmpty &&
-  //                       _mainStableLocation.text.isNotEmpty)) {
-  //                 _onPressConfirm();
-  //               } else {
-  //                 RebiMessage.error(
-  //                     msg: 'Please select your main stable', context: context);
-  //               }
-  //             },
-  //             child: const Text("Next"),
-  //           );
-  //         }
-  //       },
-  //       listener: (context, state) {
-  //         // if (state is SelectInterestsSuccessful) {
-  //         //   AppSharedPreferences.typeSelected = true;
-  //         //   Navigator.push(
-  //         //       context,
-  //         //       MaterialPageRoute(
-  //         //           builder: (context) => const BottomNavigation()));
-  //         // } else if (state is SelectInterestsError) {
-  //         //   RebiMessage.error(msg: state.message!, context: context);
-  //         // }
-  //       });
-  // }
-  //
-  // _onPressConfirm() {
-  //   Print("selected location ${_mainStableLocation.text}");
-  //   Print("selected main stable ${_mainStableName.text}");
-  //   Print("selected emirate $selectedEmirate");
-  //   Print("selected main $selectedMainStable");
-  //   Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //           builder: (context) => const BottomNavigation()));
-  //   // return cubit
-  //   //   ..interests(InterestsRequestModel(
-  //   //     phoneNumber: AppSharedPreferences.userPhoneNumber,
-  //   //     interest: 'interest',
-  //   //     type: 'userType',
-  //   //   ));
-  // }
+  _onPressUpdate() {
+    cubit.updateMainStable(UpdateMainStableRequestModel(
+      stableId: int.parse(stableId.text),
+      stableName: stable.text,
+      isNewStable: isChooseToAddStable,
+      emirate: selectedEmirate,
+      location: _mainStableLocation.text,
+    ));
+  }
 }

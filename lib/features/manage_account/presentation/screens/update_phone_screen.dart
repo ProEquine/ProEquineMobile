@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
+import 'package:proequine/features/user/data/send_verification_request_model.dart';
+import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/constants.dart';
@@ -20,7 +22,7 @@ class UpdatePhoneScreen extends StatelessWidget {
   final TextEditingController _countryCode =
       TextEditingController(text: "+971");
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  ManageAccountCubit cubit = ManageAccountCubit();
+  UserCubit cubit = UserCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +62,10 @@ class UpdatePhoneScreen extends StatelessWidget {
             const Spacer(),
             Padding(
               padding: const EdgeInsets.all(kPadding),
-              child: BlocConsumer<ManageAccountCubit, ManageAccountState>(
+              child: BlocConsumer<UserCubit, UserState>(
                 bloc: cubit,
                 builder: (context, state) {
-                  if (state is SendPhoneLoading) {
+                  if (state is SendVerificationLoading) {
                     return const LoadingCircularWidget();
                   }
                   return RebiButton(
@@ -77,11 +79,11 @@ class UpdatePhoneScreen extends StatelessWidget {
                       child: const Text("Update"));
                 },
                 listener: (context, state) {
-                  if (state is SendPhoneSuccessful) {
+                  if (state is SendVerificationSuccessful) {
                     Navigator.pushReplacementNamed(context, verifyUpdatePhone,
                         arguments: _countryCode.text + _phone.text);
 
-                  } else if (state is SendPhoneError) {
+                  } else if (state is SendVerificationError) {
                     RebiMessage.error(msg: state.message!, context: context);
                   }
                 },
@@ -97,8 +99,8 @@ class UpdatePhoneScreen extends StatelessWidget {
   }
 
   onSendPhone() {
-    return cubit.sendPhoneNumber(EditPhoneRequestModel(
-      newPhoneNumber: _countryCode.text + _phone.text,
+    return cubit.sendVerificationCode(SendVerificationRequestModel(
+      phoneNumber: _countryCode.text + _phone.text,
     ));
   }
 }

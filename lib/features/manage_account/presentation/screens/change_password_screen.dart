@@ -288,11 +288,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 
   onPressChange() {
-    return cubit.changePassword(ChangePasswordRequestModel(
-      phoneNumber: AppSharedPreferences.userPhoneNumber,
-      oldPassword: _oldPassword.text,
-      password: _newPassword.text,
-      confirmPassword: _confirmNewPassword.text,
+    return cubit.changePassword(UpdatePasswordRequestModel(
+      currentPassword: _oldPassword.text,
+      newPassword: _newPassword.text,
     ));
   }
 }

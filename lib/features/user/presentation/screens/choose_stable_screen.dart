@@ -120,7 +120,6 @@ class _ChoseStableScreenState extends State<ChoseStableScreen> {
                                   SelectStableWidget(
                                     stableId: stableId,
                                     stableName: stable,
-                                    showingStablesList: cubit.stablesNames,
                                     changeTrue: changeToTrueValue,
                                     changeFalse: changeToFalseValue,
                                   ),

@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
-import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
-import 'package:proequine/features/user/data/send_verification_request_model.dart';
+import 'package:proequine/features/user/data/send_mail_request_model.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/reset_password_screen.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/utils/validator.dart';
-import '../../../../core/widgets/custom_logo_widget.dart';
-import '../../../../core/widgets/phone_number_field_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../widgets/register_header.dart';
@@ -27,24 +23,19 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  late final TextEditingController _phone;
-  late final TextEditingController _countryCode;
+  late final TextEditingController email;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final UserCubit cubit = UserCubit();
-  String? dob = '';
-  String? phoneNumber;
 
   @override
   void initState() {
-    _phone = TextEditingController();
-    _countryCode = TextEditingController(text: "+971");
+    email = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    _phone.dispose();
-    _countryCode.dispose();
+    email.dispose();
     cubit.close();
     super.dispose();
   }
@@ -70,7 +61,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               const EdgeInsets.symmetric(horizontal: kPadding),
                           child: Column(
                             children: [
-                               Align(
+                              Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text("Forgot your password",
                                     style: AppStyles.mainTitle),
@@ -78,16 +69,37 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               const SizedBox(
                                 height: 10,
                               ),
-                               Align(
+                              Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text("please verify your phone number",
+                                child: Text("please enter your email",
                                     style: AppStyles.descriptions),
                               ),
                               const SizedBox(
                                 height: 10,
                               ),
-                              PhoneNumberFieldWidget(countryCode: _countryCode, phoneNumber: _phone),
-
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 7),
+                                child: RebiInput(
+                                  hintText: 'Email'.tra,
+                                  controller: email,
+                                  scrollPadding:
+                                      const EdgeInsets.only(bottom: 100),
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  autoValidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  isOptional: false,
+                                  color: AppColors.formsLabel,
+                                  readOnly: false,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 13),
+                                  obscureText: false,
+                                  validator: (value) {
+                                    return Validator.emailValidator(email.text);
+                                  },
+                                ),
+                              ),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 20),
@@ -99,30 +111,28 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                     }
                                     return RebiButton(
                                         onPressed: () {
-                                          phoneNumber=_countryCode.text+_phone.text;
                                           if (_formKey.currentState!
                                               .validate()) {
-                                            FocusManager.instance.primaryFocus?.unfocus();
-                                            _sendVerificationRequest(
-                                                phone: _countryCode.text + _phone.text);
+                                            FocusManager.instance.primaryFocus
+                                                ?.unfocus();
+                                            _sendVerificationRequest();
                                           } else {}
                                         },
                                         child: const Text("Verify"));
                                   },
                                   listener: (context, state) {
                                     if (state is ForgotPasswordSuccessful) {
-                                      AppSharedPreferences.inputPhoneNumber =
-                                          _countryCode.text + _phone.text;
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   ResetPasswordScreen(
-                                                    phone: phoneNumber,
-                                                    token: state.model!.token,
+                                                    email: email.text,
                                                   )));
                                     } else if (state is ForgotPasswordError) {
-                                      RebiMessage.error(msg: state.message!,context: context);
+                                      RebiMessage.error(
+                                          msg: state.message!,
+                                          context: context);
                                     }
                                   },
                                 ),
@@ -145,20 +155,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  _sendVerificationRequest({
-    String? phone,
-  }) {
-    //   return cubit.forgotPassword(
-    //       SendVerificationRequestModel(phoneNumber: phone, channel: "sms"));
-    // }
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                ResetPasswordScreen(
-                  phone: _countryCode.text +
-                      _phone.text,
-                  token: 'state.model!.token',
-                )));
+  _sendVerificationRequest() {
+    cubit.forgotPassword(SendMailVerificationRequestModel(
+      email: email.text,
+    ));
   }
 }

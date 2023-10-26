@@ -7,6 +7,7 @@ import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
+import 'package:proequine/features/manage_account/data/update_main_number_request_model.dart';
 import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui' as ui;
@@ -16,13 +17,16 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/constants/thems/pin_put_theme.dart';
 import '../../../../core/widgets/custom_header.dart';
+import '../../../../core/widgets/divider.dart';
 import '../../../../core/widgets/rebi_button.dart';
-import '../../data/update_phone_request_model.dart';
-import '../../data/verify_phone_route.dart';
+import '../../../user/data/send_verification_request_model.dart';
+import '../../../user/domain/user_cubit.dart';
+import '../../data/basic_account_management_route.dart';
 
 class VerifyUpdatedPhoneScreen extends StatefulWidget {
+ final String? phoneNumber;
   const VerifyUpdatedPhoneScreen({
-    super.key,
+    super.key, this.phoneNumber,
   });
 
   @override
@@ -102,6 +106,7 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
                         child: Directionality(
                           textDirection: ui.TextDirection.ltr,
                           child: Pinput(
+                            keyboardType: TextInputType.text,
                             scrollPadding: EdgeInsets.only(bottom: 50.h),
                             preFilledWidget: Container(
                               width: 30,
@@ -158,7 +163,6 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
                         child: Text(
                           "Haven’t received a code?",
                           style: TextStyle(
-                              color: AppColors.white,
                               fontSize: 14.0,
                               fontFamily: 'notosan',
                               fontWeight: FontWeight.w500),
@@ -167,70 +171,71 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      const Divider(
-                        height: 10,
-                        thickness: 3,
-                        color: AppColors.borderColor,
-                        endIndent: 30.0,
-                        indent: 30.0,
-                      ),
+                      const CustomDivider(),
                       const SizedBox(
                         height: 20,
                       ),
                       isResendCode
                           ? Center(
-                              child: Text(
-                              _formatDuration(Duration(seconds: _secondsLeft))
-                                  .toString(),
-                              style: const TextStyle(
-                                  color: AppColors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700),
-                            ))
+                          child: Text(
+                            _formatDuration(
+                                Duration(seconds: _secondsLeft))
+                                .toString(),
+                            style: const TextStyle(
+                                fontSize: 16,
+                                color: AppColors.yellow,
+                                fontWeight: FontWeight.w700),
+                          ))
                           : Center(
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    isResendCode = true;
-                                  });
+                        child: InkWell(
+                          onTap: () {
+                            setState(() {
+                              context
+                                  .read<UserCubit>()
+                                  .sendVerificationCode(
+                                  SendVerificationRequestModel(
+                                    phoneNumber: phone
+                                  ));
+                              isResendCode = true;
+                            });
 
-                                  _startTimer();
-                                  // Navigator.push(context,
-                                  //     MaterialPageRoute(builder: (context) => LoginScreen()));
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 25, vertical: 7),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff161616),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                          color: Colors.white, spreadRadius: 1),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: const [
-                                      Text(
-                                        "Resend Code",
-                                        style: TextStyle(
-                                            color: AppColors.white,
-                                            fontFamily: "notosan"),
-                                      ),
-                                      SizedBox(
-                                        width: 4,
-                                      ),
-                                      Icon(
-                                        Icons.refresh,
-                                        color: AppColors.white,
-                                        size: 20,
-                                      )
-                                    ],
-                                  ),
-                                ),
+                            _startTimer();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 25, vertical: 7),
+                            clipBehavior: Clip.antiAlias,
+                            decoration: ShapeDecoration(
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    width: 0.50,
+                                    color: AppColors.yellow),
+                                borderRadius:
+                                BorderRadius.circular(8),
                               ),
                             ),
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "Resend Code",
+                                  style: TextStyle(
+                                      color: AppColors.yellow,
+                                      fontFamily: "notosan"),
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Icon(
+                                  Icons.refresh,
+                                  size: 20,
+                                  color: AppColors.yellow,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                       const SizedBox(
                         height: 30,
                       ),
@@ -241,8 +246,8 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
                             AppSharedPreferences.inputPhoneNumber = phone;
                             Navigator.pushReplacementNamed(
                                 context, successScreen,
-                                arguments: VerifyPhoneRoute(
-                                    type: 'accountInfo',
+                                arguments: BasicAccountManagementRoute(
+                                    type: 'manageAccount',
                                     title: "Phone Updated Successfully"));
                           } else if (state is UpdatePhoneError) {
                             RebiMessage.error(msg: state.message!,context: context);
@@ -259,7 +264,7 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
                                 onPressVerify(phone);
                               } else {}
                             },
-                            backgroundColor: AppColors.white,
+
                             child: const Text("Confirm"),
                           );
                         },
@@ -280,10 +285,9 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
 
   onPressVerify(String phone) {
     return cubit
-      ..updatePhoneNumber(UpdatePhoneRequestModel(
-        previousPhoneNumber: AppSharedPreferences.userPhoneNumber,
-        newPhoneNumber: phone,
-        code: _pinPutController.text,
+      ..updatePhoneNumber(UpdateMainNumberRequestModel(
+        phoneNumber: phone,
+        verificationCode: _pinPutController.text,
       ));
   }
 }

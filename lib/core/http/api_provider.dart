@@ -6,7 +6,6 @@ import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
 import 'package:proequine/core/http/path_provider.dart';
 
-
 import '../CoreModels/base_response_model.dart';
 import '../CoreModels/base_result_model.dart';
 import '../constants/constants.dart';
@@ -33,8 +32,8 @@ class ApiProvider {
       required String method,
       required String url,
       Map<String, dynamic>? data,
-        CachePolicy policy=CachePolicy.refreshForceCache,
-        Duration refreshDuration=const Duration(days: 1 ),
+      CachePolicy policy = CachePolicy.refreshForceCache,
+      Duration refreshDuration = const Duration(days: 1),
       Map<String, String>? headers,
       Map<String, dynamic>? queryParameters,
       Map<String, String>? files,
@@ -62,16 +61,14 @@ class ApiProvider {
 
     dio.interceptors.add(cacheInterceptor);
 
-
-
     Options options = Options(
       headers: headers,
       method: method,
       contentType: Headers.jsonContentType,
-      receiveTimeout: 60 * 1000, // 60 seconds
+      receiveTimeout: 60 * 1000,
+      // 60 seconds
       sendTimeout: 60 * 1000,
     );
-
 
     if (files != null) {
       headers?.remove(HEADER_CONTENT_TYPE);
@@ -86,16 +83,11 @@ class ApiProvider {
       });
     }
 
-
-
-
     try {
       Response response;
       response = await dio.request(url,
           queryParameters: queryParameters,
-        options: options,
-
-          
+          options: options,
           cancelToken: cancelToken,
           data: files != null ? FormData.fromMap(data!) : data);
       // Get the decoded json
@@ -115,7 +107,6 @@ class ApiProvider {
         }
       } else {
         decodedJson = response.data;
-
       }
 
       Print(decodedJson);

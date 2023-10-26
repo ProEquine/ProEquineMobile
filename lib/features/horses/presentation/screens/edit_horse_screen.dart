@@ -329,7 +329,7 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                       child: RebiInput(
                         hintText: 'Horse Name'.tra,
                         controller: horseName,
-                        keyboardType: TextInputType.name,
+                        keyboardType: TextInputType.text,
                         textInputAction: TextInputAction.done,
                         autoValidateMode: AutovalidateMode.onUserInteraction,
                         isOptional: false,
@@ -348,7 +348,7 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                       child: RebiInput(
                         hintText: 'Date Of Birth'.tra,
                         controller: _dateOfBirth,
-                        keyboardType: TextInputType.name,
+                        keyboardType: TextInputType.text,
                         textInputAction: TextInputAction.done,
                         onTap: () {
                           selectDate(
@@ -383,7 +383,7 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                       child: RebiInput(
                         hintText: 'Place of birth'.tra,
                         controller: placeOfBirth,
-                        keyboardType: TextInputType.name,
+                        keyboardType: TextInputType.text,
                         textInputAction: TextInputAction.done,
                         onTap: () {
                           showCountryPicker(

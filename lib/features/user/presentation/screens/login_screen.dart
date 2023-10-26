@@ -120,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     controller: _email,
                                     scrollPadding:
                                         const EdgeInsets.only(bottom: 100),
-                                    keyboardType: TextInputType.emailAddress,
+                                    keyboardType: TextInputType.text,
                                     textInputAction: TextInputAction.done,
                                     autoValidateMode:
                                         AutovalidateMode.onUserInteraction,
@@ -280,6 +280,9 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         },
         listener: (context, state) {
+          if(state is LoginError){
+            RebiMessage.error(msg: state.message!, context: context);
+          }
           if (state is LoginSuccessful) {
             // RebiMessage.success(msg: state.message!);
             if (!AppSharedPreferences.getPhoneVerified!) {
@@ -293,7 +296,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const EquineInfoScreen()));
+                      builder: (context) => const UserInfoScreen()));
             } else if (!AppSharedPreferences.isStableChosen!) {
               Navigator.pushReplacement(
                   context,

@@ -1,28 +1,18 @@
-class ChangePasswordRequestModel {
-  String? phoneNumber;
-  String? oldPassword;
-  String? password;
-  String? confirmPassword;
+class UpdatePasswordRequestModel {
+  String? currentPassword;
+  String? newPassword;
 
-  ChangePasswordRequestModel(
-      {this.phoneNumber,
-        this.oldPassword,
-        this.password,
-        this.confirmPassword});
+  UpdatePasswordRequestModel({this.currentPassword, this.newPassword});
 
-  ChangePasswordRequestModel.fromJson(Map<String, dynamic> json) {
-    phoneNumber = json['phoneNumber'];
-    oldPassword = json['oldPassword'];
-    password = json['password'];
-    confirmPassword = json['confirmPassword'];
+  UpdatePasswordRequestModel.fromJson(Map<String, dynamic> json) {
+    currentPassword = json['currentPassword'];
+    newPassword = json['newPassword'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['phoneNumber'] = phoneNumber;
-    data['oldPassword'] = oldPassword;
-    data['password'] = password;
-    data['confirmPassword'] = confirmPassword;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['currentPassword'] = currentPassword;
+    data['newPassword'] = newPassword;
     return data;
   }
 }

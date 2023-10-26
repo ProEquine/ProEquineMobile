@@ -131,7 +131,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       child: RebiInput(
                                         hintText: 'First Name'.tra,
                                         controller: _firstName,
-                                        keyboardType: TextInputType.name,
+                                        keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.done,
                                         isOptional: false,
                                         color: AppColors.formsLabel,
@@ -168,7 +168,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         },
                                         hintText: 'Middle Name'.tra,
                                         controller: _middleName,
-                                        keyboardType: TextInputType.name,
+                                        keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.done,
                                         isOptional: false,
                                         color: AppColors.formsLabel,
@@ -192,7 +192,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 child: RebiInput(
                                   hintText: 'Last Name'.tra,
                                   controller: _lastName,
-                                  keyboardType: TextInputType.name,
+                                  keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.done,
                                   isOptional: false,
                                   color: AppColors.formsLabel,

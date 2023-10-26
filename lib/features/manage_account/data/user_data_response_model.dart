@@ -8,6 +8,10 @@ class UserDataResponseModel extends BaseResultModel {
   String? dob;
   String? nationality;
   String? phoneNumber;
+  String? country;
+  String? state;
+  String? city;
+  String? address;
   List<SecondaryPhoneNumbers>? secondaryPhoneNumbers;
   String? userPhoto;
 
@@ -19,6 +23,10 @@ class UserDataResponseModel extends BaseResultModel {
         this.dob,
         this.nationality,
         this.phoneNumber,
+        this.country,
+        this.state,
+        this.city,
+        this.address,
         this.secondaryPhoneNumbers,
         this.userPhoto});
 
@@ -30,6 +38,10 @@ class UserDataResponseModel extends BaseResultModel {
     dob = json['dob'];
     nationality = json['nationality'];
     phoneNumber = json['phoneNumber'];
+    country = json['country'];
+    state = json['state'];
+    city = json['city'];
+    address = json['address'];
     if (json['secondaryPhoneNumbers'] != null) {
       secondaryPhoneNumbers = <SecondaryPhoneNumbers>[];
       json['secondaryPhoneNumbers'].forEach((v) {
@@ -49,6 +61,10 @@ class UserDataResponseModel extends BaseResultModel {
     data['dob'] = dob;
     data['nationality'] = nationality;
     data['phoneNumber'] = phoneNumber;
+    data['country'] = country;
+    data['state'] = state;
+    data['city'] = city;
+    data['address'] = address;
     if (secondaryPhoneNumbers != null) {
       data['secondaryPhoneNumbers'] =
           secondaryPhoneNumbers!.map((v) => v.toJson()).toList();
@@ -70,7 +86,7 @@ class SecondaryPhoneNumbers {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     data['phoneNumber'] = phoneNumber;
     data['title'] = title;
     return data;

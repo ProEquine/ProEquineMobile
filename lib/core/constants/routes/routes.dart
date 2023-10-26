@@ -5,10 +5,11 @@ const loginRoute = '/login/';
 const registerRoute = '/register/';
 const userProfile = '/userProfile';
 const accountInfo = '/accountInformation';
-const editProfile = '/editProfile';
+const manageAccount = '/manageAccount';
 const updatePhone = '/updatePhone';
 const choseDiscipline = '/chooseDiscipline';
-const updateRole = '/updateRole';
+const addNewRole = '/addNewRole';
+const allRoles = '/allRoles';
 const updateStable = '/updateStable';
 const choseStable = '/choseStable';
 const choseUpdateStable = '/choseUpdateStable';
@@ -22,6 +23,9 @@ const verifyEmail = '/VerifyEmail';
 /// home
 const createTrip = '/createTrip';
 const createEvent = '/createEvent';
+const createMedia = '/createMedia';
+const export = '/export';
+const import = '/import';
 
 /// global
 const submitVerifyEmail = '/submitVerifyEmail';
@@ -32,4 +36,5 @@ const successScreen = '/successScreen';
 const homeRoute = '/homeRoute';
 const bookingRoute = '/homeRouteBooking';
 const inboxRoute = '/homeRouteNotifications';
+const horses = '/horses';
 

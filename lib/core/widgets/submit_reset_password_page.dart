@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:proequine/features/user/presentation/screens/login_screen.dart';
+import 'package:proequine/features/nav_bar/presentation/screens/bottomnavigation.dart';
 import 'package:sizer/sizer.dart';
 
-import '../constants/colors/app_colors.dart';
 
 class ResetPasswordSubmit extends StatefulWidget {
   const ResetPasswordSubmit({Key? key}) : super(key: key);
@@ -41,9 +40,11 @@ class _ResetPasswordSubmitState extends State<ResetPasswordSubmit>
           ),
           Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25.0.w, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
               child: Lottie.asset(
-                'assets/animation/check-Animation.json',
+                'assets/animation/Success.json',
+                height: 250,
+                width: 250,
                 controller: _controller,
                 onLoaded: (composition) {
                   // Configure the AnimationController with the duration of the
@@ -53,7 +54,7 @@ class _ResetPasswordSubmitState extends State<ResetPasswordSubmit>
                     ..forward().whenComplete(() => Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const LoginScreen())));
+                            builder: (context) => const BottomNavigation())));
                 },
               ),
             ),
@@ -65,7 +66,7 @@ class _ResetPasswordSubmitState extends State<ResetPasswordSubmit>
                 "Your password has been reset successfully",
                 textAlign: TextAlign.center,
                 style:  TextStyle(
-                    color: AppColors.white,
+                    // color: AppColors.white,
                     fontWeight: FontWeight.w600,
                     fontSize: 20),
               ),

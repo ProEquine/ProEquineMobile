@@ -100,7 +100,7 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
                           child: RebiInput(
                             hintText: widget.titleHint,
                             controller: name,
-                            keyboardType: TextInputType.name,
+                            keyboardType: TextInputType.text,
                             textInputAction: TextInputAction.done,
                             autoValidateMode:
                             AutovalidateMode.onUserInteraction,
@@ -122,7 +122,7 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
                           child: RebiInput(
                             hintText: 'Google Map Pin Location',
                             controller: location,
-                            keyboardType: TextInputType.url,
+                            keyboardType: TextInputType.text,
                             textInputAction: TextInputAction.done,
                             autoValidateMode:
                             AutovalidateMode.onUserInteraction,

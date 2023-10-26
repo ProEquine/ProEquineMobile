@@ -11,6 +11,7 @@ class AppSharedPreferences {
   static const keyUserEmailAddress = "PREF_KEY_USER_EMAIL_ADDRESS";
   static const keyPersonId = "PREF_KEY_PERSON_ID";
   static const keyEnv = "PREF_KEY_ENV";
+  static const keyUserName = "PREF_KEY_NAME";
   static const keyUserType = "PREF_KEY_USER_TYPE";
   static const keyUserInterests = "PREF_KEY_INTERESTS";
 
@@ -48,6 +49,15 @@ class AppSharedPreferences {
 
   static removePhoneNumber() => _pref?.remove(keyUserPhoneNumber);
 
+  ///  Store User Name
+  static String get getName => _pref?.read(keyUserName) ?? '';
+
+  static set inputName(String name) =>
+      _pref?.save(keyUserName, name);
+
+  static bool get hasName => _pref?.contains(keyUserName);
+
+  static removeName() => _pref?.remove(keyUserName);
   ///  Store person id
   static String get personId => _pref?.read(keyPersonId) ?? '';
 

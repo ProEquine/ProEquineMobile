@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/utils/rebi_message.dart';
+import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
+import 'package:proequine/features/equine_info/data/add_secondary_discipline_request_model.dart';
+import 'package:proequine/features/equine_info/domain/equine_info_cubit.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
 import '../../../../core/widgets/rebi_input.dart';
+import '../../../manage_account/data/basic_account_management_route.dart';
+import '../widgets/disciplines_widget.dart';
 
 class AddSecondaryDisciplineScreen extends StatefulWidget {
   const AddSecondaryDisciplineScreen({Key? key}) : super(key: key);
@@ -23,32 +31,18 @@ class AddSecondaryDisciplineScreen extends StatefulWidget {
 class _AddSecondaryDisciplineScreenState
     extends State<AddSecondaryDisciplineScreen> {
   late final TextEditingController _feId;
+  late final TextEditingController discipline;
+  late final TextEditingController disciplineId;
   late final TextEditingController _nationalId;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  List<DropdownMenuItem<String>> discipline = [
-    const DropdownMenuItem(
-      value: "Show jumping",
-      child: Text("Show jumping"),
-    ),
-    const DropdownMenuItem(
-      value: "Dressage",
-      child: Text("Dressage"),
-    ),
-    const DropdownMenuItem(
-      value: "Racing",
-      child: Text("Racing"),
-    ),
-    const DropdownMenuItem(
-      value: "Endurance",
-      child: Text("Endurance"),
-    ),
-  ];
   String? selectedDiscipline;
+  EquineInfoCubit cubit = EquineInfoCubit();
 
   @override
   void initState() {
     _feId = TextEditingController();
+    discipline = TextEditingController();
+    disciplineId = TextEditingController();
     _nationalId = TextEditingController();
     super.initState();
   }
@@ -56,6 +50,8 @@ class _AddSecondaryDisciplineScreenState
   @override
   void dispose() {
     _feId.dispose();
+    discipline.dispose();
+    disciplineId.dispose();
     _nationalId.dispose();
     super.dispose();
   }
@@ -99,24 +95,9 @@ class _AddSecondaryDisciplineScreenState
                               const SizedBox(
                                 height: 5,
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 7),
-                                child: DropDownWidget(
-                                  items: discipline,
-                                  selected: selectedDiscipline,
-                                  onChanged: (disc) {
-                                    setState(() {
-                                      selectedDiscipline = disc;
-                                      Print(
-                                          'selected gender $selectedDiscipline');
-                                    });
-                                  },
-                                  validator: (value) {
-                                    // return Validator.requiredValidator(selectedNumber);
-                                  },
-                                  hint: 'Select',
-                                ),
+                              DisciplinesWidget(
+                                discipline: discipline,
+                                disciplineId: disciplineId,
                               ),
                               Padding(
                                 padding:
@@ -144,7 +125,7 @@ class _AddSecondaryDisciplineScreenState
                                 child: RebiInput(
                                   hintText: 'FEI ID'.tra,
                                   controller: _feId,
-                                  keyboardType: TextInputType.name,
+                                  keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.done,
                                   isOptional: false,
                                   color: AppColors.formsLabel,
@@ -168,12 +149,37 @@ class _AddSecondaryDisciplineScreenState
                         Padding(
                           padding:
                               const EdgeInsets.symmetric(horizontal: kPadding),
-                          child: RebiButton(
-                            onPressed: () {},
-                            child: Text(
-                              "Submit",
-                              style: AppStyles.buttonTitle,
-                            ),
+                          child: BlocConsumer<EquineInfoCubit, EquineInfoState>(
+                            bloc: cubit,
+                            listener: (context, state) {
+                              if (state is AddSecondaryDisciplineSuccessful) {
+                                Navigator.pushReplacementNamed(
+                                    context, successScreen,
+                                    arguments: BasicAccountManagementRoute(
+                                        type: 'manageAccount',
+                                        title:
+                                            "Secondary Discipline Added Successfully"));
+                              } else if (state is AddSecondaryDisciplineError) {
+                                RebiMessage.error(
+                                    msg: state.message!, context: context);
+                              }
+                            },
+                            builder: (context, state) {
+                              if (state is AddSecondaryDisciplineLoading) {
+                                return const LoadingCircularWidget();
+                              }
+                              return RebiButton(
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    _onPressAdd();
+                                  }
+                                },
+                                child: Text(
+                                  "Submit",
+                                  style: AppStyles.buttonTitle,
+                                ),
+                              );
+                            },
                           ),
                         ),
                         const SizedBox(
@@ -189,5 +195,13 @@ class _AddSecondaryDisciplineScreenState
         ),
       ),
     );
+  }
+
+  _onPressAdd() {
+    cubit.addSecondaryDiscipline(AddSecondaryDisciplineRequestModel(
+      disciplineId: int.parse(disciplineId.text),
+      nationalId: _nationalId.text,
+      feiid: _feId.text,
+    ));
   }
 }

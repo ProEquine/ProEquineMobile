@@ -81,7 +81,6 @@ class _EquineInfoHorsesScreenState extends State<EquineInfoHorsesScreen> {
               SelectStableWidget(
                 stableId: stableId,
                 stableName: stable,
-                showingStablesList: stables,
                 changeTrue: changeToTrueValue,
                 changeFalse: changeToFalseValue,
               ),
@@ -96,7 +95,7 @@ class _EquineInfoHorsesScreenState extends State<EquineInfoHorsesScreen> {
                     hintText: 'Stable Name'.tra,
                     controller: stableName,
                     scrollPadding: const EdgeInsets.only(bottom: 100),
-                    keyboardType: TextInputType.name,
+                    keyboardType: TextInputType.text,
                     onChanged: (value) {
                       setState(() {});
                     },
@@ -122,7 +121,7 @@ class _EquineInfoHorsesScreenState extends State<EquineInfoHorsesScreen> {
                     hintText: 'Location'.tra,
                     controller: stableLocation,
                     scrollPadding: const EdgeInsets.only(bottom: 100),
-                    keyboardType: TextInputType.url,
+                    keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.done,
                     onChanged: (value) {
                       setState(() {});

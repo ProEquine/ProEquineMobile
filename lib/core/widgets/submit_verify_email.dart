@@ -59,7 +59,7 @@ class _SubmitVerifyEmailState extends State<SubmitVerifyEmail>
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 25.0.w, vertical: 10),
               child: Lottie.asset(
-                'assets/animation/check-Animation.json',
+                'assets/animation/Success.json',
                 controller: _controller,
                 onLoaded: (composition) {
                   // Configure the AnimationController with the duration of the
@@ -80,6 +80,12 @@ class _SubmitVerifyEmailState extends State<SubmitVerifyEmail>
                         ..forward().whenComplete(() =>
                             Navigator.popAndPushNamed(context, inboxRoute));
                     }
+                    else if (verifyEmailRoute.type=='Horses'){
+                      _controller
+                        ..duration = composition.duration
+                        ..forward().whenComplete(() =>
+                            Navigator.popAndPushNamed(context, horses));
+                    }
                     else if (verifyEmailRoute.type=='createTrip'){
                       _controller
                         ..duration = composition.duration
@@ -91,6 +97,24 @@ class _SubmitVerifyEmailState extends State<SubmitVerifyEmail>
                         ..duration = composition.duration
                         ..forward().whenComplete(() =>
                             Navigator.popAndPushNamed(context, createEvent,arguments: true));
+                    }
+                    else if (verifyEmailRoute.type=='createMedia'){
+                      _controller
+                        ..duration = composition.duration
+                        ..forward().whenComplete(() =>
+                            Navigator.popAndPushNamed(context, createEvent,arguments: true));
+                    }
+                    else if (verifyEmailRoute.type=='import'){
+                      _controller
+                        ..duration = composition.duration
+                        ..forward().whenComplete(() =>
+                            Navigator.popAndPushNamed(context, import,arguments: true));
+                    }
+                    else if (verifyEmailRoute.type=='export'){
+                      _controller
+                        ..duration = composition.duration
+                        ..forward().whenComplete(() =>
+                            Navigator.popAndPushNamed(context, export,arguments: true));
                     }
                     else if (verifyEmailRoute.type=='updateEmail'){
                       _controller
@@ -112,7 +136,7 @@ class _SubmitVerifyEmailState extends State<SubmitVerifyEmail>
 
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    color: AppColors.white,
+                    color: AppColors.blackLight,
                     fontWeight: FontWeight.w600,
                     fontSize: 20),
               ),

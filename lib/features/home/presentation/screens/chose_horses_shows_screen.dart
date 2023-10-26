@@ -152,7 +152,7 @@ class _ChoseShowsHorseScreenState extends State<ChoseShowsHorseScreen> {
                                             hintText: 'Select Your Horse',
                                             controller:
                                                 horsesControllers[currentIndex],
-                                            keyboardType: TextInputType.name,
+                                            keyboardType: TextInputType.text,
                                             textInputAction:
                                                 TextInputAction.done,
                                             autoValidateMode: AutovalidateMode
@@ -247,7 +247,7 @@ class _ChoseShowsHorseScreenState extends State<ChoseShowsHorseScreen> {
                                             hintText: 'Class',
                                             controller: classesControllers[
                                                 currentIndex],
-                                            keyboardType: TextInputType.name,
+                                            keyboardType: TextInputType.text,
                                             textInputAction:
                                                 TextInputAction.done,
                                             autoValidateMode: AutovalidateMode
@@ -324,7 +324,7 @@ class _ChoseShowsHorseScreenState extends State<ChoseShowsHorseScreen> {
                                             newHorsesControllers[currentIndex],
                                         scrollPadding:
                                             const EdgeInsets.only(bottom: 100),
-                                        keyboardType: TextInputType.name,
+                                        keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.done,
                                         onFieldSubmitted: (submited) {
                                           selectedHorse[currentIndex] =
@@ -546,68 +546,6 @@ class _ChoseShowsHorseScreenState extends State<ChoseShowsHorseScreen> {
       ),
     );
   }
-
-// _buildChooseStableConsumer() {
-//   return BlocConsumer<UserCubit, UserState>(
-//       bloc: cubit,
-//       builder: (context, state) {
-//         if (state is SelectInterestsLoading) {
-//           return const LoadingCircularWidget();
-//         } else if (state is SelectInterestsError) {
-//           RebiMessage.error(msg: state.message!, context: context);
-//         }
-//         {
-//           return RebiButton(
-//             backgroundColor: (selectedMainStable != null &&
-//                         selectedMainStable != 'Add Your Stable') ||
-//                     (selectedEmirate != null &&
-//                         _mainStableName.text.isNotEmpty &&
-//                         _mainStableLocation.text.isNotEmpty)
-//                 ? AppColors.yellow
-//                 : AppColors.formsLabel,
-//             onPressed: () {
-//               if ((selectedMainStable != null &&
-//                       selectedMainStable != 'Add Your Stable') ||
-//                   (selectedEmirate != null &&
-//                       _mainStableName.text.isNotEmpty &&
-//                       _mainStableLocation.text.isNotEmpty)) {
-//                 _onPressConfirm();
-//               } else {
-//                 RebiMessage.error(
-//                     msg: 'Please select your main stable', context: context);
-//               }
-//             },
-//             child: const Text("Next"),
-//           );
-//         }
-//       },
-//       listener: (context, state) {
-//         // if (state is SelectInterestsSuccessful) {
-//         //   AppSharedPreferences.typeSelected = true;
-//         //   Navigator.push(
-//         //       context,
-//         //       MaterialPageRoute(
-//         //           builder: (context) => const BottomNavigation()));
-//         // } else if (state is SelectInterestsError) {
-//         //   RebiMessage.error(msg: state.message!, context: context);
-//         // }
-//       });
-// }
-//
-// _onPressConfirm() {
-//   Print("selected location ${_mainStableLocation.text}");
-//   Print("selected main stable ${_mainStableName.text}");
-//   Print("selected emirate $selectedEmirate");
-//   Print("selected main $selectedMainStable");
-//   Navigator.push(context,
-//       MaterialPageRoute(builder: (context) => const BottomNavigation()));
-//   // return cubit
-//   //   ..interests(InterestsRequestModel(
-//   //     phoneNumber: AppSharedPreferences.userPhoneNumber,
-//   //     interest: 'interest',
-//   //     type: 'userType',
-//   //   ));
-// }
   void _handleSelected(int index, bool value, var _isSelected) {
     setState(() {
       for (int i = 0; i < _isSelected.length; i++) {

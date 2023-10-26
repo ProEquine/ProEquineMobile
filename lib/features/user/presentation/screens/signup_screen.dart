@@ -6,11 +6,8 @@ import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/features/user/presentation/screens/verify_phone_screen.dart';
 import 'package:proequine/features/user/presentation/widgets/security_cases_widget.dart';
-import 'package:sizer/sizer.dart';
 import '../../../../core/constants/colors/app_colors.dart';
-import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
-import '../../../../core/widgets/custom_logo_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../widgets/register_header.dart';
@@ -128,7 +125,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 child: RebiInput(
                                   hintText: 'Email'.tra,
                                   controller: _email,
-                                  keyboardType: TextInputType.emailAddress,
+                                  keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.done,
                                   autoValidateMode:
                                       AutovalidateMode.onUserInteraction,

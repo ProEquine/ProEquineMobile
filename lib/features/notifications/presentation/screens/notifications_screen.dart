@@ -8,7 +8,11 @@ import 'package:proequine/features/payment/presesntation/screens/payment_screen.
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../core/constants/routes/routes.dart';
+import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import '../../../../core/widgets/verify_dialog.dart';
 import '../../../horses/presentation/widgets/cards_loading_widget.dart';
+import '../../../manage_account/data/verify_email_route.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -36,6 +40,24 @@ class NotificationsScreenState extends State<NotificationsScreen> {
   @override
   void initState() {
     super.initState();
+    checkVerificationStatus().then((verified) {
+      if (!verified) {
+        // If the account is not verified, show a dialog after a delay.
+        Future.delayed(const Duration(milliseconds: 50), () {
+          showUnverifiedAccountDialog(
+            context: context,
+            isThereNavigationBar: true,
+            onPressVerify: () {
+              Navigator.pushNamed(context, verifyEmail,
+                  arguments: VerifyEmailRoute(
+                      type: 'notifications',
+                      email: AppSharedPreferences.userEmailAddress))
+                  .then((value) {});
+            },
+          );
+        });
+      }
+    });
     timer=Timer(const Duration(seconds: 5), () {
       setState(() {
         isLoading = false;
@@ -65,40 +87,15 @@ class NotificationsScreenState extends State<NotificationsScreen> {
     super.dispose();
   }
 
-  // Future<bool> checkVerificationStatus() async {
-  //   if (AppSharedPreferences.getEmailVerified!) {
-  //     return true;
-  //   } else {
-  //     await Future.delayed(
-  //         const Duration(milliseconds: 50)); // Simulating an asynchronous call
-  //     return false;
-  //   }
-  // }
-
-  // @override
-  // void initState() {
-  // checkVerificationStatus().then((verified) {
-  //   if (!verified) {
-  //     // If the account is not verified, show a dialog after a delay.
-  //     Future.delayed(const Duration(milliseconds: 50), () {
-  //       showUnverifiedAccountDialog(
-  //         context: context,
-  //         isThereNavigationBar: true,
-  //         onPressVerify: () {
-  //           Navigator.pushNamed(context, verifyEmail,
-  //                   arguments: VerifyEmailRoute(
-  //                       type: 'notifications',
-  //                       email: AppSharedPreferences.userEmailAddress))
-  //               .then((value) {});
-  //         },
-  //       );
-  //     });
-  //   }
-  // });
-  //
-  //   super.initState();
-  // }
-
+  Future<bool> checkVerificationStatus() async {
+    if (AppSharedPreferences.getEmailVerified!) {
+      return true;
+    } else {
+      await Future.delayed(
+          const Duration(milliseconds: 50)); // Simulating an asynchronous call
+      return false;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(

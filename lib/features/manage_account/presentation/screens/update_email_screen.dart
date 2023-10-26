@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/features/user/data/send_mail_request_model.dart';
 import 'package:proequine/features/user/data/update_email_request_model.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:sizer/sizer.dart';
@@ -44,7 +45,7 @@ class UpdateEmailScreen extends StatelessWidget {
               child: RebiInput(
                 hintText: 'New email'.tra,
                 controller: _email,
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
                 autoValidateMode: AutovalidateMode.onUserInteraction,
                 isOptional: false,
@@ -64,7 +65,7 @@ class UpdateEmailScreen extends StatelessWidget {
               child: BlocConsumer<UserCubit, UserState>(
                 bloc: cubit,
                 builder: (context, state) {
-                  if (state is UpdateMailLoading) {
+                  if (state is SendMailVerificationLoading) {
                     return const LoadingCircularWidget();
                   }
                   return RebiButton(
@@ -77,12 +78,12 @@ class UpdateEmailScreen extends StatelessWidget {
                       child: const Text("Update"));
                 },
                 listener: (context, state) {
-                  if (state is UpdateMailSuccessful) {
+                  if (state is SendMailVerificationSuccessful) {
                     Navigator.pushReplacementNamed(context, verifyUpdateEmail,
                         arguments: UpdateEmailRoute(
                             previousEmail: previousEmail,
                             newEmail: _email.text));
-                  } else if (state is UpdateMailError) {
+                  } else if (state is SendMailVerificationError) {
                     RebiMessage.error(msg: state.message!,context: context);
                   }
                 },
@@ -98,8 +99,8 @@ class UpdateEmailScreen extends StatelessWidget {
   }
 
   onSendMail() {
-    return cubit.updateMail(UpdateMailRequestModel(
-      newEmail: _email.text,
+    return cubit.sendMailVerificationCode(SendMailVerificationRequestModel(
+      email: _email.text,
     ));
   }
 }

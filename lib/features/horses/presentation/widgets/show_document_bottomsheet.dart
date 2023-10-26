@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:proequine/core/global_functions/global_statics_drop_down.dart';
 import 'package:proequine/core/utils/extensions.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
@@ -8,7 +7,6 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/date_time_picker.dart';
-import '../../../../core/widgets/drop_down_menu_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 
@@ -96,7 +94,7 @@ void showDocumentBottomSheet({
                               child: RebiInput(
                                 hintText: 'Doc Number'.tra,
                                 controller: docNumber,
-                                keyboardType: TextInputType.name,
+                                keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.done,
                                 autoValidateMode:
                                     AutovalidateMode.onUserInteraction,
@@ -117,7 +115,7 @@ void showDocumentBottomSheet({
                               child: RebiInput(
                                 hintText: 'Doc Title'.tra,
                                 controller: docTitle,
-                                keyboardType: TextInputType.name,
+                                keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.done,
                                 autoValidateMode:
                                     AutovalidateMode.onUserInteraction,
@@ -139,7 +137,7 @@ void showDocumentBottomSheet({
                               child: RebiInput(
                                 hintText: 'Registration Date'.tra,
                                 controller: registrationDate,
-                                keyboardType: TextInputType.name,
+                                keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.done,
                                 onTap: () {
                                   selectDate(
@@ -177,7 +175,7 @@ void showDocumentBottomSheet({
                               child: RebiInput(
                                 hintText: 'Expiry Date'.tra,
                                 controller: expiryDate,
-                                keyboardType: TextInputType.name,
+                                keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.done,
                                 onTap: () {
                                   selectDate(
@@ -215,7 +213,7 @@ void showDocumentBottomSheet({
                               child: RebiInput(
                                 hintText: 'Doc Notes'.tra,
                                 controller: docNotes,
-                                keyboardType: TextInputType.name,
+                                keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.done,
                                 autoValidateMode:
                                     AutovalidateMode.onUserInteraction,

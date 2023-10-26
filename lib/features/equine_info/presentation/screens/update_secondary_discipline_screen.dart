@@ -1,26 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
+import 'package:proequine/features/equine_info/data/delete_discipline_request_model.dart';
+import 'package:proequine/features/equine_info/data/update_secondary_discipline_request_model.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/constants/thems/app_styles.dart';
-import '../../../../core/global_functions/global_statics_drop_down.dart';
-import '../../../../core/utils/Printer.dart';
+import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
+import '../../../../core/widgets/delete_popup.dart';
+import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/rebi_input.dart';
-import '../../../../core/widgets/drop_down_menu_widget.dart';
+import '../../../manage_account/data/basic_account_management_route.dart';
+import '../../domain/equine_info_cubit.dart';
+import '../widgets/disciplines_widget.dart';
 
 class UpdateSecondaryDisciplineScreen extends StatefulWidget {
   final String secondaryDiscipline;
   final String? secondaryUserFeId;
   final String? secondaryUserNationalId;
+  final String? personDisciplineId;
 
   const UpdateSecondaryDisciplineScreen(
       {Key? key,
       required this.secondaryDiscipline,
       this.secondaryUserFeId,
+      this.personDisciplineId,
       this.secondaryUserNationalId})
       : super(key: key);
 
@@ -33,7 +42,10 @@ class _UpdateSecondaryDisciplineScreenState
     extends State<UpdateSecondaryDisciplineScreen> {
   late final TextEditingController _feId;
   late final TextEditingController _nationalId;
+  late final TextEditingController discipline;
+  late final TextEditingController disciplineId;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  EquineInfoCubit cubit = EquineInfoCubit();
 
   String? selectedDiscipline;
 
@@ -41,6 +53,8 @@ class _UpdateSecondaryDisciplineScreenState
   void initState() {
     _feId = TextEditingController();
     _nationalId = TextEditingController();
+    disciplineId = TextEditingController();
+    discipline = TextEditingController();
     selectedDiscipline = widget.secondaryDiscipline;
     if (widget.secondaryUserFeId != null &&
         widget.secondaryUserNationalId != null) {
@@ -55,6 +69,8 @@ class _UpdateSecondaryDisciplineScreenState
   void dispose() {
     _feId.dispose();
     _nationalId.dispose();
+    discipline.dispose();
+    disciplineId.dispose();
     super.dispose();
   }
 
@@ -71,10 +87,46 @@ class _UpdateSecondaryDisciplineScreenState
           thirdOptionTitle: 'Remove',
           isThereThirdOptionDelete: true,
           onPressThirdOption: () {
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => const AddSecondaryStableScreen()));
+            deleteDialog(
+                context: context,
+                deleteButton: BlocConsumer<EquineInfoCubit, EquineInfoState>(
+                  bloc: cubit,
+                  listener: (context, state) {
+                    if (state is DeleteSecondaryDisciplineSuccessful) {
+                      Navigator.pushReplacementNamed(context, successScreen,
+                          arguments: BasicAccountManagementRoute(
+                              type: 'manageAccount',
+                              title:
+                                  "Secondary Discipline Deleted Successfully"));
+                    } else if (state is DeleteSecondaryDisciplineError) {
+                      RebiMessage.error(msg: state.message!, context: context);
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is DeleteSecondaryDisciplineLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.red,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(AppColors.red),
+                        ),
+                      );
+                    }
+                    return RebiButton(
+                        height: 35,
+                        backgroundColor: AppColors.red,
+                        onPressed: () {
+                          _onPressDelete();
+                        },
+                        child: const Text(
+                          "I'm sure",
+                          style: TextStyle(
+                            color: AppColors.whiteLight,
+                          ),
+                        ));
+                  },
+                ),
+                title: "Are you sure you want to delete this discipline");
           },
         ),
       ),
@@ -123,24 +175,9 @@ class _UpdateSecondaryDisciplineScreenState
                               const SizedBox(
                                 height: 5,
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 7),
-                                child: DropDownWidget(
-                                  items: discipline,
-                                  selected: selectedDiscipline,
-                                  onChanged: (disc) {
-                                    setState(() {
-                                      selectedDiscipline = disc;
-                                      Print(
-                                          'selected disc $selectedDiscipline');
-                                    });
-                                  },
-                                  validator: (value) {
-                                    // return Validator.requiredValidator(selectedNumber);
-                                  },
-                                  hint: 'Select',
-                                ),
+                              DisciplinesWidget(
+                                discipline: discipline,
+                                disciplineId: disciplineId,
                               ),
                               Padding(
                                 padding:
@@ -148,7 +185,7 @@ class _UpdateSecondaryDisciplineScreenState
                                 child: RebiInput(
                                   hintText: 'National ID'.tra,
                                   controller: _nationalId,
-                                  keyboardType: TextInputType.name,
+                                  keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.done,
                                   isOptional: false,
                                   color: AppColors.formsLabel,
@@ -168,7 +205,7 @@ class _UpdateSecondaryDisciplineScreenState
                                 child: RebiInput(
                                   hintText: 'FEI ID'.tra,
                                   controller: _feId,
-                                  keyboardType: TextInputType.name,
+                                  keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.done,
                                   isOptional: false,
                                   color: AppColors.formsLabel,
@@ -192,12 +229,37 @@ class _UpdateSecondaryDisciplineScreenState
                         Padding(
                           padding:
                               const EdgeInsets.symmetric(horizontal: kPadding),
-                          child: RebiButton(
-                            onPressed: () {},
-                            child: Text(
-                              "Submit",
-                              style: AppStyles.buttonTitle,
-                            ),
+                          child: BlocConsumer<EquineInfoCubit, EquineInfoState>(
+                            bloc: cubit,
+                            listener: (context, state) {
+                              if (state is UpdateSecondaryDisciplineSuccessful) {
+                                Navigator.pushReplacementNamed(
+                                    context, successScreen,
+                                    arguments: BasicAccountManagementRoute(
+                                        type: 'manageAccount',
+                                        title:
+                                            "Secondary Discipline Updated Successfully"));
+                              } else if (state is UpdateSecondaryDisciplineError) {
+                                RebiMessage.error(
+                                    msg: state.message!, context: context);
+                              }
+                            },
+                            builder: (context, state) {
+                              if (state is UpdateSecondaryDisciplineLoading) {
+                                return const LoadingCircularWidget();
+                              }
+                              return RebiButton(
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    _onPressSubmit();
+                                  }
+                                },
+                                child: Text(
+                                  "Submit",
+                                  style: AppStyles.buttonTitle,
+                                ),
+                              );
+                            },
                           ),
                         ),
                         const SizedBox(
@@ -215,67 +277,18 @@ class _UpdateSecondaryDisciplineScreenState
     );
   }
 
-// _buildChooseStableConsumer() {
-//   return BlocConsumer<UserCubit, UserState>(
-//       bloc: cubit,
-//       builder: (context, state) {
-//         if (state is SelectInterestsLoading) {
-//           return const LoadingCircularWidget();
-//         } else if (state is SelectInterestsError) {
-//           RebiMessage.error(msg: state.message!, context: context);
-//         }
-//         {
-//           return RebiButton(
-//             backgroundColor: (selectedMainStable != null &&
-//                 selectedMainStable != 'Add Your Stable') ||
-//                 (selectedEmirate != null &&
-//                     _mainStableName.text.isNotEmpty &&
-//                     _mainStableLocation.text.isNotEmpty)
-//                 ? AppColors.yellow
-//                 : AppColors.formsLabel,
-//             onPressed: () {
-//               if ((selectedMainStable != null&&
-//                   selectedMainStable != 'Add Your Stable') ||
-//                   (selectedEmirate != null &&
-//                       _mainStableName.text.isNotEmpty &&
-//                       _mainStableLocation.text.isNotEmpty)) {
-//                 _onPressConfirm();
-//               } else {
-//                 RebiMessage.error(
-//                     msg: 'Please select your main stable', context: context);
-//               }
-//             },
-//             child: const Text("Next"),
-//           );
-//         }
-//       },
-//       listener: (context, state) {
-//         // if (state is SelectInterestsSuccessful) {
-//         //   AppSharedPreferences.typeSelected = true;
-//         //   Navigator.push(
-//         //       context,
-//         //       MaterialPageRoute(
-//         //           builder: (context) => const BottomNavigation()));
-//         // } else if (state is SelectInterestsError) {
-//         //   RebiMessage.error(msg: state.message!, context: context);
-//         // }
-//       });
-// }
-//
-// _onPressConfirm() {
-//   Print("selected location ${_mainStableLocation.text}");
-//   Print("selected main stable ${_mainStableName.text}");
-//   Print("selected emirate $selectedEmirate");
-//   Print("selected main $selectedMainStable");
-//   Navigator.push(
-//       context,
-//       MaterialPageRoute(
-//           builder: (context) => const BottomNavigation()));
-//   // return cubit
-//   //   ..interests(InterestsRequestModel(
-//   //     phoneNumber: AppSharedPreferences.userPhoneNumber,
-//   //     interest: 'interest',
-//   //     type: 'userType',
-//   //   ));
-// }
+  _onPressSubmit() {
+    cubit.updateSecondaryDiscipline(UpdateSecondaryDisciplineRequestModel(
+      nationalId: _nationalId.text,
+      feiid: _feId.text,
+      disciplineId: int.parse(disciplineId.text),
+      personDisciplineId: int.parse(widget.personDisciplineId!),
+    ));
+  }
+
+  _onPressDelete() {
+    cubit.deleteSecondaryDiscipline(DeleteDisciplineResponseModel(
+      personDisciplineId: int.parse(widget.personDisciplineId!),
+    ));
+  }
 }

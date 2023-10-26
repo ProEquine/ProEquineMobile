@@ -1,22 +1,25 @@
-class SupportRequestModel {
+class CreateSupportRequestModel {
   String? referenceNumber;
-  String? description;
-  String? phoneNumber;
+  String? subject;
+  String? division;
+  String? inquiry;
 
-  SupportRequestModel(
-      {this.referenceNumber, this.description, this.phoneNumber});
+  CreateSupportRequestModel(
+      {this.referenceNumber, this.subject, this.division, this.inquiry});
 
-  SupportRequestModel.fromJson(Map<String, dynamic> json) {
+  CreateSupportRequestModel.fromJson(Map<String, dynamic> json) {
     referenceNumber = json['referenceNumber'];
-    description = json['description'];
-    phoneNumber = json['phoneNumber'];
+    subject = json['subject'];
+    division = json['division'];
+    inquiry = json['inquiry'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['referenceNumber'] = referenceNumber;
-    data['description'] = description;
-    data['phoneNumber'] = phoneNumber;
+    data['subject'] = subject;
+    data['division'] = division;
+    data['inquiry'] = inquiry;
     return data;
   }
 }

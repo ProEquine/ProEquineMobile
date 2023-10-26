@@ -5,7 +5,7 @@ import 'package:proequine/features/user/data/check_mail_request_model.dart';
 import 'package:proequine/features/user/data/check_update_email_request_model.dart';
 import 'package:proequine/features/user/data/check_verification_request_model.dart';
 import 'package:proequine/features/user/data/chose_stable_request_model.dart';
-import 'package:proequine/features/user/data/forgot_pass_response_model.dart';
+import 'package:proequine/features/user/data/get_disiplines_response_model.dart';
 import 'package:proequine/features/user/data/get_stables_response_model.dart';
 import 'package:proequine/features/user/data/interests_request_model.dart';
 import 'package:proequine/features/user/data/login_request_model.dart';
@@ -13,6 +13,7 @@ import 'package:proequine/features/user/data/login_response_model.dart';
 import 'package:proequine/features/user/data/register_request_model.dart';
 import 'package:proequine/features/user/data/register_response_model.dart';
 import 'package:proequine/features/user/data/reset_password_request_model.dart';
+import 'package:proequine/features/user/data/reset_password_response_model.dart';
 import 'package:proequine/features/user/data/send_mail_request_model.dart';
 import 'package:proequine/features/user/data/send_verification_request_model.dart';
 import 'package:proequine/features/user/data/update_email_request_model.dart';
@@ -82,21 +83,21 @@ class UserRepository {
   }
 
   static Future<BaseResultModel?> forgotPassword(
-      SendVerificationRequestModel sendVerificationRequestModel) async {
-    return await RemoteDataSource.request<ForgotPasswordResponseModel>(
-        converter: (json) => ForgotPasswordResponseModel.fromJson(json),
+      SendMailVerificationRequestModel sendVerificationRequestModel) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.POST,
-        data: sendVerificationRequestModel.toJson(),
+        queryParameters: sendVerificationRequestModel.toJson(),
         withAuthentication: false,
         thereDeviceId: false,
-        url: ApiURLs.forgotPassword);
+        url: ApiURLs.sendVerificationEmail);
   }
 
   static Future<BaseResultModel?> resetPassword(
       ResetPasswordRequestModel resetPasswordRequestModel) async {
-    return await RemoteDataSource.request<EmptyModel>(
-        converter: (json) => EmptyModel.fromJson(json),
-        method: HttpMethod.POST,
+    return await RemoteDataSource.request<ResetPasswordResponseModel>(
+        converter: (json) => ResetPasswordResponseModel.fromJson(json),
+        method: HttpMethod.PUT,
         data: resetPasswordRequestModel.toJson(),
         withAuthentication: false,
         thereDeviceId: false,
@@ -135,13 +136,23 @@ class UserRepository {
         thereDeviceId: true,
         url: ApiURLs.getStables);
   }
+  static Future<BaseResultModel?> getDisciplines() async {
+    return await RemoteDataSource.request<GetAllDisciplinesResponseModel>(
+        converter: (json) => GetAllDisciplinesResponseModel.fromJson(json),
+        method: HttpMethod.GET,
+        withAuthentication: true,
+        policy: CachePolicy.refresh,
+        refreshDuration: const Duration(seconds: 20),
+        thereDeviceId: true,
+        url: ApiURLs.getDisciplines);
+  }
 
   static Future<BaseResultModel?> sendMailVerification(
       SendMailVerificationRequestModel sendMailVerificationRequestModel) async {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.POST,
-        data: sendMailVerificationRequestModel.toJson(),
+        queryParameters: sendMailVerificationRequestModel.toJson(),
         withAuthentication: true,
         thereDeviceId: false,
         url: ApiURLs.sendVerificationEmail);
@@ -154,7 +165,7 @@ class UserRepository {
         converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.POST,
         policy: CachePolicy.refresh,
-        data: checkMailVerificationRequestModel.toJson(),
+        queryParameters: checkMailVerificationRequestModel.toJson(),
         withAuthentication: true,
         thereDeviceId: false,
         url: ApiURLs.checkVerificationEmail);
@@ -176,21 +187,11 @@ class UserRepository {
       CheckUpdateEmailRequestModel checkUpdateEmailRequestModel) async {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
-        method: HttpMethod.POST,
+        method: HttpMethod.PUT,
         data: checkUpdateEmailRequestModel.toJson(),
         withAuthentication: true,
-        policy: CachePolicy.refreshForceCache,
+        // policy: CachePolicy.refreshForceCache,
         thereDeviceId: false,
         url: ApiURLs.checkUpdateMail);
-  }
-
-  static Future<BaseResultModel?> deleteAccount(String userPhoneNumber) async {
-    return await RemoteDataSource.request<EmptyModel>(
-        converter: (json) => EmptyModel.fromJson(json),
-        method: HttpMethod.POST,
-        data: {"phoneNumber": userPhoneNumber},
-        withAuthentication: true,
-        thereDeviceId: true,
-        url: ApiURLs.deleteUser);
   }
 }

@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:proequine/core/constants/constants.dart';
-import 'package:proequine/core/constants/thems/app_styles.dart';
-import 'package:proequine/features/manage_account/presentation/screens/update_username_screen.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/profile_list_tile_widget.dart';
-import '../../../../core/widgets/profile_two_lines_list_tile.dart';
 
 
 class EquineInfoScreen extends StatefulWidget {
@@ -57,7 +54,7 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
               ProfileListTileWidget(
                 title: "Role",
                 onTap: () {
-                  Navigator.pushNamed(context, updateRole);
+                  Navigator.pushNamed(context, allRoles);
                 },
                 notificationList: false,
                 isThereNewNotification: false,
@@ -70,34 +67,7 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
                 notificationList: false,
                 isThereNewNotification: false,
               ),
-              // const SizedBox(height: 5,),
-              // const Padding(
-              //   padding: EdgeInsets.symmetric(horizontal: 14),
-              //   child: Text(
-              //     "Secondary Number",
-              //     style: AppStyles.profileTitles,
-              //     textAlign: TextAlign.start,
-              //   ),
-              // ),
-              // ProfileTwoLineListTile(
-              //   title: "Whatsapp",
-              //   subTitle: "+9715-45049937",
-              //   onTap: () {
-              //     Navigator.push(
-              //         context,
-              //         MaterialPageRoute(
-              //             builder: (context) => UpdateUserNameScreen()));
-              //   },
-              //   ableToEdit: true,
-              // ),
-              // ProfileTwoLineListTile(
-              //   title: "Office",
-              //   subTitle: "+9715-509887889",
-              //   onTap: () {
-              //     Navigator.pushNamed(context, updatePhone);
-              //   },
-              //   ableToEdit: true,
-              // ),
+
             ],
           ),
         ),

@@ -127,12 +127,9 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                                 ?.unfocus();
                                             cubit.sendVerificationCode(
                                                 SendVerificationRequestModel(
-                                                    phoneNumber:
-                                                        _countryCode.text +
-                                                            _phone.text,
-                                                ));
-
-
+                                              phoneNumber: _countryCode.text +
+                                                  _phone.text,
+                                            ));
                                           } else {}
                                         },
                                         child: const Text("Verify"));
@@ -147,24 +144,19 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                               builder: (context) =>
                                                   VerificationScreen(
                                                       email: widget.email,
-                                                      gender: widget
-                                                          .gender,
-                                                      nationality: widget
-                                                          .nationality,
+                                                      gender: widget.gender,
+                                                      nationality:
+                                                          widget.nationality,
                                                       confirmPassword: widget
                                                           .confirmPassword,
-                                                      firstName: widget
-                                                          .firstName,
+                                                      firstName:
+                                                          widget.firstName,
                                                       middleName:
-                                                      widget
-                                                          .middleName,
-                                                      lastName:
-                                                      widget.lastName,
+                                                          widget.middleName,
+                                                      lastName: widget.lastName,
                                                       phone: phoneNumber,
-                                                      password:
-                                                      widget.password,
+                                                      password: widget.password,
                                                       dob: widget.dob)));
-
                                     } else if (state is SendVerificationError) {
                                       RebiMessage.error(
                                           msg: state.message!,

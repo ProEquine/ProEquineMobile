@@ -1,14 +1,19 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_country_state/flutter_country_state.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/widgets/divider.dart';
 import 'package:proequine/core/widgets/global_bottom_sheet.dart';
+import 'package:proequine/core/widgets/loading_widget.dart';
+import 'package:proequine/features/manage_account/data/add_address_request_model.dart';
+import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
+import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
@@ -16,8 +21,16 @@ import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
+import '../../data/basic_account_management_route.dart';
+
 class AddAddressScreen extends StatefulWidget {
-  const AddAddressScreen({super.key});
+  final String? country;
+  final String? address;
+  final String? city;
+  final String? countryState;
+
+  const AddAddressScreen(
+      {super.key, this.country, this.address, this.city, this.countryState});
 
   @override
   State<AddAddressScreen> createState() => _AddAddressScreenState();
@@ -26,33 +39,38 @@ class AddAddressScreen extends StatefulWidget {
 class _AddAddressScreenState extends State<AddAddressScreen> {
   late final TextEditingController city;
   late final TextEditingController address;
-  late final TextEditingController code;
   late final TextEditingController country;
-  late final TextEditingController state;
+  late final TextEditingController countryState;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String? selectedGender;
   String? selectedState;
   String? selectedCity;
+  ManageAccountCubit cubit = ManageAccountCubit();
 
   @override
   void initState() {
     initializeDateFormatting();
-    city = TextEditingController();
-    code = TextEditingController();
-    address = TextEditingController();
-    country = TextEditingController();
-    state = TextEditingController();
+    if (widget.country != null) {
+      city = TextEditingController(text: widget.city);
+      address = TextEditingController(text: widget.address);
+      country = TextEditingController(text: widget.country);
+      countryState = TextEditingController(text: widget.countryState);
+    } else {
+      city = TextEditingController();
+      address = TextEditingController();
+      country = TextEditingController();
+      countryState = TextEditingController();
+    }
+
     super.initState();
   }
 
   @override
   void dispose() {
     address.dispose();
-    code.dispose();
     city.dispose();
     country.dispose();
-    state.dispose();
+    countryState.dispose();
     super.dispose();
   }
 
@@ -91,7 +109,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                               child: RebiInput(
                                 hintText: 'Country'.tra,
                                 controller: country,
-                                keyboardType: TextInputType.name,
+                                keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.done,
                                 onTap: () {
                                   showCountryPicker(
@@ -145,7 +163,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                       ),
                                       onSelect: (Country selectedCountry) {
                                         country.text = selectedCountry.name;
-                                        state.text = '';
+                                        countryState.text = '';
 
                                         city.text = '';
                                         setState(() {
@@ -173,11 +191,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                 child: country.text == 'United Arab Emirates'
                                     ? RebiInput(
                                         hintText: 'State'.tra,
-                                        controller: state,
-                                        keyboardType: TextInputType.name,
+                                        controller: countryState,
+                                        keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.done,
                                         onTap: () {
-                                          Print("States is ${Variables.state}");
                                           showModalBottomSheet(
                                             isScrollControlled: true,
                                             shape: const RoundedRectangleBorder(
@@ -208,20 +225,19 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                                     color:
                                                         AppColors.blackLight),
                                                 substringBackground:
-                                                    AppColors.blackLight,
+                                                    Colors.transparent,
                                                 selectedStateBackgroundColor:
                                                     AppColors
                                                         .backgroundColorLight,
                                                 notSelectedStateBackgroundColor:
-                                                    AppColors
-                                                        .backgroundColorLight,
+                                                    Colors.transparent,
                                                 onSelectedState: () {
                                                   setState(() {
-                                                    state.text =
+                                                    countryState.text =
                                                         Variables.state;
                                                     city.text = '';
                                                     Print(
-                                                        "choosed state ${state.text}");
+                                                        "choosed state ${countryState.text}");
                                                   });
                                                 },
                                               ),
@@ -241,16 +257,14 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                       )
                                     : RebiInput(
                                         hintText: 'State'.tra,
-                                        controller: state,
-                                        keyboardType: TextInputType.name,
+                                        controller: countryState,
+                                        keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.done,
                                         autoValidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         isOptional: false,
-                                        onChanged: (value){
-                                          setState(() {
-
-                                          });
+                                        onChanged: (value) {
+                                          setState(() {});
                                         },
                                         color: AppColors.formsLabel,
                                         readOnly: false,
@@ -260,13 +274,13 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                         obscureText: false,
                                         validator: (value) {
                                           return Validator.requiredValidator(
-                                              state.text);
+                                              countryState.text);
                                         },
                                       ),
                               ),
                             ),
                             Visibility(
-                              visible: state.text == '' ? false : true,
+                              visible: countryState.text == '' ? false : true,
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 7),
@@ -274,15 +288,16 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                     ? RebiInput(
                                         hintText: 'City'.tra,
                                         controller: city,
-                                        keyboardType: TextInputType.name,
+                                        keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.done,
                                         isOptional: false,
                                         onTap: () {
-                                          if (state.text.isNotEmpty &&
-                                              cityData
-                                                  .containsKey(state.text)) {
+                                          Print("States is ${Variables.state}");
+                                          if (countryState.text.isNotEmpty &&
+                                              cityData.containsKey(
+                                                  countryState.text)) {
                                             List<String> citiesInEmirate =
-                                                cityData[state.text]!;
+                                                cityData[countryState.text]!;
                                             showGlobalBottomSheet(
                                                 height: 75.0.h,
                                                 context: context,
@@ -290,10 +305,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                                 content: ListView.separated(
                                                   shrinkWrap: true,
                                                   physics:
-                                                      NeverScrollableScrollPhysics(),
+                                                      const NeverScrollableScrollPhysics(),
                                                   separatorBuilder:
                                                       (context, index) {
-                                                    return CustomDivider();
+                                                    return const CustomDivider();
                                                   },
                                                   itemCount:
                                                       citiesInEmirate.length,
@@ -309,11 +324,16 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                                         });
                                                         Navigator.pop(context);
                                                       },
-                                                      child: ListTile(
-                                                        title: Text(
-                                                            citiesInEmirate[
-                                                                index]),
-                                                        // Add other ListTile properties as needed
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(citiesInEmirate[
+                                                                  index]
+                                                              // Add other ListTile properties as needed
+                                                              ),
+                                                        ],
                                                       ),
                                                     );
                                                   },
@@ -339,7 +359,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                     : RebiInput(
                                         hintText: 'City'.tra,
                                         controller: city,
-                                        keyboardType: TextInputType.name,
+                                        keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.done,
                                         isOptional: false,
                                         color: AppColors.formsLabel,
@@ -360,7 +380,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                               child: RebiInput(
                                 hintText: 'Address'.tra,
                                 controller: address,
-                                keyboardType: TextInputType.name,
+                                keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.done,
                                 isOptional: false,
                                 color: AppColors.formsLabel,
@@ -380,23 +400,47 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                       const Spacer(),
                       Padding(
                         padding: const EdgeInsets.all(kPadding),
-                        child: RebiButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate() &&
-                                country.text.isNotEmpty &&
-                                (selectedCity != null ||
-                                    city.text.isNotEmpty) &&
-                                (selectedState != null ||
-                                    state.text.isNotEmpty)) {
-                              Print("Saved");
-                              Navigator.pop(context);
-                            }else{
-                              RebiMessage.error(msg: "Please fill all of the fields", context: context);
+                        child: BlocConsumer<ManageAccountCubit,
+                            ManageAccountState>(
+                          bloc: cubit,
+                          listener: (context, state) {
+                            if (state is AddAddressSuccessfully) {
+                              Navigator.pushReplacementNamed(
+                                  context, successScreen,
+                                  arguments: BasicAccountManagementRoute(
+                                      type: 'manageAccount',
+                                      title: widget.country == null
+                                          ? "Address has been added successfully"
+                                          : "Address has been updated successfully"));
+                            } else if (state is AddAddressError) {
+                              RebiMessage.error(
+                                  msg: state.message!, context: context);
                             }
                           },
-                          child: const Text(
-                            "Add",
-                          ),
+                          builder: (context, state) {
+                            if (state is AddAddressLoading) {
+                              return const LoadingCircularWidget();
+                            }
+                            return RebiButton(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate() &&
+                                    country.text.isNotEmpty &&
+                                    (selectedCity != null ||
+                                        city.text.isNotEmpty) &&
+                                    (selectedState != null ||
+                                        countryState.text.isNotEmpty)) {
+                                  onPressAdd();
+                                } else {
+                                  RebiMessage.error(
+                                      msg: "Please fill all of the fields",
+                                      context: context);
+                                }
+                              },
+                              child:  Text(
+                                widget.country==null?"Add":"Update",
+                              ),
+                            );
+                          },
                         ),
                       ),
                       const SizedBox(
@@ -411,5 +455,15 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         ),
       ),
     );
+  }
+
+  onPressAdd() {
+    return cubit
+      ..addAddress(AddAddressRequestModel(
+        country: country.text,
+        city: city.text,
+        state: countryState.text,
+        address: address.text,
+      ));
   }
 }

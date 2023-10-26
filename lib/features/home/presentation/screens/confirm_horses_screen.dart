@@ -91,7 +91,7 @@ class _ConfirmHorsesScreenState extends State<ConfirmHorsesScreen> {
                       child: RebiInput(
                         hintText: '',
                         controller: type,
-                        keyboardType: TextInputType.multiline,
+                        keyboardType: TextInputType.text,
                         maxLines: 1,
                         textInputAction: TextInputAction.done,
                         autoValidateMode: AutovalidateMode.onUserInteraction,
@@ -112,7 +112,7 @@ class _ConfirmHorsesScreenState extends State<ConfirmHorsesScreen> {
                       child: RebiInput(
                         hintText: 'Request',
                         controller: requestType,
-                        keyboardType: TextInputType.multiline,
+                        keyboardType: TextInputType.text,
                         maxLines: 1,
                         textInputAction: TextInputAction.done,
                         autoValidateMode: AutovalidateMode.onUserInteraction,
@@ -133,7 +133,7 @@ class _ConfirmHorsesScreenState extends State<ConfirmHorsesScreen> {
                       child: RebiInput(
                         hintText: 'Name',
                         controller: name,
-                        keyboardType: TextInputType.multiline,
+                        keyboardType: TextInputType.text,
                         maxLines: 1,
                         textInputAction: TextInputAction.done,
                         autoValidateMode: AutovalidateMode.onUserInteraction,
@@ -154,7 +154,7 @@ class _ConfirmHorsesScreenState extends State<ConfirmHorsesScreen> {
                       child: RebiInput(
                         hintText: 'Note',
                         controller: note,
-                        keyboardType: TextInputType.multiline,
+                        keyboardType: TextInputType.text,
                         maxLines: 5,
                         textInputAction: TextInputAction.done,
                         autoValidateMode: AutovalidateMode.onUserInteraction,

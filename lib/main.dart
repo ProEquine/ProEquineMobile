@@ -13,12 +13,20 @@ import 'package:proequine/core/StartUp/StartUp.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/core/widgets/submit_verify_email.dart';
 import 'package:proequine/core/widgets/success_state_widget.dart';
+import 'package:proequine/features/equine_info/domain/equine_info_cubit.dart';
+import 'package:proequine/features/equine_info/presentation/screens/all_roles_screen.dart';
 import 'package:proequine/features/equine_info/presentation/screens/chose_discilpine_update_screen.dart';
-import 'package:proequine/features/equine_info/presentation/screens/update_main_role_screen.dart';
+import 'package:proequine/features/equine_info/presentation/screens/add_new_role_screen.dart';
+import 'package:proequine/features/equine_info/presentation/screens/equine_info_screen.dart';
 import 'package:proequine/features/events/domain/event_cubit.dart';
 import 'package:proequine/features/home/data/local_trip.dart';
 import 'package:proequine/features/home/domain/cubits/local_horse_cubit.dart';
+import 'package:proequine/features/home/presentation/screens/create_export_screen.dart';
+import 'package:proequine/features/home/presentation/screens/create_import_screen.dart';
+import 'package:proequine/features/home/presentation/screens/create_media_request_screen.dart';
 import 'package:proequine/features/home/presentation/screens/create_trip_screen.dart';
+import 'package:proequine/features/home/presentation/screens/join_show_screen.dart';
+import 'package:proequine/features/horses/presentation/screens/main_horses_screen.dart';
 import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
 import 'package:proequine/features/nav_bar/domain/inbox_badge.dart';
 import 'package:proequine/features/nav_bar/domain/theme_cubit.dart';
@@ -53,6 +61,7 @@ import 'features/nav_bar/presentation/screens/bottomnavigation.dart';
 import 'features/manage_account/presentation/screens/chose_phone_update_screen.dart';
 import 'features/payment/domain/payment_cubit.dart';
 import 'features/support/domain/support_cubit.dart';
+import 'features/user/presentation/screens/interests_screen.dart';
 import 'features/user/presentation/screens/login_screen.dart';
 import 'features/user/presentation/screens/register_screen.dart';
 
@@ -128,6 +137,9 @@ _blocProvider() {
       BlocProvider<LocalHorseCubit>(
         create: (context) => localHorseCubit,
       ),
+      BlocProvider<EquineInfoCubit>(
+        create: (context) => EquineInfoCubit(),
+      ),
       // BlocProvider<ThemeCubit>(
       //   create: (context) => ThemeCubit(),
       // ),
@@ -187,7 +199,7 @@ class MyAppState extends State<MyApp> {
             : AppStyles().lightTheme,
         navigatorObservers: [MyNavigatorObserver()],
         title: 'Pro Equine',
-        home:  SplashScreen(),
+        home: const SplashScreen(), 
         routes: {
           loginRoute: (context) => const LoginScreen(),
           registerRoute: (context) => const RegisterScreen(),
@@ -195,20 +207,25 @@ class MyAppState extends State<MyApp> {
           bookingRoute: (context) => const BottomNavigation(
                 selectedIndex: 1,
               ),
-          inboxRoute: (context) => const BottomNavigation(
+          horses: (context) => const BottomNavigation(
                 selectedIndex: 2,
               ),
-          // createEvent: ((context) => const CreateEventScreen()),
+          inboxRoute: (context) => const BottomNavigation(
+                selectedIndex: 3,
+              ),
           createTrip: ((context) => const CreateTripScreen()),
-          // accountInfo: (context) => AccountInfoScreen(),
-          editProfile: (context) => const ManageAccountScreen(),
+          createMedia: ((context) => const CreateMediaRequestScreen()),
+          createEvent: ((context) => const JoinShowScreen()),
+          import: ((context) => CreateImportScreen()),
+          export: ((context) => CreateExportScreen()),
+          manageAccount: (context) => const ManageAccountScreen(),
           userProfile: (context) => const UserProfile(),
           updatePhone: (context) => UpdatePhoneScreen(),
           choseDiscipline: (context) => const ChooseDisciplineScreen(),
           choseStable: (context) => const ChoseStableScreen(),
           choseUpdateStable: (context) => const ChooseUpdateStableScreen(),
-          updateRole: (context) => const UpdateMainRole(),
-          // updatePhone: (context) => UpdatePhoneScreen(),
+          addNewRole: (context) => const AddNewRoleScreen(),
+          allRoles: (context) => const AllRolesScreen(),
           addSecondaryPhone: (context) => AddSecondaryPhoneScreen(),
           chooseUpdatePhone: (context) => ChoseUpdatePhoneScreen(),
           verifyUpdatePhone: (context) => const VerifyUpdatedPhoneScreen(),

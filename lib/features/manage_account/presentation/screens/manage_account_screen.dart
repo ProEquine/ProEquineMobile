@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proequine/app_settings.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import 'package:proequine/core/widgets/custom_error_widget.dart';
 import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
 
 import 'package:proequine/features/manage_account/presentation/screens/add_address_screen.dart';
@@ -61,11 +63,27 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
   @override
   Widget build(BuildContext context) {
     // final themeCubit = ThemeCubitProvider.of(context);
-    return BlocConsumer<ManageAccountCubit, ManageAccountState>(
+    return BlocBuilder<ManageAccountCubit, ManageAccountState>(
         bloc: cubit..getUser(),
-        listener: (context, state) {},
         builder: (context, state) {
-          if (state is GetUserLoading) {
+          if (state is GetUserError) {
+            return Scaffold(
+              appBar: PreferredSize(
+                preferredSize: Size.fromHeight(20.h),
+                child: CustomHeader(
+                  title: "Manage Account",
+                  isThereBackButton: true,
+                  isThereChangeWithNavigate: false,
+                ),
+              ),
+              body: CustomErrorWidget(
+                errorMessage: 'Oops! Something went wrong. Please try again.',
+                onRetry: () {
+                  cubit.getUser();
+                },
+              ),
+            );
+          } else if (state is GetUserLoading) {
             return const ManageAccountGradientLoadingScreen();
           } else if (state is GetUserSuccessful) {
             return Scaffold(
@@ -81,7 +99,11 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
                     showGlobalBottomSheet(
                         context: MyApp.navigatorKey.currentState!.context,
                         title: "Account Help",
-                        content: const HelpWidget());
+                        content: HelpWidget(
+                          name: state.responseModel!.name!,
+                          nationality: state.responseModel!.nationality!,
+                          dob: state.responseModel!.dob!,
+                        ));
                   },
                 ),
               ),
@@ -93,6 +115,7 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ProfileHeaderWidget(
+                        pictureUrl:state.responseModel!.userPhoto! ,
                         name: state.responseModel!.name,
                         userName: 'PE ID : ${state.responseModel!.peid}',
                         isFromEditing: true,
@@ -125,13 +148,15 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
                         title: "Phone",
                         subTitle: state.responseModel!.phoneNumber,
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                              builder: (context) =>
-                                  ChoseUpdatePhoneScreen(
-                                    mainPhoneNumber: state.responseModel!
-                                        .phoneNumber,
-                                    secondaryNumbers: state.responseModel!
-                                        .secondaryPhoneNumbers,)));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ChoseUpdatePhoneScreen(
+                                        mainPhoneNumber:
+                                            state.responseModel!.phoneNumber,
+                                        secondaryNumbers: state.responseModel!
+                                            .secondaryPhoneNumbers,
+                                      )));
                         },
                         ableToEdit: true,
                       ),
@@ -142,8 +167,7 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      UpdateEmailScreen(
+                                  builder: (context) => UpdateEmailScreen(
                                         previousEmail: AppSharedPreferences
                                             .userEmailAddress,
                                       )));
@@ -152,13 +176,20 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
                       ),
                       ProfileTwoLineListTile(
                         title: "Address",
-                        subTitle: '',
+                        subTitle: state.responseModel?.country != null
+                            ? '${state.responseModel?.country} - ${state.responseModel?.state}'
+                            : '',
                         onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                  const AddAddressScreen()));
+                                  builder: (context) => AddAddressScreen(
+                                        city: state.responseModel?.city,
+                                        countryState:
+                                            state.responseModel?.state,
+                                        country: state.responseModel?.country,
+                                        address: state.responseModel?.address,
+                                      )));
                         },
                         ableToEdit: true,
                       ),

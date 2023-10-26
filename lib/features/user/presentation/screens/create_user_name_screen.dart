@@ -70,7 +70,7 @@ class _CreateUserNameScreenState extends State<CreateUserNameScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const EquineInfoScreen()));
+                                        const UserInfoScreen()));
                           },
                         ),
                         const Spacer(),
@@ -118,7 +118,7 @@ class _CreateUserNameScreenState extends State<CreateUserNameScreen> {
                                       child: RebiInput(
                                         hintText: 'Username'.tra,
                                         controller: _userName,
-                                        keyboardType: TextInputType.name,
+                                        keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.done,
                                         autoValidateMode:
                                             AutovalidateMode.onUserInteraction,
@@ -167,7 +167,7 @@ class _CreateUserNameScreenState extends State<CreateUserNameScreen> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const EquineInfoScreen()));
+                                                    const UserInfoScreen()));
                                       } else if (state is CheckUsernameError) {
                                         RebiMessage.error(
                                             msg: state.message!,

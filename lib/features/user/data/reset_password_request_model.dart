@@ -1,32 +1,22 @@
 class ResetPasswordRequestModel {
-  String? token;
-  String? code;
-  String? phoneNumber;
-  String? password;
-  String? confirmPassword;
+  String? email;
+  String? newPassword;
+  String? verificationCode;
 
   ResetPasswordRequestModel(
-      {this.token,
-        this.code,
-        this.phoneNumber,
-        this.password,
-        this.confirmPassword});
+      {this.email, this.newPassword, this.verificationCode});
 
   ResetPasswordRequestModel.fromJson(Map<String, dynamic> json) {
-    token = json['token'];
-    code = json['code'];
-    phoneNumber = json['phoneNumber'];
-    password = json['password'];
-    confirmPassword = json['confirmPassword'];
+    email = json['email'];
+    newPassword = json['newPassword'];
+    verificationCode = json['verificationCode'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['token'] = token;
-    data['code'] = code;
-    data['phoneNumber'] = phoneNumber;
-    data['password'] = password;
-    data['confirmPassword'] = confirmPassword;
+    data['email'] = email;
+    data['newPassword'] = newPassword;
+    data['verificationCode'] = verificationCode;
     return data;
   }
 }

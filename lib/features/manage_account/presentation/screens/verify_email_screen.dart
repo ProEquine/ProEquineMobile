@@ -124,6 +124,7 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                         child: Directionality(
                           textDirection: ui.TextDirection.ltr,
                           child: Pinput(
+                            keyboardType: TextInputType.text,
                             scrollPadding: EdgeInsets.only(bottom: 50.h),
                             preFilledWidget: Container(
                               width: 30,
@@ -150,7 +151,7 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                             androidSmsAutofillMethod:
                             AndroidSmsAutofillMethod
                                 .smsUserConsentApi,
-                            length: 4,
+                            length: 6,
                             closeKeyboardWhenCompleted: true,
                             isCursorAnimationEnabled: true,
                             controller: _pinPutController,
@@ -201,14 +202,15 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                       ),
                       isResendCode
                           ? Center(
-                              child: Text(
-                              _formatDuration(Duration(seconds: _secondsLeft))
-                                  .toString(),
-                              style: const TextStyle(
-                                  color: AppColors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700),
-                            ))
+                          child: Text(
+                            _formatDuration(
+                                Duration(seconds: _secondsLeft))
+                                .toString(),
+                            style: const TextStyle(
+                                fontSize: 16,
+                                color: AppColors.yellow,
+                                fontWeight: FontWeight.w700),
+                          ))
                           : Center(
                               child: InkWell(
                                 onTap: () {
@@ -228,21 +230,28 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 25, vertical: 7),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xff161616),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                          color: Colors.white, spreadRadius: 1),
-                                    ],
+                                  clipBehavior: Clip.antiAlias,
+                                  // decoration: BoxDecoration(
+                                  //     color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
+                                  //         ? AppColors.backgroundColor
+                                  //         : AppColors.backgroundColorLight,
+
+                                  decoration: ShapeDecoration(
+                                    shape: RoundedRectangleBorder(
+                                      side: const BorderSide(
+                                          width: 0.50,
+                                          color: AppColors.yellow),
+                                      borderRadius:
+                                      BorderRadius.circular(8),
+                                    ),
                                   ),
-                                  child: Row(
+                                  child: const Row(
                                     mainAxisSize: MainAxisSize.min,
-                                    children: const [
+                                    children: [
                                       Text(
                                         "Resend Code",
                                         style: TextStyle(
-                                            color: AppColors.white,
+                                            color: AppColors.yellow,
                                             fontFamily: "notosan"),
                                       ),
                                       SizedBox(
@@ -250,8 +259,8 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                                       ),
                                       Icon(
                                         Icons.refresh,
-                                        color: AppColors.white,
                                         size: 20,
+                                        color: AppColors.yellow,
                                       )
                                     ],
                                   ),
@@ -281,7 +290,7 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                                 _onPressVerify(verifyEmailRoute.email!);
                               } else {}
                             },
-                            backgroundColor: AppColors.white,
+                            // backgroundColor: AppColors.white,
                             child: const Text("Confirm"),
                           );
                         },

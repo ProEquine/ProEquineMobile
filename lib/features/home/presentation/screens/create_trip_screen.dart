@@ -15,6 +15,7 @@ import 'package:proequine/features/home/presentation/widgets/hospital_bottom_she
 import 'package:proequine/features/home/presentation/widgets/select_date_time_widget.dart';
 import 'package:proequine/features/home/presentation/widgets/select_place_widget.dart';
 
+import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
@@ -22,6 +23,8 @@ import '../../../../core/widgets/date_time_picker.dart';
 import '../../../../core/widgets/divider.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
+import '../../../../core/widgets/verify_dialog.dart';
+import '../../../manage_account/data/verify_email_route.dart';
 import '../widgets/select_place_form_widget.dart';
 
 class CreateTripScreen extends StatefulWidget {
@@ -84,24 +87,24 @@ class CreateTripScreenState extends State<CreateTripScreen>
 
   @override
   void initState() {
-    // checkVerificationStatus().then((verified) {
-    //   if (!verified) {
-    //     // If the account is not verified, show a dialog after a delay.
-    //     Future.delayed(const Duration(milliseconds: 50), () {
-    //       showUnverifiedAccountDialog(
-    //         context: context,
-    //         isThereNavigationBar: true,
-    //         onPressVerify: () {
-    //           Navigator.pushNamed(context, verifyEmail,
-    //               arguments: VerifyEmailRoute(
-    //                   type: 'Booking',
-    //                   email: AppSharedPreferences.userEmailAddress))
-    //               .then((value) {});
-    //         },
-    //       );
-    //     });
-    //   }
-    // });
+    checkVerificationStatus().then((verified) {
+      if (!verified) {
+        // If the account is not verified, show a dialog after a delay.
+        Future.delayed(const Duration(milliseconds: 50), () {
+          showUnverifiedAccountDialog(
+            context: context,
+            isThereNavigationBar: true,
+            onPressVerify: () {
+              Navigator.pushNamed(context, verifyEmail,
+                  arguments: VerifyEmailRoute(
+                      type: 'createTrip',
+                      email: AppSharedPreferences.userEmailAddress))
+                  .then((value) {});
+            },
+          );
+        });
+      }
+    });
     initializeDateFormatting();
     pickDate = DateTime.now();
     dateTime = DateTime.now();
@@ -345,7 +348,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
                             child: RebiInput(
                               hintText: 'Pickup contact name'.tra,
                               controller: pickUpContactName,
-                              keyboardType: TextInputType.name,
+                              keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.done,
                               autoValidateMode:
                                   AutovalidateMode.onUserInteraction,
@@ -375,7 +378,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                   child: RebiInput(
                                     hintText: 'Select hospital'.tra,
                                     controller: selectHospital,
-                                    keyboardType: TextInputType.name,
+                                    keyboardType: TextInputType.text,
                                     textInputAction: TextInputAction.done,
                                     autoValidateMode:
                                         AutovalidateMode.onUserInteraction,
@@ -516,7 +519,7 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                           child: RebiInput(
                                             hintText: 'Return Date'.tra,
                                             controller: expectedDate,
-                                            keyboardType: TextInputType.name,
+                                            keyboardType: TextInputType.text,
                                             textInputAction:
                                                 TextInputAction.done,
                                             onTap: () {

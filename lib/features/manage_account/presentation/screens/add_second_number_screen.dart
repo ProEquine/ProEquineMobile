@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/phone_number_field_widget.dart';
 import 'package:proequine/features/manage_account/data/add_secondary_number_request_model.dart';
 import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/rebi_message.dart';
-import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
-import '../../../../core/widgets/rebi_input.dart';
-import '../../data/edit_phone_request_model.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
+import '../../data/basic_account_management_route.dart';
 
 class AddSecondaryPhoneScreen extends StatefulWidget {
   AddSecondaryPhoneScreen({Key? key}) : super(key: key);
@@ -64,6 +61,7 @@ class _AddSecondaryPhoneScreenState extends State<AddSecondaryPhoneScreen> {
       body: Form(
         key: _formKey,
         child: Column(
+
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: kPadding),
@@ -101,7 +99,6 @@ class _AddSecondaryPhoneScreenState extends State<AddSecondaryPhoneScreen> {
                   });
                 },
                 validator: (value) {
-                  // return Validator.requiredValidator(selectedNumber);
                 },
                 hint: 'Select secondary number usage',
               ),
@@ -126,8 +123,12 @@ class _AddSecondaryPhoneScreenState extends State<AddSecondaryPhoneScreen> {
                 },
                 listener: (context, state) {
                   if (state is AddSecondaryPhoneSuccessful) {
-                    RebiMessage.success(
-                        msg: "Phone added successfully", context: context);
+                    Navigator.pushReplacementNamed(
+                        context, successScreen,
+                        arguments: BasicAccountManagementRoute(
+                            type: 'manageAccount',
+                            title:
+                            "Phone Number added successfully"));
 
                   } else if (state is AddSecondaryPhoneError) {
                     RebiMessage.error(msg: state.message!, context: context);
@@ -148,6 +149,7 @@ class _AddSecondaryPhoneScreenState extends State<AddSecondaryPhoneScreen> {
     return cubit.addSecondaryNumber(AddSecondaryNumberRequestModel(
       personId: int.parse(AppSharedPreferences.personId),
       personPhoneNumber: _countryCode.text + _phone.text,
+      phoneNumberType: selectedSecondaryType
     ));
   }
 }
