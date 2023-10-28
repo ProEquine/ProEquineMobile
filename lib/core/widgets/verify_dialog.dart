@@ -37,7 +37,19 @@ void showUnverifiedAccountDialog(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    SvgPicture.asset(AppIcons.email),
+                    Row(
+                      children: [
+                        SvgPicture.asset(AppIcons.email),
+                        const SizedBox(width: 10,),
+                        const Text(
+                          "Email Verification",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.blackLight),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 21),
                     const Text(
                       "Verify your email address To access all features",

@@ -109,7 +109,7 @@ List<DropdownMenuItem<String>> equipments = [
 
 
 ];
-List<DropdownMenuItem<String>> supportSubject = [
+List<DropdownMenuItem<String>> supportDivision = [
   const DropdownMenuItem(
     value: "Local Transport",
     child: Text("Local Transport"),
@@ -132,7 +132,7 @@ List<DropdownMenuItem<String>> supportSubject = [
   ),
 
 ];
-List<DropdownMenuItem<String>> supportDivision = [
+List<DropdownMenuItem<String>> supportSubject = [
   const DropdownMenuItem(
     value: "Service Request",
     child: Text("Service Request"),

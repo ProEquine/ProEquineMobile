@@ -56,64 +56,16 @@ class _SocialMediaScreenState extends State<SocialMediaScreen> {
                 applicationUrl: 'https://www.facebook.com/proequine.ae',
               ),
               MediaListTileWidget(
+                title: "TikTok",
+                application: AppIcons.tikTokMedia,
+                applicationUrl:
+                'https://www.tiktok.com/@proequine.ae?_t=8f3HLWvQOLI&_r=1',
+              ),
+              MediaListTileWidget(
                 title: "Youtube",
                 application: AppIcons.youtubeMedia,
                 applicationUrl: 'https://www.youtube.com/@ProEquine',
               ),
-
-              const SizedBox(
-                height: 5,
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 14),
-                child: Text(
-                  "ProEquine Media",
-                  style: AppStyles.profileTitles,
-                  textAlign: TextAlign.start,
-                ),
-              ),
-              // ProfileDivider(),
-
-              MediaListTileWidget(
-                title: "Instagram",
-                application: AppIcons.instagramMedia,
-                applicationUrl:
-                    'https://www.instagram.com/proequine.media/',
-              ),
-              MediaListTileWidget(
-                title: "Facebook",
-                application: AppIcons.facebookMedia,
-                applicationUrl:
-                    'https://www.facebook.com/profile.php?id=100095550221365&mibextid=b06tZ0',
-              ),
-              MediaListTileWidget(
-                title: "TikTok",
-                application: AppIcons.tikTokMedia,
-                applicationUrl:
-                    'https://www.tiktok.com/@proequine.ae?_t=8f3HLWvQOLI&_r=1',
-              ),
-
-              // Text(
-              //   context
-              //       .watch<ThemeCubit>()
-              //       .state
-              //       .toString(),
-              //   style: const TextStyle(
-              //       fontSize: 24,
-              //       fontWeight: FontWeight.bold,
-              //       color: AppColors.gold),
-              // ),
-              // const SizedBox(height: 16),
-              // Switch(
-              //
-              //   onChanged: (value) {
-              //     themeCubit.toggleTheme();
-              //   },
-              //   value: context.watch<ThemeCubit>().state.toString() ==
-              //           'ThemeCubitMode.dark'
-              //       ? true
-              //       : false,
-              // ),
             ],
           ),
         ),

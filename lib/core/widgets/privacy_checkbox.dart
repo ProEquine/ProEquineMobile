@@ -26,7 +26,7 @@ class PrivacyCheckBox extends StatelessWidget {
     this.onChanged,
   });
 
-  final String privacyUrl = 'https://www.proequine.ae/PrivacyLegal/';
+  final String privacyUrl = 'https://proequine.ae/PoliciesMobile';
   @override
   Widget build(BuildContext context) {
     return Row(

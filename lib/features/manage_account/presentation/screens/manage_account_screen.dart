@@ -115,7 +115,7 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ProfileHeaderWidget(
-                        pictureUrl:state.responseModel!.userPhoto! ,
+                        pictureUrl:state.responseModel!.userPhoto ,
                         name: state.responseModel!.name,
                         userName: 'PE ID : ${state.responseModel!.peid}',
                         isFromEditing: true,

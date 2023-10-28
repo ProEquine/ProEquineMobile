@@ -267,6 +267,17 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                                 ),
                               ),
                             ),
+                      const SizedBox(height: 20,),
+                      Center(
+                        child: Text(
+                          "don’t forget to check your spam inbox",
+                          style: TextStyle(
+                              color: AppColors.borderColor,
+                              fontFamily: 'notosan',
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w400)
+                        ),
+                      ),
                       const SizedBox(
                         height: 30,
                       ),
