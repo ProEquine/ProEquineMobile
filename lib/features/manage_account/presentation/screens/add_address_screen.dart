@@ -195,6 +195,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                         keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.done,
                                         onTap: () {
+                                          Variables.country =
+                                              'United Arab Emirates';
                                           showModalBottomSheet(
                                             isScrollControlled: true,
                                             shape: const RoundedRectangleBorder(

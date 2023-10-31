@@ -81,6 +81,8 @@ class _HelpWidgetState extends State<HelpWidget> {
   final GlobalKey<FormState> _yearKey = GlobalKey<FormState>();
 
   DateTime _selectedDay = DateTime.utc(1950);
+  DateTime currentDate = DateTime.utc(1950);
+  String current ='';
   final DateTime _focusedDay = DateTime.now();
   late int _selectedYear;
   late TextEditingController _yearController;
@@ -514,6 +516,12 @@ class _HelpWidgetState extends State<HelpWidget> {
 
                               /// show and handle change date of birth
                               else if (selectedOption == 'DOB') {
+                                // DateFormat inputFormat =
+                                // DateFormat("dd MMM yyyy");
+                                // DateTime dateTime =
+                                // inputFormat.parse(widget.dob);
+                                // currentDate = dateTime;
+                                // current=currentDate.toString();
                                 showGlobalBottomSheet(
                                     context: context,
                                     title: "Change Your DOB",
@@ -538,7 +546,7 @@ class _HelpWidgetState extends State<HelpWidget> {
                                               horizontal: kPadding),
                                           child: Align(
                                             alignment: Alignment.centerLeft,
-                                            child: Text("19-11-1992",
+                                            child: Text(widget.dob,
                                                 style: AppStyles.currentData),
                                           ),
                                         ),

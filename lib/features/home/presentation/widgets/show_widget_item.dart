@@ -10,7 +10,7 @@ class ShowWidgetItem extends StatelessWidget {
   final String? type;
   final String? from;
   final String? to;
-  final String? image;
+  // final String? image;
   final Function? onTap;
 
   const ShowWidgetItem(
@@ -19,7 +19,7 @@ class ShowWidgetItem extends StatelessWidget {
       this.type,
       this.from,
       this.to,
-      this.image,
+      // this.image,
       required this.status,
       this.onTap});
 
@@ -45,20 +45,20 @@ class ShowWidgetItem extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         child: Row(
           children: [
-            Container(
-              height: 75,
-              width: 75,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Image.asset(
-                image!,
-                fit: BoxFit.contain,
-              ),
-            ),
-            const SizedBox(
-              width: 6,
-            ),
+            // Container(
+            //   height: 75,
+            //   width: 75,
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(8),
+            //   ),
+            // //   child: Image.asset(
+            // //     image!,
+            // //     fit: BoxFit.contain,
+            // //   ),
+            // // ),
+            // // const SizedBox(
+            // //   width: 6,
+            // // ),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -266,9 +266,9 @@ class Booking extends StatelessWidget {
                               localHorseCubit.getAllTrips();
                             }
                           }),
-                      SizedBox(
-                        height: 30,
-                      ),
+                      // SizedBox(
+                      //   height:30,
+                      // ),
                       ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),

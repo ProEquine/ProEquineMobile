@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/app_settings.dart';
@@ -20,6 +21,7 @@ import 'package:proequine/main.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/routes/routes.dart';
+import '../../../../core/utils/Printer.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/global_bottom_sheet.dart';
 import '../../../../core/widgets/profile_two_lines_list_tile.dart';
@@ -86,6 +88,8 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
           } else if (state is GetUserLoading) {
             return const ManageAccountGradientLoadingScreen();
           } else if (state is GetUserSuccessful) {
+            String currentDate = DateFormat("dd-MM-yyyy").format(DateTime.parse(state.responseModel!.dob!));
+            Print('current Date $currentDate');
             return Scaffold(
               appBar: PreferredSize(
                 preferredSize: Size.fromHeight(20.h),
@@ -102,7 +106,7 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
                         content: HelpWidget(
                           name: state.responseModel!.name!,
                           nationality: state.responseModel!.nationality!,
-                          dob: state.responseModel!.dob!,
+                          dob:currentDate,
                         ));
                   },
                 ),

@@ -303,7 +303,7 @@ class _AddSecondaryStableScreenState extends State<AddSecondaryStableScreen> {
   }
   onPressAdd(){
     cubit.addSecondaryStable(AddSecondaryStableRequestModel(
-      stableName: stable.text,
+      stableName: isChooseToAddStable?_secondaryStableName.text:stable.text,
       stableId: int.parse(stableId.text),
       isNewStable: isChooseToAddStable,
       emirate: selectedEmirate,

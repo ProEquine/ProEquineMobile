@@ -190,7 +190,7 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
                                 Navigator.pushReplacementNamed(
                                     context, successScreen,
                                     arguments: BasicAccountManagementRoute(
-                                        type: 'manageAccount',
+                                        type: 'profileImage',
                                         title:
                                             "Profile picture has been added successfully"));
                               } else if (state is UploadImageError) {

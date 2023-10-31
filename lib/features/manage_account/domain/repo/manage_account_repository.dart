@@ -114,7 +114,7 @@ class ManageAccountRepository {
         converter: (json) => UserDataResponseModel.fromJson(json),
         method: HttpMethod.GET,
         policy: CachePolicy.request,
-        refreshDuration: const Duration(seconds: 4),
+        refreshDuration: const Duration(milliseconds: 1),
         withAuthentication: true,
         thereDeviceId: false,
         url: ApiURLs.getUserData);

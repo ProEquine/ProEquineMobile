@@ -4,7 +4,7 @@ class AppImages {
   /// Dark Theme
 
 
-  static const error = "assets/images/404.png";
+  static const error = "assets/images/error.png";
   static const upComingEvent = "assets/images/upcoming-events.png";
   static const truckIcon = "assets/images/transport.png";
   static const comingSoon = "assets/images/cooming_soon.png";

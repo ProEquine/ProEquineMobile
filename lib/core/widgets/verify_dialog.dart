@@ -42,7 +42,7 @@ void showUnverifiedAccountDialog(
                         SvgPicture.asset(AppIcons.email),
                         const SizedBox(width: 10,),
                         const Text(
-                          "Email Verification",
+                           "Verification Required",
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
@@ -54,7 +54,7 @@ void showUnverifiedAccountDialog(
                     const Text(
                       "Verify your email address To access all features",
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: AppColors.blackLight),
                     ),

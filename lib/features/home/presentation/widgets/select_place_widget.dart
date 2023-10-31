@@ -66,7 +66,7 @@ class _SelectPlaceWidgetState extends State<SelectPlaceWidget> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () async {
-                          if (widget.showingList[index] == 'New place') {
+                          if (widget.showingList[index] == 'Add New Place') {
                             result = await Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -114,7 +114,7 @@ class _SelectPlaceWidgetState extends State<SelectPlaceWidget> {
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [Text(widget.showingList[index])],
+                          children: [Text(widget.showingList[index],style: TextStyle(color: widget.showingList[index]=="Add New Place"?AppColors.yellow:AppColors.blackLight),)],
                         ),
                       );
                     },

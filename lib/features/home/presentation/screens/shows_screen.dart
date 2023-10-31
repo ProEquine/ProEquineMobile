@@ -78,7 +78,7 @@ class _ShowsScreenState extends State<ShowsScreen> {
                         status: randomStatus,
                         title: randomTitle,
                         type: randomtype,
-                        image: randomImage,
+                        // image: randomImage,
                         from: randomfrom,
                         to: randomTo,
                         onTap: () {

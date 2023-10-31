@@ -17,15 +17,16 @@ class SelectStableWidget extends StatefulWidget {
   TextEditingController stableId = TextEditingController();
   VoidCallback? changeTrue;
   VoidCallback? changeFalse;
-  bool readOnly=false;
+  bool readOnly = false;
 
-  SelectStableWidget({Key? key,
+  SelectStableWidget({
+    Key? key,
     required this.stableName,
     required this.stableId,
     this.changeFalse,
-    this.readOnly=false,
-    this.changeTrue,})
-      : super(key: key);
+    this.readOnly = false,
+    this.changeTrue,
+  }) : super(key: key);
 
   @override
   State<SelectStableWidget> createState() => _SelectStableWidgetState();
@@ -43,16 +44,15 @@ class _SelectStableWidgetState extends State<SelectStableWidget> {
       controller: widget.stableName,
       keyboardType: TextInputType.name,
       onChanged: (value) {
-        setState(() {
-
-        });
+        setState(() {});
       },
       textInputAction: TextInputAction.done,
       autoValidateMode: AutovalidateMode.onUserInteraction,
       isOptional: false,
       color: AppColors.formsLabel,
       onTap: () {
-        if(widget.readOnly){}else{
+        if (widget.readOnly) {
+        } else {
           showHospitalsAndPlacesBottomSheet(
             context: context,
             title: "Stables",
@@ -62,7 +62,7 @@ class _SelectStableWidgetState extends State<SelectStableWidget> {
                 // TODO: implement listener
               },
               builder: (context, state) {
-                if(state is GetStablesSuccessful){
+                if (state is GetStablesSuccessful) {
                   return SingleChildScrollView(
                     child: StatefulBuilder(builder: (context, setState) {
                       if (state.getStablesResponseModel.isNotEmpty) {
@@ -77,9 +77,11 @@ class _SelectStableWidgetState extends State<SelectStableWidget> {
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  selectedStable = state.getStablesResponseModel[index];
-                                  if (state.getStablesResponseModel[index].stableName ==
-                                      'Add Main Stable') {
+                                  selectedStable =
+                                      state.getStablesResponseModel[index];
+                                  if (state.getStablesResponseModel[index]
+                                          .stableName ==
+                                      'Add New Stable') {
                                     widget.changeTrue!.call();
                                     Navigator.pop(context);
                                   } else {
@@ -89,11 +91,12 @@ class _SelectStableWidgetState extends State<SelectStableWidget> {
                                     // Print(widget.changeFalse);
                                   }
 
-                                  widget.stableName.text =
-                                  state.getStablesResponseModel[index].stableName!;
-                                  widget.stableId.text =
-                                      state.getStablesResponseModel[index].stableId!.toString();
-
+                                  widget.stableName.text = state
+                                      .getStablesResponseModel[index]
+                                      .stableName!;
+                                  widget.stableId.text = state
+                                      .getStablesResponseModel[index].stableId!
+                                      .toString();
 
                                   Print("Selected stable ${stables[index]}");
                                   Print("Stable Name $selectedStable");
@@ -102,7 +105,17 @@ class _SelectStableWidgetState extends State<SelectStableWidget> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(state.getStablesResponseModel[index].stableName!)
+                                  Text(
+                                    state.getStablesResponseModel[index]
+                                        .stableName!,
+                                    style: TextStyle(
+                                        color:
+                                            state.getStablesResponseModel[index]
+                                                        .stableName ==
+                                                    'Add New Stable'
+                                                ? AppColors.yellow
+                                                : AppColors.blackLight),
+                                  )
                                 ],
                               ),
                             );
@@ -124,8 +137,7 @@ class _SelectStableWidgetState extends State<SelectStableWidget> {
                       }
                     }),
                   );
-                }
-                else if (state is GetStablesLoading){
+                } else if (state is GetStablesLoading) {
                   const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -135,7 +147,8 @@ class _SelectStableWidgetState extends State<SelectStableWidget> {
                       )
                     ],
                   );
-                }return const Column(
+                }
+                return const Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -144,16 +157,13 @@ class _SelectStableWidgetState extends State<SelectStableWidget> {
                     )
                   ],
                 );
-
               },
             ),
           );
         }
-
       },
       readOnly: true,
-      contentPadding:
-      const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
       obscureText: false,
       validator: (value) {
         return Validator.requiredValidator(widget.stableName.text);

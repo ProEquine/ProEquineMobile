@@ -261,7 +261,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   validator: (value) {
                                     // return Validator.requiredValidator(selectedNumber);
                                   },
-                                  hint: 'gender',
+                                  hint: 'Gender',
                                 ),
                               ),
                               Padding(

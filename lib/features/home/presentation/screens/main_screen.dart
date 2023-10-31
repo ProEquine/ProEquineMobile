@@ -222,11 +222,10 @@ class _MainScreenState extends State<MainScreen> {
                       child: Text(
                         'Photos and videos ',
                         style: TextStyle(
-                          color: Color(0xFF6B7280),
-                          fontSize: 14,
-                          fontFamily: 'notosan',
-                          fontWeight: FontWeight.w500,
-                        ),
+                            fontFamily: 'notosan',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15.0
+                      ),
                       ),
                     ),
                     const SizedBox(

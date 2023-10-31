@@ -78,7 +78,7 @@ class _MediaListScreenState extends State<MediaListScreen> {
                         status: randomStatus,
                         title: randomTitle,
                         type: randomtype,
-                        image: randomImage,
+                        // image: randomImage,
                         from: randomfrom,
                         to: randomTo,
                         onTap: () {

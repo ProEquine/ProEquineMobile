@@ -113,8 +113,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: _buildVerifyConsumer(),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: _buildVerifyConsumer(),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraint) {
@@ -140,7 +140,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 height: 1.h,
                               ),
                               Text(
-                                "A 4 digit verification code has been sent to your registered phone number.",
+                                "A 4 digit verification code has been sent to your registered email.",
                                 style: AppStyles.descriptions,
                               ),
                               const SizedBox(
@@ -204,6 +204,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                               const SizedBox(
                                 height: 20,
                               ),
+
                               const Center(
                                 child: Text(
                                   "Haven’t received a code?",
@@ -289,6 +290,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                               const SizedBox(
                                 height: 20,
                               ),
+
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
@@ -439,11 +441,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   },
                                 ),
                               ),
-                              // const SizedBox(
-                              //   height: 150,
-                              // ),
 
-                              // _buildVerifyConsumer(),
+                              SizedBox(
+                                height: 5.h,
+                              ),
+
+                              _buildVerifyConsumer(),
                               const SizedBox(
                                 height: 20,
                               ),
@@ -471,7 +474,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           }
           {
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              padding: const EdgeInsets.symmetric(horizontal: 0.0) ,
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: RebiButton(

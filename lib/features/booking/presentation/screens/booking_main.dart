@@ -175,8 +175,9 @@ class _BookingMainState extends State<BookingMain> {
                         data:
                         ThemeData().copyWith(splashColor: Colors.transparent),
                         child: Container(
-                          width: 85.0.w,
-                          margin: const EdgeInsets.only(bottom: 10),
+                          width: 90.0.w,
+
+                          margin: const EdgeInsets.only(bottom: 10,left: 20),
                           decoration: BoxDecoration(
                             //This is for background color
                               color: Colors.white.withOpacity(0.0),
@@ -202,10 +203,10 @@ class _BookingMainState extends State<BookingMain> {
                                 ),
                               ),
                               indicatorPadding: EdgeInsets.only(top: 47),
-                              indicatorWeight: 5,
+                              indicatorWeight: 4,
                               isScrollable: true,
-                              labelPadding: EdgeInsets.symmetric(
-                                  horizontal: 20),
+                              labelPadding: EdgeInsets.only(
+                                  right: 35),
                               tabs: [
                                 Tab(
                                   text: "Transport",
@@ -220,33 +221,27 @@ class _BookingMainState extends State<BookingMain> {
                         ),
                       ),
                       Expanded(
-                        child: TabBarView(children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: kPadding),
-                            child: Booking(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: kPadding),
+                          child:TabBarView(children: [
+                           Booking(
                               type: "Transport",
                               isLoading: false,
                             ),
+
+                          Booking(
+                            type: "Media",
+                            isLoading: false,
                           ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: kPadding),
-                            child: Booking(
-                              type: "Media",
-                              isLoading: false,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: kPadding),
-                            child: Booking(
-                              type: "Shipping",
-                              isLoading: false,
-                            ),
+                          Booking(
+                            type: "Shipping",
+                            isLoading: false,
                           ),
                         ],
                         ),
 
                       ),
-
+                      ),
                     ]),
               ),
             ),

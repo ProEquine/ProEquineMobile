@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
+import 'package:proequine/features/manage_account/presentation/screens/user_profile.dart';
+import 'package:proequine/features/nav_bar/presentation/screens/bottomnavigation.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../features/manage_account/data/basic_account_management_route.dart';
@@ -83,11 +85,22 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
                       _controller
                         ..duration = composition.duration
                         ..forward().whenComplete(() =>
-                            Navigator.popUntil(context, (route) => route.isFirst));
-                    } else {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BottomNavigation(selectedIndex: 4,))));
+                    }
+                    if (verifyPhoneRoute?.type == 'profileImage') {
                       _controller
                         ..duration = composition.duration
-                        ..forward().whenComplete(() => Navigator.pop(context));
+                        ..forward().whenComplete(() {
+                          Navigator.pop(context);
+                        });
+                    } else {
+                      // _controller
+                      //   ..duration = composition.duration
+                      //   ..forward().whenComplete(() => Navigator.pop(context));
                     }
                   }
                 },

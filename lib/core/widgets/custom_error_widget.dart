@@ -31,16 +31,16 @@ class CustomErrorWidget extends StatelessWidget {
           //TODO: replace with error image
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: SvgPicture.asset(
-              AppIcons.errorIcon,
+            child: Image.asset(
+              AppImages.error,
               height: 20.h,
             ),
           ),
 
-          Text(
-            errorMessage??'Oops! Something went wrong. Please try again.',
+          const Text(
+            'Oops! Something went wrong. Please try again.',
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
