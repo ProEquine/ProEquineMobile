@@ -246,14 +246,16 @@ class _AddSecondaryStableScreenState extends State<AddSecondaryStableScreen> {
                                     context, successScreen,
                                     arguments: BasicAccountManagementRoute(
                                         type: 'manageAccount',
-                                        title: state.message));
+                                        title: isChooseToAddStable
+                                            ? 'Add New Stable Request has Sent Successfully'
+                                            : 'New Stable Added Successfully'));
                               } else if (state is AddSecondaryStableError) {
                                 RebiMessage.error(
                                     msg: state.message!, context: context);
                               }
                             },
                             builder: (context, state) {
-                              if(state is AddSecondaryStableLoading){
+                              if (state is AddSecondaryStableLoading) {
                                 return const LoadingCircularWidget();
                               }
                               return RebiButton(
@@ -301,9 +303,10 @@ class _AddSecondaryStableScreenState extends State<AddSecondaryStableScreen> {
       ),
     );
   }
-  onPressAdd(){
+
+  onPressAdd() {
     cubit.addSecondaryStable(AddSecondaryStableRequestModel(
-      stableName: isChooseToAddStable?_secondaryStableName.text:stable.text,
+      stableName: isChooseToAddStable ? _secondaryStableName.text : stable.text,
       stableId: int.parse(stableId.text),
       isNewStable: isChooseToAddStable,
       emirate: selectedEmirate,

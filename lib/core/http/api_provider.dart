@@ -24,7 +24,6 @@ import '../errors/timeout_error.dart';
 import '../errors/unauthorized_error.dart';
 import '../errors/unknown_error.dart';
 import '../utils/Printer.dart';
-import 'dio_cache_manager.dart';
 
 class ApiProvider {
   static Future<BaseResponseModel> sendObjectRequest<T extends BaseResultModel>(
@@ -41,7 +40,7 @@ class ApiProvider {
       bool isLongTime = false}) async {
     /// Edited Here
     var baseOptions = BaseOptions(
-      connectTimeout: isLongTime ? 30 * 1000 : 15 * 1000,
+      connectTimeout: isLongTime ? const Duration(milliseconds: 30 * 1000) : const Duration(milliseconds: 15 * 1000),
     );
     var dio = Dio();
 
@@ -65,9 +64,9 @@ class ApiProvider {
       headers: headers,
       method: method,
       contentType: Headers.jsonContentType,
-      receiveTimeout: 60 * 1000,
+      receiveTimeout: const Duration(milliseconds:60 * 1000 ),
       // 60 seconds
-      sendTimeout: 60 * 1000,
+      sendTimeout: const Duration(milliseconds:60 * 1000 ),
     );
 
     if (files != null) {
@@ -121,7 +120,7 @@ class ApiProvider {
     }
 
     // Handling errors
-    on DioError catch (e, s) {
+    on DioException catch (e, s) {
       Print('catch DioError ');
       Print(e);
 
@@ -151,12 +150,12 @@ class ApiProvider {
     }
   }
 
-  static BaseError _handleDioError(DioError error) {
+  static BaseError _handleDioError(DioException error) {
     Print('error.type = ${(error.type)}');
-    if (error.type == DioErrorType.other ||
-        error.type == DioErrorType.response) {
+    if (error.type == DioExceptionType.badResponse ||
+        error.type == DioExceptionType.connectionError) {
       if (error is SocketException) return SocketError();
-      if (error.type == DioErrorType.response) {
+      if (error.type == DioExceptionType.badResponse) {
         switch (error.response?.statusCode) {
           case 400:
             return BadRequestError();
@@ -178,11 +177,11 @@ class ApiProvider {
         }
       }
       return NetError();
-    } else if (error.type == DioErrorType.connectTimeout ||
-        error.type == DioErrorType.sendTimeout ||
-        error.type == DioErrorType.receiveTimeout) {
+    } else if (error.type == DioExceptionType.connectionTimeout ||
+        error.type == DioExceptionType.sendTimeout ||
+        error.type == DioExceptionType.receiveTimeout) {
       return TimeoutError();
-    } else if (error.type == DioErrorType.cancel) {
+    } else if (error.type == DioExceptionType.cancel) {
       return CancelError();
     } else {
       return UnknownError();

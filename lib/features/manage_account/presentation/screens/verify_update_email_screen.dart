@@ -133,7 +133,7 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                             androidSmsAutofillMethod:
                             AndroidSmsAutofillMethod
                                 .smsUserConsentApi,
-                            length: 6,
+                            length: 4,
                             closeKeyboardWhenCompleted: true,
                             isCursorAnimationEnabled: true,
                             controller: _pinPutController,
@@ -147,7 +147,7 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                             pinputAutovalidateMode:
                             PinputAutovalidateMode.onSubmit,
                             validator: (value) {
-                              if (value!.isEmpty || value.length < 6) {
+                              if (value!.isEmpty || value.length < 4) {
                                 return 'please enter your code';
                               } else {
                                 return null;

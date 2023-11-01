@@ -51,10 +51,10 @@ class _UpdateSecondaryDisciplineScreenState
 
   @override
   void initState() {
-    _feId = TextEditingController();
-    _nationalId = TextEditingController();
+    _feId = TextEditingController(text: widget.secondaryUserFeId);
+    _nationalId = TextEditingController(text: widget.secondaryUserNationalId);
     disciplineId = TextEditingController();
-    discipline = TextEditingController();
+    discipline = TextEditingController(text: widget.secondaryDiscipline);
     selectedDiscipline = widget.secondaryDiscipline;
     if (widget.secondaryUserFeId != null &&
         widget.secondaryUserNationalId != null) {

@@ -309,8 +309,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 MaterialPageRoute(
                     builder: (context) => const BottomNavigation()));
           }
-          } else if (state is LoginError) {
-            RebiMessage.error(msg: state.message!, context: context);
           }
         });
   }

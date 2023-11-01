@@ -366,7 +366,7 @@ class _HelpWidgetState extends State<HelpWidget> {
                                               horizontal: kPadding),
                                           child: Align(
                                             alignment: Alignment.centerLeft,
-                                            child: Text("United Arab Emirates",
+                                            child: Text(widget.nationality,
                                                 style: AppStyles.currentData),
                                           ),
                                         ),

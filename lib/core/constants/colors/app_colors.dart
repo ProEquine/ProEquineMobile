@@ -26,7 +26,7 @@ class AppColors {
   static const Color backgroundColorLight = Color(0xFFF8F7F3);
   static const Color navigatorBar = Color(0xFFF8F7F3);
   static const Color whiteLight = Color(0xFFFFFFFF);
-  static const Color greenLight = Color(0xFF34C759);
+  static const Color greenLight = Color(0xFF146825);
   static const Color unVerifiedContainer = Color(0xFFFDF6B2);
   static const Color unVerifiedText = Color(0xFF723B13);
   static const Color statusBackground = Color(0xFFDEF7EC);

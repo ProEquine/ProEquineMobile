@@ -10,6 +10,7 @@ class ShowWidgetItem extends StatelessWidget {
   final String? type;
   final String? from;
   final String? to;
+
   // final String? image;
   final Function? onTap;
 
@@ -157,12 +158,14 @@ class ShowWidgetItem extends StatelessWidget {
                                   ),
                                 ],
                               )
-                            : const Text('Fully Booked',
+                            : const Text(
+                                '',
                                 style: TextStyle(
                                   color: AppColors.formsHintFontLight,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
-                                )),
+                                ),
+                              ),
                       ),
                     ],
                   ),

@@ -50,7 +50,7 @@ class _UpdateMainDisciplineState extends State<UpdateMainDiscipline> {
   void initState() {
     _feId = TextEditingController();
     _nationalId = TextEditingController();
-    discipline = TextEditingController();
+    discipline = TextEditingController(text: widget.userDiscipline);
     disciplineId = TextEditingController();
     selectedDiscipline = widget.userDiscipline;
     if (widget.userFeId != null && widget.userNationalId != null) {

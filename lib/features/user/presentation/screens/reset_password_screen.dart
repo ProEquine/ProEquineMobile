@@ -178,7 +178,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     androidSmsAutofillMethod:
                                         AndroidSmsAutofillMethod
                                             .smsUserConsentApi,
-                                    length: 6,
+                                    length: 4,
                                     closeKeyboardWhenCompleted: true,
                                     isCursorAnimationEnabled: true,
                                     controller: _pinPutController,

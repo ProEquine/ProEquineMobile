@@ -89,8 +89,8 @@ class _ChooseDisciplineScreenState extends State<ChooseDisciplineScreen> {
                                 builder: (context) => UpdateMainDiscipline(
                                       userDiscipline: state.model!
                                           .disciplines![0].disciplineTitle!,
-                                      userFeId: '123213123',
-                                      userNationalId: 'SJ10001015',
+                                      userFeId: '',
+                                      userNationalId: '',
                                     )));
                       },
                       ableToEdit: true,
@@ -122,23 +122,32 @@ class _ChooseDisciplineScreenState extends State<ChooseDisciplineScreen> {
                                           .disciplines![index + 1]
                                           .disciplineTitle,
                                       subTitle:
-                                          "National id : ${state.model!.disciplines![index + 1].nationalId} \nFei ID : ${state.model!.disciplines![index + 1].feid}",
+                                          "National id : ${state.model!.disciplines?[index + 1].nationalId ?? ''} \nFei ID : ${state.model!.disciplines?[index + 1].feid ?? ''}",
                                       onTap: () {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) =>
-                                                    UpdateSecondaryDisciplineScreen(
-                                                      personDisciplineId:state
-                                                          .model!
-                                                          .disciplines![
-                                                      index + 1]
-                                                          .personDisciplineId!.toString() ,
-                                                        secondaryDiscipline: state
+                                                builder: (context) => UpdateSecondaryDisciplineScreen(
+                                                    secondaryUserFeId:
+                                                        state.model!.disciplines![index + 1].feid
+                                                                .toString() ??
+                                                            '',
+                                                    secondaryUserNationalId: state
                                                             .model!
-                                                            .disciplines![
+                                                            .disciplines?[
                                                                 index + 1]
-                                                            .disciplineTitle!)));
+                                                            .nationalId
+                                                            .toString() ??
+                                                        '',
+                                                    personDisciplineId: state
+                                                        .model!
+                                                        .disciplines![index + 1]
+                                                        .personDisciplineId!
+                                                        .toString(),
+                                                    secondaryDiscipline: state
+                                                        .model!
+                                                        .disciplines![index + 1]
+                                                        .disciplineTitle!)));
                                       },
                                       ableToEdit: true,
                                     );
