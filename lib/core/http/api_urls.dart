@@ -10,12 +10,14 @@ class ApiURLs {
   static  String registerUSER = "$baseUrl/User/userRegister";
   static  String getNewToken = "$baseUrl/Auth/refreshToken";
   static  String sendVerificationCode = "$baseUrl/User/sendPhoneOtp";
+
   static  String updateUserName = "$baseUrl/User/updateUserName";
   static  String updateName = "$baseUrl/Account/updateName";
+  static  String forgotPassword = "$baseUrl/Master/ForgotPassword";
   static  String updateNationality = "$baseUrl/Account/updateNationality";
   static  String updateDOB = "$baseUrl/Account/updateDOB";
   static  String checkVerificationCode = "$basicApiUrl/Auth/checkverificationcode";
-  static  String forgotPassword = "$basicApiUrl/Auth/forgot-password";
+  // static  String forgotPassword = "$basicApiUrl/Auth/forgot-password";
   static  String resetPassword = "$baseUrl/Account/resetPassword";
   static  String interests = "$baseUrl/User/saveInterestandType";
   static  String getStables = "$baseUrl/Master/getMainStables";

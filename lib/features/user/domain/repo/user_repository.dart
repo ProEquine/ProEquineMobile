@@ -16,6 +16,7 @@ import 'package:proequine/features/user/data/reset_password_request_model.dart';
 import 'package:proequine/features/user/data/reset_password_response_model.dart';
 import 'package:proequine/features/user/data/send_mail_request_model.dart';
 import 'package:proequine/features/user/data/send_verification_request_model.dart';
+import 'package:proequine/features/user/data/send_verify_request_forgot_password.dart';
 import 'package:proequine/features/user/data/update_email_request_model.dart';
 
 import '../../../../core/CoreModels/base_result_model.dart';
@@ -57,6 +58,16 @@ class UserRepository {
         thereDeviceId: false,
         url: ApiURLs.sendVerificationCode);
   }
+  static Future<BaseResultModel?> sendVerificationCodeForgotPassword(
+      SendForgotPasswordVerifyRequestModel sendForgotPasswordVerifyRequestModel) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.POST,
+        queryParameters: sendForgotPasswordVerifyRequestModel.toJson(),
+        withAuthentication: false,
+        thereDeviceId: false,
+        url: ApiURLs.forgotPassword);
+  }
 
   static Future<BaseResultModel?> checkUsername(String username) async {
     return await RemoteDataSource.request<EmptyModel>(
@@ -82,16 +93,16 @@ class UserRepository {
         url: ApiURLs.checkVerificationCode);
   }
 
-  static Future<BaseResultModel?> forgotPassword(
-      SendMailVerificationRequestModel sendVerificationRequestModel) async {
-    return await RemoteDataSource.request<EmptyModel>(
-        converter: (json) => EmptyModel.fromJson(json),
-        method: HttpMethod.POST,
-        queryParameters: sendVerificationRequestModel.toJson(),
-        withAuthentication: false,
-        thereDeviceId: false,
-        url: ApiURLs.sendVerificationEmail);
-  }
+  // static Future<BaseResultModel?> forgotPassword(
+  //     SendMailVerificationRequestModel sendVerificationRequestModel) async {
+  //   return await RemoteDataSource.request<EmptyModel>(
+  //       converter: (json) => EmptyModel.fromJson(json),
+  //       method: HttpMethod.POST,
+  //       queryParameters: sendVerificationRequestModel.toJson(),
+  //       withAuthentication: false,
+  //       thereDeviceId: false,
+  //       url: ApiURLs.sendVerificationEmail);
+  // }
 
   static Future<BaseResultModel?> resetPassword(
       ResetPasswordRequestModel resetPasswordRequestModel) async {

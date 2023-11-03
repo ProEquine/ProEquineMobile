@@ -110,7 +110,6 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
                                 ),
                               ),
                               Padding(
-
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 7),
                                 child: RebiInput(
@@ -156,12 +155,14 @@ class _AddNewRoleScreenState extends State<AddNewRoleScreen> {
                               }
                               return RebiButton(
                                 onPressed: () {
-                                  if(_formKey.currentState!.validate()){
+                                  if (reason.text.isNotEmpty &&
+                                      selectedRole != null) {
                                     _onPressSubmit();
-                                  }else{
-
+                                  } else {
+                                    RebiMessage.error(
+                                        msg: "Please fill all of fields",
+                                        context: context);
                                   }
-
                                 },
                                 child: Text(
                                   "Submit",

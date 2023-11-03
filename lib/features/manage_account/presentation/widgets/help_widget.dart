@@ -82,7 +82,7 @@ class _HelpWidgetState extends State<HelpWidget> {
 
   DateTime _selectedDay = DateTime.utc(1950);
   DateTime currentDate = DateTime.utc(1950);
-  String current ='';
+  String current = '';
   final DateTime _focusedDay = DateTime.now();
   late int _selectedYear;
   late TextEditingController _yearController;
@@ -327,7 +327,19 @@ class _HelpWidgetState extends State<HelpWidget> {
                                               }
                                               return RebiButton(
                                                 onPressed: () {
-                                                  onPressUpdateName();
+                                                  if (firstName
+                                                          .text.isNotEmpty &&
+                                                      middleName
+                                                          .text.isNotEmpty &&
+                                                      lastName
+                                                          .text.isNotEmpty) {
+                                                    onPressUpdateName();
+                                                  } else {
+                                                    RebiMessage.error(
+                                                        msg:
+                                                            "Please fill all of the fields",
+                                                        context: context);
+                                                  }
                                                 },
                                                 child: const Text(
                                                   "Confirm",
@@ -501,7 +513,15 @@ class _HelpWidgetState extends State<HelpWidget> {
                                               }
                                               return RebiButton(
                                                 onPressed: () {
-                                                  onPressUpdateNationality();
+                                                  if (nationality
+                                                      .text.isNotEmpty) {
+                                                    onPressUpdateNationality();
+                                                  } else {
+                                                    RebiMessage.error(
+                                                        msg:
+                                                            "Please Enter your nationality",
+                                                        context: context);
+                                                  }
                                                 },
                                                 child: const Text(
                                                   "Confirm",
@@ -632,7 +652,15 @@ class _HelpWidgetState extends State<HelpWidget> {
                                               }
                                               return RebiButton(
                                                 onPressed: () {
-                                                  onPressUpdateDOB();
+                                                  if (dateOfBirth
+                                                      .text.isNotEmpty) {
+                                                    onPressUpdateDOB();
+                                                  } else {
+                                                    RebiMessage.error(
+                                                        msg:
+                                                            "Please Enter your date of birth",
+                                                        context: context);
+                                                  }
                                                 },
                                                 child: const Text(
                                                   "Confirm",

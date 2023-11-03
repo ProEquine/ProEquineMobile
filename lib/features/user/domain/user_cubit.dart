@@ -14,6 +14,7 @@ import 'package:proequine/features/user/data/register_request_model.dart';
 import 'package:proequine/features/user/data/reset_password_request_model.dart';
 import 'package:proequine/features/user/data/send_mail_request_model.dart';
 import 'package:proequine/features/user/data/send_verification_request_model.dart';
+import 'package:proequine/features/user/data/send_verify_request_forgot_password.dart';
 import 'package:proequine/features/user/data/stable-model.dart';
 import 'package:proequine/features/user/data/update_email_request_model.dart';
 import 'package:proequine/features/user/domain/repo/user_repository.dart';
@@ -117,6 +118,22 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
+  Future<void> sendVerificationCodeForgotPassword(
+      SendForgotPasswordVerifyRequestModel sendForgotPasswordVerifyRequestModel) async {
+    emit(ForgotPasswordLoading());
+    var response =
+    await UserRepository.sendVerificationCodeForgotPassword(sendForgotPasswordVerifyRequestModel);
+    if (response is EmptyModel) {
+      emit(ForgotPasswordSuccessful(
+          message: "Code has sent successfully ".tra));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(ForgotPasswordError(message: response.message));
+    } else if (response is Message) {
+      emit(ForgotPasswordError(message: response.content));
+    }
+  }
+
   Future<void> checkUsername(String userName) async {
     emit(CheckUsernameLoading());
     var response = await UserRepository.checkUsername(userName);
@@ -131,20 +148,20 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> forgotPassword(
-      SendMailVerificationRequestModel sendVerificationRequestModel) async {
-    emit(ForgotPasswordLoading());
-    var response =
-        await UserRepository.forgotPassword(sendVerificationRequestModel);
-    if (response is EmptyModel) {
-      emit(ForgotPasswordSuccessful(message: 'Verification code sent successfully'));
-    } else if (response is BaseError) {
-      Print("messaggeeeeeeeee${response.message}");
-      emit(ForgotPasswordError(message: response.message));
-    } else if (response is Message) {
-      emit(ForgotPasswordError(message: response.content));
-    }
-  }
+  // Future<void> forgotPassword(
+  //     SendMailVerificationRequestModel sendVerificationRequestModel) async {
+  //   emit(ForgotPasswordLoading());
+  //   var response =
+  //       await UserRepository.forgotPassword(sendVerificationRequestModel);
+  //   if (response is EmptyModel) {
+  //     emit(ForgotPasswordSuccessful(message: 'Verification code sent successfully'));
+  //   } else if (response is BaseError) {
+  //     Print("messaggeeeeeeeee${response.message}");
+  //     emit(ForgotPasswordError(message: response.message));
+  //   } else if (response is Message) {
+  //     emit(ForgotPasswordError(message: response.content));
+  //   }
+  // }
 
   Future<void> resetPassword(
       ResetPasswordRequestModel resetPasswordRequestModel) async {

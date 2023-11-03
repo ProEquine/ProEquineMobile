@@ -8,6 +8,7 @@ import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/widgets/submit_reset_password_page.dart';
 import 'package:proequine/features/user/data/reset_password_request_model.dart';
 import 'package:proequine/features/user/data/send_mail_request_model.dart';
+import 'package:proequine/features/user/data/send_verify_request_forgot_password.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui' as ui;
 
@@ -238,8 +239,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                           setState(() {
                                             context
                                                 .read<UserCubit>()
-                                                .forgotPassword(
-                                                    SendMailVerificationRequestModel(
+                                                .sendVerificationCodeForgotPassword(
+                                                    SendForgotPasswordVerifyRequestModel(
                                                   email: widget.email,
                                                 ));
                                             isResendCode = true;
