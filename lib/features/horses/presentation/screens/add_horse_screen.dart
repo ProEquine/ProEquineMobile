@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:country_picker/country_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -12,7 +13,10 @@ import 'package:proequine/core/global_functions/global_statics_drop_down.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/widgets/chose_picture_bottom_sheet.dart';
+import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/core/widgets/rebi_input.dart';
+import 'package:proequine/features/horses/data/add_horse_request_model.dart';
+import 'package:proequine/features/horses/domain/horse_cubit.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
@@ -22,6 +26,8 @@ import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/date_time_picker.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
+import '../../../../core/widgets/stables_widget.dart';
+import '../../../equine_info/presentation/widgets/disciplines_widget.dart';
 import '../../../user/presentation/widgets/selectable_type_container.dart';
 
 class AddHorseScreen extends StatefulWidget {
@@ -32,6 +38,7 @@ class AddHorseScreen extends StatefulWidget {
 }
 
 class AddHorseScreenState extends State<AddHorseScreen> {
+  HorseCubit cubit = HorseCubit();
   final picker = ImagePicker();
   File? horseImage;
   late String image;
@@ -40,28 +47,6 @@ class AddHorseScreenState extends State<AddHorseScreen> {
 
   var now = DateTime.now();
   final List<bool> _isGenderSelected = [false, false, false];
-  List<DropdownMenuItem<String>> stables = [
-    const DropdownMenuItem(
-      value: "Sharjah Stable",
-      child: Text("Sharjah"),
-    ),
-    const DropdownMenuItem(
-      value: "Malath",
-      child: Text("Malath"),
-    ),
-    const DropdownMenuItem(
-      value: "Malath2",
-      child: Text("Malath2"),
-    ),
-    const DropdownMenuItem(
-      value: "Malath3",
-      child: Text("Malath3"),
-    ),
-    const DropdownMenuItem(
-      value: "Add Your Stable",
-      child: Text("Add Your Stable"),
-    ),
-  ];
   String? interest;
   int? firstDay = 1;
   int? firstMonth = 1;
@@ -74,10 +59,18 @@ class AddHorseScreenState extends State<AddHorseScreen> {
   final DateTime _focusedDay = DateTime.now();
   late final TextEditingController _dateOfBirth;
   late final TextEditingController placeOfBirth;
+  late final TextEditingController discipline;
+  late final TextEditingController disciplineId;
   late final TextEditingController year;
+  late final TextEditingController _mainStableName;
+  late final TextEditingController _mainStableLocation;
+  late final TextEditingController stableId;
+
+  late final TextEditingController stable;
   late int _selectedYear;
   late TextEditingController _yearController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   Future getImage(ImageSource src, BuildContext? context) async {
     XFile? image = await picker.pickImage(source: src);
     setState(() {
@@ -93,8 +86,14 @@ class AddHorseScreenState extends State<AddHorseScreen> {
     _yearController = TextEditingController(text: _selectedDay.year.toString());
     image = AppIcons.horse;
     horseName = TextEditingController();
+    discipline = TextEditingController();
+    disciplineId = TextEditingController();
     placeOfBirth = TextEditingController();
     _dateOfBirth = TextEditingController();
+    _mainStableLocation = TextEditingController();
+    stableId = TextEditingController();
+    _mainStableName = TextEditingController();
+    stable = TextEditingController();
     year = TextEditingController();
     _selectedYear = _selectedDay.year;
     super.initState();
@@ -179,7 +178,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                               },
                               child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children:  [
+                                children: [
                                   Icon(
                                     Icons.camera_alt,
                                     color: AppColors.grey,
@@ -268,13 +267,14 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                             horizontal: 20, vertical: 13),
                         obscureText: false,
                         validator: (value) {
-                          try{
+                          try {
                             DateFormat inputFormat = DateFormat("dd MMM yyyy");
                             DateTime dateTime = inputFormat.parse(value!);
                             _selectedDay = dateTime;
-                          }catch(_){
+                          } catch (_) {
                             RebiMessage.error(
-                                msg: "Please Add the date of birth of your horse",
+                                msg:
+                                    "Please Add the date of birth of your horse",
                                 context: context);
                           }
 
@@ -455,35 +455,18 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 7),
-                      child: DropDownWidget(
-                        items: discipline,
-                        selected: selectedDiscipline,
-                        onChanged: (disc) {
-                          setState(() {
-                            selectedDiscipline = disc;
-                          });
-                        },
-                        validator: (value) {
-                          return Validator.requiredValidator(
-                              selectedDiscipline);
-                        },
-                        hint: 'Discipline',
+                      child: DisciplinesWidget(
+                        discipline: discipline,
+                        disciplineId: disciplineId,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 7),
-                      child: DropDownWidget(
-                        items: stables,
-                        selected: selectedStable,
-                        onChanged: (stable) {
-                          setState(() {
-                            selectedStable = stable;
-                          });
-                        },
-                        validator: (value) {
-                          return Validator.requiredValidator(selectedStable);
-                        },
-                        hint: 'Stable',
+                      child: SelectStableWidget(
+                        stableId: stableId,
+                        stableName: stable,
+                        changeTrue: () {},
+                        changeFalse: () {},
                       ),
                     ),
                   ],
@@ -493,40 +476,61 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: RebiButton(
-                    onPressed: () {
-                      Print(_selectedDay.toIso8601String());
-                      if (_formKey.currentState!.validate() &&
-                          selectedGender != null &&
-                          _selectedDay.toString().isNotEmpty &&
-                          horseImage != null &&
-                          placeOfBirth.text != '' &&
-                          selectedBloodLine != null &&
-                          selectedBreed != null &&
-                          selectedColor != null &&
-                          selectedDiscipline != null &&
-                          selectedStable != null) {
-                        Navigator.pop(context);
-                        Print("Saved");
-                      } else if (_dateOfBirth.text.isEmpty) {
+                  child: BlocConsumer<HorseCubit, HorseState>(
+                    bloc: cubit,
+                    listener: (context, state) {
+                      if (state is AddHorseSuccessfully) {
+                        RebiMessage.success(
+                            msg: "Horse added Successfully", context: context);
+                      } else if (state is AddHorseError) {
                         RebiMessage.error(
-                            msg: "Please Add the date of birth of your horse",
-                            context: context);
-                      } else if(horseImage ==null) {
-                        RebiMessage.error(
-                            msg: "Please add a picture to your horse",
-                            context: context);
-                      }else{
-                        RebiMessage.error(
-                            msg: "Please fill all of the fields",
-                            context: context);
+                            msg: state.message!, context: context);
                       }
                     },
-                    child: const Text("Add"),
+                    builder: (context, state) {
+                      if (state is AddHorseLoading) {
+                        return const LoadingCircularWidget();
+                      }
+                      return RebiButton(
+                        onPressed: () {
+                          if (stable.text == 'Add New Stable') {
+                            RebiMessage.error(
+                                msg:
+                                    "Please add your stable and wait until confirm it before",
+                                context: context);
+                          } else if (_formKey.currentState!.validate() &&
+                              selectedGender != null &&
+                              _selectedDay.toString().isNotEmpty &&
+                              horseImage != null &&
+                              placeOfBirth.text != '' &&
+                              selectedBloodLine != null &&
+                              selectedBreed != null &&
+                              selectedColor != null &&
+                              disciplineId.text.isNotEmpty &&
+                              stable.text.isNotEmpty) {
+                            _onPressAddHorse();
+                          } else if (_dateOfBirth.text.isEmpty) {
+                            RebiMessage.error(
+                                msg:
+                                    "Please Add the date of birth of your horse",
+                                context: context);
+                          } else if (horseImage == null) {
+                            RebiMessage.error(
+                                msg: "Please add a picture to your horse",
+                                context: context);
+                          } else {
+                            RebiMessage.error(
+                                msg: "Please fill all of the fields",
+                                context: context);
+                          }
+                        },
+                        child: const Text("Add"),
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 30,
                 ),
               ],
             ),
@@ -543,5 +547,21 @@ class AddHorseScreenState extends State<AddHorseScreen> {
       }
       _isSelected[index] = value;
     });
+  }
+
+  _onPressAddHorse() {
+    cubit.addHorse(
+        AddHorseRequestModel(
+          horseColor: selectedColor,
+          horseName: horseName!.text,
+          horseGender: selectedGender,
+          horseCOB: placeOfBirth.text,
+          horseDOB: _dateOfBirth.text,
+          disciplineId: int.parse(disciplineId.text),
+          stableId: int.parse(stableId.text),
+          bloodline: selectedBloodLine,
+          breed: selectedBreed,
+        ),
+        horseImage!.path);
   }
 }

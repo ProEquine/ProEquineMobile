@@ -27,17 +27,17 @@ import '../../../user/presentation/widgets/selectable_type_container.dart';
 import '../widgets/delete_horse_bottom_sheet.dart';
 
 class EditHorseScreen extends StatefulWidget {
-  String? image;
-  String? selectedGender;
-  int? selectedYear;
-  String? placeOfBirth;
-  String? horseName;
-  String? selectedColor;
-  String? selectedBreed;
-  String? selectedBloodLine;
-  String? birthOfDate;
+  final String? image;
+  final String? selectedGender;
+  final int? selectedYear;
+  final String? placeOfBirth;
+  final String? horseName;
+  final String? selectedColor;
+  final String? selectedBreed;
+  final String? selectedBloodLine;
+  final String? birthOfDate;
 
-  EditHorseScreen(
+  const EditHorseScreen(
       {super.key,
       this.selectedColor,
       this.selectedBloodLine,
@@ -215,7 +215,7 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                                   );
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.all(8),
+                                  padding: const EdgeInsets.all(8),
                                   decoration: const BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: AppColors.yellow,
@@ -238,7 +238,7 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                         children: [
                           Container(
                             height: 15.0.h,
-                            margin: EdgeInsets.symmetric(horizontal: kPadding),
+                            margin: const EdgeInsets.symmetric(horizontal: kPadding),
                             decoration: ShapeDecoration(
                               image: DecorationImage(
                                   image: FileImage(horseImage!),

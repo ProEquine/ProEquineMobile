@@ -114,7 +114,7 @@ class _AddSecondaryPhoneScreenState extends State<AddSecondaryPhoneScreen> {
                   }
                   return RebiButton(
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
+                        if (_formKey.currentState!.validate() && selectedSecondaryType!=null) {
                           FocusManager.instance.primaryFocus?.unfocus();
                           onSendPhone();
                         } else {}

@@ -12,7 +12,7 @@ class HorseCardWidget extends StatelessWidget {
   String gender;
   bool isLoading = false;
   String breed;
-  String placeOfBirth;
+  String? placeOfBirth;
   String horseStatus;
   String horseStable;
   String discipline;
@@ -29,8 +29,7 @@ class HorseCardWidget extends StatelessWidget {
       required this.horseStable,
       required this.horseStatus,
       this.isVerified = false,
-      this.isLoading = false,
-      required this.placeOfBirth});
+      this.isLoading = false, this.placeOfBirth});
 
   @override
   Widget build(BuildContext context) {

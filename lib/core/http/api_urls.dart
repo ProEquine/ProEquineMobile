@@ -18,14 +18,13 @@ class ApiURLs {
   static  String updateDOB = "$baseUrl/Account/updateDOB";
   static  String checkVerificationCode = "$basicApiUrl/Auth/checkverificationcode";
   // static  String forgotPassword = "$basicApiUrl/Auth/forgot-password";
-  static  String resetPassword = "$baseUrl/Account/resetPassword";
   static  String interests = "$baseUrl/User/saveInterestandType";
   static  String getStables = "$baseUrl/Master/getMainStables";
   static  String getDisciplines = "$baseUrl/Master/getAllDisciplines";
   static  String choseStables = "$baseUrl/User/SaveMainStable";
 
 
- /// Equine info
+ /// Account information
   static  String getUserDiscipline = "$baseUrl/Account/getUserDisciplines";
   static  String getUserStables = "$baseUrl/Account/getUserStables";
   static  String getUserRoles = "$baseUrl/Account/getRoles";
@@ -35,17 +34,10 @@ class ApiURLs {
   static  String addSecondaryStable = "$baseUrl/Account/addSecondaryStable";
   static  String addRole = "$baseUrl/Account/addRole";
   static  String deleteRole = "$baseUrl/Account/deleteRole";
+  static  String resetPassword = "$baseUrl/Account/resetPassword";
   static  String updateSecondaryDiscipline = "$baseUrl/Account/updateSecondaryDiscipline";
   static  String deleteDiscipline = "$baseUrl/Account/removeSecondaryDiscipline";
   static  String deleteStable = "$baseUrl/Account/removeSecondaryStable";
-
-
-
-  /// Events URLs
-  static  String allEvents = "$baseUrl/MobileApp/GetEvents";
-
-
-  /// Profile URLs
   static  String changePassword = "$baseUrl/Account/updatePassword";
   static  String addBio = "$baseUrl/Account/addBioAndSocialMediaAccount";
   static  String uploadImage = "$baseUrl/Account/addUserImage";
@@ -61,5 +53,18 @@ class ApiURLs {
   static  String updateMail = "$basicApiUrl/User/editemailaddress";
   static  String checkUpdateMail = "$baseUrl/Account/updateEmailAddress";
   static  String deleteUser = "$baseUrl/Account/deleteAccount";
+
+
+
+  /// Events URLs
+  static  String allEvents = "$baseUrl/MobileApp/GetEvents";
+
+
+  /// Horses URLs
+
+  static  String addHorse = "$baseUrl/api/Horse/addHorse";
+  static  String updateHorse = "$baseUrl/api/Horse/updateHorse";
+  static  String getHorses = "$baseUrl/api/Horse/getUserHorses";
+  static  String updateHorseCondition = "$baseUrl/api/Horse/updateHorseCondition";
 
 }

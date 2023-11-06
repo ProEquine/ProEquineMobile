@@ -255,7 +255,8 @@ class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
                                   arguments: BasicAccountManagementRoute(
                                       type: 'manageAccount',
                                       title:
-                                      "Support Request has been created."));
+                                          isChooseToAddStable?
+                                      "Support Request has been created.":"Main Stable Updated Successfully"));
                             }else if(state is UpdateMainStableError){
                               RebiMessage.error(msg: state.message!, context: context);
                             }

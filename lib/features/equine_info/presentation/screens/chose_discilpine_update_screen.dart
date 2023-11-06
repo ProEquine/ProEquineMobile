@@ -81,7 +81,7 @@ class _ChooseDisciplineScreenState extends State<ChooseDisciplineScreen> {
                     ProfileTwoLineListTile(
                       title: state.model!.disciplines![0].disciplineTitle,
                       subTitle:
-                          "National id : Not Applicable \nFei ID : Not Applicable ",
+                          "National id: ${state.model!.disciplines![0].nationalId?? "Not Applicable"} \nFei ID: ${state.model!.disciplines![0].feid?? "Not Applicable"} ",
                       onTap: () {
                         Navigator.push(
                             context,

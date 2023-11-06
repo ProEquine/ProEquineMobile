@@ -158,24 +158,6 @@ List<DropdownMenuItem<String>> supportSubject = [
     child: Text("Other"),
   ),
 ];
-List<DropdownMenuItem<String>> breed = [
-  const DropdownMenuItem(
-    value: "Arabian",
-    child: Text("Arabian"),
-  ),
-  const DropdownMenuItem(
-    value: "Shire",
-    child: Text("Shire"),
-  ),
-  const DropdownMenuItem(
-    value: "Appaloosa",
-    child: Text("Appaloosa"),
-  ),
-  const DropdownMenuItem(
-    value: "Mustang",
-    child: Text("Mustang"),
-  ),
-];
 List<DropdownMenuItem<String>> conditions = [
   const DropdownMenuItem(
     value: "Active",
@@ -303,23 +285,193 @@ List<DropdownMenuItem<String>> color = [
 ];
 List<DropdownMenuItem<String>> bloodLine = [
   const DropdownMenuItem(
-    value: "Northern Dancer",
-    child: Text("Northern Dancer"),
+    value: "Arabian",
+    child: Text("Arabian"),
   ),
   const DropdownMenuItem(
-    value: "Mr. Prospector",
-    child: Text("Mr. Prospector"),
+    value: "Anglo-Arab",
+    child: Text("Anglo-Arab"),
   ),
   const DropdownMenuItem(
-    value: "Secretariat",
-    child: Text("Secretariat"),
+    value: "Throroughbred",
+    child: Text("Throroughbred"),
   ),
   const DropdownMenuItem(
-    value: "Bold Ruler",
-    child: Text("Bold Ruler"),
+    value: "Standardbred",
+    child: Text("Standardbred"),
   ),
   const DropdownMenuItem(
-    value: "Danzig",
-    child: Text("Danzig"),
+    value: "Warmblood",
+    child: Text("Warmblood"),
+  ),
+  const DropdownMenuItem(
+    value: "Coldblood",
+    child: Text("Coldblood"),
+  ),
+  const DropdownMenuItem(
+    value: "Quarter Horse",
+    child: Text("Quarter Horse"),
+  ),
+  const DropdownMenuItem(
+    value: "Haflinger",
+    child: Text("Haflinger"),
+  ),
+  const DropdownMenuItem(
+    value: "Pony",
+    child: Text("Pony"),
+  ),
+  const DropdownMenuItem(
+    value: "Miniature Pony",
+    child: Text("Miniature Pony"),
+  ),
+  const DropdownMenuItem(
+    value: "Shetland Pony",
+    child: Text("Shetland Pony"),
+  ),
+];
+List<DropdownMenuItem<String>> breed = [
+  const DropdownMenuItem(
+    value: "Andalusian",
+    child: Text("Andalusian"),
+  ),
+  const DropdownMenuItem(
+    value: "Anglo-Arab",
+    child: Text("Anglo-Arab"),
+  ),
+  const DropdownMenuItem(
+    value: "Appaloosa",
+    child: Text("Appaloosa"),
+  ),
+  const DropdownMenuItem(
+    value: "Ardennais",
+    child: Text("Ardennais"),
+  ),
+  const DropdownMenuItem(
+    value: "Arenberg Nordkirchen",
+    child: Text("Arenberg Nordkirchen"),
+  ),
+  const DropdownMenuItem(
+    value: "Auvergne",
+    child: Text("Auvergne"),
+  ),
+  const DropdownMenuItem(
+    value: "Barraquand",
+    child: Text("Barraquand"),
+  ),
+  const DropdownMenuItem(
+    value: "Bavarian Warmblood",
+    child: Text("Bavarian Warmblood"),
+  ),
+  const DropdownMenuItem(
+    value: "Belgian Warmblood Studbook",
+    child: Text("Belgian Warmblood Studbook"),
+  ),
+  const DropdownMenuItem(
+    value: "Don",
+    child: Text("Don"),
+  ),
+  const DropdownMenuItem(
+    value: "Dutch Warmblood",
+    child: Text("Dutch Warmblood"),
+  ),
+  const DropdownMenuItem(
+    value: "Friesian",
+    child: Text("Friesian"),
+  ),
+  const DropdownMenuItem(
+    value: "Gelderlander",
+    child: Text("Gelderlander"),
+  ),
+  const DropdownMenuItem(
+    value: "German Riding Pony",
+    child: Text("German Riding Pony"),
+  ),
+  const DropdownMenuItem(
+    value: "Half-Arabian",
+    child: Text("Half-Arabian"),
+  ),
+  const DropdownMenuItem(
+    value: "Hanoverian horse",
+    child: Text("Hanoverian horse"),
+  ),
+  const DropdownMenuItem(
+    value: "Hessian Horse",
+    child: Text("Hessian Horse"),
+  ),
+  const DropdownMenuItem(
+    value: "Holsteiner",
+    child: Text("Holsteiner"),
+  ),
+  const DropdownMenuItem(
+    value: "Irish Sport Horse",
+    child: Text("Irish Sport Horse"),
+  ),
+  const DropdownMenuItem(
+    value: "KWPN",
+    child: Text("KWPN"),
+  ),
+  const DropdownMenuItem(
+    value: "Lipizzaner",
+    child: Text("Lipizzaner"),
+  ),
+  const DropdownMenuItem(
+    value: "Lusitano",
+    child: Text("Lusitano"),
+  ),
+  const DropdownMenuItem(
+    value: "Mecklenburg",
+    child: Text("Mecklenburg"),
+  ),
+  const DropdownMenuItem(
+    value: "Oldenburg",
+    child: Text("Oldenburg"),
+  ),
+  const DropdownMenuItem(
+    value: "Palomino",
+    child: Text("Palomino"),
+  ),
+  const DropdownMenuItem(
+    value: "Paso Fino1",
+    child: Text("Paso Fino1"),
+  ),
+  const DropdownMenuItem(
+    value: "Polo Horses",
+    child: Text("Polo Horses"),
+  ),
+  const DropdownMenuItem(
+    value: "Rhenish",
+    child: Text("Rhenish"),
+  ),
+  const DropdownMenuItem(
+    value: "Selle Français",
+    child: Text("Selle Français"),
+  ),
+  const DropdownMenuItem(
+    value: "Trakehner",
+    child: Text("Trakehner"),
+  ),
+  const DropdownMenuItem(
+    value: "Welsh",
+    child: Text("Welsh"),
+  ),
+  const DropdownMenuItem(
+    value: "Welsh",
+    child: Text("Welsh"),
+  ),
+  const DropdownMenuItem(
+    value: "WESTF - Westfalen",
+    child: Text("WESTF - Westfalen"),
+  ),
+  const DropdownMenuItem(
+    value: "Wurttemburg",
+    child: Text("Wurttemburg"),
+  ),
+  const DropdownMenuItem(
+    value: "ZANG - Stud-book Zangersheide (ZANG)",
+    child: Text("ZANG - Stud-book Zangersheide (ZANG)"),
+  ),
+  const DropdownMenuItem(
+    value: "Zweibrucker",
+    child: Text("Zweibrucker"),
   ),
 ];
