@@ -1,4 +1,31 @@
+import 'dart:io';
+
 class UpdateHorseRequestModel {
+  HorseObj? horseObj;
+  File? image;
+
+  UpdateHorseRequestModel({this.horseObj, this.image
+    // this.image
+  });
+
+  UpdateHorseRequestModel.fromJson(Map<String, dynamic> json) {
+    horseObj = json['horseObj'] != null
+        ? HorseObj.fromJson(json['horseObj'])
+        : null;
+    image = json['image'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (horseObj != null) {
+      data['horseObj'] = horseObj!.toJson();
+    }
+    data['image'] = image;
+    return data;
+  }
+}
+
+class HorseObj {
   String? horseName;
   String? horseColor;
   String? horseGender;
@@ -9,7 +36,7 @@ class UpdateHorseRequestModel {
   String? horseImage;
   int? horseID;
 
-  UpdateHorseRequestModel(
+  HorseObj(
       {this.horseName,
         this.horseColor,
         this.horseGender,
@@ -20,7 +47,7 @@ class UpdateHorseRequestModel {
         this.horseImage,
         this.horseID});
 
-  UpdateHorseRequestModel.fromJson(Map<String, dynamic> json) {
+  HorseObj.fromJson(Map<String, dynamic> json) {
     horseName = json['horseName'];
     horseColor = json['horseColor'];
     horseGender = json['horseGender'];

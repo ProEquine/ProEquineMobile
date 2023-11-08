@@ -28,6 +28,7 @@ import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
 import '../../../../core/widgets/stables_widget.dart';
 import '../../../equine_info/presentation/widgets/disciplines_widget.dart';
+import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
 import '../../../user/presentation/widgets/selectable_type_container.dart';
 
 class AddHorseScreen extends StatefulWidget {
@@ -482,6 +483,12 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                       if (state is AddHorseSuccessfully) {
                         RebiMessage.success(
                             msg: "Horse added Successfully", context: context);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const BottomNavigation(
+                                      selectedIndex: 2,
+                                    )));
                       } else if (state is AddHorseError) {
                         RebiMessage.error(
                             msg: state.message!, context: context);

@@ -168,6 +168,18 @@ class UserRepository {
         thereDeviceId: false,
         url: ApiURLs.sendVerificationEmail);
   }
+  static Future<BaseResultModel?> sendCodeForUpdateEmail(
+      String email) async {
+    return await RemoteDataSource.request<EmptyModel>(
+        converter: (json) => EmptyModel.fromJson(json),
+        method: HttpMethod.POST,
+        queryParameters: {
+          "Email":email,
+        },
+        withAuthentication: true,
+        thereDeviceId: false,
+        url: ApiURLs.sendUpdateVerificationEmail);
+  }
 
   static Future<BaseResultModel?> checkMailVerification(
       CheckMailVerificationRequestModel

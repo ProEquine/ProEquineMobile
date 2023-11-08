@@ -11,6 +11,7 @@ import 'package:proequine/features/equine_info/presentation/screens/update_main_
 import 'package:proequine/features/equine_info/presentation/screens/update_secondary_stable_screen.dart';
 
 import 'package:sizer/sizer.dart';
+import '../../../../core/utils/Printer.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/profile_two_lines_list_tile.dart';
 
@@ -89,67 +90,81 @@ class _ChooseUpdateStableScreenState extends State<ChooseUpdateStableScreen> {
                         textAlign: TextAlign.start,
                       ),
                     ),
-                    ProfileTwoLineListTile(
-                      title: state.model!.stables![0].stableName,
-                      subTitle:
-                          '${state.model!.stables![0].stableCountry}, ${state.model!.stables![0].stableState}',
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UpdateMainStableScreen(
-                                      mainStable:
-                                          state.model!.stables![0].stableName!,
-                                    )));
-                      },
-                      ableToEdit: true,
+                    ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: 1,
+                        itemBuilder:
+                       (context,index) {
+                         int mainStableIndex = state.model!.stables!.indexWhere((stable) => stable.stablePriority == "Main");
+                         if (mainStableIndex != -1) {
+                           Print("Index of main priority stable: $mainStableIndex");
+                         } else {
+                           Print("No stable with 'main' priority found.");
+                         }
+                        return ProfileTwoLineListTile(
+                          title: state.model!.stables![mainStableIndex].stableName,
+                          subTitle:
+                              '${state.model!.stables![mainStableIndex].stableCountry}, ${state.model!.stables![mainStableIndex].stableState}',
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UpdateMainStableScreen(
+                                          mainStable:
+                                              state.model!.stables![mainStableIndex].stableName!,
+                                        )));
+                          },
+                          ableToEdit: true,
+                        );
+                      }
                     ),
-                    const SizedBox(
-                      height: 15,
-                    ),
+                    // const SizedBox(
+                    //   height: 15,
+                    // ),
                     state.model!.stables!.length > 1
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 14),
-                                child: Text(
-                                  "Secondary Stable",
-                                  style: AppStyles.profileTitles,
-                                  textAlign: TextAlign.start,
+                        ? Transform.translate(
+                      offset: const Offset(0.0,-20.0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 14),
+                                  child: Text(
+                                    "Secondary Stable",
+                                    style: AppStyles.profileTitles,
+                                    textAlign: TextAlign.start,
+                                  ),
                                 ),
-                              ),
-                              ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: state.model!.stables!.length - 1,
-                                  itemBuilder: (context, index) {
-                                    return ProfileTwoLineListTile(
-                                      title: state.model!.stables![index + 1]
-                                          .stableName,
-                                      subTitle:
-                                          '${state.model!.stables![index + 1].stableCountry}, ${state.model!.stables![index + 1].stableState}',
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    UpdateSecondaryStableScreen(
-                                                      personStableId: state
-                                                          .model!
-                                                          .stables![index + 1]
-                                                          .personStableId!,
-                                                      secondaryStable: state
-                                                          .model!
-                                                          .stables![index + 1]
-                                                          .stableName!,
-                                                    )));
-                                      },
-                                      ableToEdit: true,
-                                    );
-                                  }),
-                            ],
-                          )
+                                ListView.builder(
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: state.model!.stables!.length - 1,
+                                    itemBuilder: (context, index) {
+                                      List secondaryStables = state.model!.stables!.where((stable) => stable.stablePriority == "Secondery").toList();
+                                      return ProfileTwoLineListTile(
+                                        title: secondaryStables[index]
+                                            .stableName,
+                                        subTitle:
+                                            '${secondaryStables[index].stableCountry}, ${secondaryStables[index].stableState}',
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UpdateSecondaryStableScreen(
+                                                        personStableId: secondaryStables[index]
+                                                            .personStableId!,
+                                                        secondaryStable: secondaryStables[index]
+                                                            .stableName!,
+                                                      )));
+                                        },
+                                        ableToEdit: true,
+                                      );
+                                    }),
+                              ],
+                            ),
+                        )
                         : const SizedBox(),
                   ],
                 );

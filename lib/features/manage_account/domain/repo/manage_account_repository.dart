@@ -5,6 +5,8 @@ import 'package:proequine/features/manage_account/data/add_bio_request_model.dar
 import 'package:proequine/features/manage_account/data/add_secondary_number_request_model.dart';
 import 'package:proequine/features/manage_account/data/add_secondary_number_response_model.dart';
 import 'package:proequine/features/manage_account/data/delete_account_request_model.dart';
+import 'package:proequine/features/manage_account/data/get_all_cities_response_model.dart';
+import 'package:proequine/features/manage_account/data/get_all_states_response_model.dart';
 import 'package:proequine/features/manage_account/data/update_dob_request_model.dart';
 import 'package:proequine/features/manage_account/data/update_name_request_model.dart';
 import 'package:proequine/features/manage_account/data/update_nationality_request_model.dart';
@@ -118,6 +120,32 @@ class ManageAccountRepository {
         withAuthentication: true,
         thereDeviceId: false,
         url: ApiURLs.getUserData);
+  }
+  static Future<BaseResultModel?> getAllStates(String country) async {
+    return await RemoteDataSource.request<GetAllStatesResponseModel>(
+        converter: (json) => GetAllStatesResponseModel.fromJson(json),
+        method: HttpMethod.GET,
+        policy: CachePolicy.request,
+        queryParameters: {
+          "CountryName":country
+        },
+        refreshDuration: const Duration(milliseconds: 1),
+        withAuthentication: true,
+        thereDeviceId: false,
+        url: ApiURLs.getStates);
+  }
+  static Future<BaseResultModel?> getAllCities(String state) async {
+    return await RemoteDataSource.request<GetALlCitiesResponseModel>(
+        converter: (json) => GetALlCitiesResponseModel.fromJson(json),
+        method: HttpMethod.GET,
+        policy: CachePolicy.request,
+        queryParameters: {
+          "StateName":state
+        },
+        refreshDuration: const Duration(milliseconds: 1),
+        withAuthentication: true,
+        thereDeviceId: false,
+        url: ApiURLs.getCities);
   }
   static Future<BaseResultModel?> deleteAccount(DeleteAccountRequestModel deleteAccountRequestModel) async {
     return await RemoteDataSource.request<EmptyModel>(

@@ -12,11 +12,14 @@ import '../../../../core/widgets/rebi_input.dart';
 
 void showDocumentBottomSheet({
   required BuildContext context,
+  required bool isItEditing,
   required String title,
   required String buttonTitle,
   required Function onTap,
   required Widget dropDownWidget,
   required Widget uploadWidget,
+  Widget? removeWidget,
+  required Widget button,
   required TextEditingController docNumber,
   required TextEditingController docTitle,
   required TextEditingController registrationDate,
@@ -69,6 +72,7 @@ void showDocumentBottomSheet({
                                       ? Colors.white
                                       : AppColors.blackLight)),
                         ),
+                        isItEditing? removeWidget!:
                         IconButton(
                           icon: const Icon(
                             Icons.close,
@@ -242,13 +246,7 @@ void showDocumentBottomSheet({
                     ),
                     Align(
                       alignment: Alignment.bottomCenter,
-                      child: RebiButton(
-                        onPressed: () {
-
-                          onTap();
-                        },
-                        child: Text(buttonTitle),
-                      ),
+                      child: button,
                     ),
                     const SizedBox(
                       height: 40,

@@ -34,6 +34,9 @@ class UserHorseList {
   String? horseImage;
   String? breed;
   String? bloodline;
+  String? horseCOB;
+  String? horseDOB;
+  String? horseColor;
   DisciplineDetails? disciplineDetails;
   StableDetails? stableDetails;
 
@@ -46,6 +49,9 @@ class UserHorseList {
       this.horseIsVerified,
       this.horseImage,
       this.breed,
+      this.horseCOB,
+        this.horseDOB,
+        this.horseColor,
       this.bloodline,
       this.disciplineDetails,
       this.stableDetails});
@@ -59,6 +65,9 @@ class UserHorseList {
     horseIsVerified = json['horseIsVerified'];
     horseImage = json['horseImage'];
     breed = json['breed'];
+    horseCOB = json['horseCOB'];
+    horseDOB = json['horseDOB'];
+    horseColor = json['horseColor'];
     bloodline = json['bloodline'];
     disciplineDetails = json['disciplineDetails'] != null
         ? DisciplineDetails.fromJson(json['disciplineDetails'])
@@ -78,6 +87,9 @@ class UserHorseList {
     data['horseIsVerified'] = horseIsVerified;
     data['horseImage'] = horseImage;
     data['breed'] = breed;
+    data['horseCOB'] = horseCOB;
+    data['horseDOB'] = horseDOB;
+    data['horseColor'] = horseColor;
     data['bloodline'] = bloodline;
     if (disciplineDetails != null) {
       data['disciplineDetails'] = disciplineDetails!.toJson();

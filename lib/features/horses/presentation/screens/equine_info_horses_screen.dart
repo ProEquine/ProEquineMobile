@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
+import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/core/widgets/stables_widget.dart';
+import 'package:proequine/features/horses/data/update_condition_request_model.dart';
+import 'package:proequine/features/horses/domain/horse_cubit.dart';
 
 import 'package:sizer/sizer.dart';
 
@@ -15,26 +19,57 @@ import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
+import '../../../equine_info/presentation/widgets/disciplines_widget.dart';
+import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
 
 class EquineInfoHorsesScreen extends StatefulWidget {
-  const EquineInfoHorsesScreen({super.key});
+  final int? stableId;
+  final String? stableName;
+  final String? horseCondition;
+  final String? disciplineTitle;
+  final int? disciplineId;
+  final int? horseId;
+
+  const EquineInfoHorsesScreen({super.key,
+    this.stableId,
+    this.stableName,
+    this.horseCondition,
+    this.disciplineTitle,
+    required this.horseId,
+    this.disciplineId});
 
   @override
   State<EquineInfoHorsesScreen> createState() => _EquineInfoHorsesScreenState();
 }
 
 class _EquineInfoHorsesScreenState extends State<EquineInfoHorsesScreen> {
-  TextEditingController stable = TextEditingController();
+  late TextEditingController stable;
+  late TextEditingController discipline;
+  late TextEditingController disciplineId;
+
   TextEditingController stableName = TextEditingController();
-  TextEditingController stableId = TextEditingController();
+  late TextEditingController stableId;
   TextEditingController stableLocation = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    selectedCondition = widget.horseCondition;
+    stable = TextEditingController(text: widget.stableName);
+    discipline = TextEditingController(text: widget.disciplineTitle);
+    stableId = TextEditingController(text: widget.stableId.toString());
+    disciplineId = TextEditingController(text: widget.disciplineId.toString());
+    selectedDiscipline = widget.disciplineTitle ?? '';
+    super.initState();
+  }
+
   String? selectedDiscipline;
   String? selectedStable;
   String? selectedCondition;
 
   String? selectedEmirate;
   bool isChooseToAddStable = false;
+  HorseCubit cubit = HorseCubit();
 
   void changeToTrueValue() {
     setState(() {
@@ -77,7 +112,9 @@ class _EquineInfoHorsesScreenState extends State<EquineInfoHorsesScreen> {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 5,),
+              const SizedBox(
+                height: 5,
+              ),
               SelectStableWidget(
                 stableId: stableId,
                 stableName: stable,
@@ -197,46 +234,52 @@ class _EquineInfoHorsesScreenState extends State<EquineInfoHorsesScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 7),
-                child: DropDownWidget(
-                  items: discipline,
-                  selected: selectedDiscipline,
-                  onChanged: (disc) {
-                    setState(() {
-                      selectedDiscipline = disc;
-                    });
-                  },
-                  validator: (value) {
-                    return Validator.requiredValidator(selectedDiscipline);
-                  },
-                  hint: 'Discipline',
+                child: DisciplinesWidget(
+                  discipline: discipline,
+                  disciplineId: disciplineId,
                 ),
               ),
               const Spacer(),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: RebiButton(
-                  onPressed: () {
-                    Print(selectedStable);
-                    Print(selectedEmirate);
-                    Print(selectedDiscipline);
-                    Print(selectedCondition);
-                    Print(selectedStable);
-                    if ((stable.text.isNotEmpty &&
-                        stable.text != 'Add Your Stable') ||
-                        (selectedEmirate != null &&
-                                stableName.text.isNotEmpty &&
-                                stableLocation.text.isNotEmpty) &&
-                            selectedCondition != null &&
-                            selectedDiscipline != null) {
-
-                      Navigator.pop(context);
-                    } else {
-                      RebiMessage.error(
-                          msg: "Please fill all of the fields",
-                          context: context);
+                child: BlocConsumer<HorseCubit, HorseState>(
+                  bloc: cubit,
+                  listener: (context, state) {
+                    if(state is UpdateHorseConditionError){
+                      RebiMessage.error(msg: state.message!, context: context);
+                    }else if(state is UpdateHorseConditionSuccessfully) {
+                      RebiMessage.success(msg: state.message, context: context);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const BottomNavigation(
+                                selectedIndex: 2,
+                              )));
                     }
                   },
-                  child: const Text("Save"),
+                  builder: (context, state) {
+                    if(state is UpdateHorseConditionLoading){
+                      return const LoadingCircularWidget();
+                    }
+                    return RebiButton(
+                      onPressed: () {
+                        if ((stable.text.isNotEmpty &&
+                            stable.text != 'Add Your Stable') ||
+                            (selectedEmirate != null &&
+                                stableName.text.isNotEmpty &&
+                                stableLocation.text.isNotEmpty) &&
+                                selectedCondition != null &&
+                                discipline.text.isNotEmpty) {
+                          _onPressUpdate();
+                        } else {
+                          RebiMessage.error(
+                              msg: "Please fill all of the fields",
+                              context: context);
+                        }
+                      },
+                      child: const Text("Save"),
+                    );
+                  },
                 ),
               ),
               const SizedBox(
@@ -245,6 +288,19 @@ class _EquineInfoHorsesScreenState extends State<EquineInfoHorsesScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  _onPressUpdate() {
+    cubit.updateHorseCondition(
+      UpdateHorseConditionRequestModel(
+          horseId: widget.horseId,
+          horseCondition: selectedCondition,
+          stableId: int.parse(stableId.text),
+          disciplineId: int.parse(disciplineId.text)
+
+
       ),
     );
   }

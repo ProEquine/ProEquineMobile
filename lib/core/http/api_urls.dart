@@ -48,8 +48,11 @@ class ApiURLs {
   static  String addAddress = "$baseUrl/Account/addAddress";
   static  String contactSupport = "$baseUrl/Account/createSupportRequest";
   static  String getUserData = "$baseUrl/Account/getUserData";
+  static  String getStates = "$baseUrl/Master/getStates";
+  static  String getCities = "$baseUrl/Master/getCities";
   static  String sendVerificationEmail = "$baseUrl/Master/sendEmailVerificationCode";
-  static  String checkVerificationEmail = "$baseUrl/Master/checkEmailVerificationCode";
+  static  String sendUpdateVerificationEmail = "$baseUrl/Master/sendCodeForUpdateEmail";
+  static  String checkVerificationEmail = "$baseUrl/Master/verifyUserEmail";
   static  String updateMail = "$basicApiUrl/User/editemailaddress";
   static  String checkUpdateMail = "$baseUrl/Account/updateEmailAddress";
   static  String deleteUser = "$baseUrl/Account/deleteAccount";
@@ -66,5 +69,13 @@ class ApiURLs {
   static  String updateHorse = "$baseUrl/api/Horse/updateHorse";
   static  String getHorses = "$baseUrl/api/Horse/getUserHorses";
   static  String updateHorseCondition = "$baseUrl/api/Horse/updateHorseCondition";
+  static  String removeHorse = "$baseUrl/api/Horse/removeHorse";
+  static  String verifyHorse = "$baseUrl/api/Horse/verifyHorse";
+  ///horses docs
+  static  String addHorseDocument = "$baseUrl/api/Horse/addHorseDocument";
+  static  String editHorseDocument = "$baseUrl/api/Horse/editHorseDocument";
+  static  String removeHorseDocument = "$baseUrl/api/Horse/removeHorseDocument";
+  static  String allDocuments = "$baseUrl/api/Horse/getHorseDocuments";
+
 
 }

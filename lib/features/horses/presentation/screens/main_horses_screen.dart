@@ -144,7 +144,7 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
         builder: (context, state) {
           if (state is GetUserHorsesSuccessfully) {
             if (state.getAllHorsesResponseModel.userHorseList!.isEmpty) {
-              return  MediaQuery(
+              return MediaQuery(
                   data: const MediaQueryData(
                       viewInsets: EdgeInsets.only(top: 100, bottom: 0)),
                   child: CupertinoPageScaffold(
@@ -166,7 +166,8 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => AddHorseScreen()));
+                                            builder: (context) =>
+                                                AddHorseScreen()));
                                   },
                                   child: const Text(
                                     "Add Horse",
@@ -179,7 +180,8 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
                                   ),
                                 ),
                                 alwaysShowMiddle: false,
-                                padding: const EdgeInsetsDirectional.only(bottom: 1),
+                                padding:
+                                    const EdgeInsetsDirectional.only(bottom: 1),
                                 backgroundColor: AppColors.backgroundColorLight,
                                 largeTitle: const Text(
                                   'Horses',
@@ -191,12 +193,13 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
                                 middle: const Text(
                                   'Horses',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w700, fontSize: 18),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18),
                                 ),
                               ),
                             ];
                           },
-                          body:const EmptyHorsesWidget())));
+                          body: const EmptyHorsesWidget())));
             } else {
               return MediaQuery(
                 data: const MediaQueryData(
@@ -270,7 +273,11 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const HorseProfileScreen()));
+                                                    HorseProfileScreen(
+                                                      response: state
+                                                          .getAllHorsesResponseModel
+                                                          .userHorseList![index],
+                                                    )));
                                       },
                                       child: HorseCardWidget(
                                         age: state.getAllHorsesResponseModel
@@ -293,7 +300,7 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
                                         horsePic: state
                                             .getAllHorsesResponseModel
                                             .userHorseList![index]
-                                            .horseImage!,
+                                            .horseImage??'',
                                         isVerified: state
                                             .getAllHorsesResponseModel
                                             .userHorseList![index]
@@ -304,9 +311,10 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
                                             .stableDetails!
                                             .stableName!,
                                         horseStatus: state
-                                            .getAllHorsesResponseModel
-                                            .userHorseList![index]
-                                            .horseCondition!,
+                                                .getAllHorsesResponseModel
+                                                .userHorseList![index]
+                                                .horseCondition ??
+                                            '',
                                       ),
                                     ),
                                   );

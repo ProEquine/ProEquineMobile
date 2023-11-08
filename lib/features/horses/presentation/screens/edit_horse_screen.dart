@@ -4,6 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -12,22 +13,30 @@ import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/core/global_functions/global_statics_drop_down.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/utils/rebi_message.dart';
+import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/core/widgets/rebi_input.dart';
+import 'package:proequine/features/horses/data/remove_horse_request_model.dart';
+import 'package:proequine/features/horses/data/update_horse_request_model.dart';
+import 'package:proequine/features/horses/domain/horse_cubit.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/validator.dart';
+import '../../../../core/widgets/base_64_image.dart';
 import '../../../../core/widgets/chose_picture_bottom_sheet.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/date_time_picker.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
+import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
 import '../../../user/presentation/widgets/selectable_type_container.dart';
 import '../widgets/delete_horse_bottom_sheet.dart';
 
 class EditHorseScreen extends StatefulWidget {
   final String? image;
+  final int? horseId;
   final String? selectedGender;
   final int? selectedYear;
   final String? placeOfBirth;
@@ -40,6 +49,7 @@ class EditHorseScreen extends StatefulWidget {
   const EditHorseScreen(
       {super.key,
       this.selectedColor,
+      this.horseId,
       this.selectedBloodLine,
       this.selectedBreed,
       this.selectedGender,
@@ -112,6 +122,7 @@ class EditHorseScreenState extends State<EditHorseScreen> {
     super.initState();
   }
 
+  HorseCubit cubit = HorseCubit();
   String? selectedGender;
   String? selectedBreed;
   String? selectedColor;
@@ -146,12 +157,40 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  MaterialButton(
-                    onPressed: () {},
-                    child: const Text(
-                      "Submit",
-                      style: TextStyle(color: AppColors.red),
-                    ),
+                  BlocConsumer<HorseCubit, HorseState>(
+                    bloc: cubit,
+                    listener: (context, state) {
+                      if (state is RemoveHorseError) {
+                        RebiMessage.error(
+                            msg: state.message!, context: context);
+                      } else if (state is RemoveHorseSuccessfully) {
+                        RebiMessage.success(
+                            msg: state.message, context: context);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const BottomNavigation(
+                                      selectedIndex: 2,
+                                    )));
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is RemoveHorseLoading) {
+                        return const LoadingCircularWidget(
+                          isDeleteButton: true,
+                        );
+                      }
+                      return MaterialButton(
+                        onPressed: () {
+                          cubit.removeHorse(
+                              RemoveHorseRequestModel(horseId: widget.horseId));
+                        },
+                        child: const Text(
+                          "Submit",
+                          style: TextStyle(color: AppColors.red),
+                        ),
+                      );
+                    },
                   )
                 ],
               ),
@@ -165,29 +204,39 @@ class EditHorseScreenState extends State<EditHorseScreen> {
           child: Column(
             children: [
               const SizedBox(
-                height: 10,
+                height: 20,
               ),
               horseImage == null
                   ? SizedBox(
                       height: 17.5.h,
                       child: Stack(
                         children: [
-                          Container(
-                            height: 15.0.h,
-                            margin: EdgeInsets.symmetric(horizontal: kPadding),
-                            decoration: ShapeDecoration(
-                              color: Colors.white,
-                              image: DecorationImage(
-                                  image: AssetImage(widget.image!),
-                                  fit: BoxFit.cover),
-                              shape: RoundedRectangleBorder(
-                                side: const BorderSide(
-                                  width: 0.50,
-                                  strokeAlign: BorderSide.strokeAlignCenter,
-                                  color: Color(0xFFDFD9C9),
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                          // Container(
+                          //   height: 15.0.h,
+                          //   margin: EdgeInsets.symmetric(horizontal: kPadding),
+                          //   decoration: ShapeDecoration(
+                          //     color: Colors.white,
+                          //     image: DecorationImage(
+                          //         image: AssetImage(widget.image!),
+                          //         fit: BoxFit.cover),
+                          //     shape: RoundedRectangleBorder(
+                          //       side: const BorderSide(
+                          //         width: 0.50,
+                          //         strokeAlign: BorderSide.strokeAlignCenter,
+                          //         color: Color(0xFFDFD9C9),
+                          //       ),
+                          //       borderRadius: BorderRadius.circular(8),
+                          //     ),
+                          //   ),
+                          // ),
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(8),
+                                topLeft: Radius.circular(8)),
+                            child: Base64Image(
+                              width: 340,
+                              height: 130,
+                              base64Image: widget.image!,
                             ),
                           ),
                           Positioned(
@@ -206,10 +255,9 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                                     onTapGallery: () async {
                                       await getImage(
                                           ImageSource.gallery, context);
-                                      if(mounted){
+                                      if (mounted) {
                                         Navigator.of(context).pop();
                                       }
-
                                     },
                                     title: "Chose the horse picture",
                                   );
@@ -238,7 +286,8 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                         children: [
                           Container(
                             height: 15.0.h,
-                            margin: const EdgeInsets.symmetric(horizontal: kPadding),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: kPadding),
                             decoration: ShapeDecoration(
                               image: DecorationImage(
                                   image: FileImage(horseImage!),
@@ -343,41 +392,41 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                         },
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 7),
-                      child: RebiInput(
-                        hintText: 'Date Of Birth'.tra,
-                        controller: _dateOfBirth,
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.done,
-                        onTap: () {
-                          selectDate(
-                              context: context,
-                              isSupportChangingYears: true,
-                              selectedOurDay: _selectedDay,
-                              from: DateTime.utc(2000),
-                              to: DateTime.utc(2023),
-                              selectedYear: _selectedYear,
-                              yearController: _yearController,
-                              focusDay: _focusedDay,
-                              controller: _dateOfBirth,
-                              yearKey: _yearKey);
-                        },
-                        autoValidateMode: AutovalidateMode.onUserInteraction,
-                        isOptional: false,
-                        color: AppColors.formsLabel,
-                        readOnly: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 13),
-                        obscureText: false,
-                        validator: (value) {
-                          DateFormat inputFormat = DateFormat("dd MMM yyyy");
-                          DateTime dateTime = inputFormat.parse(value!);
-                          _selectedDay = dateTime;
-                          return Validator.requiredValidator(_dateOfBirth.text);
-                        },
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(vertical: 7),
+                    //   child: RebiInput(
+                    //     hintText: 'Date Of Birth'.tra,
+                    //     controller: _dateOfBirth,
+                    //     keyboardType: TextInputType.text,
+                    //     textInputAction: TextInputAction.done,
+                    //     onTap: () {
+                    //       selectDate(
+                    //           context: context,
+                    //           isSupportChangingYears: true,
+                    //           selectedOurDay: _selectedDay,
+                    //           from: DateTime.utc(2000),
+                    //           to: DateTime.utc(2023),
+                    //           selectedYear: _selectedYear,
+                    //           yearController: _yearController,
+                    //           focusDay: _focusedDay,
+                    //           controller: _dateOfBirth,
+                    //           yearKey: _yearKey);
+                    //     },
+                    //     autoValidateMode: AutovalidateMode.onUserInteraction,
+                    //     isOptional: false,
+                    //     color: AppColors.formsLabel,
+                    //     readOnly: true,
+                    //     contentPadding: const EdgeInsets.symmetric(
+                    //         horizontal: 20, vertical: 13),
+                    //     obscureText: false,
+                    //     validator: (value) {
+                    //       DateFormat inputFormat = DateFormat("dd MMM yyyy");
+                    //       DateTime dateTime = inputFormat.parse(value!);
+                    //       _selectedDay = dateTime;
+                    //       return Validator.requiredValidator(_dateOfBirth.text);
+                    //     },
+                    //   ),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 7),
                       child: RebiInput(
@@ -416,16 +465,16 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                                 filled: true,
                                 fillColor: AppColors.whiteLight,
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(8)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)),
                                   borderSide: BorderSide(
                                     color: Color(0xFFDBD4C3),
                                     width: 0.50,
                                   ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(8)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)),
                                   borderSide: BorderSide(
                                     color: Color(0xFFDBD4C3),
                                     width: 0.50,
@@ -559,13 +608,37 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: kPadding),
                 child: Align(
                   alignment: Alignment.bottomCenter,
-                  child: RebiButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        Print("Saved");
-                      } else {}
+                  child: BlocConsumer<HorseCubit, HorseState>(
+                    bloc: cubit,
+                    listener: (context, state) {
+                      if (state is UpdateHorseSuccessfully) {
+                        RebiMessage.success(
+                            msg: state.message, context: context);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const BottomNavigation(
+                                      selectedIndex: 2,
+                                    )));
+                      } else if (state is UpdateHorseError) {
+                        RebiMessage.error(
+                            msg: state.message!, context: context);
+                      }
                     },
-                    child: const Text("Save"),
+                    builder: (context, state) {
+                      if (state is LoadingCircularWidget) {
+                        return LoadingCircularWidget();
+                      }
+                      return RebiButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _onPressUpdate();
+                            Print("Saved");
+                          } else {}
+                        },
+                        child: const Text("Save"),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -586,5 +659,20 @@ class EditHorseScreenState extends State<EditHorseScreen> {
       }
       _isSelected[index] = value;
     });
+  }
+
+  _onPressUpdate() {
+    cubit.updateHorse(
+        UpdateHorseRequestModel(
+            horseObj: HorseObj(
+                horseName: horseName!.text,
+                horseColor: selectedColor,
+                horseDOB: widget.birthOfDate,
+                horseCOB: placeOfBirth.text,
+                breed: selectedBreed,
+                bloodline: selectedBloodLine,
+                horseGender: selectedGender,
+                horseID: widget.horseId),),
+    );
   }
 }

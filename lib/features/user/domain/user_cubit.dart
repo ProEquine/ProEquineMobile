@@ -231,6 +231,21 @@ class UserCubit extends Cubit<UserState> {
       emit(SendMailVerificationError(message: response.content));
     }
   }
+  Future<void> sendUpdateMailVerificationCode(
+      String email) async {
+    emit(SendUpdateMailVerificationLoading());
+    var response = await UserRepository.sendCodeForUpdateEmail(
+        email);
+    if (response is EmptyModel) {
+      emit(SendUpdateMailVerificationSuccessful(
+          message: "Code has sent successfully ".tra));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(SendUpdateMailVerificationError(message: response.message));
+    } else if (response is Message) {
+      emit(SendUpdateMailVerificationError(message: response.content));
+    }
+  }
 
   Future<void> checkMailVerificationCode(
       CheckMailVerificationRequestModel

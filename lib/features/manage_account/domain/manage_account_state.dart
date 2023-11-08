@@ -143,3 +143,26 @@ class UploadImageError extends ManageAccountState {
   final String? message;
   UploadImageError({this.message});
 }
+
+class GetAllStatesSuccessfully extends ManageAccountState {
+  final GetAllStatesResponseModel? responseModel;
+  GetAllStatesSuccessfully({required this.responseModel});
+}
+
+class GetAllStatesLoading extends ManageAccountState {}
+
+class GetAllStatesError extends ManageAccountState {
+  final String? message;
+  GetAllStatesError({this.message});
+}
+class GetAllCitiesSuccessfully extends ManageAccountState {
+  final GetALlCitiesResponseModel? responseModel;
+  GetAllCitiesSuccessfully({required this.responseModel});
+}
+
+class GetAllCitiesLoading extends ManageAccountState {}
+
+class GetAllCitiesError extends ManageAccountState {
+  final String? message;
+  GetAllCitiesError({this.message});
+}

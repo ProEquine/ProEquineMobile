@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:proequine/core/constants/colors/app_colors.dart';
 
 import '../../../../core/constants/images/app_images.dart';
+import '../../../../core/widgets/base_64_image.dart';
 import 'horse_card_status_widget.dart';
 
 class HorseCardWidget extends StatelessWidget {
@@ -29,7 +30,8 @@ class HorseCardWidget extends StatelessWidget {
       required this.horseStable,
       required this.horseStatus,
       this.isVerified = false,
-      this.isLoading = false, this.placeOfBirth});
+      this.isLoading = false,
+      this.placeOfBirth});
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +53,16 @@ class HorseCardWidget extends StatelessWidget {
                     horsePic,
                     fit: BoxFit.cover,
                   ))
-              : Image.asset(
-                  horsePic,
-                  fit: BoxFit.cover,
+              : ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(8),
+                      topLeft: Radius.circular(8)),
+                  child: Base64Image(
+                    width: double.maxFinite,
+                    height: 130,
+                    isItHorse: true,
+                    base64Image: horsePic,
+                  ),
                 ),
           Column(
             children: [
@@ -95,7 +104,7 @@ class HorseCardWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '$age yrs $gender $breed $placeOfBirth',
+                      '$age yrs $gender $breed',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Color(0xFF6B7280),

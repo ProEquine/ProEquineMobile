@@ -38,6 +38,7 @@ class _DocumentWidgetState extends State<DocumentWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
                 height: 7,
@@ -58,14 +59,17 @@ class _DocumentWidgetState extends State<DocumentWidget> {
               const SizedBox(
                 height: 5,
               ),
-              Text(
-                'Expires on ${widget.date}',
-                textAlign: TextAlign.start,
-                style: const TextStyle(
-                  color: Color(0xFF6B7280),
-                  fontSize: 10,
-                  fontFamily: 'notosan',
-                  fontWeight: FontWeight.w400,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Text(
+                  'Expires on ${widget.date}',
+                  textAlign: TextAlign.start,
+                  style: const TextStyle(
+                    color: Color(0xFF6B7280),
+                    fontSize: 10,
+                    fontFamily: 'notosan',
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
               const SizedBox(

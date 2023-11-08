@@ -54,36 +54,36 @@ List<DropdownMenuItem<String>> role = [
   ),
 ];
 
-List<DropdownMenuItem<String>> discipline = [
-  const DropdownMenuItem(
-    value: "Show Jumping",
-    child: Text("Show Jumping"),
-  ),
-  const DropdownMenuItem(
-    value: "Dressage",
-    child: Text("Dressage"),
-  ),
-  const DropdownMenuItem(
-    value: "Flat Race",
-    child: Text("Racing"),
-  ),
-  const DropdownMenuItem(
-    value: "Endurance",
-    child: Text("Endurance"),
-  ),
-  const DropdownMenuItem(
-    value: "Eventing",
-    child: Text("Eventing"),
-  ),
-  const DropdownMenuItem(
-    value: "Tent Pegging",
-    child: Text("Tent Pegging"),
-  ),
-  const DropdownMenuItem(
-    value: "Arabian Show",
-    child: Text("Arabian Show"),
-  ),
-];
+// List<DropdownMenuItem<String>> discipline = [
+//   const DropdownMenuItem(
+//     value: "Show Jumping",
+//     child: Text("Show Jumping"),
+//   ),
+//   const DropdownMenuItem(
+//     value: "Dressage",
+//     child: Text("Dressage"),
+//   ),
+//   const DropdownMenuItem(
+//     value: "Flat Race",
+//     child: Text("Racing"),
+//   ),
+//   const DropdownMenuItem(
+//     value: "Endurance",
+//     child: Text("Endurance"),
+//   ),
+//   const DropdownMenuItem(
+//     value: "Eventing",
+//     child: Text("Eventing"),
+//   ),
+//   const DropdownMenuItem(
+//     value: "Tent Pegging",
+//     child: Text("Tent Pegging"),
+//   ),
+//   const DropdownMenuItem(
+//     value: "Arabian Show",
+//     child: Text("Arabian Show"),
+//   ),
+// ];
 
 List<DropdownMenuItem<String>> equipments = [
   const DropdownMenuItem(
@@ -245,6 +245,10 @@ List<DropdownMenuItem<String>> color = [
   const DropdownMenuItem(
     value: "Black",
     child: Text("Black"),
+  ),
+  const DropdownMenuItem(
+    value: "Brown",
+    child: Text("Brown"),
   ),
   const DropdownMenuItem(
     value: "Gray",

@@ -119,6 +119,15 @@ class SendMailVerificationError extends UserState{
   final String? message;
   SendMailVerificationError({this.message});
 }
+class SendUpdateMailVerificationSuccessful extends UserState{
+  final String? message;
+  SendUpdateMailVerificationSuccessful({required this.message});
+}
+class SendUpdateMailVerificationLoading extends UserState{}
+class SendUpdateMailVerificationError extends UserState{
+  final String? message;
+  SendUpdateMailVerificationError({this.message});
+}
 
 class CheckMailVerificationSuccessful extends UserState{
   final String? message;

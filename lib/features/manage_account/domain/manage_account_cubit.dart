@@ -6,6 +6,8 @@ import 'package:proequine/features/manage_account/data/add_bio_request_model.dar
 import 'package:proequine/features/manage_account/data/add_secondary_number_request_model.dart';
 import 'package:proequine/features/manage_account/data/add_secondary_number_response_model.dart';
 import 'package:proequine/features/manage_account/data/delete_account_request_model.dart';
+import 'package:proequine/features/manage_account/data/get_all_cities_response_model.dart';
+import 'package:proequine/features/manage_account/data/get_all_states_response_model.dart';
 import 'package:proequine/features/manage_account/data/update_dob_request_model.dart';
 import 'package:proequine/features/manage_account/data/update_main_number_request_model.dart';
 import 'package:proequine/features/manage_account/data/update_name_request_model.dart';
@@ -197,6 +199,32 @@ class ManageAccountCubit extends Cubit<ManageAccountState> {
     }
   }
 
+  Future<void> getAllStates(String countryName) async {
+    emit(GetAllStatesLoading());
+    var response = await ManageAccountRepository.getAllStates(countryName);
+    if (response is GetAllStatesResponseModel) {
+      emit(GetAllStatesSuccessfully(responseModel: response));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(GetAllStatesError(message: response.message));
+    } else if (response is Message) {
+      emit(GetAllStatesError(message: response.content));
+    }
+  }
+  Future<void> getALlCities(String stateName) async {
+    emit(GetAllCitiesLoading());
+    var response = await ManageAccountRepository.getAllCities(stateName);
+    if (response is GetALlCitiesResponseModel) {
+
+
+      emit(GetAllCitiesSuccessfully(responseModel: response));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(GetAllCitiesError(message: response.message));
+    } else if (response is Message) {
+      emit(GetAllCitiesError(message: response.content));
+    }
+  }
   Future<void> addBio(AddBioRequestModel addBioRequestModel) async {
     emit(AddBioLoading());
     var response = await ManageAccountRepository.addBio(addBioRequestModel);

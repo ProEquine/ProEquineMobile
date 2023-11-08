@@ -2,9 +2,12 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
+import 'package:proequine/core/widgets/loading_widget.dart';
+import 'package:proequine/features/horses/domain/horse_cubit.dart';
 import 'package:proequine/features/horses/presentation/widgets/upload_file_widget.dart';
 import 'package:sizer/sizer.dart';
 
@@ -13,7 +16,10 @@ import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/rebi_button.dart';
 
 class HorseVerificationScreen extends StatefulWidget {
-  const HorseVerificationScreen({Key? key}) : super(key: key);
+  final int horseId;
+
+  const HorseVerificationScreen({Key? key, required this.horseId})
+      : super(key: key);
 
   @override
   State<HorseVerificationScreen> createState() =>
@@ -24,6 +30,10 @@ class _HorseVerificationScreenState extends State<HorseVerificationScreen> {
   String? horseProfOwnerShip = '';
   String? horsePassport = '';
   String? horseFEIPassport = '';
+  String? profOwnerPath = '';
+  String? nationalPassportPath = '';
+  String? feiPassportPath = '';
+  HorseCubit cubit = HorseCubit();
 
   uploadFile(String title) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -38,9 +48,12 @@ class _HorseVerificationScreenState extends State<HorseVerificationScreen> {
       setState(() {
         if (title == 'owner ship') {
           horseProfOwnerShip = fileName;
+          profOwnerPath = filePath;
         } else if (title == 'passport') {
+          nationalPassportPath = filePath;
           horsePassport = fileName;
         } else if (title == 'FEI') {
+          feiPassportPath = filePath;
           horseFEIPassport = fileName;
         }
 
@@ -85,7 +98,9 @@ class _HorseVerificationScreenState extends State<HorseVerificationScreen> {
                   uploadFile('owner ship');
                 });
               },
-              title: horseProfOwnerShip != '' ? horseProfOwnerShip : 'No file uploaded',
+              title: horseProfOwnerShip != ''
+                  ? horseProfOwnerShip
+                  : 'No file uploaded',
             ),
             const SizedBox(
               height: 15,
@@ -130,31 +145,62 @@ class _HorseVerificationScreenState extends State<HorseVerificationScreen> {
                   uploadFile('FEI');
                 });
               },
-              title: horseFEIPassport != '' ? horseFEIPassport : 'No file uploaded',
+              title: horseFEIPassport != ''
+                  ? horseFEIPassport
+                  : 'No file uploaded',
             ),
             const Spacer(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: RebiButton(
-                backgroundColor: (horseFEIPassport == '' ||
-                        horsePassport == '' ||
-                        horseProfOwnerShip == '')
-                    ? AppColors.formsHintFontLight
-                    : AppColors.yellow,
-                onPressed: () {
-                  if (horseFEIPassport == '' ||
-                      horsePassport == '' ||
-                      horseProfOwnerShip == '') {
-                    RebiMessage(msg: "Please upload all fiels before verify");
-                  } else {}
-                },
-                child: const Text("Verify"),
-              ),
+            BlocConsumer<HorseCubit, HorseState>(
+              bloc: cubit,
+              listener: (context, state) {
+                if (state is VerifyHorseError) {
+                  RebiMessage.error(msg: state.message!, context: context);
+                } else if (state is VerifyHorseSuccessfully) {
+                  RebiMessage.success(msg: state.message, context: context);
+                  Navigator.pop(context);
+                }
+              },
+              builder: (context, state) {
+                if (state is VerifyHorseLoading) {
+                  return const LoadingCircularWidget();
+                }
+                return Align(
+                  alignment: Alignment.bottomCenter,
+                  child: RebiButton(
+                    backgroundColor: (horseFEIPassport == '' ||
+                            horsePassport == '' ||
+                            horseProfOwnerShip == '')
+                        ? AppColors.formsHintFontLight
+                        : AppColors.yellow,
+                    onPressed: () {
+                      if (horseFEIPassport == '' ||
+                          horsePassport == '' ||
+                          horseProfOwnerShip == '') {
+                        RebiMessage(
+                            msg: "Please upload all files before verify");
+                      } else {
+                        _onPressVerify();
+                      }
+                    },
+                    child: const Text("Verify"),
+                  ),
+                );
+              },
             ),
-            const SizedBox(height: 20,)
+            const SizedBox(
+              height: 20,
+            )
           ],
         ),
       ),
     );
+  }
+
+  _onPressVerify() {
+    cubit.verifyHorse(
+        horseId: widget.horseId,
+        profOwner: profOwnerPath,
+        nationalPassport: nationalPassportPath,
+        feiPassport: feiPassportPath);
   }
 }

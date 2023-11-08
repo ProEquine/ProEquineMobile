@@ -4,16 +4,17 @@ import '../constants/colors/app_colors.dart';
 import '../utils/sharedpreferences/SharedPreferencesHelper.dart';
 
 class LoadingCircularWidget extends StatelessWidget {
-  const LoadingCircularWidget({super.key});
+  final bool isDeleteButton;
+  const LoadingCircularWidget({super.key,this.isDeleteButton=false});
 
   @override
   Widget build(BuildContext context) {
     return  Center(
       child: CircularProgressIndicator(
-        backgroundColor:AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
-            ? AppColors.white
+        backgroundColor:isDeleteButton
+            ? AppColors.red
             : AppColors.yellow,
-        valueColor: const AlwaysStoppedAnimation<Color>(AppColors.gold),
+        valueColor:  AlwaysStoppedAnimation<Color>(isDeleteButton?AppColors.red:AppColors.gold),
       ),
     );
   }

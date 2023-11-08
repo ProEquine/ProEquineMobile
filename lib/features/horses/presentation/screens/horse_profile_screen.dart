@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
+import 'package:proequine/features/horses/data/get_user_horses_response_model.dart';
 
 import 'package:proequine/features/horses/presentation/screens/edit_horse_screen.dart';
 import 'package:proequine/features/horses/presentation/screens/horse_document_screen.dart';
@@ -9,16 +10,16 @@ import 'package:proequine/features/horses/presentation/screens/horse_verificatio
 
 import 'package:sizer/sizer.dart';
 
-import '../../../../core/constants/images/app_images.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/rebi_button.dart';
-import '../../../history/presentation/screens/history_screen.dart';
 import '../../../../core/widgets/profile_list_tile_widget.dart';
 import '../widgets/horse_card-widget.dart';
 import 'equine_info_horses_screen.dart';
 
 class HorseProfileScreen extends StatefulWidget {
-  const HorseProfileScreen({super.key});
+  final UserHorseList response;
+
+  const HorseProfileScreen({super.key, required this.response});
 
   @override
   State<HorseProfileScreen> createState() => _HorseProfileScreenState();
@@ -38,18 +39,21 @@ class _HorseProfileScreenState extends State<HorseProfileScreen> {
           isThereThirdOption: true,
           thirdOptionTitle: 'Edit',
           onPressThirdOption: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => EditHorseScreen(
-                  selectedColor: "Black",
-                  selectedGender: "Mare",
-                  selectedBreed: "Arabian",
-                  selectedBloodLine: "Bold Ruler",
-                  selectedYear: 2000,
-                  birthOfDate: "13 Jan 2000",
-                  horseName: "Stormy",
-                  placeOfBirth: "France",
-                  image: AppImages.stormy,
-                )));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => EditHorseScreen(
+                          selectedColor: widget.response.horseColor,
+                          selectedGender: widget.response.horseGender,
+                          selectedBreed: widget.response.breed,
+                          selectedBloodLine: widget.response.bloodline,
+                          selectedYear: widget.response.horseAge,
+                          horseId: widget.response.horseId,
+                          birthOfDate: widget.response.horseDOB,
+                          horseName: widget.response.horseName,
+                          placeOfBirth: widget.response.horseCOB,
+                          image: widget.response.horseImage,
+                        )));
           },
         ),
       ),
@@ -63,16 +67,17 @@ class _HorseProfileScreenState extends State<HorseProfileScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: HorseCardWidget(
-                  age: '14',
-                  gender: 'Mare',
-                  breed: "Selle",
-                  placeOfBirth: "Français",
-                  horseName: 'Stormy',
-                  discipline: "Show jumping",
-                  horsePic: AppImages.stormy,
-                  isVerified: false,
-                  horseStable: "Malath",
-                  horseStatus: "Lame",
+                  age: widget.response.horseAge.toString(),
+                  gender: widget.response.horseGender!,
+                  breed: widget.response.breed!,
+                  placeOfBirth: widget.response.horseCOB,
+                  horseName: widget.response.horseName!,
+                  discipline:
+                      widget.response.disciplineDetails!.disciplineTitle!,
+                  horsePic: widget.response.horseImage!,
+                  isVerified: widget.response.horseIsVerified!,
+                  horseStable: widget.response.stableDetails!.stableName!,
+                  horseStatus: widget.response.horseCondition!,
                 ),
               ),
               const Padding(
@@ -90,8 +95,18 @@ class _HorseProfileScreenState extends State<HorseProfileScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              const EquineInfoHorsesScreen()));
+                          builder: (context) => EquineInfoHorsesScreen(
+                                stableId:
+                                    widget.response.stableDetails!.stableId,
+                                stableName:
+                                    widget.response.stableDetails!.stableName,
+                                horseCondition: widget.response.horseCondition,
+                                disciplineId: widget
+                                    .response.disciplineDetails!.disciplineId,
+                                disciplineTitle: widget.response
+                                    .disciplineDetails!.disciplineTitle,
+                                horseId: widget.response.horseId,
+                              )));
                 },
                 notificationList: false,
                 isThereNewNotification: false,
@@ -102,7 +117,10 @@ class _HorseProfileScreenState extends State<HorseProfileScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const HorseDocumentScreen()));
+                          builder: (context) => HorseDocumentScreen(
+                                horseId: widget.response.horseId.toString(),
+                                horseList: widget.response,
+                              )));
                 },
                 notificationList: false,
                 isThereNewNotification: false,
@@ -152,7 +170,9 @@ class _HorseProfileScreenState extends State<HorseProfileScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => HorseVerificationScreen()));
+                            builder: (context) => HorseVerificationScreen(
+                                  horseId: widget.response.horseId!,
+                                )));
                   },
                   child: const Text("Get your horse verified"),
                 ),

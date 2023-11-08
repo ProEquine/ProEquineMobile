@@ -65,7 +65,7 @@ class UpdateEmailScreen extends StatelessWidget {
               child: BlocConsumer<UserCubit, UserState>(
                 bloc: cubit,
                 builder: (context, state) {
-                  if (state is SendMailVerificationLoading) {
+                  if (state is SendUpdateMailVerificationLoading) {
                     return const LoadingCircularWidget();
                   }
                   return RebiButton(
@@ -78,12 +78,12 @@ class UpdateEmailScreen extends StatelessWidget {
                       child: const Text("Update"));
                 },
                 listener: (context, state) {
-                  if (state is SendMailVerificationSuccessful) {
+                  if (state is SendUpdateMailVerificationSuccessful) {
                     Navigator.pushReplacementNamed(context, verifyUpdateEmail,
                         arguments: UpdateEmailRoute(
                             previousEmail: previousEmail,
                             newEmail: _email.text));
-                  } else if (state is SendMailVerificationError) {
+                  } else if (state is SendUpdateMailVerificationError) {
                     RebiMessage.error(msg: state.message!,context: context);
                   }
                 },
@@ -99,8 +99,6 @@ class UpdateEmailScreen extends StatelessWidget {
   }
 
   onSendMail() {
-    return cubit.sendMailVerificationCode(SendMailVerificationRequestModel(
-      email: _email.text,
-    ));
+    return cubit.sendUpdateMailVerificationCode(_email.text);
   }
 }

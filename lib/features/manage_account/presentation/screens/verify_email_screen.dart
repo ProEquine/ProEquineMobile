@@ -181,7 +181,7 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                         child: Text(
                           "Haven’t received a code?",
                           style: TextStyle(
-                              color: AppColors.white,
+                              color: AppColors.borderColor,
                               fontSize: 14.0,
                               fontFamily: 'notosan',
                               fontWeight: FontWeight.w500),

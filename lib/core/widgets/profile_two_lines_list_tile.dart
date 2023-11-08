@@ -40,7 +40,7 @@ class ProfileTwoLineListTileState extends State<ProfileTwoLineListTile> {
         ),
       ),
       title: Text(
-        widget.title!,
+        widget.title??"Other",
         textAlign: TextAlign.start,
         style: TextStyle(
             fontWeight: FontWeight.w700,

@@ -22,6 +22,7 @@ import '../../../../core/widgets/divider.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
 import '../../../../core/widgets/privacy_checkbox.dart';
 import '../../../../core/widgets/rebi_input.dart';
+import '../../../equine_info/presentation/widgets/disciplines_widget.dart';
 import '../../data/local_trip.dart';
 import '../../data/shipping_service_model.dart';
 
@@ -43,6 +44,8 @@ class ConfirmHorsesScreen extends StatefulWidget {
 class _ConfirmHorsesScreenState extends State<ConfirmHorsesScreen> {
   LocalStorageRepository localStorageRepository = LocalStorageRepository();
   TextEditingController horseName = TextEditingController();
+  TextEditingController discipline = TextEditingController();
+  TextEditingController disciplineId = TextEditingController();
   TextEditingController yearOfBirth = TextEditingController();
   TextEditingController note = TextEditingController();
   TextEditingController name = TextEditingController(text: "Abdalla Al Sharif");
@@ -61,10 +64,10 @@ class _ConfirmHorsesScreenState extends State<ConfirmHorsesScreen> {
   String selectedStaying = '';
   LocalHorseCubit localHorseCubit =
       LocalHorseCubit(localStorageRepository: LocalStorageRepository());
-
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    // TODO: dispose All Controllers with all cubits
+    super.dispose();
   }
 
   @override
@@ -681,23 +684,34 @@ class _ConfirmHorsesScreenState extends State<ConfirmHorsesScreen> {
                                                       top: Radius.circular(10)),
                                             ),
                                             builder: (BuildContext context) {
-                                              if (state.items[index].yearOfBirth.toString().isNotEmpty &&
-                                                  state.items[index].discipline.isNotEmpty &&
-                                                  state.items[index].gender.isNotEmpty &&
-                                                  state.items[index].staying.isNotEmpty &&
-                                                  state.items[index].ownership.isNotEmpty &&
-                                                  state.items[index].bloodline.isNotEmpty &&
-                                                  state.items[index].breed.isNotEmpty &&
-                                                  state.items[index].color.isNotEmpty &&
-                                                  state
-                                                      .items[index].horseName.isNotEmpty) {
+                                              if (state.items[index].yearOfBirth
+                                                      .toString()
+                                                      .isNotEmpty &&
+                                                  state.items[index].discipline
+                                                      .isNotEmpty &&
+                                                  state.items[index].gender
+                                                      .isNotEmpty &&
+                                                  state.items[index].staying
+                                                      .isNotEmpty &&
+                                                  state.items[index].ownership
+                                                      .isNotEmpty &&
+                                                  state.items[index].bloodline
+                                                      .isNotEmpty &&
+                                                  state.items[index].breed
+                                                      .isNotEmpty &&
+                                                  state.items[index].color
+                                                      .isNotEmpty &&
+                                                  state.items[index].horseName
+                                                      .isNotEmpty) {
                                                 horseName.text = state
                                                     .items[index].horseName;
                                                 selectedColor =
                                                     state.items[index].color;
                                                 selectedOwner = state
                                                     .items[index].ownership;
-                                                yearOfBirth.text=state.items[index].yearOfBirth.toString();
+                                                yearOfBirth.text = state
+                                                    .items[index].yearOfBirth
+                                                    .toString();
                                                 selectedStaying =
                                                     state.items[index].staying;
                                                 selectedBloodLine = state
@@ -708,9 +722,7 @@ class _ConfirmHorsesScreenState extends State<ConfirmHorsesScreen> {
                                                     .items[index].discipline;
                                                 selectedBreed =
                                                     state.items[index].breed;
-                                              }else{
-
-                                              }
+                                              } else {}
 
                                               return Wrap(children: [
                                                 Padding(
@@ -1062,31 +1074,10 @@ class _ConfirmHorsesScreenState extends State<ConfirmHorsesScreen> {
                                                                       ),
                                                                     ),
                                                                     Padding(
-                                                                      padding: const EdgeInsets
-                                                                          .symmetric(
-                                                                          vertical:
-                                                                              7),
-                                                                      child:
-                                                                          DropDownWidget(
-                                                                        items:
-                                                                            discipline,
-                                                                        selected:
-                                                                            selectedDiscipline,
-                                                                        onChanged:
-                                                                            (disc) {
-                                                                          setState(
-                                                                              () {
-                                                                            selectedDiscipline =
-                                                                                disc;
-                                                                          });
-                                                                        },
-                                                                        validator:
-                                                                            (value) {
-                                                                          return Validator.requiredValidator(
-                                                                              selectedDiscipline);
-                                                                        },
-                                                                        hint:
-                                                                            'Discipline',
+                                                                      padding: const EdgeInsets.symmetric(vertical: 7),
+                                                                      child: DisciplinesWidget(
+                                                                        discipline: discipline,
+                                                                        disciplineId: disciplineId,
                                                                       ),
                                                                     ),
                                                                     const Padding(

@@ -21,28 +21,28 @@ class AddHorseRequestModel {
         this.stableId});
 
   AddHorseRequestModel.fromJson(Map<String, dynamic> json) {
-    horseName = json['horseName'];
-    horseColor = json['horseColor'];
-    horseGender = json['horseGender'];
-    horseDOB = json['horseDOB'];
-    horseCOB = json['horseCOB'];
-    breed = json['breed'];
-    bloodline = json['bloodline'];
-    disciplineId = json['disciplineId'];
-    stableId = json['stableId'];
+    horseName = json['HorseName'];
+    horseColor = json['HorseColor'];
+    horseGender = json['HorseGender'];
+    horseDOB = json['HorseDOB'];
+    horseCOB = json['HorseCOB'];
+    breed = json['Breed'];
+    bloodline = json['Bloodline'];
+    disciplineId = json['DisciplineId'];
+    stableId = json['StableId'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['horseName'] = horseName;
-    data['horseColor'] = horseColor;
-    data['horseGender'] = horseGender;
-    data['horseDOB'] = horseDOB;
-    data['horseCOB'] = horseCOB;
-    data['breed'] = breed;
-    data['bloodline'] = bloodline;
-    data['disciplineId'] = disciplineId;
-    data['stableId'] = stableId;
+    data['HorseName'] = horseName;
+    data['HorseColor'] = horseColor;
+    data['HorseGender'] = horseGender;
+    data['HorseDOB'] = horseDOB;
+    data['HorseCOB'] = horseCOB;
+    data['Breed'] = breed;
+    data['Bloodline'] = bloodline;
+    data['DisciplineId'] = disciplineId;
+    data['StableId'] = stableId;
     return data;
   }
 }

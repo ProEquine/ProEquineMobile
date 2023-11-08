@@ -1,12 +1,26 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:proequine/core/constants/colors/app_colors.dart';
 
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
+import 'package:proequine/core/utils/rebi_message.dart';
+import 'package:proequine/core/widgets/custom_error_widget.dart';
+import 'package:proequine/core/widgets/loading_widget.dart';
+import 'package:proequine/core/widgets/rebi_button.dart';
+import 'package:proequine/features/horses/data/add_horse_document_request_model.dart';
+import 'package:proequine/features/horses/data/edit_document_request_model.dart';
+import 'package:proequine/features/horses/data/get_user_horses_response_model.dart';
+import 'package:proequine/features/horses/data/update_horse_request_model.dart';
+import 'package:proequine/features/horses/domain/horse_cubit.dart';
+import 'package:proequine/features/horses/presentation/screens/show_pdf_screen.dart';
 import 'package:proequine/features/horses/presentation/widgets/document_widget.dart';
+import 'package:proequine/features/horses/presentation/widgets/documents_loading_widget.dart';
 import 'package:proequine/features/horses/presentation/widgets/horse_card_document_widget.dart';
 import 'package:proequine/features/horses/presentation/widgets/show_document_bottomsheet.dart';
 
@@ -19,7 +33,11 @@ import '../../../../core/widgets/drop_down_menu_widget.dart';
 import '../widgets/upload_file_widget.dart';
 
 class HorseDocumentScreen extends StatefulWidget {
-  const HorseDocumentScreen({super.key});
+  final String horseId;
+  final UserHorseList horseList;
+
+  const HorseDocumentScreen(
+      {super.key, required this.horseId, required this.horseList});
 
   @override
   State<HorseDocumentScreen> createState() => _HorseDocumentScreenState();
@@ -30,6 +48,7 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
   final TextEditingController? docTitle = TextEditingController();
   final TextEditingController? docNotes = TextEditingController();
   late DateTime dateTime;
+  int? docId;
 
   var now = DateTime.now();
   int? firstDay = 1;
@@ -48,12 +67,17 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
   late int _selectedYear;
   late TextEditingController _yearController;
   String? pdfTitle = '';
+  HorseCubit cubit = HorseCubit();
+  String? filePath;
+  String? editFilePath;
+  String? fileName;
 
   @override
   void initState() {
     initializeDateFormatting();
     _yearController = TextEditingController(text: _selectedDay.year.toString());
     _selectedYear = _selectedDay.year;
+    cubit.getAllDocuments(int.parse(widget.horseId));
 
     super.initState();
   }
@@ -75,7 +99,18 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
           isThereThirdOption: true,
           thirdOptionTitle: 'Add',
           onPressThirdOption: () {
+            expiryDate.text = '';
+            docTitle?.text = '';
+            docNotes?.text = '';
+            docNumber?.text = '';
+            docNotes?.text = '';
+            regDate.text = '';
+            selectedCategory = null;
+            selectedType = null;
+            pdfTitle = '';
+            filePath = null;
             showDocumentBottomSheet(
+              isItEditing: false,
               context: context,
               focusDay: _focusedDay,
               selectedDay: _selectedDay,
@@ -86,17 +121,7 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
               registrationDate: regDate,
               docTitle: docTitle!,
               docNumber: docNumber!,
-              onTap: () {
-                Print(expiryDate.text);
-                Print(docTitle!.text);
-                Print(docNumber!.text);
-                Print(docNotes!.text);
-                Print(regDate.text);
-                Print(selectedType);
-                Print(selectedCategory);
-                Print(selectedCategory);
-                Print(pdfTitle);
-              },
+              onTap: () {},
               buttonTitle: 'Add',
               docNotes: docNotes!,
               dropDownWidget: StatefulBuilder(builder: (context, setState) {
@@ -137,6 +162,39 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
                   ],
                 );
               }),
+              button: BlocConsumer<HorseCubit, HorseState>(
+                bloc: cubit,
+                listener: (context, state) {
+                  if (state is AddHorseDocumentError) {
+                    RebiMessage.error(msg: state.message!, context: context);
+                  } else if (state is AddHorseDocumentSuccessfully) {
+                    RebiMessage.success(msg: state.message, context: context);
+                    Navigator.pop(context);
+                    cubit.getAllDocuments(int.parse(widget.horseId));
+                  }
+                },
+                builder: (context, state) {
+                  if (state is AddHorseDocumentLoading) {
+                    return const LoadingCircularWidget();
+                  }
+                  return RebiButton(
+                      onPressed: () {
+                        cubit.addHorseDocument(
+                            AddHorseDocumentRequestModel(
+                              docCategory: selectedCategory,
+                              docExpiryDate: _selectedDay.toIso8601String(),
+                              docNotes: docNotes!.text,
+                              docNumber: docNumber!.text,
+                              docRegistrationDate: regDate.text,
+                              docTitle: docTitle!.text,
+                              docType: selectedType,
+                              horseId: int.parse(widget.horseId),
+                            ),
+                            filePath!);
+                      },
+                      child: const Text("Add"));
+                },
+              ),
               uploadWidget: StatefulBuilder(builder: (context, setState) {
                 uploadFile(String title) async {
                   FilePickerResult? result =
@@ -147,16 +205,12 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
 
                   if (result != null) {
                     File file = File(result.files.single.path!);
-                    String fileName = file.path.split('/').last;
-                    String filePath = file.path;
+                    fileName = file.path.split('/').last;
+                    filePath = file.path;
                     setState(() {
                       if (title == 'pdfTitle') {
                         pdfTitle = fileName;
                       }
-
-                      Print('file name $fileName');
-                      Print('file name $filePath');
-                      Print('title $title');
                     });
                   } else {
                     // User canceled the picker
@@ -190,15 +244,16 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: HorseCardDocumentWidget(
-                  age: '14',
-                  gender: 'Mare',
-                  breed: "Selle",
-                  placeOfBirth: "Français",
-                  horseName: 'Stormy',
-                  discipline: "Show jumping",
-                  isVerified: true,
-                  horseStable: "Malath",
-                  horseStatus: "Lame",
+                  age: widget.horseList.horseAge.toString(),
+                  gender: widget.horseList.horseGender ?? "Mare",
+                  breed: widget.horseList.breed!,
+                  placeOfBirth: widget.horseList.horseCOB!,
+                  horseName: widget.horseList.horseName!,
+                  discipline:
+                      widget.horseList.disciplineDetails!.disciplineTitle!,
+                  isVerified: widget.horseList.horseIsVerified!,
+                  horseStable: widget.horseList.stableDetails!.stableName!,
+                  horseStatus: widget.horseList.horseCondition!,
                 ),
               ),
               const Padding(
@@ -212,137 +267,256 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
               const SizedBox(
                 height: 14,
               ),
-              DocumentWidget(
-                  title: "Import Permit",
-                  date: "16/8/2024",
-                  onTapDelete: () {
-                    // setState(() {
-                    //   Slidable.of(context)!.close();
-                    // });
-                  },
-                  onTapEdit: () {
-                    showDocumentBottomSheet(
-                      context: context,
-                      focusDay: _focusedDay,
-                      selectedDay: _selectedDay,
-                      selectedYear: _selectedYear,
-                      yearController: _yearController,
-                      yearKey: _yearKey,
-                      expiryDate: expiryDate,
-                      registrationDate: regDate,
-                      docTitle: docTitle!,
-                      docNumber: docNumber!,
-                      onTap: () {
-                        Print(expiryDate.text);
-                        Print(docTitle!.text);
-                        Print(docNumber!.text);
-                        Print(docNotes!.text);
-                        Print(regDate.text);
-                        Print(selectedType);
-                        Print(selectedCategory);
-                        Print(selectedCategory);
-                        Print(pdfTitle);
-                      },
-                      buttonTitle: 'Save',
-                      docNotes: docNotes!,
-                      dropDownWidget:
-                          StatefulBuilder(builder: (context, setState) {
-                        return Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 7),
-                              child: DropDownWidget(
-                                items: docCategories,
-                                selected: selectedCategory,
-                                onChanged: (category) {
-                                  setState(() {
-                                    selectedCategory = category!;
-                                  });
-                                },
-                                validator: (value) {
-                                  return Validator.requiredValidator(
-                                      selectedCategory);
-                                },
-                                hint: 'Doc Category',
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 7),
-                              child: DropDownWidget(
-                                items: docType,
-                                selected: selectedType,
-                                onChanged: (type) {
-                                  setState(() {
-                                    selectedType = type!;
-                                  });
-                                },
-                                validator: (value) {
-                                  return Validator.requiredValidator(
-                                      selectedType);
-                                },
-                                hint: 'Doc Type',
-                              ),
-                            ),
-                          ],
-                        );
-                      }),
-                      uploadWidget:
-                          StatefulBuilder(builder: (context, setState) {
-                        uploadFile(String title) async {
-                          FilePickerResult? result =
-                              await FilePicker.platform.pickFiles(
-                            type: FileType.custom,
-                            allowedExtensions: ['pdf', 'doc'],
-                          );
-
-                          if (result != null) {
-                            File file = File(result.files.single.path!);
-                            String fileName = file.path.split('/').last;
-                            String filePath = file.path;
-                            setState(() {
-                              if (title == 'pdfTitle') {
-                                pdfTitle = fileName;
-                              }
-
-                              Print('file name $fileName');
-                              Print('file name $filePath');
-                              Print('title $title');
-                            });
+              BlocBuilder<HorseCubit, HorseState>(
+                bloc: cubit,
+                builder: (context, state) {
+                  if (state is GetHorsesDocumentsSuccessfully) {
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount:
+                            state.responseModel.horseDocumentsList!.length,
+                        itemBuilder: (context, index) {
+                          if (state.responseModel.horseDocumentsList!.isEmpty) {
+                            return const Text("Empty !, Add Some Documents");
                           } else {
-                            // User canceled the picker
-                          }
-                        }
+                            DateTime date = DateFormat('yyyy-MM-dd').parse(state
+                                .responseModel
+                                .horseDocumentsList![index]
+                                .docRegistrationDate!);
+                            String formattedDate =
+                                DateFormat('dd/MM/yyyy').format(date);
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 7.0),
+                              child: GestureDetector(
+                                onTap: () async {
+                                  await FileProcess.createPdf(
+                                      state.responseModel
+                                          .horseDocumentsList![index].docLink!,
+                                      state
+                                          .responseModel
+                                          .horseDocumentsList![index]
+                                          .docTitle!);
+                                },
+                                child: DocumentWidget(
+                                    title: state.responseModel
+                                        .horseDocumentsList![index].docTitle,
+                                    date: formattedDate,
+                                    onTapDelete: () {
+                                      // setState(() {
+                                      //   Slidable.of(context)!.close();
+                                      // });
+                                    },
+                                    onTapEdit: () {
+                                      docId = state.responseModel
+                                          .horseDocumentsList![index].docId;
+                                      Print(docId);
+                                      showDocumentBottomSheet(
+                                        context: context,
+                                        isItEditing: true,
+                                        focusDay: _focusedDay,
+                                        selectedDay: _selectedDay,
+                                        selectedYear: _selectedYear,
+                                        yearController: _yearController,
+                                        yearKey: _yearKey,
+                                        expiryDate: expiryDate,
+                                        registrationDate: regDate,
+                                        docTitle: docTitle!,
+                                        docNumber: docNumber!,
+                                        onTap: () {},
+                                        buttonTitle: 'Save',
+                                        docNotes: docNotes!,
+                                        button: BlocConsumer<HorseCubit,
+                                            HorseState>(
+                                          bloc: cubit,
+                                          listener: (context, state) {
+                                            if (state
+                                                is EditHorseDocumentError) {
+                                              RebiMessage.error(
+                                                  msg: state.message!,
+                                                  context: context);
+                                            } else if (state
+                                                is EditHorseDocumentSuccessfully) {
+                                              RebiMessage.success(
+                                                  msg: state.message,
+                                                  context: context);
+                                              Navigator.pop(context);
+                                              cubit.getAllDocuments(
+                                                  int.parse(widget.horseId));
+                                            }
+                                          },
+                                          builder: (context, state) {
+                                            if (state
+                                                is EditHorseDocumentLoading) {
+                                              return LoadingCircularWidget();
+                                            }
+                                            return RebiButton(
+                                                onPressed: () {
+                                                  cubit.editHorseDocument(
+                                                      EditHorseDocumentRequestModel(
+                                                          docCategory:
+                                                              selectedCategory,
+                                                          docExpiryDate:
+                                                              _selectedDay
+                                                                  .toIso8601String(),
+                                                          docNotes:
+                                                              docNotes!.text,
+                                                          docNumber:
+                                                              docNumber!.text,
+                                                          docRegistrationDate:
+                                                              regDate.text,
+                                                          docTitle:
+                                                              docTitle!.text,
+                                                          docType: selectedType,
+                                                          horseId: int.parse(
+                                                              widget.horseId),
+                                                          docId: docId),
+                                                      editFilePath ?? '');
+                                                },
+                                                child: Text("Save"));
+                                          },
+                                        ),
+                                        dropDownWidget: StatefulBuilder(
+                                            builder: (context, setState) {
+                                          return Column(
+                                            children: [
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 7),
+                                                child: DropDownWidget(
+                                                  items: docCategories,
+                                                  selected: selectedCategory,
+                                                  onChanged: (category) {
+                                                    setState(() {
+                                                      selectedCategory =
+                                                          category!;
+                                                    });
+                                                  },
+                                                  validator: (value) {
+                                                    return Validator
+                                                        .requiredValidator(
+                                                            selectedCategory);
+                                                  },
+                                                  hint: 'Doc Category',
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 7),
+                                                child: DropDownWidget(
+                                                  items: docType,
+                                                  selected: selectedType,
+                                                  onChanged: (type) {
+                                                    setState(() {
+                                                      selectedType = type!;
+                                                    });
+                                                  },
+                                                  validator: (value) {
+                                                    return Validator
+                                                        .requiredValidator(
+                                                            selectedType);
+                                                  },
+                                                  hint: 'Doc Type',
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        }),
+                                        removeWidget: BlocConsumer<HorseCubit,
+                                            HorseState>(
+                                          bloc: cubit,
+                                          listener: (context, state) {
+                                            if (state
+                                                is RemoveHorseDocumentError) {
+                                              RebiMessage.error(
+                                                  msg: state.message!,
+                                                  context: context);
+                                            } else if (state
+                                                is RemoveHorseDocumentSuccessfully) {
+                                              RebiMessage.success(
+                                                  msg: state.message,
+                                                  context: context);
+                                              Navigator.pop(context);
+                                              cubit.getAllDocuments(
+                                                  int.parse(widget.horseId));
+                                            }
+                                          },
+                                          builder: (context, state) {
+                                            if(state is RemoveHorseDocumentLoading){
+                                              return const LoadingCircularWidget(isDeleteButton:true);
+                                            }
+                                            return GestureDetector(
+                                                onTap: () {
+                                                  cubit.removeHorseDocument(docId!);
+                                                },
+                                                child: const Text(
+                                                  "Remove",
+                                                  style: TextStyle(
+                                                      color: AppColors.red),
+                                                ));
+                                          },
+                                        ),
+                                        uploadWidget: StatefulBuilder(
+                                            builder: (context, setState) {
+                                          uploadFile(String title) async {
+                                            FilePickerResult? result =
+                                                await FilePicker.platform
+                                                    .pickFiles(
+                                              type: FileType.custom,
+                                              allowedExtensions: ['pdf', 'doc'],
+                                            );
 
-                        return UploadFileWidget(
-                          onPressUpload: () {
-                            setState(() {
-                              uploadFile('pdfTitle');
-                            });
-                          },
-                          title: pdfTitle != '' ? pdfTitle : 'No file uploaded',
-                        );
-                      }),
-                      title: "Edit Document",
-                    );
-                  }),
-              const SizedBox(
-                height: 14,
-              ),
-              DocumentWidget(
-                  title: "Health Certificate",
-                  date: "16/8/2024",
-                  onTapDelete: () {},
-                  onTapEdit: () {}),
-              const SizedBox(
-                height: 14,
-              ),
-              DocumentWidget(
-                  title: "Quarantine Certificate",
-                  date: "16/8/2024",
-                  onTapDelete: () {},
-                  onTapEdit: () {}),
-              const SizedBox(
-                height: 14,
+                                            if (result != null) {
+                                              File file = File(
+                                                  result.files.single.path!);
+                                              String fileName =
+                                                  file.path.split('/').last;
+                                              editFilePath = file.path;
+                                              setState(() {
+                                                if (title == 'pdfTitle') {
+                                                  pdfTitle = fileName;
+                                                }
+
+                                                Print('file name $fileName');
+                                                Print(
+                                                    'file name $editFilePath');
+                                                Print('title $title');
+                                              });
+                                            } else {
+                                              // User canceled the picker
+                                            }
+                                          }
+
+                                          return UploadFileWidget(
+                                            onPressUpload: () {
+                                              setState(() {
+                                                uploadFile('pdfTitle');
+                                              });
+                                            },
+                                            title: pdfTitle != ''
+                                                ? pdfTitle
+                                                : 'No file uploaded',
+                                          );
+                                        }),
+                                        title: "Edit Document",
+                                      );
+                                    }),
+                              ),
+                            );
+                          }
+                        });
+                  } else if (state is GetHorsesDocumentsLoading) {
+                    return const DocumentsLoadingWidget();
+                  } else if (state is GetHorsesDocumentsError) {
+                    return CustomErrorWidget(onRetry: () {
+                      cubit.getAllDocuments(int.parse(widget.horseId));
+                    });
+                  }
+                  return Container();
+                },
               ),
             ],
           ),

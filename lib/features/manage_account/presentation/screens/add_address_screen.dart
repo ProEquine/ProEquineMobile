@@ -21,6 +21,7 @@ import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
+import '../../../home/presentation/widgets/hospital_bottom_sheet.dart';
 import '../../data/basic_account_management_route.dart';
 
 class AddAddressScreen extends StatefulWidget {
@@ -43,7 +44,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   late final TextEditingController countryState;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String? selectedState;
+  String? selectedState = '';
   String? selectedCity;
   ManageAccountCubit cubit = ManageAccountCubit();
 
@@ -188,193 +189,362 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 7),
-                                child: country.text == 'United Arab Emirates'
-                                    ? RebiInput(
-                                        hintText: 'State'.tra,
-                                        controller: countryState,
-                                        keyboardType: TextInputType.text,
-                                        textInputAction: TextInputAction.done,
-                                        onTap: () {
-                                          Variables.country =
-                                              'United Arab Emirates';
-                                          showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(40.0),
-                                                topRight: Radius.circular(40.0),
-                                              ),
-                                            ),
-                                            context: context,
-                                            isDismissible: false,
-                                            builder: (context) => SizedBox(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.8,
-                                              child: StateDialog(
-                                                stateHeaderStyle:
-                                                    const TextStyle(
-                                                        color: AppColors
-                                                            .blackLight,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                style: const TextStyle(
-                                                    color: AppColors.blackLight,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                                subStringStyle: const TextStyle(
-                                                    color:
-                                                        AppColors.blackLight),
-                                                substringBackground:
-                                                    Colors.transparent,
-                                                selectedStateBackgroundColor:
-                                                    AppColors
-                                                        .backgroundColorLight,
-                                                notSelectedStateBackgroundColor:
-                                                    Colors.transparent,
-                                                onSelectedState: () {
-                                                  setState(() {
-                                                    countryState.text =
-                                                        Variables.state;
-                                                    city.text = '';
-                                                    Print(
-                                                        "choosed state ${countryState.text}");
-                                                  });
-                                                },
-                                              ),
-                                            ),
+                                // child: country.text == 'United Arab Emirates'
+                                //     ? RebiInput(
+                                //         hintText: 'State'.tra,
+                                //         controller: countryState,
+                                //         keyboardType: TextInputType.text,
+                                //         textInputAction: TextInputAction.done,
+                                //         onTap: () {
+                                //           Variables.country =
+                                //               'United Arab Emirates';
+                                //           showModalBottomSheet(
+                                //             isScrollControlled: true,
+                                //             shape: const RoundedRectangleBorder(
+                                //               borderRadius: BorderRadius.only(
+                                //                 topLeft: Radius.circular(40.0),
+                                //                 topRight: Radius.circular(40.0),
+                                //               ),
+                                //             ),
+                                //             context: context,
+                                //             isDismissible: false,
+                                //             builder: (context) => SizedBox(
+                                //               height: MediaQuery.of(context)
+                                //                       .size
+                                //                       .height *
+                                //                   0.8,
+                                //               child: StateDialog(
+                                //                 stateHeaderStyle:
+                                //                     const TextStyle(
+                                //                         color: AppColors
+                                //                             .blackLight,
+                                //                         fontWeight:
+                                //                             FontWeight.w500),
+                                //                 style: const TextStyle(
+                                //                     color: AppColors.blackLight,
+                                //                     fontWeight:
+                                //                         FontWeight.w500),
+                                //                 subStringStyle: const TextStyle(
+                                //                     color:
+                                //                         AppColors.blackLight),
+                                //                 substringBackground:
+                                //                     Colors.transparent,
+                                //                 selectedStateBackgroundColor:
+                                //                     AppColors
+                                //                         .backgroundColorLight,
+                                //                 notSelectedStateBackgroundColor:
+                                //                     Colors.transparent,
+                                //                 onSelectedState: () {
+                                //                   setState(() {
+                                //                     countryState.text =
+                                //                         Variables.state;
+                                //                     city.text = '';
+                                //                     Print(
+                                //                         "choosed state ${countryState.text}");
+                                //                   });
+                                //                 },
+                                //               ),
+                                //             ),
+                                //           );
+                                //         },
+                                //         autoValidateMode:
+                                //             AutovalidateMode.onUserInteraction,
+                                //         isOptional: false,
+                                //         color: AppColors.formsLabel,
+                                //         readOnly: true,
+                                //         contentPadding:
+                                //             const EdgeInsets.symmetric(
+                                //                 horizontal: 20, vertical: 13),
+                                //         obscureText: false,
+                                //         validator: (value) {},
+                                //       )
+                                //     : RebiInput(
+                                //         hintText: 'State'.tra,
+                                //         controller: countryState,
+                                //         keyboardType: TextInputType.text,
+                                //         textInputAction: TextInputAction.done,
+                                //         autoValidateMode:
+                                //             AutovalidateMode.onUserInteraction,
+                                //         isOptional: false,
+                                //         onChanged: (value) {
+                                //           setState(() {});
+                                //         },
+                                //         color: AppColors.formsLabel,
+                                //         readOnly: false,
+                                //         contentPadding:
+                                //             const EdgeInsets.symmetric(
+                                //                 horizontal: 20, vertical: 13),
+                                //         obscureText: false,
+                                //         validator: (value) {
+                                //           return Validator.requiredValidator(
+                                //               countryState.text);
+                                //         },
+                                //       ),
+                                child: RebiInput(
+                                  hintText: 'State'.tra,
+                                  controller: countryState,
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  onTap: () {
+                                    showHospitalsAndPlacesBottomSheet(
+                                      context: context,
+                                      title: "States",
+                                      content: BlocConsumer<ManageAccountCubit,
+                                          ManageAccountState>(
+                                        bloc: cubit..getAllStates(country.text),
+                                        listener: (context, state) {
+                                          // TODO: implement listener
+                                        },
+                                        builder: (context, state) {
+                                          if (state
+                                              is GetAllStatesSuccessfully) {
+                                            return SingleChildScrollView(
+                                              child: StatefulBuilder(
+                                                  builder: (context, setState) {
+                                                if (state.responseModel!.states!
+                                                    .isNotEmpty) {
+                                                  return ListView.separated(
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        const NeverScrollableScrollPhysics(),
+                                                    itemCount: state
+                                                        .responseModel!
+                                                        .states!
+                                                        .length,
+                                                    separatorBuilder:
+                                                        (context, index) {
+                                                      return const CustomDivider();
+                                                    },
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return GestureDetector(
+                                                        onTap: () {
+                                                          countryState.text =
+                                                              state.responseModel!
+                                                                      .states![
+                                                                  index];
+                                                          city.text = '';
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              countryState
+                                                                  .text = state
+                                                                      .responseModel!
+                                                                      .states![
+                                                                  index],
+                                                              style: const TextStyle(
+                                                                  color: AppColors
+                                                                      .blackLight),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                } else {
+                                                  return const Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 100,
+                                                      ),
+                                                      Center(
+                                                        child:
+                                                            Text("No States"),
+                                                      ),
+                                                    ],
+                                                  );
+                                                }
+                                              }),
+                                            );
+                                          } else if (state
+                                              is GetAllStatesError) {
+                                            const Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Center(
+                                                  child:
+                                                      LoadingCircularWidget(),
+                                                )
+                                              ],
+                                            );
+                                          }
+                                          return const Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Center(
+                                                child: LoadingCircularWidget(),
+                                              )
+                                            ],
                                           );
                                         },
-                                        autoValidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        isOptional: false,
-                                        color: AppColors.formsLabel,
-                                        readOnly: true,
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 13),
-                                        obscureText: false,
-                                        validator: (value) {},
-                                      )
-                                    : RebiInput(
-                                        hintText: 'State'.tra,
-                                        controller: countryState,
-                                        keyboardType: TextInputType.text,
-                                        textInputAction: TextInputAction.done,
-                                        autoValidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        isOptional: false,
-                                        onChanged: (value) {
-                                          setState(() {});
-                                        },
-                                        color: AppColors.formsLabel,
-                                        readOnly: false,
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 13),
-                                        obscureText: false,
-                                        validator: (value) {
-                                          return Validator.requiredValidator(
-                                              countryState.text);
-                                        },
                                       ),
+                                    );
+                                  },
+                                  autoValidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  isOptional: false,
+                                  color: AppColors.formsLabel,
+                                  readOnly: true,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 13),
+                                  obscureText: false,
+                                  validator: (value) {},
+                                ),
                               ),
                             ),
                             Visibility(
-                              visible: countryState.text == '' ? false : true,
+
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 7),
-                                child: country.text == 'United Arab Emirates'
-                                    ? RebiInput(
-                                        hintText: 'City'.tra,
-                                        controller: city,
-                                        keyboardType: TextInputType.text,
-                                        textInputAction: TextInputAction.done,
-                                        isOptional: false,
-                                        onTap: () {
-                                          Print("States is ${Variables.state}");
-                                          if (countryState.text.isNotEmpty &&
-                                              cityData.containsKey(
-                                                  countryState.text)) {
-                                            List<String> citiesInEmirate =
-                                                cityData[countryState.text]!;
-                                            showGlobalBottomSheet(
-                                                height: 75.0.h,
-                                                context: context,
-                                                title: "Select City",
-                                                content: ListView.separated(
-                                                  shrinkWrap: true,
-                                                  physics:
-                                                      const NeverScrollableScrollPhysics(),
-                                                  separatorBuilder:
-                                                      (context, index) {
-                                                    return const CustomDivider();
-                                                  },
-                                                  itemCount:
-                                                      citiesInEmirate.length,
-                                                  itemBuilder:
-                                                      (BuildContext context,
-                                                          int index) {
-                                                    return GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          city.text =
-                                                              citiesInEmirate[
-                                                                  index];
-                                                        });
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(citiesInEmirate[
-                                                                  index]
-                                                              // Add other ListTile properties as needed
-                                                              ),
-                                                        ],
+                                child: RebiInput(
+                                  hintText: 'City'.tra,
+                                  controller: city,
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.done,
+                                  onTap: () {
+                                    showHospitalsAndPlacesBottomSheet(
+                                      context: context,
+                                      title: "Cities",
+                                      content: BlocConsumer<ManageAccountCubit,
+                                          ManageAccountState>(
+                                        bloc: cubit
+                                          ..getALlCities(countryState.text),
+                                        listener: (context, state) {
+                                          // TODO: implement listener
+                                        },
+                                        builder: (context, state) {
+                                          if (state
+                                              is GetAllCitiesSuccessfully) {
+                                            return SingleChildScrollView(
+                                              child: StatefulBuilder(
+                                                  builder: (context, setState) {
+                                                if (state.responseModel!.cities!
+                                                    .isNotEmpty) {
+                                                  return ListView.separated(
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                        const NeverScrollableScrollPhysics(),
+                                                    itemCount: state
+                                                        .responseModel!
+                                                        .cities!
+                                                        .length,
+                                                    separatorBuilder:
+                                                        (context, index) {
+                                                      return const CustomDivider();
+                                                    },
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return GestureDetector(
+                                                        onTap: () {
+                                                          city.text = state
+                                                              .responseModel!
+                                                              .cities![index];
+
+                                                          Navigator.pop(context);
+                                                        },
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(
+                                                              city
+                                                                  .text = state
+                                                                      .responseModel!
+                                                                      .cities![
+                                                                  index],
+                                                              style: const TextStyle(
+                                                                  color: AppColors
+                                                                      .blackLight),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                } else {
+                                                  return const Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 100,
                                                       ),
-                                                    );
-                                                  },
-                                                ));
-                                          } else {
-                                            RebiMessage.error(
-                                                msg:
-                                                    "Please Select correct state",
-                                                context: context);
+                                                      Center(
+                                                        child:
+                                                            Text("No Cities"),
+                                                      ),
+                                                    ],
+                                                  );
+                                                }
+                                              }),
+                                            );
+                                          } else if (state
+                                              is GetAllCitiesError) {
+                                            const Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Center(
+                                                  child:
+                                                      LoadingCircularWidget(),
+                                                )
+                                              ],
+                                            );
                                           }
-                                        },
-                                        color: AppColors.formsLabel,
-                                        readOnly: true,
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 13),
-                                        obscureText: false,
-                                        validator: (value) {
-                                          return Validator.requiredValidator(
-                                              city.text);
-                                        },
-                                      )
-                                    : RebiInput(
-                                        hintText: 'City'.tra,
-                                        controller: city,
-                                        keyboardType: TextInputType.text,
-                                        textInputAction: TextInputAction.done,
-                                        isOptional: false,
-                                        color: AppColors.formsLabel,
-                                        readOnly: false,
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 13),
-                                        obscureText: false,
-                                        validator: (value) {
-                                          return Validator.requiredValidator(
-                                              city.text);
+                                          return const Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Center(
+                                                child: LoadingCircularWidget(),
+                                              )
+                                            ],
+                                          );
                                         },
                                       ),
+                                    );
+                                  },
+                                  autoValidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  isOptional: false,
+                                  color: AppColors.formsLabel,
+                                  readOnly: true,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 13),
+                                  obscureText: false,
+                                  validator: (value) {
+                                    return Validator.requiredValidator(
+                                        city.text);
+                                  },
+                                ),
                               ),
                             ),
                             Padding(
@@ -438,8 +608,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                       context: context);
                                 }
                               },
-                              child:  Text(
-                                widget.country==null?"Add":"Update",
+                              child: Text(
+                                widget.country == null ? "Add" : "Update",
                               ),
                             );
                           },
