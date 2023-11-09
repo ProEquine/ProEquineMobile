@@ -59,10 +59,13 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
   int? lastYear = 1;
   final GlobalKey<FormState> _yearKey = GlobalKey<FormState>();
   final GlobalKey<FormState> dropDownKey = GlobalKey<FormState>();
-  DateTime _selectedDay = DateTime.utc(2023);
+  DateTime selectedRegisterDay = DateTime.utc(2023);
+  DateTime selectedExpiryDay = DateTime.utc(2023);
   final DateTime _focusedDay = DateTime.now();
   final TextEditingController expiryDate = TextEditingController();
   final TextEditingController regDate = TextEditingController();
+  final TextEditingController expiryDateInIso = TextEditingController();
+  final TextEditingController registerDateInIso = TextEditingController();
   final TextEditingController year = TextEditingController();
   late int _selectedYear;
   late TextEditingController _yearController;
@@ -75,8 +78,9 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
   @override
   void initState() {
     initializeDateFormatting();
-    _yearController = TextEditingController(text: _selectedDay.year.toString());
-    _selectedYear = _selectedDay.year;
+    _yearController =
+        TextEditingController(text: selectedRegisterDay.year.toString());
+    _selectedYear = selectedRegisterDay.year;
     cubit.getAllDocuments(int.parse(widget.horseId));
 
     super.initState();
@@ -113,7 +117,10 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
               isItEditing: false,
               context: context,
               focusDay: _focusedDay,
-              selectedDay: _selectedDay,
+              registrationDateInIso: registerDateInIso,
+              expiryDateInIso: expiryDateInIso,
+              selectedRegisterDay: selectedRegisterDay,
+              selectedExpiredDay: selectedExpiryDay,
               selectedYear: _selectedYear,
               yearController: _yearController,
               yearKey: _yearKey,
@@ -179,18 +186,30 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
                   }
                   return RebiButton(
                       onPressed: () {
-                        cubit.addHorseDocument(
-                            AddHorseDocumentRequestModel(
-                              docCategory: selectedCategory,
-                              docExpiryDate: _selectedDay.toIso8601String(),
-                              docNotes: docNotes!.text,
-                              docNumber: docNumber!.text,
-                              docRegistrationDate: regDate.text,
-                              docTitle: docTitle!.text,
-                              docType: selectedType,
-                              horseId: int.parse(widget.horseId),
-                            ),
-                            filePath!);
+                        selectedRegisterDay =
+                            DateTime.parse(registerDateInIso.text);
+                        selectedExpiryDay =
+                            DateTime.parse(expiryDateInIso.text);
+                        Print("register day ${registerDateInIso.text}");
+                        Print("expiry day ${expiryDateInIso.text}");
+                        if (selectedExpiryDay.isBefore(selectedRegisterDay)) {
+                          RebiMessage.error(
+                              msg: "Enter Correct Expiry Date",
+                              context: context);
+                        } else {
+                          cubit.addHorseDocument(
+                              AddHorseDocumentRequestModel(
+                                docCategory: selectedCategory,
+                                docExpiryDate: expiryDateInIso.text,
+                                docNotes: docNotes!.text,
+                                docNumber: docNumber!.text,
+                                docRegistrationDate: registerDateInIso.text,
+                                docTitle: docTitle!.text,
+                                docType: selectedType,
+                                horseId: int.parse(widget.horseId),
+                              ),
+                              filePath!);
+                        }
                       },
                       child: const Text("Add"));
                 },
@@ -298,6 +317,10 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
                                           .responseModel
                                           .horseDocumentsList![index]
                                           .docTitle!);
+                                  await FileProcess.downloadAndSavePdf(state
+                                      .responseModel
+                                      .horseDocumentsList![index]
+                                      .docLink!);
                                 },
                                 child: DocumentWidget(
                                     title: state.responseModel
@@ -309,6 +332,29 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
                                       // });
                                     },
                                     onTapEdit: () {
+                                      docTitle?.text = state.responseModel
+                                          .horseDocumentsList![index].docTitle!;
+                                      docNumber?.text = state
+                                          .responseModel
+                                          .horseDocumentsList![index]
+                                          .docNumber!;
+                                      registerDateInIso.text = state
+                                          .responseModel
+                                          .horseDocumentsList![index]
+                                          .docRegistrationDate!;
+                                      expiryDateInIso.text = state
+                                          .responseModel
+                                          .horseDocumentsList![index]
+                                          .docExpiryDate!;
+                                      selectedType = state.responseModel
+                                          .horseDocumentsList![index].docType!;
+                                      docNotes!.text = state.responseModel
+                                          .horseDocumentsList![index].docNotes!;
+                                      pdfTitle = state.responseModel
+                                          .horseDocumentsList![index].docTitle!;
+                                      editFilePath = state.responseModel
+                                          .horseDocumentsList![index].docLink!;
+
                                       docId = state.responseModel
                                           .horseDocumentsList![index].docId;
                                       Print(docId);
@@ -316,7 +362,12 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
                                         context: context,
                                         isItEditing: true,
                                         focusDay: _focusedDay,
-                                        selectedDay: _selectedDay,
+                                        registrationDateInIso:
+                                            registerDateInIso,
+                                        expiryDateInIso: expiryDateInIso,
+                                        selectedRegisterDay:
+                                            selectedRegisterDay,
+                                        selectedExpiredDay: selectedExpiryDay,
                                         selectedYear: _selectedYear,
                                         yearController: _yearController,
                                         yearKey: _yearKey,
@@ -353,26 +404,43 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
                                             }
                                             return RebiButton(
                                                 onPressed: () {
-                                                  cubit.editHorseDocument(
-                                                      EditHorseDocumentRequestModel(
-                                                          docCategory:
-                                                              selectedCategory,
-                                                          docExpiryDate:
-                                                              _selectedDay
-                                                                  .toIso8601String(),
-                                                          docNotes:
-                                                              docNotes!.text,
-                                                          docNumber:
-                                                              docNumber!.text,
-                                                          docRegistrationDate:
-                                                              regDate.text,
-                                                          docTitle:
-                                                              docTitle!.text,
-                                                          docType: selectedType,
-                                                          horseId: int.parse(
-                                                              widget.horseId),
-                                                          docId: docId),
-                                                      editFilePath ?? '');
+                                                  selectedRegisterDay =
+                                                      DateTime.parse(
+                                                          registerDateInIso
+                                                              .text);
+                                                  selectedExpiryDay =
+                                                      DateTime.parse(
+                                                          expiryDateInIso.text);
+                                                  if (selectedExpiryDay.isBefore(
+                                                      selectedRegisterDay)) {
+                                                    RebiMessage.error(
+                                                        msg:
+                                                            "Enter Correct Expiry Date",
+                                                        context: context);
+                                                  } else {
+                                                    cubit.editHorseDocument(
+                                                        EditHorseDocumentRequestModel(
+                                                            docCategory:
+                                                                selectedCategory,
+                                                            docExpiryDate:
+                                                                expiryDateInIso
+                                                                    .text,
+                                                            docNotes:
+                                                                docNotes!.text,
+                                                            docNumber:
+                                                                docNumber!.text,
+                                                            docRegistrationDate:
+                                                                registerDateInIso
+                                                                    .text,
+                                                            docTitle:
+                                                                docTitle!.text,
+                                                            docType:
+                                                                selectedType,
+                                                            horseId: int.parse(
+                                                                widget.horseId),
+                                                            docId: docId),
+                                                        editFilePath ?? '');
+                                                  }
                                                 },
                                                 child: Text("Save"));
                                           },
@@ -445,12 +513,15 @@ class _HorseDocumentScreenState extends State<HorseDocumentScreen> {
                                             }
                                           },
                                           builder: (context, state) {
-                                            if(state is RemoveHorseDocumentLoading){
-                                              return const LoadingCircularWidget(isDeleteButton:true);
+                                            if (state
+                                                is RemoveHorseDocumentLoading) {
+                                              return const LoadingCircularWidget(
+                                                  isDeleteButton: true);
                                             }
                                             return GestureDetector(
                                                 onTap: () {
-                                                  cubit.removeHorseDocument(docId!);
+                                                  cubit.removeHorseDocument(
+                                                      docId!);
                                                 },
                                                 child: const Text(
                                                   "Remove",

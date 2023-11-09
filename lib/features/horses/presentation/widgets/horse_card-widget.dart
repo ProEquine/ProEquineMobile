@@ -53,17 +53,25 @@ class HorseCardWidget extends StatelessWidget {
                     horsePic,
                     fit: BoxFit.cover,
                   ))
-              : ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(8),
-                      topLeft: Radius.circular(8)),
-                  child: Base64Image(
-                    width: double.maxFinite,
-                    height: 130,
-                    isItHorse: true,
-                    base64Image: horsePic,
-                  ),
-                ),
+              : horsePic == ''
+                  ? ClipRRect(
+
+                      borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(8),
+                          topLeft: Radius.circular(8)),
+                      child: SvgPicture.asset(AppIcons.horse)
+                    )
+                  : ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(8),
+                          topLeft: Radius.circular(8)),
+                      child: Base64Image(
+                        width: double.maxFinite,
+                        height: 130,
+                        isItHorse: true,
+                        base64Image: horsePic,
+                      ),
+                    ),
           Column(
             children: [
               const SizedBox(

@@ -31,7 +31,7 @@ class FileProcess {
     final file = File("${output.path}/example.pdf");
     await file.writeAsBytes(bytes.buffer.asUint8List());
     Print("${output.path}.pdf");
-    openFile("${output.path}.pdf",'whatever');
+    openFile("${output.path}.pdf",pdfName);
   }
 
   static checkDocumentFolder() async {
@@ -44,7 +44,7 @@ class FileProcess {
         });
       }
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
     }
   }
 

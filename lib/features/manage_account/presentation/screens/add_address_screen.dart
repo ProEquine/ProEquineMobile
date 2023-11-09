@@ -167,10 +167,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                         countryState.text = '';
 
                                         city.text = '';
-                                        setState(() {
-                                          Variables.country =
-                                              selectedCountry.name;
-                                        });
+
+
                                       });
                                 },
                                 autoValidateMode:

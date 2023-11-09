@@ -25,7 +25,6 @@ import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/verify_dialog.dart';
 import '../../../manage_account/data/verify_email_route.dart';
-import '../widgets/select_place_form_widget.dart';
 
 class CreateTripScreen extends StatefulWidget {
   final String? type;

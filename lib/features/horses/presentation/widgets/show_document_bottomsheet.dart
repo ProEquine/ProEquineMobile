@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/utils/rebi_message.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
@@ -23,8 +24,11 @@ void showDocumentBottomSheet({
   required TextEditingController docNumber,
   required TextEditingController docTitle,
   required TextEditingController registrationDate,
+  required TextEditingController registrationDateInIso,
   required TextEditingController expiryDate,
-  required DateTime selectedDay,
+  required TextEditingController expiryDateInIso,
+  required DateTime selectedRegisterDay,
+  required DateTime selectedExpiredDay,
   required int selectedYear,
   final GlobalKey<FormState>? yearKey,
   required TextEditingController yearController,
@@ -147,7 +151,7 @@ void showDocumentBottomSheet({
                                   selectDate(
                                       context: context,
                                       isSupportChangingYears: false,
-                                      selectedOurDay: selectedDay,
+                                      selectedOurDay: selectedRegisterDay,
                                       from: DateTime.utc(2020),
                                       to: DateTime.utc(2030),
                                       selectedYear: selectedYear,
@@ -168,7 +172,8 @@ void showDocumentBottomSheet({
                                   DateFormat inputFormat =
                                       DateFormat("dd MMM yyyy");
                                   DateTime dateTime = inputFormat.parse(value!);
-                                  selectedDay = dateTime;
+                                  selectedRegisterDay = dateTime;
+                                  registrationDateInIso.text=selectedRegisterDay.toIso8601String();
                                   return Validator.requiredValidator(
                                       registrationDate.text);
                                 },
@@ -185,10 +190,13 @@ void showDocumentBottomSheet({
                                   selectDate(
                                       context: context,
                                       isSupportChangingYears: false,
-                                      selectedOurDay: selectedDay,
-                                      from: DateTime.utc(2020),
+                                      selectedOurDay: selectedRegisterDay.add(
+                                          const Duration(days: 1)),
+                                      from: selectedRegisterDay.add(
+                                          const Duration(days: 1)),
                                       to: DateTime.utc(2030),
                                       selectedYear: selectedYear,
+
                                       yearController: yearController,
                                       focusDay: focusDay,
                                       controller: expiryDate,
@@ -206,7 +214,11 @@ void showDocumentBottomSheet({
                                   DateFormat inputFormat =
                                       DateFormat("dd MMM yyyy");
                                   DateTime dateTime = inputFormat.parse(value!);
-                                  selectedDay = dateTime;
+                                  selectedExpiredDay= dateTime;
+                                  expiryDateInIso.text=selectedExpiredDay.toIso8601String();
+                                  if(selectedExpiredDay.isBefore(selectedRegisterDay)){
+                                    RebiMessage.error(msg: "Please enter the expiry date", context: context);
+                                  }
                                   return Validator.requiredValidator(
                                       expiryDate.text);
                                 },

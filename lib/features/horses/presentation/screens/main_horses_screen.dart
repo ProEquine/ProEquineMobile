@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/core/widgets/custom_error_widget.dart';
 import 'package:proequine/features/horses/domain/horse_cubit.dart';
 import 'package:proequine/features/horses/presentation/screens/add_horse_screen.dart';
 import 'package:proequine/features/horses/presentation/screens/horse_profile_screen.dart';
 import 'package:proequine/features/horses/presentation/widgets/empty_horses_widget.dart';
 import 'package:proequine/features/horses/presentation/widgets/horse_card-widget.dart';
+import 'package:proequine/features/horses/presentation/widgets/main_horses_loading_widget.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
@@ -17,7 +17,6 @@ import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/widgets/verify_dialog.dart';
 import '../../../manage_account/data/verify_email_route.dart';
-import '../widgets/cards_loading_widget.dart';
 
 class MainHorsesScreen extends StatefulWidget {
   const MainHorsesScreen({Key? key}) : super(key: key);
@@ -27,42 +26,8 @@ class MainHorsesScreen extends StatefulWidget {
 }
 
 class _MainHorsesScreenState extends State<MainHorsesScreen> {
-  bool isLoading = true;
-  List<String> names = [
-    "Stormy",
-    "Miss White",
-    "Cando",
-    "Stormy",
-    "Miss White",
-    "Cando"
-  ];
-  List<String> ages = [
-    "14",
-    "11",
-    "9",
-    "14",
-    "11",
-    "9",
-  ];
-  List<String> pics = [
-    AppImages.stormy,
-    AppImages.missWhite,
-    AppImages.cando,
-    AppImages.stormy,
-    AppImages.missWhite,
-    AppImages.cando
-  ];
-  List<String> status = [
-    "Active",
-    "Lame",
-    "Break",
-    "Active",
-    "Lame",
-    "Break",
-  ];
-  ScrollController _scrollController = ScrollController();
+  ScrollController scrollController = ScrollController();
   bool isScrolled = false;
-  late Timer timer;
 
   Future<bool> checkVerificationStatus() async {
     if (AppSharedPreferences.getEmailVerified!) {
@@ -77,10 +42,8 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
   @override
   void initState() {
     super.initState();
-    cubit.getAllHorses();
     checkVerificationStatus().then((verified) {
       if (!verified) {
-        // If the account is not verified, show a dialog after a delay.
         Future.delayed(const Duration(milliseconds: 50), () {
           showUnverifiedAccountDialog(
             context: context,
@@ -97,24 +60,14 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
       }
     });
     // Set a timer for 3 seconds
-    timer = Timer(const Duration(seconds: 5), () {
-      setState(() {
-        isLoading = false;
-      });
-    });
-
-    _scrollController.addListener(() {
-      if (_scrollController.offset > 30) {
+    scrollController.addListener(() {
+      if (scrollController.offset > 30) {
         if (!isScrolled) {
-          setState(() {
-            isScrolled = true;
-          });
+          isScrolled = true;
         }
       } else {
         if (isScrolled) {
-          setState(() {
-            isScrolled = false;
-          });
+          isScrolled = false;
         }
       }
     });
@@ -122,8 +75,7 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
 
   @override
   void dispose() {
-    _scrollController.dispose();
-    timer.cancel();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -132,131 +84,70 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child:
-          // isLoading
-          //     ? CardLoadingWidget(
-          //         title: "Horses",
-          //         isSmallCard: false,
-          //       )
-          //     :
-          BlocBuilder<HorseCubit, HorseState>(
-        bloc: cubit,
-        builder: (context, state) {
-          if (state is GetUserHorsesSuccessfully) {
-            if (state.getAllHorsesResponseModel.userHorseList!.isEmpty) {
-              return MediaQuery(
-                  data: const MediaQueryData(
-                      viewInsets: EdgeInsets.only(top: 100, bottom: 0)),
-                  child: CupertinoPageScaffold(
-                      child: NestedScrollView(
-                          controller: _scrollController,
-                          headerSliverBuilder:
-                              (BuildContext context, bool innerBoxIsScrolled) {
-                            return <Widget>[
-                              CupertinoSliverNavigationBar(
-                                automaticallyImplyLeading: false,
-                                border: Border(
-                                    bottom: BorderSide(
-                                        width: 1.0,
-                                        color: isScrolled
-                                            ? AppColors.borderColor
-                                            : Colors.transparent)),
-                                trailing: TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                AddHorseScreen()));
-                                  },
-                                  child: const Text(
-                                    "Add Horse",
-                                    style: TextStyle(
-                                      color: Color(0xFFC48636),
-                                      fontSize: 14,
-                                      fontFamily: 'notosans',
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ),
-                                alwaysShowMiddle: false,
-                                padding:
-                                    const EdgeInsetsDirectional.only(bottom: 1),
-                                backgroundColor: AppColors.backgroundColorLight,
-                                largeTitle: const Text(
-                                  'Horses',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 30,
-                                      fontFamily: 'notosan'),
-                                ),
-                                middle: const Text(
-                                  'Horses',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18),
-                                ),
-                              ),
-                            ];
-                          },
-                          body: const EmptyHorsesWidget())));
-            } else {
-              return MediaQuery(
-                data: const MediaQueryData(
-                    viewInsets: EdgeInsets.only(top: 100, bottom: 0)),
-                child: CupertinoPageScaffold(
-                  child: NestedScrollView(
-                    controller: _scrollController,
-                    headerSliverBuilder:
-                        (BuildContext context, bool innerBoxIsScrolled) {
-                      return <Widget>[
-                        CupertinoSliverNavigationBar(
-                          automaticallyImplyLeading: false,
-                          border: Border(
-                              bottom: BorderSide(
-                                  width: 1.0,
-                                  color: isScrolled
-                                      ? AppColors.borderColor
-                                      : Colors.transparent)),
-                          trailing: TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AddHorseScreen()));
-                            },
-                            child: const Text(
-                              "Add Horse",
-                              style: TextStyle(
-                                color: Color(0xFFC48636),
-                                fontSize: 14,
-                                fontFamily: 'notosans',
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          alwaysShowMiddle: false,
-                          padding: const EdgeInsetsDirectional.only(bottom: 1),
-                          backgroundColor: AppColors.backgroundColorLight,
-                          largeTitle: const Text(
-                            'Horses',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                fontSize: 30,
-                                fontFamily: 'notosan'),
-                          ),
-                          middle: const Text(
-                            'Horses',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 18),
-                          ),
-                        ),
-                      ];
-                    },
-                    body: SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: Column(
+            child:MediaQuery(
+      data: const MediaQueryData(
+          viewInsets: EdgeInsets.only(top: 100, bottom: 0)),
+      child: CupertinoPageScaffold(
+        child: NestedScrollView(
+          controller: scrollController,
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              CupertinoSliverNavigationBar(
+                automaticallyImplyLeading: false,
+                border: Border(
+                    bottom: BorderSide(
+                        width: 1.0,
+                        color: isScrolled
+                            ? AppColors.borderColor
+                            : Colors.transparent)),
+                trailing: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AddHorseScreen()));
+                  },
+                  child: const Text(
+                    "Add Horse",
+                    style: TextStyle(
+                      color: Color(0xFFC48636),
+                      fontSize: 14,
+                      fontFamily: 'notosans',
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                alwaysShowMiddle: false,
+                padding: const EdgeInsetsDirectional.only(bottom: 1),
+                backgroundColor: AppColors.backgroundColorLight,
+                largeTitle: const Text(
+                  'Horses',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 30,
+                      fontFamily: 'notosan'),
+                ),
+                middle: const Text(
+                  'Horses',
+                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                ),
+              ),
+            ];
+          },
+          body: BlocProvider(
+            create: (context) => cubit..getAllHorses(),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: BlocBuilder<HorseCubit, HorseState>(
+                  // bloc: cubit,
+                  builder: (context, state) {
+                    if (state is GetUserHorsesSuccessfully) {
+                      if (state
+                          .getAllHorsesResponseModel.userHorseList!.isEmpty) {
+                        return const EmptyHorsesWidget();
+                      } else {
+                        return Column(
                           children: [
                             ListView.builder(
                                 shrinkWrap: true,
@@ -298,9 +189,10 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
                                             .disciplineDetails!
                                             .disciplineTitle!,
                                         horsePic: state
-                                            .getAllHorsesResponseModel
-                                            .userHorseList![index]
-                                            .horseImage??'',
+                                                .getAllHorsesResponseModel
+                                                .userHorseList![index]
+                                                .horseImage ??
+                                            '',
                                         isVerified: state
                                             .getAllHorsesResponseModel
                                             .userHorseList![index]
@@ -323,27 +215,24 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
                               height: 80,
                             ),
                           ],
-                        ),
-                      ),
-                    ),
-                  ),
+                        );
+                      }
+                    }
+                    if (state is GetUserHorsesError) {
+                      return CustomErrorWidget(onRetry: () {
+                        cubit.getAllHorses();
+                      });
+                    } else if (state is GetUserHorsesLoading) {
+                      return const MainHorsesLoadingWidget();
+                    }
+                    return Container();
+                  },
                 ),
-              );
-            }
-          }
-          if (state is GetUserHorsesError) {
-            return CustomErrorWidget(onRetry: () {
-              cubit.getAllHorses();
-            });
-          } else if (state is GetUserHorsesLoading) {
-            return CardLoadingWidget(
-              title: "Horses",
-              isSmallCard: false,
-            );
-          }
-          return Container();
-        },
+              ),
+            ),
+          ),
+        ),
       ),
-    );
+    ));
   }
 }
