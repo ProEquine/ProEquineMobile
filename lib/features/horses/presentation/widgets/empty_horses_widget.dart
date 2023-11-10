@@ -10,35 +10,39 @@ class EmptyHorsesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
+    return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 200,),
+           SizedBox(
+            height: 25.0.h,
+          ),
           Center(
             child: SizedBox(
-              height: 30.0.h,
-              width: 70.w,
+              height: 100,
+              width: 200,
               child: SvgPicture.asset(AppIcons.horse),
             ),
           ),
           // Spacer(),
-          const SizedBox(height: 10,),
+          const SizedBox(
+            height: 10,
+          ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.0.w),
-            child: const Text("Add Your horse and lets get started",style:  TextStyle(
+            child: const Text(
+              "Add Your horse and lets get started",
+              style: TextStyle(
                 color: AppColors.blackLight,
                 fontSize: 28.26,
                 fontFamily: 'notosan',
                 fontWeight: FontWeight.w400,
                 letterSpacing: -0.94,
-
-            ),),
+              ),
+            ),
           ),
           // SizedBox(height: 100,)
         ],
-      ),
     );
   }
 }

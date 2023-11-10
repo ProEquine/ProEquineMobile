@@ -114,7 +114,7 @@ class _ChooseDisciplineScreenState extends State<ChooseDisciplineScreen> {
                                             userNationalId: state
                                                 .model!
                                                 .disciplines![mainDisciplineIndex]
-                                                .disciplineTitle??'',
+                                                .nationalId??'',
                                           )));
                             },
                             ableToEdit: true,
@@ -122,7 +122,7 @@ class _ChooseDisciplineScreenState extends State<ChooseDisciplineScreen> {
                         }),
                     state.model!.disciplines!.length > 1
                         ? Transform.translate(
-                      offset: const Offset(0.0, -20.0
+                      offset:  Offset(0.0, -2.h
                       ),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,7 +136,7 @@ class _ChooseDisciplineScreenState extends State<ChooseDisciplineScreen> {
                                   ),
                                 ),
                                 ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics: const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount:
                                         state.model!.disciplines!.length - 1,

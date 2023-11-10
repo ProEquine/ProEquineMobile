@@ -59,7 +59,10 @@ class HorseCardWidget extends StatelessWidget {
                       borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(8),
                           topLeft: Radius.circular(8)),
-                      child: SvgPicture.asset(AppIcons.horse)
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: SvgPicture.asset(AppIcons.horse, height: 80,width: 120,),
+                      )
                     )
                   : ClipRRect(
                       borderRadius: const BorderRadius.only(

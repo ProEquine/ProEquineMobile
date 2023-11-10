@@ -52,7 +52,7 @@ class _HorseProfileScreenState extends State<HorseProfileScreen> {
                           birthOfDate: widget.response.horseDOB,
                           horseName: widget.response.horseName,
                           placeOfBirth: widget.response.horseCOB,
-                          image: widget.response.horseImage,
+                          image: widget.response.horseImage??'',
                         )));
           },
         ),
@@ -74,7 +74,7 @@ class _HorseProfileScreenState extends State<HorseProfileScreen> {
                   horseName: widget.response.horseName!,
                   discipline:
                       widget.response.disciplineDetails!.disciplineTitle!,
-                  horsePic: widget.response.horseImage!,
+                  horsePic: widget.response.horseImage??'',
                   isVerified: widget.response.horseIsVerified!,
                   horseStable: widget.response.stableDetails!.stableName!,
                   horseStatus: widget.response.horseCondition!,

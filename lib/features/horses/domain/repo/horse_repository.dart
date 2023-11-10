@@ -50,15 +50,15 @@ class HorseRepository{
         url: ApiURLs.allDocuments);
   }
   static Future<BaseResultModel?> updateHorse(
-      UpdateHorseRequestModel updateHorseRequestModel ) async {
+      UpdateHorseRequestModel updateHorseRequestModel , String image) async {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.PUT,
         data: updateHorseRequestModel.toJson(),
         withAuthentication: true,
-        // files: {
-        //   "file":image.path,
-        // },
+        files: {
+          "file":image,
+        },
         thereDeviceId: false,
         url: ApiURLs.updateHorse);
   }

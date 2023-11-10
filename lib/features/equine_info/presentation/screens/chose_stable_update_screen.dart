@@ -124,7 +124,7 @@ class _ChooseUpdateStableScreenState extends State<ChooseUpdateStableScreen> {
                     // ),
                     state.model!.stables!.length > 1
                         ? Transform.translate(
-                      offset: const Offset(0.0,-20.0),
+                      offset:  Offset(0.0,-2.h),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

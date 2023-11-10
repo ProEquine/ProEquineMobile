@@ -39,10 +39,10 @@ class HorseCubit extends Cubit<HorseState> {
   }
 
   Future<void> updateHorse(
-    UpdateHorseRequestModel updateHorseRequestModel,
+    UpdateHorseRequestModel updateHorseRequestModel, String horseImage
   ) async {
     emit(UpdateHorseLoading());
-    var response = await HorseRepository.updateHorse(updateHorseRequestModel);
+    var response = await HorseRepository.updateHorse(updateHorseRequestModel,horseImage);
     if (response is EmptyModel) {
       emit(UpdateHorseSuccessfully(
           message: "Your Request has been sent successfully".tra));

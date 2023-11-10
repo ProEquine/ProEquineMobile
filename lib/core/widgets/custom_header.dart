@@ -45,25 +45,29 @@ class CustomHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   isItMainScreen
-                      ? SizedBox()
+                      ? const SizedBox()
                       : Transform(
                           // alignment: Alignment.center,
                           transform:
                               Directionality.of(context) == TextDirection.rtl
                                   ? Matrix4.rotationY(math.pi)
                                   : Matrix4.rotationY(0),
-                          child: GestureDetector(
+                          child: SizedBox(
+                              height: 40,
+                              width: 40,
+                              child:GestureDetector(
                               onTap: () {
                                 isThereChangeWithNavigate
                                     ? onPressBack!()
                                     : Navigator.pop(context);
                               },
-                              child: Icon(Icons.arrow_back_ios_new,
-                                  size: 24,
-                                  color: AppSharedPreferences.getTheme ==
-                                          'ThemeCubitMode.dark'
-                                      ? AppColors.white
-                                      : AppColors.blackLight)),
+                              child:  Icon(Icons.arrow_back_ios_new,
+                                    size: 24,
+                                    color: AppSharedPreferences.getTheme ==
+                                            'ThemeCubitMode.dark'
+                                        ? AppColors.white
+                                        : AppColors.blackLight),
+                              )),
                         ),
                   Text(
                     title,

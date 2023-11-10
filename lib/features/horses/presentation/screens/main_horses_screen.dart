@@ -10,6 +10,7 @@ import 'package:proequine/features/horses/presentation/screens/horse_profile_scr
 import 'package:proequine/features/horses/presentation/widgets/empty_horses_widget.dart';
 import 'package:proequine/features/horses/presentation/widgets/horse_card-widget.dart';
 import 'package:proequine/features/horses/presentation/widgets/main_horses_loading_widget.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
@@ -145,7 +146,10 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
                     if (state is GetUserHorsesSuccessfully) {
                       if (state
                           .getAllHorsesResponseModel.userHorseList!.isEmpty) {
-                        return const EmptyHorsesWidget();
+                        return Container(
+                            height: 100.0.h,
+                            width: 200,
+                            child: const EmptyHorsesWidget());
                       } else {
                         return Column(
                           children: [
@@ -172,8 +176,7 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
                                       },
                                       child: HorseCardWidget(
                                         age: state.getAllHorsesResponseModel
-                                            .userHorseList![index].horseAge
-                                            .toString(),
+                                            .userHorseList![index].horseAge.toString()??"NA",
                                         gender: state.getAllHorsesResponseModel
                                             .userHorseList![index].horseGender!,
                                         breed: state.getAllHorsesResponseModel

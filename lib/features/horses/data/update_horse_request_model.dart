@@ -1,31 +1,7 @@
 import 'dart:io';
 
+
 class UpdateHorseRequestModel {
-  HorseObj? horseObj;
-  File? image;
-
-  UpdateHorseRequestModel({this.horseObj, this.image
-    // this.image
-  });
-
-  UpdateHorseRequestModel.fromJson(Map<String, dynamic> json) {
-    horseObj = json['horseObj'] != null
-        ? HorseObj.fromJson(json['horseObj'])
-        : null;
-    image = json['image'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (horseObj != null) {
-      data['horseObj'] = horseObj!.toJson();
-    }
-    data['image'] = image;
-    return data;
-  }
-}
-
-class HorseObj {
   String? horseName;
   String? horseColor;
   String? horseGender;
@@ -36,7 +12,7 @@ class HorseObj {
   String? horseImage;
   int? horseID;
 
-  HorseObj(
+  UpdateHorseRequestModel(
       {this.horseName,
         this.horseColor,
         this.horseGender,
@@ -47,29 +23,29 @@ class HorseObj {
         this.horseImage,
         this.horseID});
 
-  HorseObj.fromJson(Map<String, dynamic> json) {
-    horseName = json['horseName'];
-    horseColor = json['horseColor'];
-    horseGender = json['horseGender'];
-    horseDOB = json['horseDOB'];
+  UpdateHorseRequestModel.fromJson(Map<String, dynamic> json) {
+    horseName = json['HorseName'];
+    horseColor = json['HorseColor'];
+    horseGender = json['HorseGender'];
+    horseDOB = json['HorseDOB'];
     horseCOB = json['horseCOB'];
-    breed = json['breed'];
-    bloodline = json['bloodline'];
-    horseImage = json['horseImage'];
-    horseID = json['horseID'];
+    breed = json['Breed'];
+    bloodline = json['Bloodline'];
+    horseImage = json['HorseImage'];
+    horseID = json['HorseID'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['horseName'] = horseName;
-    data['horseColor'] = horseColor;
-    data['horseGender'] = horseGender;
-    data['horseDOB'] = horseDOB;
-    data['horseCOB'] = horseCOB;
-    data['breed'] = breed;
-    data['bloodline'] = bloodline;
-    data['horseImage'] = horseImage;
-    data['horseID'] = horseID;
+    data['HorseName'] = horseName;
+    data['HorseColor'] = horseColor;
+    data['HorseGender'] = horseGender;
+    data['HorseDOB'] = horseDOB;
+    data['HorseCOB'] = horseCOB;
+    data['Breed'] = breed;
+    data['Bloodline'] = bloodline;
+    data['HorseImage'] = horseImage;
+    data['HorseID'] = horseID;
     return data;
   }
 }

@@ -15,6 +15,7 @@ import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/widgets/chose_picture_bottom_sheet.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/core/widgets/rebi_input.dart';
+import 'package:proequine/core/widgets/user_stables_widget.dart';
 import 'package:proequine/features/horses/data/add_horse_request_model.dart';
 import 'package:proequine/features/horses/domain/horse_cubit.dart';
 import 'package:sizer/sizer.dart';
@@ -63,8 +64,6 @@ class AddHorseScreenState extends State<AddHorseScreen> {
   late final TextEditingController discipline;
   late final TextEditingController disciplineId;
   late final TextEditingController year;
-  late final TextEditingController _mainStableName;
-  late final TextEditingController _mainStableLocation;
   late final TextEditingController stableId;
 
   late final TextEditingController stable;
@@ -91,9 +90,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
     disciplineId = TextEditingController();
     placeOfBirth = TextEditingController();
     _dateOfBirth = TextEditingController();
-    _mainStableLocation = TextEditingController();
     stableId = TextEditingController();
-    _mainStableName = TextEditingController();
     stable = TextEditingController();
     year = TextEditingController();
     _selectedYear = _selectedDay.year;
@@ -253,7 +250,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                               isSupportChangingYears: true,
                               selectedOurDay: _selectedDay,
                               from: DateTime.utc(2000),
-                              to: DateTime.utc(2023),
+                              to: DateTime.utc(2030),
                               selectedYear: _selectedYear,
                               yearController: _yearController,
                               focusDay: _focusedDay,
@@ -279,7 +276,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                                 context: context);
                           }
 
-                          return Validator.requiredValidator(_dateOfBirth.text);
+                          // return Validator.requiredValidator(_dateOfBirth.text);
                         },
                       ),
                     ),
@@ -463,11 +460,9 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 7),
-                      child: SelectStableWidget(
+                      child: UserStableWidget(
                         stableId: stableId,
                         stableName: stable,
-                        changeTrue: () {},
-                        changeFalse: () {},
                       ),
                     ),
                   ],
@@ -490,7 +485,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                                       selectedIndex: 2,
                                     )));
                       } else if (state is AddHorseError) {
-                        RebiMessage.error(
+                         RebiMessage.error(
                             msg: state.message!, context: context);
                       }
                     },
@@ -509,18 +504,13 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                               selectedGender != null &&
                               _selectedDay.toString().isNotEmpty &&
                               horseImage != null &&
-                              placeOfBirth.text != '' &&
+                              // placeOfBirth.text != '' &&
                               selectedBloodLine != null &&
                               selectedBreed != null &&
                               selectedColor != null &&
                               disciplineId.text.isNotEmpty &&
                               stable.text.isNotEmpty) {
                             _onPressAddHorse();
-                          } else if (_dateOfBirth.text.isEmpty) {
-                            RebiMessage.error(
-                                msg:
-                                    "Please Add the date of birth of your horse",
-                                context: context);
                           } else if (horseImage == null) {
                             RebiMessage.error(
                                 msg: "Please add a picture to your horse",
