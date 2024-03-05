@@ -45,7 +45,7 @@ class _BookingMainState extends State<BookingMain> {
   void initState() {
     super.initState();
       checkVerificationStatus().then((verified) {
-        if (!verified) {
+        if (verified) {
           // If the account is not verified, show a dialog after a delay.
           Future.delayed(const Duration(milliseconds: 50), () {
             showUnverifiedAccountDialog(

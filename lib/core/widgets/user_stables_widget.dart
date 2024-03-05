@@ -2,22 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
-import 'package:proequine/features/equine_info/data/get_user_stables_response_model.dart';
 import 'package:proequine/features/equine_info/domain/equine_info_cubit.dart';
-import 'package:proequine/features/user/domain/user_cubit.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
-import '../../../../core/constants/constants.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/divider.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../features/home/presentation/widgets/hospital_bottom_sheet.dart';
-import '../../features/user/data/get_stables_response_model.dart';
 
 class UserStableWidget extends StatefulWidget {
   TextEditingController stableName = TextEditingController();
   TextEditingController stableId = TextEditingController();
+  final int userId;
 
   bool readOnly = false;
 
@@ -25,7 +22,7 @@ class UserStableWidget extends StatefulWidget {
     Key? key,
     required this.stableName,
     required this.stableId,
-    this.readOnly = false,
+    this.readOnly = false, required this.userId,
 
   }) : super(key: key);
 
@@ -57,46 +54,49 @@ class _UserStableWidgetState extends State<UserStableWidget> {
             context: context,
             title: "Stables",
             content: BlocBuilder<EquineInfoCubit, EquineInfoState>(
-              bloc: cubit..getUserStables(),
+              bloc: cubit..getUserStables(widget.userId),
 
               builder: (context, state) {
                 if (state is GetUserStablesSuccessful) {
                   return SingleChildScrollView(
                     child: StatefulBuilder(builder: (context, setState) {
-                      if (state.model!.stables!.isNotEmpty) {
+                      if (state.model!.rows!.isNotEmpty) {
                         return ListView.separated(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: state.model!.stables!.length,
+                          itemCount: state.model!.rows!.length,
                           separatorBuilder: (context, index) {
                             return const CustomDivider();
                           },
                           itemBuilder: (context, index) {
-                            return GestureDetector(
+                            return InkWell(
                               onTap: () {
                                 setState(() {
                                   widget.stableName.text = state
-                                      .model!.stables![index]
-                                      .stableName!;
+                                      .model!.rows![index].stable!
+                                      .name!;
                                   widget.stableId.text = state
-                                      .model!.stables![index].stableId!
+                                      .model!.rows![index].stableId!
                                       .toString();
                                   Print("Selected stable ${widget.stableName.text}");
                                   Navigator.pop(context);
                                   // Print("Stable Name $selectedStable");
                                 });
                               },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    state.model!.stables![index]
-                                        .stableName!,
-                                    style: const TextStyle(
-                                        color:
-                                        AppColors.blackLight),
-                                  )
-                                ],
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      state.model!.rows![index].stable!
+                                          .name!,
+                                      style: const TextStyle(
+                                          color:
+                                          AppColors.blackLight),
+                                    )
+                                  ],
+                                ),
                               ),
                             );
                           },

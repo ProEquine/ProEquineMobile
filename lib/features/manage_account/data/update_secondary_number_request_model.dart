@@ -1,22 +1,17 @@
 class UpdateSecondaryNumberRequestModel {
-  String? phoneNumberType;
-  String? oldSecondaryNumber;
-  String? newSecondaryNumber;
+  String? secondNumber;
+
 
   UpdateSecondaryNumberRequestModel(
-      {this.phoneNumberType, this.oldSecondaryNumber, this.newSecondaryNumber});
+      {this.secondNumber});
 
   UpdateSecondaryNumberRequestModel.fromJson(Map<String, dynamic> json) {
-    phoneNumberType = json['phoneNumberType'];
-    oldSecondaryNumber = json['oldSecondaryNumber'];
-    newSecondaryNumber = json['newSecondaryNumber'];
+    secondNumber = json['secondNumber'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['phoneNumberType'] = phoneNumberType;
-    data['oldSecondaryNumber'] = oldSecondaryNumber;
-    data['newSecondaryNumber'] = newSecondaryNumber;
+    data['secondNumber'] = secondNumber;
     return data;
   }
 }

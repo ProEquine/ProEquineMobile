@@ -33,7 +33,6 @@ class _CreateUserNameScreenState extends State<CreateUserNameScreen> {
   @override
   void initState() {
     _userName = TextEditingController();
-    cubit.getStables();
 
     super.initState();
   }
@@ -63,15 +62,7 @@ class _CreateUserNameScreenState extends State<CreateUserNameScreen> {
                       children: [
                         RegistrationHeader(
                           isThereBackButton: false,
-                          isThereSkip: true,
-                          onTapSkip: () {
-                            Print("Skip");
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const UserInfoScreen()));
-                          },
+                          isThereSkip: false,
                         ),
                         const Spacer(),
                         Padding(
@@ -155,11 +146,11 @@ class _CreateUserNameScreenState extends State<CreateUserNameScreen> {
                                                 .validate()) {
                                               FocusManager.instance.primaryFocus
                                                   ?.unfocus();
-                                              _onPressCheck(_userName.text);
+                                              _onPressCheck('@${_userName.text}');
 
                                             } else {}
                                           },
-                                          child: const Text("Next"));
+                                          child: Text("Next", style: AppStyles.buttonStyle,));
                                     },
                                     listener: (context, state) {
                                       if (state is CheckUsernameSuccessful) {
@@ -167,7 +158,7 @@ class _CreateUserNameScreenState extends State<CreateUserNameScreen> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const UserInfoScreen()));
+                                                    const InterestsScreen()));
                                       } else if (state is CheckUsernameError) {
                                         RebiMessage.error(
                                             msg: state.message!,

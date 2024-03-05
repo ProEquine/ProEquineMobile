@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
-import 'package:proequine/features/user/data/send_mail_request_model.dart';
 import 'package:proequine/features/user/data/send_verify_request_forgot_password.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/user/presentation/screens/reset_password_screen.dart';
@@ -119,7 +118,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                             _sendVerificationRequest();
                                           } else {}
                                         },
-                                        child: const Text("Verify"));
+                                        child:  Text("Verify", style: AppStyles.buttonStyle,));
                                   },
                                   listener: (context, state) {
                                     if (state is ForgotPasswordSuccessful) {

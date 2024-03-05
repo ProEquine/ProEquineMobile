@@ -72,6 +72,33 @@ class GetUserError extends ManageAccountState{
   final String? message;
   GetUserError({this.message});
 }
+class UploadFileSuccessful extends ManageAccountState {
+  final UploadFileResponseModel? fileUrl;
+
+  UploadFileSuccessful({required this.fileUrl});
+}
+
+class UploadFileLoading extends ManageAccountState {}
+
+class UploadFileError extends ManageAccountState {
+  final String? message;
+
+  UploadFileError({this.message});
+}
+
+class UpdateImageSuccessful extends ManageAccountState {
+  final UserDataResponseModel? response;
+
+  UpdateImageSuccessful({required this.response});
+}
+
+class UpdateImageLoading extends ManageAccountState {}
+
+class UpdateImageError extends ManageAccountState {
+  final String? message;
+
+  UpdateImageError({this.message});
+}
 
 class DeleteAccountSuccessful extends ManageAccountState {
   final String? message;
@@ -131,19 +158,6 @@ class AddBioError extends ManageAccountState {
   final String? message;
   AddBioError({this.message});
 }
-
-class UploadImageSuccessful extends ManageAccountState {
-  final String? message;
-  UploadImageSuccessful({required this.message});
-}
-
-class UploadImageLoading extends ManageAccountState {}
-
-class UploadImageError extends ManageAccountState {
-  final String? message;
-  UploadImageError({this.message});
-}
-
 class GetAllStatesSuccessfully extends ManageAccountState {
   final GetAllStatesResponseModel? responseModel;
   GetAllStatesSuccessfully({required this.responseModel});

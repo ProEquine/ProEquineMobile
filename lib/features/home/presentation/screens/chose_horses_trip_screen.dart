@@ -9,6 +9,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/global_functions/validate_horse_functions.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/widgets/custom_header.dart';
@@ -202,7 +203,7 @@ class _ChoseTripHorseScreenState extends State<ChoseTripHorseScreen> {
                               context: context);
                         }
                       },
-                      child: const Text("Next"),
+                      child:  Text("Next", style: AppStyles.buttonStyle,),
                     ),
                   ),
                   const SizedBox(

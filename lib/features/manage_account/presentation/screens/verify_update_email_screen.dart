@@ -7,8 +7,6 @@ import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
-import 'package:proequine/features/user/data/check_update_email_request_model.dart';
-import 'package:proequine/features/user/data/send_mail_request_model.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui' as ui;
@@ -19,10 +17,8 @@ import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/constants/thems/pin_put_theme.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/rebi_button.dart';
-import '../../../../core/widgets/success_state_widget.dart';
 import '../../data/basic_account_management_route.dart';
 import '../../data/update_email_route.dart';
-import '../../data/verify_email_route.dart';
 
 class VerifyUpdateEmailScreen extends StatefulWidget {
 
@@ -41,6 +37,13 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
   int _secondsLeft = 60;
   bool isResendCode = false;
   late Timer _timer;
+  @override
+  void initState() {
+
+    super.initState();
+
+    context.read<UserCubit>().sendMailVerificationCode();
+  }
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -195,7 +198,7 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                           : Center(
                         child: InkWell(
                           onTap: () {
-                            cubit.sendMailVerificationCode(SendMailVerificationRequestModel(email: emails.newEmail!));
+                            cubit.sendMailVerificationCode();
                             setState(() {
                               isResendCode = true;
                             });
@@ -292,7 +295,7 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
                               } else {}
                             },
                             // backgroundColor: AppColors.white,
-                            child: const Text("Confirm"),
+                            child:  Text("Confirm", style: AppStyles.buttonStyle,),
                           );
                         },
                       ),
@@ -315,10 +318,9 @@ class _VerifyUpdateEmailScreenState extends State<VerifyUpdateEmailScreen> {
     required String newEmail,
   }) {
     return cubit
-      ..checkUpdatedMail(CheckUpdateEmailRequestModel(
+      ..checkUpdatedMail(
         // previousEmail: previousEmail,
-        newEmail: newEmail,
-        code: _pinPutController.text,
-      ));
+        _pinPutController.text,
+      );
   }
 }

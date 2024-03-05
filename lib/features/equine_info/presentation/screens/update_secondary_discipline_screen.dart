@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:proequine/features/equine_info/data/delete_discipline_request_model.dart';
 import 'package:proequine/features/equine_info/data/update_secondary_discipline_request_model.dart';
@@ -10,28 +9,23 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/rebi_message.dart';
-import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/delete_popup.dart';
 import '../../../../core/widgets/loading_widget.dart';
-import '../../../../core/widgets/rebi_input.dart';
 import '../../../manage_account/data/basic_account_management_route.dart';
 import '../../domain/equine_info_cubit.dart';
 import '../widgets/disciplines_widget.dart';
 
 class UpdateSecondaryDisciplineScreen extends StatefulWidget {
   final String secondaryDiscipline;
-  final String? secondaryUserFeId;
-  final String? secondaryUserNationalId;
-  final String? personDisciplineId;
 
-  const UpdateSecondaryDisciplineScreen(
-      {Key? key,
-      required this.secondaryDiscipline,
-      this.secondaryUserFeId,
-      this.personDisciplineId,
-      this.secondaryUserNationalId})
-      : super(key: key);
+  final String? disciplineId;
+
+  const UpdateSecondaryDisciplineScreen({
+    Key? key,
+    required this.secondaryDiscipline,
+    this.disciplineId,
+  }) : super(key: key);
 
   @override
   State<UpdateSecondaryDisciplineScreen> createState() =>
@@ -40,8 +34,6 @@ class UpdateSecondaryDisciplineScreen extends StatefulWidget {
 
 class _UpdateSecondaryDisciplineScreenState
     extends State<UpdateSecondaryDisciplineScreen> {
-  late final TextEditingController _feId;
-  late final TextEditingController _nationalId;
   late final TextEditingController discipline;
   late final TextEditingController disciplineId;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -51,24 +43,14 @@ class _UpdateSecondaryDisciplineScreenState
 
   @override
   void initState() {
-    _feId = TextEditingController(text: widget.secondaryUserFeId);
-    _nationalId = TextEditingController(text: widget.secondaryUserNationalId);
     disciplineId = TextEditingController();
     discipline = TextEditingController(text: widget.secondaryDiscipline);
     selectedDiscipline = widget.secondaryDiscipline;
-    if (widget.secondaryUserFeId != null &&
-        widget.secondaryUserNationalId != null) {
-      _feId.text = widget.secondaryUserFeId!;
-      _nationalId.text = widget.secondaryUserNationalId!;
-    }
-
     super.initState();
   }
 
   @override
   void dispose() {
-    _feId.dispose();
-    _nationalId.dispose();
     discipline.dispose();
     disciplineId.dispose();
     super.dispose();
@@ -118,11 +100,9 @@ class _UpdateSecondaryDisciplineScreenState
                         onPressed: () {
                           _onPressDelete();
                         },
-                        child: const Text(
+                        child:  Text(
                           "I'm sure",
-                          style: TextStyle(
-                            color: AppColors.whiteLight,
-                          ),
+                          style: AppStyles.buttonStyle,
                         ));
                   },
                 ),
@@ -176,48 +156,8 @@ class _UpdateSecondaryDisciplineScreenState
                                 height: 5,
                               ),
                               DisciplinesWidget(
-                                discipline: discipline,
                                 disciplineId: disciplineId,
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 7),
-                                child: RebiInput(
-                                  hintText: 'National ID'.tra,
-                                  controller: _nationalId,
-                                  keyboardType: TextInputType.text,
-                                  textInputAction: TextInputAction.done,
-                                  isOptional: false,
-                                  color: AppColors.formsLabel,
-                                  readOnly: false,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 13),
-                                  obscureText: false,
-                                  validator: (value) {
-                                    return Validator.requiredValidator(
-                                        _nationalId.text);
-                                  },
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 7),
-                                child: RebiInput(
-                                  hintText: 'FEI ID'.tra,
-                                  controller: _feId,
-                                  keyboardType: TextInputType.text,
-                                  textInputAction: TextInputAction.done,
-                                  isOptional: false,
-                                  color: AppColors.formsLabel,
-                                  readOnly: false,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 13),
-                                  obscureText: false,
-                                  validator: (value) {
-                                    return Validator.requiredValidator(
-                                        _feId.text);
-                                  },
-                                ),
+                                discipline: discipline,
                               ),
                               const SizedBox(
                                 height: 20,
@@ -232,14 +172,16 @@ class _UpdateSecondaryDisciplineScreenState
                           child: BlocConsumer<EquineInfoCubit, EquineInfoState>(
                             bloc: cubit,
                             listener: (context, state) {
-                              if (state is UpdateSecondaryDisciplineSuccessful) {
+                              if (state
+                                  is UpdateSecondaryDisciplineSuccessful) {
                                 Navigator.pushReplacementNamed(
                                     context, successScreen,
                                     arguments: BasicAccountManagementRoute(
                                         type: 'manageAccount',
                                         title:
                                             "Secondary Discipline Updated Successfully"));
-                              } else if (state is UpdateSecondaryDisciplineError) {
+                              } else if (state
+                                  is UpdateSecondaryDisciplineError) {
                                 RebiMessage.error(
                                     msg: state.message!, context: context);
                               }
@@ -256,7 +198,7 @@ class _UpdateSecondaryDisciplineScreenState
                                 },
                                 child: Text(
                                   "Submit",
-                                  style: AppStyles.buttonTitle,
+                                  style: AppStyles.buttonStyle,
                                 ),
                               );
                             },
@@ -279,16 +221,14 @@ class _UpdateSecondaryDisciplineScreenState
 
   _onPressSubmit() {
     cubit.updateSecondaryDiscipline(UpdateSecondaryDisciplineRequestModel(
-      nationalId: _nationalId.text,
-      feiid: _feId.text,
       disciplineId: int.parse(disciplineId.text),
-      personDisciplineId: int.parse(widget.personDisciplineId!),
+      // personDisciplineId: int.parse(widget.personDisciplineId!),
     ));
   }
 
   _onPressDelete() {
-    cubit.deleteSecondaryDiscipline(DeleteDisciplineResponseModel(
-      personDisciplineId: int.parse(widget.personDisciplineId!),
-    ));
+    cubit.deleteSecondaryDiscipline(
+      int.parse(widget.disciplineId!),
+    );
   }
 }

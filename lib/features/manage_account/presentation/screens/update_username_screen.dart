@@ -154,7 +154,7 @@ class _UpdateUserNameScreenState extends State<UpdateUserNameScreen> {
                                               onPressUpdateUserName();
                                             } else {}
                                           },
-                                          child: const Text("Update"));
+                                          child:  Text("Update", style: AppStyles.buttonStyle,));
                                     },
                                     listener: (context, state) {
                                       if (state is CheckUsernameSuccessful) {

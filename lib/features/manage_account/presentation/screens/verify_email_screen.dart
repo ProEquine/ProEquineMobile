@@ -6,7 +6,6 @@ import 'package:pinput/pinput.dart';
 import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/features/user/data/check_mail_request_model.dart';
-import 'package:proequine/features/user/data/send_mail_request_model.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui' as ui;
@@ -24,7 +23,6 @@ import '../../data/verify_email_route.dart';
 class VerifyEmailScreen extends StatefulWidget {
   final String? email;
 
-
   const VerifyEmailScreen({super.key, this.email});
 
   @override
@@ -39,10 +37,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   int _secondsLeft = 60;
   bool isResendCode = false;
   late Timer _timer;
+
   onSendMail() {
-    return cubit.sendMailVerificationCode(SendMailVerificationRequestModel(
-      email: AppSharedPreferences.userEmailAddress,
-    ));
+    return cubit.sendMailVerificationCode();
   }
 
   void _startTimer() {
@@ -65,7 +62,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     String seconds = twoDigits(duration.inSeconds.remainder(60));
     return "$minutes:$seconds";
   }
-VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
+
+  VerifyEmailRoute verifyEmailRoute = VerifyEmailRoute();
+
   String hideEmail(String email) {
     int atIndex = email.indexOf('@');
     String username = email.substring(0, atIndex);
@@ -74,24 +73,27 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
         '*' * (username.length - (username.length ~/ 2));
     return '$hiddenUsername@$domain';
   }
+
   String? email;
+
   @override
   void initState() {
     onSendMail();
-    email=hideEmail(AppSharedPreferences.userEmailAddress);
+    email = hideEmail(AppSharedPreferences.userEmailAddress);
     super.initState();
   }
+
   @override
   void dispose() {
-   _pinPutController.dispose();
-   cubit.close();
+    _pinPutController.dispose();
+    cubit.close();
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    verifyEmailRoute = ModalRoute.of(context)?.settings.arguments as VerifyEmailRoute;
+    verifyEmailRoute =
+        ModalRoute.of(context)?.settings.arguments as VerifyEmailRoute;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
@@ -112,7 +114,9 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 20,),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       Text(
                         "A 4 digit verification code has been sent to your email $email.",
                         style: AppStyles.descriptions,
@@ -129,41 +133,36 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                             preFilledWidget: Container(
                               width: 30,
                               height: 5,
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 15),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 15),
                               decoration: BoxDecoration(
                                 border: Border(
                                   bottom: BorderSide(
                                     width: 2.0,
-                                    color:
-                                    AppSharedPreferences.getTheme ==
-                                        'ThemeCubitMode.dark'
+                                    color: AppSharedPreferences.getTheme ==
+                                            'ThemeCubitMode.dark'
                                         ? AppColors.greyLight
                                         : AppColors.blackLight,
                                   ),
                                 ),
                                 color: AppSharedPreferences.getTheme ==
-                                    'ThemeCubitMode.dark'
+                                        'ThemeCubitMode.dark'
                                     ? AppColors.formsBackground
                                     : AppColors.formsBackgroundLight,
                               ),
                             ),
                             androidSmsAutofillMethod:
-                            AndroidSmsAutofillMethod
-                                .smsUserConsentApi,
+                                AndroidSmsAutofillMethod.smsUserConsentApi,
                             length: 4,
                             closeKeyboardWhenCompleted: true,
                             isCursorAnimationEnabled: true,
                             controller: _pinPutController,
-                            defaultPinTheme:
-                            PinThemeConst.defaultPinTheme,
-                            focusedPinTheme:
-                            PinThemeConst.focusedPinTheme,
-                            submittedPinTheme:
-                            PinThemeConst.submittedPinTheme,
+                            defaultPinTheme: PinThemeConst.defaultPinTheme,
+                            focusedPinTheme: PinThemeConst.focusedPinTheme,
+                            submittedPinTheme: PinThemeConst.submittedPinTheme,
                             pinAnimationType: PinAnimationType.rotation,
                             pinputAutovalidateMode:
-                            PinputAutovalidateMode.onSubmit,
+                                PinputAutovalidateMode.onSubmit,
                             validator: (value) {
                               if (value!.isEmpty || value.length < 4) {
                                 return 'please enter your code';
@@ -202,15 +201,14 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                       ),
                       isResendCode
                           ? Center(
-                          child: Text(
-                            _formatDuration(
-                                Duration(seconds: _secondsLeft))
-                                .toString(),
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.yellow,
-                                fontWeight: FontWeight.w700),
-                          ))
+                              child: Text(
+                              _formatDuration(Duration(seconds: _secondsLeft))
+                                  .toString(),
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.yellow,
+                                  fontWeight: FontWeight.w700),
+                            ))
                           : Center(
                               child: InkWell(
                                 onTap: () {
@@ -219,9 +217,7 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                                   });
                                   context
                                       .read<UserCubit>()
-                                      .sendMailVerificationCode(
-                                          SendMailVerificationRequestModel(
-                                              email: verifyEmailRoute.email));
+                                      .sendMailVerificationCode();
 
                                   _startTimer();
                                   // Navigator.push(context,
@@ -239,10 +235,8 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                                   decoration: ShapeDecoration(
                                     shape: RoundedRectangleBorder(
                                       side: const BorderSide(
-                                          width: 0.50,
-                                          color: AppColors.yellow),
-                                      borderRadius:
-                                      BorderRadius.circular(8),
+                                          width: 0.50, color: AppColors.yellow),
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
                                   ),
                                   child: const Row(
@@ -267,16 +261,16 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                                 ),
                               ),
                             ),
-                      const SizedBox(height: 20,),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       Center(
-                        child: Text(
-                          "don’t forget to check your spam inbox",
-                          style: TextStyle(
-                              color: AppColors.borderColor,
-                              fontFamily: 'notosan',
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w400)
-                        ),
+                        child: Text("don’t forget to check your spam inbox",
+                            style: TextStyle(
+                                color: AppColors.borderColor,
+                                fontFamily: 'notosan',
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.w400)),
                       ),
                       const SizedBox(
                         height: 30,
@@ -285,9 +279,14 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                         bloc: cubit,
                         listener: (context, state) {
                           if (state is CheckMailVerificationSuccessful) {
-                     Navigator.pushReplacementNamed(context, submitVerifyEmail,arguments: VerifyEmailRoute(email: "Email verified successfully",type: verifyEmailRoute.type));
+                            Navigator.pushReplacementNamed(
+                                context, submitVerifyEmail,
+                                arguments: VerifyEmailRoute(
+                                    email: "Email verified successfully",
+                                    type: verifyEmailRoute.type));
                           } else if (state is CheckMailVerificationError) {
-                            RebiMessage.error(msg: state.message!,context: context);
+                            RebiMessage.error(
+                                msg: state.message!, context: context);
                           }
                         },
                         builder: (context, state) {
@@ -302,7 +301,7 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
                               } else {}
                             },
                             // backgroundColor: AppColors.white,
-                            child: const Text("Confirm"),
+                            child:  Text("Confirm", style: AppStyles.buttonStyle,),
                           );
                         },
                       ),
@@ -319,9 +318,9 @@ VerifyEmailRoute verifyEmailRoute=VerifyEmailRoute();
       ),
     );
   }
+
   _onPressVerify(String email) {
-    return cubit.checkMailVerificationCode(CheckMailVerificationRequestModel(
-        email: email,
-        code: _pinPutController.text));
+    return cubit.checkMailVerificationCode(
+        CheckMailVerificationRequestModel(otpCode: _pinPutController.text));
   }
 }

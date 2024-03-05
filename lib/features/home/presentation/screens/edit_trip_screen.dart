@@ -14,6 +14,7 @@ import 'package:proequine/features/home/domain/repo/local_storage_repository.dar
 import 'package:proequine/features/home/presentation/screens/chose_horses_shipping_screen.dart';
 import 'package:proequine/features/nav_bar/presentation/screens/bottomnavigation.dart';
 
+import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/global_functions/global_statics_drop_down.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/rebi_message.dart';
@@ -514,7 +515,7 @@ class EditTripScreenState extends State<EditTripScreen> {
                                                     )));
                                       }
                                     },
-                                    child: const Text("Next")),
+                                    child: Text("Next", style: AppStyles.buttonStyle,)),
                               ),
                               const SizedBox(
                                 height: 30,
@@ -827,7 +828,7 @@ class EditTripScreenState extends State<EditTripScreen> {
                                                         'Export'),
                                                   )));
                                     },
-                                    child: const Text("Next")),
+                                    child:  Text("Next", style: AppStyles.buttonStyle,)),
                               ),
                               const SizedBox(
                                 height: 30,

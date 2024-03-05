@@ -338,7 +338,7 @@ class _ExistingHorseDetailsScreenState
 
                             }
                           },
-                          child: const Text("Save")),
+                          child: Text("Save", style: AppStyles.buttonStyle,)),
                     ],
                   ),
                   const SizedBox(

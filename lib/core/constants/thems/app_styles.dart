@@ -45,6 +45,11 @@ class AppStyles {
       color: AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
           ? Colors.white
           : AppColors.blackLight);
+  static final buttonStyle = TextStyle(
+      fontSize: 17,
+      fontFamily: "notosan",
+      fontWeight: FontWeight.w600,
+      color: AppColors.whiteLight);
 
   static final mainTitle2 = TextStyle(
       fontSize: 20,

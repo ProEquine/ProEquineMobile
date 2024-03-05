@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:proequine/core/constants/thems/app_styles.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:sizer/sizer.dart';
@@ -26,16 +27,17 @@ class CustomErrorWidget extends StatelessWidget {
         vertical: 50.0,
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           //TODO: replace with error image
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Image.asset(
               AppImages.error,
-              height: 20.h,
+              height: 18.h,
             ),
           ),
+          const SizedBox(height: 40,),
 
           const Text(
             'Oops! Something went wrong. Please try again.',
@@ -44,6 +46,7 @@ class CustomErrorWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+          const SizedBox(height: 20,),
 
           RebiButton(
             onPressed: () {
@@ -51,6 +54,7 @@ class CustomErrorWidget extends StatelessWidget {
             },
             child: Text(
               buttonText ?? 'Try again'.tra,
+              style: AppStyles.buttonStyle,
             ),
           ),
         ],

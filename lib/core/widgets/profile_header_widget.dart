@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:proequine/core/constants/images/app_images.dart';
 import 'package:proequine/core/constants/thems/app_styles.dart';
+import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/widgets/base_64_image.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
@@ -56,6 +58,7 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
   //   Uint8List bytes = data.buffer.asUint8List();
   //   return bytes;
   // }
+  String? profileUrl;
 
   Future getImage(ImageSource src, BuildContext? context) async {
     XFile? image = await picker.pickImage(source: src);
@@ -85,14 +88,13 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
                   alignment: Alignment.bottomRight,
                   children: [
                     profilePic == null
-                        ? widget.pictureUrl != null
+                        ? widget.pictureUrl != ''
                             ? ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-
-                                child: Base64Image(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: CachedNetworkImage(
                                     width: 62,
                                     height: 62,
-                                    base64Image: widget.pictureUrl!),
+                                    imageUrl: widget.pictureUrl!),
                               )
                             : Container(
                                 padding: const EdgeInsets.all(8),
@@ -181,59 +183,121 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
                           width: 25.0.w,
                         ),
                         Visibility(
-                          visible: widget.isEditingPressed,
-                          child: BlocConsumer<ManageAccountCubit,
-                              ManageAccountState>(
-                            bloc: cubit,
-                            listener: (context, state) {
-                              if (state is UploadImageSuccessful) {
-                                Navigator.pushReplacementNamed(
-                                    context, successScreen,
-                                    arguments: BasicAccountManagementRoute(
-                                        type: 'profileImage',
-                                        title:
-                                            "Profile picture has been added successfully"));
-                              } else if (state is UploadImageError) {
-                                Print("Error State");
-                                RebiMessage.error(
-                                    msg: state.message!, context: context);
-                              }
-                            },
-                            builder: (context, state) {
-                              if (state is UploadImageLoading) {
-                                return const LoadingCircularWidget();
-                              }
-                              return GestureDetector(
-                                onTap: () {
-                                  onPressUpload();
-                                },
-                                child: Container(
-                                  width: 87,
-                                  height: 20,
-                                  decoration: ShapeDecoration(
-                                    color: const Color(0xFFE0AD25),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(4)),
-                                  ),
-                                  child: const Center(
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 2),
-                                      child: Text(
-                                        'Save',
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: AppColors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily: 'notosan'),
+                            visible: widget.isEditingPressed,
+                            child: BlocConsumer<ManageAccountCubit,
+                                ManageAccountState>(
+                              bloc: cubit,
+                              listener: (context, state) {
+                                if (state is UploadFileSuccessful) {
+                                  profileUrl = state.fileUrl!.url;
+                                  _onPressUploadProfilePic(profileUrl);
+                                } else if (state is UploadFileError) {
+                                  RebiMessage.error(
+                                      msg: state.message!, context: context);
+                                }
+                                if (state is UpdateImageError) {
+                                  RebiMessage.error(
+                                      msg: state.message!, context: context);
+                                } else if (state is UpdateImageSuccessful) {
+                                  Navigator.pushReplacementNamed(
+                                      context, successScreen,
+                                      arguments: BasicAccountManagementRoute(
+                                          type: 'profileImage',
+                                          title:
+                                              "Profile picture has been added successfully"));
+                                }
+                              },
+                              builder: (context, state) {
+                                if (state is UpdateImageLoading ||
+                                    state is UploadFileLoading) {
+                                  return LoadingCircularWidget();
+                                } else {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      _onPressUpload();
+                                    },
+                                    child: Container(
+                                      width: 87,
+                                      height: 20,
+                                      decoration: ShapeDecoration(
+                                        color: const Color(0xFFE0AD25),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(4)),
+                                      ),
+                                      child: const Center(
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsets.symmetric(vertical: 2),
+                                          child: Text(
+                                            'Save',
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                color: AppColors.white,
+                                                fontWeight: FontWeight.w600,
+                                                fontFamily: 'notosan'),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        )
+                                  );
+                                }
+                              },
+                            )),
+                        // Visibility(
+                        //   visible: widget.isEditingPressed,
+                        //   child: BlocConsumer<ManageAccountCubit,
+                        //       ManageAccountState>(
+                        //     bloc: cubit,
+                        //     listener: (context, state) {
+                        //       if (state is UploadImageSuccessful) {
+                        //         Navigator.pushReplacementNamed(
+                        //             context, successScreen,
+                        //             arguments: BasicAccountManagementRoute(
+                        //                 type: 'profileImage',
+                        //                 title:
+                        //                     "Profile picture has been added successfully"));
+                        //       } else if (state is UploadImageError) {
+                        //         Print("Error State");
+                        //         RebiMessage.error(
+                        //             msg: state.message!, context: context);
+                        //       }
+                        //     },
+                        //     builder: (context, state) {
+                        //       if (state is UploadImageLoading) {
+                        //         return const LoadingCircularWidget();
+                        //       }
+                        //       return GestureDetector(
+                        //         onTap: () {
+                        //           onPressUpload();
+                        //         },
+                        //         child: Container(
+                        //           width: 87,
+                        //           height: 20,
+                        //           decoration: ShapeDecoration(
+                        //             color: const Color(0xFFE0AD25),
+                        //             shape: RoundedRectangleBorder(
+                        //                 borderRadius: BorderRadius.circular(4)),
+                        //           ),
+                        //           child: const Center(
+                        //             child: Padding(
+                        //               padding:
+                        //                   EdgeInsets.symmetric(vertical: 2),
+                        //               child: Text(
+                        //                 'Save',
+                        //                 style: TextStyle(
+                        //                     fontSize: 12,
+                        //                     color: AppColors.white,
+                        //                     fontWeight: FontWeight.w600,
+                        //                     fontFamily: 'notosan'),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       );
+                        //     },
+                        //   ),
+                        // )
                       ],
                     ),
                   ],
@@ -284,8 +348,11 @@ class _ProfileHeaderWidgetState extends State<ProfileHeaderWidget> {
     );
   }
 
-  onPressUpload() async {
-    // final pngByteData = await profilePic!.readAsBytes();
-    cubit.uploadUserImage(profilePic!.path);
+  _onPressUploadProfilePic(url) {
+    cubit.updateProfileImage(url);
+  }
+
+  _onPressUpload() {
+    cubit.uploadFile(profilePic!.path.toString());
   }
 }

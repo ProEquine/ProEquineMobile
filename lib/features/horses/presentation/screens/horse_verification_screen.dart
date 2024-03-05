@@ -7,10 +7,12 @@ import 'package:proequine/core/constants/colors/app_colors.dart';
 import 'package:proequine/core/constants/constants.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
+import 'package:proequine/features/horses/data/verify_horse_request_model.dart';
 import 'package:proequine/features/horses/domain/horse_cubit.dart';
 import 'package:proequine/features/horses/presentation/widgets/upload_file_widget.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/rebi_button.dart';
@@ -33,7 +35,16 @@ class _HorseVerificationScreenState extends State<HorseVerificationScreen> {
   String? profOwnerPath = '';
   String? nationalPassportPath = '';
   String? feiPassportPath = '';
+  String? ownerLink = '';
+  String? feiPassportLink = '';
+  String? nationalPassLink = '';
   HorseCubit cubit = HorseCubit();
+  bool ownerSaved = false;
+  bool nationalSaved = false;
+  bool feeSaved = false;
+  bool isOwnerLoading=false;
+  bool isFEILoading=false;
+  bool isNationalLoading=false;
 
   uploadFile(String title) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -92,15 +103,52 @@ class _HorseVerificationScreenState extends State<HorseVerificationScreen> {
             const SizedBox(
               height: 10,
             ),
-            UploadFileWidget(
-              onPressUpload: () {
-                setState(() {
-                  uploadFile('owner ship');
-                });
+            BlocConsumer<HorseCubit, HorseState>(
+              bloc: cubit,
+              listener: (context, state) {
+                if (state is UploadOwnerShipFileSuccessful) {
+                  isOwnerLoading=false;
+                  ownerSaved = true;
+                  ownerLink = state.fileUrl!.url!;
+                } else if (state is UploadOwnerShipFileError) {
+                  RebiMessage.error(msg: state.message!, context: context);
+                }else if(state is UploadOwnerShipFileLoading){
+                  isOwnerLoading=true;
+                }
               },
-              title: horseProfOwnerShip != ''
-                  ? horseProfOwnerShip
-                  : 'No file uploaded',
+              builder: (context, state) {
+                return UploadFileWidget(
+                  isLoading: isOwnerLoading,
+                  buttonTitle: ownerSaved
+                      ? 'Change'
+                      : horseProfOwnerShip == ''
+                          ? 'Upload'
+                          : 'Save',
+                  onPressUpload: () {
+                    if (ownerSaved) {
+                      setState(() {
+                        uploadFile('owner ship');
+                      });
+                    } else if (horseProfOwnerShip != '' &&
+                        ownerSaved == false) {
+                      _onPressUploadOwnershipFile(profOwnerPath!);
+                    } else {
+                      setState(() {
+                        uploadFile('owner ship');
+                      });
+                    }
+                  },
+                  onPressChange: () {
+                    setState(() {
+                      ownerSaved = false;
+                      uploadFile('owner ship');
+                    });
+                  },
+                  title: horseProfOwnerShip != ''
+                      ? horseProfOwnerShip
+                      : 'No file uploaded',
+                );
+              },
             ),
             const SizedBox(
               height: 15,
@@ -116,14 +164,47 @@ class _HorseVerificationScreenState extends State<HorseVerificationScreen> {
             const SizedBox(
               height: 10,
             ),
-            UploadFileWidget(
-              onPressUpload: () {
-                Print("Upload pressed");
-                setState(() {
-                  uploadFile('passport');
-                });
+            BlocConsumer<HorseCubit, HorseState>(
+              bloc: cubit,
+              listener: (context, state) {
+                if (state is UploadNationalPassportFileSuccessful) {
+                  isNationalLoading=false;
+                  nationalPassLink = state.fileUrl!.url!;
+                  nationalSaved = true;
+                } else if (state is UploadNationalPassportFileError) {
+                  RebiMessage.error(msg: state.message!, context: context);
+                }
+                else if(state is UploadNationalPassportFileLoading){
+                  isNationalLoading=true;
+                }
               },
-              title: horsePassport != '' ? horsePassport : 'No file uploaded',
+              builder: (context, state) {
+                return UploadFileWidget(
+                  isLoading: isNationalLoading,
+                  buttonTitle: nationalSaved
+                      ? 'Change'
+                      : horsePassport == ''
+                          ? 'Upload'
+                          : 'Save',
+                  onPressUpload: () {
+                    if (horsePassport != '' && nationalSaved == false) {
+                      _onPressUploadNationalFile(nationalPassportPath!);
+                    } else {
+                      setState(() {
+                        uploadFile('passport');
+                      });
+                    }
+                  },
+                  onPressChange: () {
+                    setState(() {
+                      nationalSaved = false;
+                      uploadFile('passport');
+                    });
+                  },
+                  title:
+                      horsePassport != '' ? horsePassport : 'No file uploaded',
+                );
+              },
             ),
             const SizedBox(
               height: 15,
@@ -139,15 +220,48 @@ class _HorseVerificationScreenState extends State<HorseVerificationScreen> {
             const SizedBox(
               height: 10,
             ),
-            UploadFileWidget(
-              onPressUpload: () {
-                setState(() {
-                  uploadFile('FEI');
-                });
+            BlocConsumer<HorseCubit, HorseState>(
+              bloc: cubit,
+              listener: (context, state) {
+                if (state is UploadFileSuccessful) {
+                  isFEILoading=false;
+                  feiPassportLink = state.fileUrl!.url!;
+                  feeSaved = true;
+                } else if (state is UploadFileError) {
+                  RebiMessage.error(msg: state.message!, context: context);
+                }
+                else if(state is UploadFileLoading){
+                  isFEILoading=true;
+                }
               },
-              title: horseFEIPassport != ''
-                  ? horseFEIPassport
-                  : 'No file uploaded',
+              builder: (context, state) {
+                return UploadFileWidget(
+                  isLoading: isFEILoading,
+                  buttonTitle: feeSaved
+                      ? 'Change'
+                      : horseFEIPassport == ''
+                          ? 'Upload'
+                          : 'Save',
+                  onPressUpload: () {
+                    if (horseFEIPassport != '' && feeSaved == false) {
+                      _onPressUploadFile(feiPassportPath!);
+                    } else {
+                      setState(() {
+                        uploadFile('FEI');
+                      });
+                    }
+                  },
+                  onPressChange: () {
+                    setState(() {
+                      feeSaved = false;
+                      uploadFile('FEI');
+                    });
+                  },
+                  title: horseFEIPassport != ''
+                      ? horseFEIPassport
+                      : 'No file uploaded',
+                );
+              },
             ),
             const Spacer(),
             BlocConsumer<HorseCubit, HorseState>(
@@ -167,22 +281,24 @@ class _HorseVerificationScreenState extends State<HorseVerificationScreen> {
                 return Align(
                   alignment: Alignment.bottomCenter,
                   child: RebiButton(
-                    backgroundColor: (horseFEIPassport == '' ||
-                            horsePassport == '' ||
-                            horseProfOwnerShip == '')
+                    backgroundColor: (ownerSaved == false ||
+                            feeSaved == false ||
+                            nationalSaved == false)
                         ? AppColors.formsHintFontLight
                         : AppColors.yellow,
                     onPressed: () {
-                      if (horseFEIPassport == '' ||
-                          horsePassport == '' ||
-                          horseProfOwnerShip == '') {
-                        RebiMessage(
-                            msg: "Please upload all files before verify");
+                      if (ownerSaved == false ||
+                          feeSaved == false ||
+                          nationalSaved == false) {
+                        RebiMessage(msg: "Please save all files before verify");
                       } else {
                         _onPressVerify();
                       }
                     },
-                    child: const Text("Verify"),
+                    child: Text(
+                      "Verify",
+                      style: AppStyles.buttonStyle,
+                    ),
                   ),
                 );
               },
@@ -197,10 +313,23 @@ class _HorseVerificationScreenState extends State<HorseVerificationScreen> {
   }
 
   _onPressVerify() {
-    cubit.verifyHorse(
-        horseId: widget.horseId,
-        profOwner: profOwnerPath,
-        nationalPassport: nationalPassportPath,
-        feiPassport: feiPassportPath);
+    cubit.verifyHorse(HorseVerificationRequestModel(
+      id: widget.horseId,
+      horseFEIPassport: feiPassportLink,
+      horseNationalPassport: nationalPassLink,
+      horseProofOwnership: ownerLink,
+    ));
+  }
+
+  _onPressUploadFile(String file) {
+    cubit.uploadFile(file);
+  }
+
+  _onPressUploadOwnershipFile(String file) {
+    cubit.uploadOwnerShipFile(file);
+  }
+
+  _onPressUploadNationalFile(String file) {
+    cubit.uploadNationalFileFile(file);
   }
 }

@@ -14,6 +14,7 @@ class RebiInput extends StatefulWidget {
     this.labelText,
     this.needToMessage = false,
     this.obscureText = false,
+    this.capitalization = false,
     this.onSave,
     this.onFieldSubmitted,
     this.onChanged,
@@ -47,6 +48,7 @@ class RebiInput extends StatefulWidget {
   final String? hintText;
   final String? labelText;
   final bool obscureText;
+  final bool capitalization;
   final FormFieldSetter<String>? onSave;
   final FormFieldSetter<String>? onFieldSubmitted;
   final FormFieldSetter<String>? onChanged;
@@ -100,6 +102,7 @@ class _RebiInputState extends State<RebiInput> {
       children: [
         TextFormField(
           scrollPadding: widget.scrollPadding,
+          textCapitalization:widget.capitalization? TextCapitalization.sentences:TextCapitalization.none,
           focusNode: focusNode,
           autofocus: widget.autofocus,
           enableSuggestions: false,

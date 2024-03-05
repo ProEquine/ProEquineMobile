@@ -1,18 +1,15 @@
 class UpdateMainNumberRequestModel {
-  String? phoneNumber;
-  String? verificationCode;
+  String? otpCode;
 
-  UpdateMainNumberRequestModel({this.phoneNumber, this.verificationCode});
+  UpdateMainNumberRequestModel({this.otpCode});
 
   UpdateMainNumberRequestModel.fromJson(Map<String, dynamic> json) {
-    phoneNumber = json['phoneNumber'];
-    verificationCode = json['verificationCode'];
+    otpCode = json['otpCode'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['phoneNumber'] = phoneNumber;
-    data['verificationCode'] = verificationCode;
+    data['otpCode'] = otpCode;
     return data;
   }
 }

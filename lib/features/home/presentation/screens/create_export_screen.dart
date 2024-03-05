@@ -11,6 +11,7 @@ import 'package:sizer/sizer.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/constants/routes/routes.dart';
+import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/global_functions/global_statics_drop_down.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
@@ -554,7 +555,7 @@ class CreateExportScreenState extends State<CreateExportScreen> {
                                                 serviceType: 'Export'),
                                           )));
                             },
-                            child: const Text("Next")),
+                            child: Text("Next", style: AppStyles.buttonStyle,)),
                       ),
                       const SizedBox(
                         height: 30,

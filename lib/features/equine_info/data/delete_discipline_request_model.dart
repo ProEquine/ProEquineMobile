@@ -1,15 +1,15 @@
 class DeleteDisciplineResponseModel {
-  int? personDisciplineId;
+  int? id;
 
-  DeleteDisciplineResponseModel({this.personDisciplineId});
+  DeleteDisciplineResponseModel({this.id});
 
   DeleteDisciplineResponseModel.fromJson(Map<String, dynamic> json) {
-    personDisciplineId = json['personDisciplineId'];
+    id = json['id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['personDisciplineId'] = personDisciplineId;
+    data['id'] = id;
     return data;
   }
 }

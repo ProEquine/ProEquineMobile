@@ -1,56 +1,52 @@
 class RegisterRequestModel {
-  String? emailAddress;
+  String? email;
+  String? firstName;
+  String? lastName;
+  String? middleName;
   String? password;
   String? confirmPassword;
-  String? firstName;
-  String? middleName;
-  String? lastName;
+  String? phoneNumber;
   String? gender;
   String? nationality;
-  String? dob;
-  String? phoneNumber;
-  String? verificationCode;
+  String? dateOfBirth;
 
   RegisterRequestModel(
-      {this.emailAddress,
+      {this.email,
+      this.firstName,
+      this.lastName,
+      this.middleName,
       this.password,
       this.confirmPassword,
-      this.firstName,
-      this.middleName,
-      this.lastName,
-      this.dob,
       this.phoneNumber,
-      this.verificationCode,
+      this.gender,
       this.nationality,
-      this.gender});
+      this.dateOfBirth});
 
   RegisterRequestModel.fromJson(Map<String, dynamic> json) {
-    emailAddress = json['emailAddress'];
+    email = json['email'];
+    firstName = json['firstName'];
+    lastName = json['lastName'];
+    middleName = json['middleName'];
     password = json['password'];
     confirmPassword = json['confirmPassword'];
-    firstName = json['firstName'];
-    middleName = json['middleName'];
-    lastName = json['lastName'];
+    phoneNumber = json['phoneNumber'];
     gender = json['gender'];
     nationality = json['nationality'];
-    dob = json['dob'];
-    phoneNumber = json['mobileNumber'];
-    verificationCode = json['verificationCode'];
+    dateOfBirth = json['dateOfBirth'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['emailAddress'] = emailAddress;
+    data['email'] = email;
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
+    data['middleName'] = middleName;
     data['password'] = password;
     data['confirmPassword'] = confirmPassword;
-    data['firstName'] = firstName;
-    data['middleName'] = middleName;
-    data['lastName'] = lastName;
+    data['phoneNumber'] = phoneNumber;
     data['gender'] = gender;
     data['nationality'] = nationality;
-    data['dob'] = dob;
-    data['mobileNumber'] = phoneNumber;
-    data['verificationCode'] = verificationCode;
+    data['dateOfBirth'] = dateOfBirth;
     return data;
   }
 }

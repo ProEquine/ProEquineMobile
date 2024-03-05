@@ -6,6 +6,7 @@ import 'package:sizer/sizer.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../constants/colors/app_colors.dart';
+import '../constants/thems/app_styles.dart';
 import '../utils/Printer.dart';
 import '../utils/sharedpreferences/SharedPreferencesHelper.dart';
 
@@ -106,7 +107,8 @@ void selectDate({
                                                     FilteringTextInputFormatter
                                                         .allow(
                                                             RegExp(r'[0-9]')),
-                                                    LengthLimitingTextInputFormatter(4),
+                                                    LengthLimitingTextInputFormatter(
+                                                        4),
                                                   ],
                                                   keyboardAppearance:
                                                       AppSharedPreferences
@@ -195,7 +197,9 @@ void selectDate({
                                                   },
                                                   child: const Text(
                                                     'Cancel',
-                                                    style: TextStyle(),
+                                                    style: TextStyle(
+                                                        color: AppColors
+                                                            .blackLight),
                                                   ),
                                                 ),
                                                 TextButton(
@@ -238,7 +242,8 @@ void selectDate({
                                     child: Text(
                                       '$selectedYear',
                                       style: const TextStyle(
-                                          fontSize: 20, ),
+                                        fontSize: 20,
+                                      ),
                                     ),
                                   ),
                                   IconButton(
@@ -270,9 +275,8 @@ void selectDate({
                             ),
                       TableCalendar(
                         onPageChanged: (date) {
-                          selectedYear =
-                              date.year;
-                          focusDay;// update `_focusedDay` here as well
+                          selectedYear = date.year;
+                          focusDay; // update `_focusedDay` here as well
                         },
                         shouldFillViewport: false,
                         headerStyle: HeaderStyle(
@@ -290,7 +294,7 @@ void selectDate({
 
                           titleCentered: true,
                           titleTextStyle: const TextStyle(
-
+                            color: AppColors.blackLight,
                             fontSize: 20,
                             fontFamily: 'notosan',
                           ),
@@ -313,10 +317,9 @@ void selectDate({
                           tableBorder: TableBorder(
                               borderRadius: BorderRadius.circular(12)),
                           selectedTextStyle: const TextStyle(
-                            fontFamily: 'notosan',
-                            fontSize: 13,
-                            color: Colors.white
-                          ),
+                              fontFamily: 'notosan',
+                              fontSize: 13,
+                              color: Colors.white),
                           selectedDecoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: AppColors.gold,
@@ -337,19 +340,19 @@ void selectDate({
                             fontSize: 14,
                           ),
                         ),
-                        daysOfWeekStyle:  DaysOfWeekStyle(
+                        daysOfWeekStyle: DaysOfWeekStyle(
                           weekdayStyle: TextStyle(
                             fontSize: 15,
                             color: AppSharedPreferences.getTheme ==
-                                'ThemeCubitMode.dark'
+                                    'ThemeCubitMode.dark'
                                 ? AppColors.borderColor
                                 : AppColors.blackLight,
                             fontFamily: 'notosan',
                           ),
-                          weekendStyle:  TextStyle(
+                          weekendStyle: TextStyle(
                               fontSize: 15,
-                              color:AppSharedPreferences.getTheme ==
-                                  'ThemeCubitMode.dark'
+                              color: AppSharedPreferences.getTheme ==
+                                      'ThemeCubitMode.dark'
                                   ? AppColors.borderColor
                                   : AppColors.blackLight,
                               fontFamily: 'notosan',
@@ -388,6 +391,7 @@ void selectDate({
                           child: RebiButton(
                             width: 90,
                             backgroundColor: AppColors.gold,
+
                             onPressed: () {
                               Print('selectedOurDay $selectedOurDay');
                               Navigator.pop(context, selectedOurDay);
@@ -398,11 +402,9 @@ void selectDate({
                                   formatter.format(selectedOurDay);
                               controller.text = formatted;
                             },
-                            child: const Text(
+                            child: Text(
                               'Confirm',
-                              style: TextStyle(
-                                  color: AppColors.white,
-                                  fontWeight: FontWeight.bold),
+                              style: AppStyles.buttonStyle,
                             ),
                           ),
                         ),

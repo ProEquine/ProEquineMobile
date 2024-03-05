@@ -14,11 +14,11 @@ class HorseCardStatusWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6.10, vertical: 1.02),
       decoration: ShapeDecoration(
-        color: type == 'verify'
+        color: type == 'Pending'
             ? AppColors.unVerifiedContainer
-            : type == 'discipline'
-                ? AppColors.disciplineBackground
-                : AppColors.statusBackground,
+            : type == 'Approved'
+                ? AppColors.statusBackground
+                : AppColors.errorToast,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(3.05),
         ),
@@ -32,11 +32,11 @@ class HorseCardStatusWidget extends StatelessWidget {
             title,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: type == 'verify'
+              color: type == 'Pending'
                   ? AppColors.unVerifiedText
-                  : type == 'discipline'
-                  ? AppColors.disciplineText
-                  : AppColors.statusText,
+                  : type == 'Approved'
+                  ? AppColors.statusText
+                  : AppColors.red,
               fontSize: 9,
               fontFamily: 'Inter',
               fontWeight: FontWeight.w500,

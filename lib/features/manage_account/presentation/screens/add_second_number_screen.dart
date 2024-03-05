@@ -119,7 +119,7 @@ class _AddSecondaryPhoneScreenState extends State<AddSecondaryPhoneScreen> {
                           onSendPhone();
                         } else {}
                       },
-                      child: const Text("Add"));
+                      child: Text("Add", style: AppStyles.buttonStyle,));
                 },
                 listener: (context, state) {
                   if (state is AddSecondaryPhoneSuccessful) {

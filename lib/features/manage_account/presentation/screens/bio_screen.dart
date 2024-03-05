@@ -12,6 +12,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/routes/routes.dart';
+import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
 
@@ -177,8 +178,9 @@ class _BioScreenState extends State<BioScreen> {
                                   RebiMessage.warning(msg: "Please add something", context: context);
                                 }
                               },
-                              child: const Text(
+                              child:  Text(
                                 "Add",
+                                style: AppStyles.buttonStyle,
                               ),
                             );
                           },

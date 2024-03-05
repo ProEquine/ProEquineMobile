@@ -8,7 +8,6 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/date_time_picker.dart';
-import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 
 void showDocumentBottomSheet({
@@ -51,6 +50,7 @@ void showDocumentBottomSheet({
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: SizedBox(
+
             child: Padding(
               padding: const EdgeInsets.only(
                   top: kPadding, left: kPadding, right: kPadding),
@@ -191,9 +191,9 @@ void showDocumentBottomSheet({
                                       context: context,
                                       isSupportChangingYears: false,
                                       selectedOurDay: selectedRegisterDay.add(
-                                          const Duration(days: 1)),
+                                          const Duration(days: 365)),
                                       from: selectedRegisterDay.add(
-                                          const Duration(days: 1)),
+                                          const Duration(days: 365)),
                                       to: DateTime.utc(2030),
                                       selectedYear: selectedYear,
 
@@ -230,6 +230,7 @@ void showDocumentBottomSheet({
                                 hintText: 'Doc Notes'.tra,
                                 controller: docNotes,
                                 keyboardType: TextInputType.text,
+                                maxLines: 5,
                                 textInputAction: TextInputAction.done,
                                 autoValidateMode:
                                     AutovalidateMode.onUserInteraction,

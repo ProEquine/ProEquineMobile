@@ -6,6 +6,7 @@ import 'package:pinput/pinput.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/divider.dart';
 import 'package:proequine/core/widgets/submit_verification_widget.dart';
+import 'package:proequine/features/user/data/check_verification_request_model.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui' as ui;
 
@@ -16,35 +17,13 @@ import '../../../../core/constants/thems/pin_put_theme.dart';
 import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
-import '../../data/register_request_model.dart';
-import '../../data/send_verification_request_model.dart';
 import '../../domain/user_cubit.dart';
 import '../widgets/register_header.dart';
 
 class VerificationScreen extends StatefulWidget {
-  final String? phone;
-  final String? email;
-  final String? firstName;
-  final String? middleName;
-  final String? lastName;
-  final String? password;
-  final String? confirmPassword;
-  final String? gender;
-  final String? nationality;
-  final String? dob;
-
-  const VerificationScreen(
-      {super.key,
-      this.phone,
-      this.email,
-      this.firstName,
-      this.middleName,
-      this.lastName,
-      this.password,
-      this.dob,
-      this.gender,
-      this.nationality,
-      this.confirmPassword});
+  const VerificationScreen({
+    super.key,
+  });
 
   @override
   State<VerificationScreen> createState() => _VerificationScreenState();
@@ -84,9 +63,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   @override
   void initState() {
-    // context.read<UserCubit>().sendVerificationCode(SendVerificationRequestModel(
-    //     phoneNumber: widget.phone ?? AppSharedPreferences.userPhoneNumber,
-    //     channel: "sms"));
+    context.read<UserCubit>().sendVerificationCode();
     super.initState();
   }
 
@@ -224,13 +201,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                         setState(() {
                                           context
                                               .read<UserCubit>()
-                                              .sendVerificationCode(
-                                                  SendVerificationRequestModel(
-                                                      phoneNumber: widget
-                                                              .phone ??
-                                                          AppSharedPreferences
-                                                              .userPhoneNumber,
-                                                  ));
+                                              .sendVerificationCode();
                                           isResendCode = true;
                                         });
 
@@ -301,7 +272,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
     return BlocConsumer<UserCubit, UserState>(
         bloc: cubit,
         builder: (context, state) {
-          if (state is RegisterLoading) {
+          if (state is CheckVerificationLoading) {
             return const LoadingCircularWidget();
           }
           {
@@ -309,62 +280,41 @@ class _VerificationScreenState extends State<VerificationScreen> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   FocusManager.instance.primaryFocus?.unfocus();
-
-                  _sendRegisterData(
-                    email: widget.email,
-                    dob: widget.dob,
-                    phone: widget.phone,
-                    password: widget.password,
-                    confirmPassword: widget.confirmPassword,
-                    gender: widget.gender,
-                    nationality: widget.nationality,
-                    firstName: widget.firstName,
-                    middleName: widget.middleName,
-                    lastName: widget.lastName,
-                    verificationCode: _pinPutController.text,
-                  );
+                  _sendOtpCode();
+                  // _sendRegisterData(
+                  //   email: widget.email,
+                  //   dob: widget.dob,
+                  //   phone: widget.phone,
+                  //   password: widget.password,
+                  //   confirmPassword: widget.confirmPassword,
+                  //   gender: widget.gender,
+                  //   nationality: widget.nationality,
+                  //   firstName: widget.firstName,
+                  //   middleName: widget.middleName,
+                  //   lastName: widget.lastName,
+                  //   verificationCode: _pinPutController.text,
+                  // );
                 } else {}
               },
-              child: const Text("Verify"),
+              child:  Text("Verify", style: AppStyles.buttonStyle,),
             );
           }
         },
         listener: (context, state) {
-          if (state is RegisterSuccessful) {
+          if (state is CheckVerificationSuccessful) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const VerificationSubmit()));
-          } else if (state is RegisterError) {
+          } else if (state is CheckVerificationError) {
             RebiMessage.error(msg: state.message!, context: context);
           }
         });
   }
 
-  _sendRegisterData(
-      {String? email,
-      String? firstName,
-      String? middleName,
-      String? lastName,
-      String? verificationCode,
-      String? phone,
-      String? gender,
-      String? nationality,
-      String? password,
-      String? confirmPassword,
-      String? dob}) {
-    return cubit.register(RegisterRequestModel(
-      emailAddress: email,
-      firstName: firstName,
-      middleName: middleName,
-      lastName: lastName,
-      password: password,
-      confirmPassword: confirmPassword,
-      gender: gender,
-      nationality: nationality,
-      verificationCode: verificationCode,
-      phoneNumber: phone,
-      dob: dob,
+  _sendOtpCode() {
+    cubit.checkVerificationCode(CheckVerificationCodeRequestModel(
+      otpCode: _pinPutController.text,
     ));
   }
 }

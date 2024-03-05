@@ -64,6 +64,7 @@ class _ConfirmHorsesScreenState extends State<ConfirmHorsesScreen> {
   String selectedStaying = '';
   LocalHorseCubit localHorseCubit =
       LocalHorseCubit(localStorageRepository: LocalStorageRepository());
+
   @override
   void dispose() {
     // TODO: dispose All Controllers with all cubits
@@ -171,14 +172,17 @@ class _ConfirmHorsesScreenState extends State<ConfirmHorsesScreen> {
                         },
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     RebiButton(
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text("Submit")),
+                        child: Text(
+                          "Submit",
+                          style: AppStyles.buttonStyle,
+                        )),
                   ],
                 ));
           },
@@ -650,8 +654,8 @@ class _ConfirmHorsesScreenState extends State<ConfirmHorsesScreen> {
                                                                           }
                                                                         }
                                                                       },
-                                                                      child: const Text(
-                                                                          "Save")),
+                                                                      child: Text(
+                                                                          "Save", style: AppStyles.buttonStyle,)),
                                                                 ],
                                                               ),
                                                               const SizedBox(
@@ -1074,10 +1078,16 @@ class _ConfirmHorsesScreenState extends State<ConfirmHorsesScreen> {
                                                                       ),
                                                                     ),
                                                                     Padding(
-                                                                      padding: const EdgeInsets.symmetric(vertical: 7),
-                                                                      child: DisciplinesWidget(
-                                                                        discipline: discipline,
-                                                                        disciplineId: disciplineId,
+                                                                      padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                          vertical:
+                                                                              7),
+                                                                      child:
+                                                                          DisciplinesWidget(
+                                                                        discipline:
+                                                                            discipline,
+                                                                        disciplineId:
+                                                                            disciplineId,
                                                                       ),
                                                                     ),
                                                                     const Padding(
@@ -1377,7 +1387,7 @@ class _ConfirmHorsesScreenState extends State<ConfirmHorsesScreen> {
                                     )),
                           );
                         },
-                        child: const Text("Submit")),
+                        child:  Text("Submit", style: AppStyles.buttonStyle,)),
                     const SizedBox(
                       height: 30,
                     ),

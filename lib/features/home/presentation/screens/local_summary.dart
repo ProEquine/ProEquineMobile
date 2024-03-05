@@ -8,6 +8,7 @@ import 'package:proequine/features/home/data/trip_service_data_model.dart';
 import 'package:proequine/features/home/presentation/widgets/summary_widget.dart';
 import 'package:proequine/features/nav_bar/presentation/screens/bottomnavigation.dart';
 import 'package:sizer/sizer.dart';
+import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/widgets/custom_header.dart';
 
@@ -52,7 +53,7 @@ class LocalSummary extends StatelessWidget {
                                             )),
                                   );
                 },
-                child: const Text("Close")),
+                child:  Text("Close", style: AppStyles.buttonStyle,)),
             const SizedBox(
               height: 30,
             ),

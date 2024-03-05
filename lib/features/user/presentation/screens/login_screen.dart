@@ -10,7 +10,8 @@ import 'package:proequine/core/widgets/custom_logo_widget.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
 import 'package:proequine/core/widgets/rebi_input.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
-import 'package:proequine/features/user/presentation/screens/choose_stable_screen.dart';
+import 'package:proequine/features/stables/presentation/screens/choose_stable_screen.dart';
+import 'package:proequine/features/user/presentation/screens/create_user_name_screen.dart';
 import 'package:proequine/features/user/presentation/screens/forget_password_screen.dart';
 import 'package:proequine/features/user/presentation/screens/interests_screen.dart';
 import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
@@ -198,6 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     child: const Text(
                                       style: TextStyle(
                                           fontSize: 14,
+                                          color: AppColors.blackLight,
                                           fontWeight: FontWeight.w700),
                                       "Forget your password?",
                                     ),
@@ -276,39 +278,40 @@ class _LoginScreenState extends State<LoginScreen> {
                     _onPressLogin();
                   } else {}
                 },
-                child: const Text("Sign in"));
+                child:  Text("Sign in", style: AppStyles.buttonStyle,));
           }
         },
         listener: (context, state) {
-          if(state is LoginError){
+          if (state is LoginError) {
             RebiMessage.error(msg: state.message!, context: context);
           }
           if (state is LoginSuccessful) {
-            // RebiMessage.success(msg: state.message!);
             if (!AppSharedPreferences.getPhoneVerified!) {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => VerificationScreen(
-                            phone: AppSharedPreferences.userPhoneNumber,
-                          )));
+                      builder: (context) => const VerificationScreen()));
+            } else if (!AppSharedPreferences.isHasUserName!) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CreateUserNameScreen()));
             } else if (!AppSharedPreferences.getIsITypeSelected!) {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const UserInfoScreen()));
+                      builder: (context) => const InterestsScreen()));
             } else if (!AppSharedPreferences.isStableChosen!) {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => const ChoseStableScreen()));
+            } else {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const BottomNavigation()));
             }
-          else {
-            Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const BottomNavigation()));
-          }
           }
         });
   }
@@ -316,7 +319,7 @@ class _LoginScreenState extends State<LoginScreen> {
   _onPressLogin() {
     return cubit
       ..login(LoginRequestModel(
-        email: _email.text,
+        userName: _email.text,
         password: _password.text,
       ));
   }

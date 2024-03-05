@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
@@ -8,13 +7,10 @@ import 'package:proequine/features/equine_info/data/add_secondary_discipline_req
 import 'package:proequine/features/equine_info/domain/equine_info_cubit.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/routes/routes.dart';
 import '../../../../core/constants/thems/app_styles.dart';
-import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
-import '../../../../core/widgets/rebi_input.dart';
 import '../../../manage_account/data/basic_account_management_route.dart';
 import '../widgets/disciplines_widget.dart';
 
@@ -97,46 +93,6 @@ class _AddSecondaryDisciplineScreenState
                                 discipline: discipline,
                                 disciplineId: disciplineId,
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 7),
-                                child: RebiInput(
-                                  hintText: 'National ID'.tra,
-                                  controller: _nationalId,
-                                  keyboardType: TextInputType.name,
-                                  textInputAction: TextInputAction.done,
-                                  isOptional: false,
-                                  color: AppColors.formsLabel,
-                                  readOnly: false,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 13),
-                                  obscureText: false,
-                                  validator: (value) {
-                                    return Validator.requiredValidator(
-                                        _nationalId.text);
-                                  },
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 7),
-                                child: RebiInput(
-                                  hintText: 'FEI ID'.tra,
-                                  controller: _feId,
-                                  keyboardType: TextInputType.text,
-                                  textInputAction: TextInputAction.done,
-                                  isOptional: false,
-                                  color: AppColors.formsLabel,
-                                  readOnly: false,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 13),
-                                  obscureText: false,
-                                  validator: (value) {
-                                    return Validator.requiredValidator(
-                                        _feId.text);
-                                  },
-                                ),
-                              ),
                               const SizedBox(
                                 height: 20,
                               ),
@@ -174,7 +130,7 @@ class _AddSecondaryDisciplineScreenState
                                 },
                                 child: Text(
                                   "Submit",
-                                  style: AppStyles.buttonTitle,
+                                  style: AppStyles.buttonStyle,
                                 ),
                               );
                             },
@@ -198,8 +154,6 @@ class _AddSecondaryDisciplineScreenState
   _onPressAdd() {
     cubit.addSecondaryDiscipline(AddSecondaryDisciplineRequestModel(
       disciplineId: int.parse(disciplineId.text),
-      nationalId: _nationalId.text,
-      feiid: _feId.text,
     ));
   }
 }

@@ -4,18 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/CoreModels/empty_model.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/secure_storage/secure_storage_helper.dart';
-import 'package:proequine/features/user/data/check_update_email_request_model.dart';
-import 'package:proequine/features/user/data/chose_stable_request_model.dart';
-import 'package:proequine/features/user/data/chose_stable_response_model.dart';
-import 'package:proequine/features/user/data/get_disiplines_response_model.dart';
+import 'package:proequine/features/user/data/check_verification_request_model.dart';
 import 'package:proequine/features/user/data/interests_request_model.dart';
-import 'package:proequine/features/user/data/login_response_model.dart';
 import 'package:proequine/features/user/data/register_request_model.dart';
 import 'package:proequine/features/user/data/reset_password_request_model.dart';
-import 'package:proequine/features/user/data/send_mail_request_model.dart';
-import 'package:proequine/features/user/data/send_verification_request_model.dart';
 import 'package:proequine/features/user/data/send_verify_request_forgot_password.dart';
-import 'package:proequine/features/user/data/stable-model.dart';
+import 'package:proequine/features/stables/data/stable-model.dart';
 import 'package:proequine/features/user/data/update_email_request_model.dart';
 import 'package:proequine/features/user/domain/repo/user_repository.dart';
 
@@ -24,10 +18,8 @@ import '../../../core/errors/base_error.dart';
 import '../../../core/utils/Printer.dart';
 import '../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../data/check_mail_request_model.dart';
-import '../data/get_stables_response_model.dart';
 import '../data/login_request_model.dart';
 import '../data/register_response_model.dart';
-import '../data/reset_password_response_model.dart';
 
 part 'user_state.dart';
 
@@ -37,7 +29,6 @@ class UserCubit extends Cubit<UserState> {
   List<StableModel> itemList = [];
   List<String> stablesNames = [];
 
-
   Future<void> login(LoginRequestModel loginRequestModel) async {
     /// here we emit loading state while contact with server
     emit(LoginLoading());
@@ -46,18 +37,21 @@ class UserCubit extends Cubit<UserState> {
     var response = await UserRepository.login(loginRequestModel);
 
     /// if server return the same model so it's success state
-    if (response is LoginResponseModel) {
+    if (response is RegisterResponseModel) {
       /// store our token in shared pref
-      await SecureStorage().setRefreshToken(response.refreshToken!.token!);
+      await SecureStorage().setRefreshToken(response.refreshToken!);
       await SecureStorage().setToken(response.accessToken!);
-      await SecureStorage().setUserId(response.refreshToken!.userId!);
-      AppSharedPreferences.phoneVerified = response.isPhoneNumberVerified;
-      AppSharedPreferences.setPersonId = response.personId.toString();
-      AppSharedPreferences.emailVerified = response.isEmailVerified;
-      AppSharedPreferences.choseStable = response.isChooseMainStable;
-      AppSharedPreferences.typeSelected = response.isTypeSelected;
+      await SecureStorage().setUserId(response.id.toString());
+      AppSharedPreferences.phoneVerified = response.verifiedPhoneNumber;
+      AppSharedPreferences.inputName = response.firstName!;
+      AppSharedPreferences.emailVerified = response.verifiedEmail;
+      AppSharedPreferences.choseStable = response.steps!.isAddMainStable!;
+      AppSharedPreferences.typeSelected = response.steps!.isAddRole!;
       AppSharedPreferences.inputPhoneNumber = response.phoneNumber!;
-      AppSharedPreferences.inputEmailAddress = loginRequestModel.email!;
+      AppSharedPreferences.inputEmailAddress = response.email!;
+      AppSharedPreferences.inputUserName = response.userName!;
+      AppSharedPreferences.hasUserAccountName = response.steps!.isAddUserName!;
+      // AppSharedPreferences.inputUserName = loginRequestModel.userName!;
 
       /// this type of Printing working only on debug mode so maintains high performance app
 
@@ -77,15 +71,20 @@ class UserCubit extends Cubit<UserState> {
     emit(RegisterLoading());
     var response = await UserRepository.register(registerRequestModel);
     if (response is RegisterResponseModel) {
-      await SecureStorage().setRefreshToken(response.refreshToken!.token!);
+      await SecureStorage().setRefreshToken(response.refreshToken!);
       await SecureStorage().setToken(response.accessToken!);
-      await SecureStorage().setUserId(response.refreshToken!.userId!);
+      await SecureStorage().setUserId(response.id.toString());
       AppSharedPreferences.inputPhoneNumber = registerRequestModel.phoneNumber!;
       AppSharedPreferences.inputName = registerRequestModel.firstName!;
 
-      AppSharedPreferences.setPersonId = response.personId.toString();
-      AppSharedPreferences.inputEmailAddress = registerRequestModel.emailAddress!;
-
+      // AppSharedPreferences.setPersonId = response.personId.toString();
+      AppSharedPreferences.emailVerified = response.verifiedEmail;
+      AppSharedPreferences.choseStable = response.steps!.isAddMainStable!;
+      AppSharedPreferences.typeSelected = response.steps!.isAddRole!;
+      AppSharedPreferences.inputPhoneNumber = response.phoneNumber!;
+      AppSharedPreferences.inputEmailAddress = response.email!;
+      AppSharedPreferences.inputUserName = response.userName!;
+      AppSharedPreferences.hasUserAccountName = response.steps!.isAddUserName!;
       String? refreshToken = await SecureStorage().getRefreshToken();
       String? accessToken = await SecureStorage().getToken();
       String? userId = await SecureStorage().getUserId();
@@ -102,11 +101,9 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> sendVerificationCode(
-      SendVerificationRequestModel sendVerificationRequestModel) async {
+  Future<void> sendVerificationCode() async {
     emit(SendVerificationLoading());
-    var response =
-        await UserRepository.sendVerification(sendVerificationRequestModel);
+    var response = await UserRepository.sendVerification();
     if (response is EmptyModel) {
       emit(SendVerificationSuccessful(
           message: "Code has sent successfully ".tra));
@@ -118,14 +115,40 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
+  Future<void> checkVerificationCode(
+      CheckVerificationCodeRequestModel
+          checkVerificationCodeRequestModel) async {
+    emit(CheckVerificationLoading());
+    var response = await UserRepository.checkVerification(
+        checkVerificationCodeRequestModel);
+    if (response is RegisterResponseModel) {
+      AppSharedPreferences.phoneVerified = response.verifiedPhoneNumber;
+      AppSharedPreferences.emailVerified = response.verifiedEmail;
+      AppSharedPreferences.choseStable = response.steps!.isAddMainStable!;
+      AppSharedPreferences.typeSelected = response.steps!.isAddRole!;
+      AppSharedPreferences.inputPhoneNumber = response.phoneNumber!;
+      AppSharedPreferences.inputEmailAddress = response.email!;
+      AppSharedPreferences.inputUserName = response.userName!;
+      AppSharedPreferences.hasUserAccountName = response.steps!.isAddUserName!;
+
+      emit(CheckVerificationSuccessful(message: "Checked successfully ".tra));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(CheckVerificationError(message: response.message));
+    } else if (response is Message) {
+      emit(CheckVerificationError(message: response.content));
+    }
+  }
+
   Future<void> sendVerificationCodeForgotPassword(
-      SendForgotPasswordVerifyRequestModel sendForgotPasswordVerifyRequestModel) async {
+      SendForgotPasswordVerifyRequestModel
+          sendForgotPasswordVerifyRequestModel) async {
     emit(ForgotPasswordLoading());
-    var response =
-    await UserRepository.sendVerificationCodeForgotPassword(sendForgotPasswordVerifyRequestModel);
+    var response = await UserRepository.sendVerificationCodeForgotPassword(
+        sendForgotPasswordVerifyRequestModel);
     if (response is EmptyModel) {
-      emit(ForgotPasswordSuccessful(
-          message: "Code has sent successfully ".tra));
+      emit(
+          ForgotPasswordSuccessful(message: "Code has sent successfully ".tra));
     } else if (response is BaseError) {
       Print("messaggeeeeeeeee${response.message}");
       emit(ForgotPasswordError(message: response.message));
@@ -137,8 +160,16 @@ class UserCubit extends Cubit<UserState> {
   Future<void> checkUsername(String userName) async {
     emit(CheckUsernameLoading());
     var response = await UserRepository.checkUsername(userName);
-    if (response is EmptyModel) {
+    if (response is RegisterResponseModel) {
+      AppSharedPreferences.emailVerified = response.verifiedEmail;
+      AppSharedPreferences.choseStable = response.steps!.isAddMainStable!;
+      AppSharedPreferences.typeSelected = response.steps!.isAddRole!;
+      AppSharedPreferences.inputPhoneNumber = response.phoneNumber!;
+      AppSharedPreferences.inputEmailAddress = response.email!;
+      AppSharedPreferences.inputUserName = response.userName!;
+      AppSharedPreferences.hasUserAccountName = response.steps!.isAddUserName!;
       emit(CheckUsernameSuccessful(
+
           message: "Username has added successfully ".tra));
     } else if (response is BaseError) {
       Print("messaggeeeeeeeee${response.message}");
@@ -168,17 +199,18 @@ class UserCubit extends Cubit<UserState> {
     emit(ResetPasswordLoading());
     var response =
         await UserRepository.resetPassword(resetPasswordRequestModel);
-    if (response is ResetPasswordResponseModel) {
-      await SecureStorage().setRefreshToken(response.refreshToken!.token!);
+    if (response is RegisterResponseModel) {
+      await SecureStorage().setRefreshToken(response.refreshToken!);
       await SecureStorage().setToken(response.accessToken!);
-      await SecureStorage().setUserId(response.refreshToken!.userId!);
-      AppSharedPreferences.phoneVerified = response.isPhoneNumberVerified;
-      AppSharedPreferences.setPersonId = response.personId.toString();
-      AppSharedPreferences.emailVerified = response.isEmailVerified;
-      AppSharedPreferences.choseStable = response.isChooseMainStable;
-      AppSharedPreferences.typeSelected = response.isTypeSelected;
+      await SecureStorage().setUserId(response.id.toString());
+      AppSharedPreferences.phoneVerified = response.verifiedPhoneNumber;
+      AppSharedPreferences.emailVerified = response.verifiedEmail;
+      AppSharedPreferences.choseStable = response.steps!.isAddMainStable!;
+      AppSharedPreferences.typeSelected = response.steps!.isAddRole!;
       AppSharedPreferences.inputPhoneNumber = response.phoneNumber!;
-      AppSharedPreferences.inputEmailAddress = resetPasswordRequestModel.email!;
+      AppSharedPreferences.inputEmailAddress = response.email!;
+      AppSharedPreferences.inputUserName = response.userName!;
+      AppSharedPreferences.hasUserAccountName = response.steps!.isAddUserName!;
       emit(ResetPasswordSuccessful(responseModel: response));
     } else if (response is BaseError) {
       Print("messaggeeeeeeeee${response.message}");
@@ -191,9 +223,17 @@ class UserCubit extends Cubit<UserState> {
   Future<void> interests(InterestsRequestModel interestsRequestModel) async {
     emit(SelectInterestsLoading());
     var response = await UserRepository.interests(interestsRequestModel);
-    if (response is EmptyModel) {
-      AppSharedPreferences.typeSelected = true;
+    if (response is RegisterResponseModel) {
+      AppSharedPreferences.emailVerified = response.verifiedEmail;
+      AppSharedPreferences.choseStable = response.steps!.isAddMainStable!;
+      AppSharedPreferences.typeSelected = response.steps!.isAddRole!;
+      AppSharedPreferences.inputPhoneNumber = response.phoneNumber!;
+      AppSharedPreferences.inputEmailAddress = response.email!;
+      AppSharedPreferences.inputUserName = response.userName!;
+
+      AppSharedPreferences.hasUserAccountName = response.steps!.isAddUserName!;
       emit(SelectInterestsSuccessful(message: "Selected Successfully".tra));
+
     } else if (response is BaseError) {
       Print("messaggeeeeeeeee${response.message}");
       emit(SelectInterestsError(message: response.message));
@@ -202,25 +242,9 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-
-  Future<void> choseStable(ChoseStableRequestModel choseStableRequestModel) async {
-    emit(ChoseStableLoading());
-    var response = await UserRepository.choseStable(choseStableRequestModel);
-    if (response is ChoseMainStableResponseModel) {
-      emit(ChoseStableSuccessful(message: "Selected Successfully".tra));
-    } else if (response is BaseError) {
-      Print("messaggeeeeeeeee${response.message}");
-      emit(ChoseStableError(message: response.message));
-    } else if (response is Message) {
-      emit(ChoseStableError(message: response.content));
-    }
-  }
-
-  Future<void> sendMailVerificationCode(
-      SendMailVerificationRequestModel sendMailVerificationRequestModel) async {
+  Future<void> sendMailVerificationCode() async {
     emit(SendMailVerificationLoading());
-    var response = await UserRepository.sendMailVerification(
-        sendMailVerificationRequestModel);
+    var response = await UserRepository.sendMailVerification();
     if (response is EmptyModel) {
       emit(SendMailVerificationSuccessful(
           message: "Code has sent successfully ".tra));
@@ -231,11 +255,10 @@ class UserCubit extends Cubit<UserState> {
       emit(SendMailVerificationError(message: response.content));
     }
   }
-  Future<void> sendUpdateMailVerificationCode(
-      String email) async {
+
+  Future<void> sendUpdateMailVerificationCode(String email) async {
     emit(SendUpdateMailVerificationLoading());
-    var response = await UserRepository.sendCodeForUpdateEmail(
-        email);
+    var response = await UserRepository.sendCodeForUpdateEmail(email);
     if (response is EmptyModel) {
       emit(SendUpdateMailVerificationSuccessful(
           message: "Code has sent successfully ".tra));
@@ -253,8 +276,8 @@ class UserCubit extends Cubit<UserState> {
     emit(CheckMailVerificationLoading());
     var response = await UserRepository.checkMailVerification(
         checkMailVerificationRequestModel);
-    if (response is EmptyModel) {
-      AppSharedPreferences.emailVerified = true;
+    if (response is RegisterResponseModel) {
+      AppSharedPreferences.emailVerified = response.verifiedEmail;
       emit(CheckMailVerificationSuccessful(
           message: "Email verified successfully ".tra));
     } else if (response is BaseError) {
@@ -279,11 +302,11 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> checkUpdatedMail(
-      CheckUpdateEmailRequestModel checkUpdateEmailRequestModel) async {
+      String otpCode) async {
     emit(CheckUpdateMailLoading());
     var response =
-        await UserRepository.checkUpdateMail(checkUpdateEmailRequestModel);
-    if (response is EmptyModel) {
+        await UserRepository.checkUpdateMail(otpCode);
+    if (response is RegisterResponseModel) {
       AppSharedPreferences.emailVerified = true;
       emit(CheckUpdateMailSuccessful(
           message: "Email Updated successfully ".tra));
@@ -292,33 +315,6 @@ class UserCubit extends Cubit<UserState> {
       emit(CheckUpdateMailError(message: response.message));
     } else if (response is Message) {
       emit(CheckUpdateMailError(message: response.content));
-    }
-  }
-
-
-
-  Future<void> getStables() async {
-    emit(GetStablesLoading());
-    var response = await UserRepository.getStables();
-    if (response is GetStablesResponseModel) {
-      emit(GetStablesSuccessful(getStablesResponseModel: response.data!));
-    } else if (response is BaseError) {
-      Print("messaggeeeeeeeee${response.message}");
-      emit(SelectInterestsError(message: response.message));
-    } else if (response is Message) {
-      emit(SelectInterestsError(message: response.content));
-    }
-  }
-  Future<void> getDisciplines() async {
-    emit(GetAllDisciplinesLoading());
-    var response = await UserRepository.getDisciplines();
-    if (response is GetAllDisciplinesResponseModel) {
-      emit(GetAllDisciplinesSuccessful(disciplines: response.data!));
-    } else if (response is BaseError) {
-      Print("messaggeeeeeeeee${response.message}");
-      emit(GetAllDisciplinesError(message: response.message));
-    } else if (response is Message) {
-      emit(GetAllDisciplinesError(message: response.content));
     }
   }
 }

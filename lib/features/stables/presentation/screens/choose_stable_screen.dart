@@ -4,7 +4,8 @@ import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
-import 'package:proequine/features/user/data/chose_stable_request_model.dart';
+import 'package:proequine/features/stables/data/chose_stable_request_model.dart';
+import 'package:proequine/features/stables/domain/stable_cubit.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/thems/app_styles.dart';
@@ -14,12 +15,12 @@ import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
-import '../../../../core/widgets/stables_widget.dart';
+import '../widgets/stables_widget.dart';
 import '../../../nav_bar/domain/navbar_cubit.dart';
 import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
-import '../../data/interests_request_model.dart';
-import '../../domain/user_cubit.dart';
-import '../widgets/register_header.dart';
+import '../../../user/data/interests_request_model.dart';
+import '../../../user/domain/user_cubit.dart';
+import '../../../user/presentation/widgets/register_header.dart';
 
 class ChoseStableScreen extends StatefulWidget {
   const ChoseStableScreen({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ class ChoseStableScreen extends StatefulWidget {
 }
 
 class _ChoseStableScreenState extends State<ChoseStableScreen> {
-  final UserCubit cubit = UserCubit();
+  final StableCubit cubit = StableCubit();
 
   String? selectedEmirate;
   late final TextEditingController _mainStableName;
@@ -55,7 +56,6 @@ class _ChoseStableScreenState extends State<ChoseStableScreen> {
   @override
   void initState() {
     AppSharedPreferences.firstTime = true;
-    Print("stables ${cubit.stablesNames}");
     Print("stables two ${context.read<UserCubit>().stablesNames}");
     // Print("stables  ${context.read<UserCubit>().stablesNames}");
     Print('AppSharedPreferences.getEnvType${AppSharedPreferences.getEnvType}');
@@ -273,7 +273,7 @@ class _ChoseStableScreenState extends State<ChoseStableScreen> {
   }
 
   _buildChooseStableConsumer() {
-    return BlocConsumer<UserCubit, UserState>(
+    return BlocConsumer<StableCubit, StableState>(
         bloc: cubit,
         builder: (context, state) {
           if (state is ChoseStableLoading) {
@@ -301,7 +301,7 @@ class _ChoseStableScreenState extends State<ChoseStableScreen> {
                       msg: 'Please select your main stable', context: context);
                 }
               },
-              child: const Text("Next"),
+              child:  Text("Next", style: AppStyles.buttonStyle,),
             );
           }
         },
@@ -319,13 +319,14 @@ class _ChoseStableScreenState extends State<ChoseStableScreen> {
 
   _onPressConfirm() {
     return cubit
-      ..choseStable(ChoseStableRequestModel(
-       stableId: int.parse(stableId.text),
-        stableName: isChooseToAddStable?_mainStableName.text:stable.text,
-        isNewStable: isChooseToAddStable,
+      ..choseStable(ChoseMainStableRequestModel(
+       id: int.parse(stableId.text),
+        name: isChooseToAddStable?_mainStableName.text:stable.text,
+        // stableName: isChooseToAddStable?_mainStableName.text:stable.text,
+        // isNewStable: isChooseToAddStable,
         emirate: selectedEmirate,
-        location: _mainStableLocation.text,
-        personId: int.parse(AppSharedPreferences.personId)
+        pinLocation: _mainStableLocation.text,
+        // personId: int.parse(AppSharedPreferences.personId)
       ));
   }
 }

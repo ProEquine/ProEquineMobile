@@ -5,7 +5,7 @@ abstract class EquineInfoState {}
 
 class EquineInfoInitial extends EquineInfoState {}
 class GetUserDisciplineSuccessful extends EquineInfoState{
-  final GetUserDisciplinesResponseModel? model;
+  final GetUserInterestsResponseModel? model;
   GetUserDisciplineSuccessful({required this.model});
 }
 class GetUserDisciplineLoading extends EquineInfoState{}
@@ -89,6 +89,15 @@ class AddSecondaryStableLoading extends EquineInfoState{}
 class AddSecondaryStableError extends EquineInfoState{
   final String? message;
   AddSecondaryStableError({this.message});
+}
+class AddNewStableSuccessful extends EquineInfoState{
+  final String? message;
+  AddNewStableSuccessful({required this.message});
+}
+class AddNewStableLoading extends EquineInfoState{}
+class AddNewStableError extends EquineInfoState{
+  final String? message;
+  AddNewStableError({this.message});
 }
 
 class UpdateSecondaryDisciplineSuccessful extends EquineInfoState{

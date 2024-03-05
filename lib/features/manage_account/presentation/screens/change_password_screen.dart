@@ -11,12 +11,15 @@ import 'package:sizer/sizer.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
 import '../../../../core/constants/images/app_images.dart';
+import '../../../../core/constants/routes/routes.dart';
+import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/success_state_widget.dart';
 import '../../../user/presentation/widgets/security_cases_widget.dart';
+import '../../data/basic_account_management_route.dart';
 import '../../data/change_password_request_model.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
@@ -247,14 +250,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 bloc: cubit,
                 listener: (context, state) {
                   if (state is ChangePasswordSuccessful) {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SuccessStateScreen(
-                                  title: "Password Updated Successfully",
-                                  isThereButton: false,
-                                  isItVerifyPhone: false,
-                                )));
+                    Navigator.pushReplacementNamed(
+                        context, successScreen,
+                        arguments: BasicAccountManagementRoute(
+                            type: 'manageAccount',
+                            title: "Password Updated Successfully"));
                   } else if (state is ChangePasswordError) {
                     RebiMessage.error(msg: state.message!, context: context);
                   }
@@ -272,7 +272,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                           onPressChange();
                         } else {}
                       },
-                      child: const Text("Update"),
+                      child:  Text("Update", style: AppStyles.buttonStyle,),
                     ),
                   );
                 },
@@ -288,9 +288,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   }
 
   onPressChange() {
-    return cubit.changePassword(UpdatePasswordRequestModel(
+    return cubit.changePassword(ChangePasswordRequestModel(
+
       currentPassword: _oldPassword.text,
       newPassword: _newPassword.text,
+      confirmNewPassword: _confirmNewPassword.text
     ));
   }
 }

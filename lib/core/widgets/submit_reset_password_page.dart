@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:proequine/features/nav_bar/presentation/screens/bottomnavigation.dart';
+import 'package:proequine/features/user/presentation/screens/login_screen.dart';
 import 'package:sizer/sizer.dart';
 
 
@@ -54,7 +54,7 @@ class _ResetPasswordSubmitState extends State<ResetPasswordSubmit>
                     ..forward().whenComplete(() => Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const BottomNavigation())));
+                            builder: (context) => const LoginScreen())));
                 },
               ),
             ),

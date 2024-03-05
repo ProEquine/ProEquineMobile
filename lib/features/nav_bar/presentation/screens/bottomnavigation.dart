@@ -12,7 +12,6 @@ import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../booking/presentation/screens/booking_main.dart';
 import '../../../home/presentation/screens/main_screen.dart';
-import '../../../notifications/presentation/screens/notifications_screen.dart';
 
 class BottomNavigation extends StatefulWidget {
   final int? selectedIndex;
@@ -29,9 +28,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
   static final List<Widget> _widgetOptions = <Widget>[
     const MainScreen(),
     const BookingMain(),
+    const BookingMain(),
     const MainHorsesScreen(),
-    const NotificationsScreen(),
-
     const UserProfile()
   ];
 
@@ -56,13 +54,14 @@ class _BottomNavigationState extends State<BottomNavigation> {
             BlocProvider.of<NavbarCubit>(context).onWillPop(context),
         child: BlocConsumer<ChangeBoolCubit, ChangeBoolState>(
           listener: (context, state){
-            context.watch<ThemeCubit>().getSavedThemeMode();
+            // context.watch<ThemeCubit>().getSavedThemeMode();
           },
           builder: (context, state) {
             return Stack(
               children: <Widget>[
                 _widgetOptions.elementAt(_selectedIndex),
                 BlurBottomView(
+
                     backgroundColor:
                     AppSharedPreferences.getTheme == 'ThemeCubitMode.dark'
                         ? AppColors.backgroundColor
@@ -78,31 +77,33 @@ class _BottomNavigationState extends State<BottomNavigation> {
                       BottomNavigationBarItem(
                         backgroundColor: Colors.transparent,
                         icon: SvgPicture.asset(
-                        AppIcons.selectedHome,
 
-                          color: _selectedIndex == 0
-                              ? AppColors.yellow
-                              : const Color(0XFF8B9299),
+
+                           _selectedIndex == 0
+                              ? AppIcons.selectedBookingIcon
+                              : AppIcons.unSelectedBookingIcon,
                         ),
                         label: 'Home',
                       ),
                       BottomNavigationBarItem(
                         backgroundColor: Colors.transparent,
                         icon: SvgPicture.asset(
-                          _selectedIndex == 1
-                              ? AppIcons.selectedBookingIcon
-                              : AppIcons.unSelectedBookingIcon,
+                            _selectedIndex == 1
+                                ?AppIcons.selectedBookingNavbar:
+                                AppIcons.bookingNavbar,
+
                         ),
-                        label: 'Services',
+                        label: 'Transport',
                       ),
                       BottomNavigationBarItem(
                         backgroundColor: Colors.transparent,
                         icon: SvgPicture.asset(
-                          _selectedIndex == 2
-                              ? AppIcons.selectedHorses
-                              : AppIcons.unSelectedHorses,
+                          AppIcons.shippingNavbar,
+                          color: _selectedIndex == 2
+                              ? AppColors.yellow
+                              :  AppColors.grey,
                         ),
-                        label: 'Horses',
+                        label: 'Shipping',
                       ),
                       BottomNavigationBarItem(
                         backgroundColor: AppColors.gold,
@@ -110,27 +111,27 @@ class _BottomNavigationState extends State<BottomNavigation> {
                           children: [
                             SvgPicture.asset(
                               _selectedIndex == 3
-                                  ? AppIcons.selectedInbox
-                                  : AppIcons.unSelectedInbox,
+                                  ? AppIcons.selectedHorses
+                                  : AppIcons.unSelectedHorses,
                             ),
-                            Visibility(
-                              visible: state.thereAreNotification,
-                              child: Stack(
-                                children: [
-                                  Transform.translate(
-                                    offset: const Offset(12, -3),
-                                    child: const Icon(
-                                      Icons.brightness_1,
-                                      size: 10.0,
-                                      color: Colors.redAccent,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // Visibility(
+                            //   visible: state.thereAreNotification,
+                            //   child: Stack(
+                            //     children: [
+                            //       Transform.translate(
+                            //         offset: const Offset(12, -3),
+                            //         child: const Icon(
+                            //           Icons.brightness_1,
+                            //           size: 10.0,
+                            //           color: Colors.redAccent,
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                           ],
                         ),
-                        label: 'Inbox',
+                        label: 'Horses',
                       ),
                       BottomNavigationBarItem(
                         backgroundColor: Colors.transparent,

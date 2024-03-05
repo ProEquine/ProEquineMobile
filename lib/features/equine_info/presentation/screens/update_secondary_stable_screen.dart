@@ -13,24 +13,24 @@ import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/widgets/custom_header.dart';
-import '../../../../core/widgets/stables_widget.dart';
+import '../../../stables/presentation/widgets/stables_widget.dart';
 import '../../../manage_account/data/basic_account_management_route.dart';
 
-class UpdateSecondaryStableScreen extends StatefulWidget {
+class DeleteSecondaryStableScreen extends StatefulWidget {
   final String secondaryStable;
   final int personStableId;
 
-  const UpdateSecondaryStableScreen(
+  const DeleteSecondaryStableScreen(
       {Key? key, required this.secondaryStable, required this.personStableId})
       : super(key: key);
 
   @override
-  State<UpdateSecondaryStableScreen> createState() =>
-      _UpdateSecondaryStableScreenState();
+  State<DeleteSecondaryStableScreen> createState() =>
+      _DeleteSecondaryStableScreenState();
 }
 
-class _UpdateSecondaryStableScreenState
-    extends State<UpdateSecondaryStableScreen> {
+class _DeleteSecondaryStableScreenState
+    extends State<DeleteSecondaryStableScreen> {
   String? selectedSecondaryStable;
   String? selectedEmirate;
   late final TextEditingController _secondaryStableName;
@@ -56,6 +56,7 @@ class _UpdateSecondaryStableScreenState
 
   @override
   void initState() {
+    Print("stable id is ${widget.personStableId}");
     AppSharedPreferences.firstTime = true;
     Print('AppSharedPreferences.getEnvType${AppSharedPreferences.getEnvType}');
     _secondaryStableName = TextEditingController();
@@ -278,7 +279,7 @@ class _UpdateSecondaryStableScreenState
                                     onPressRemove();
                                   }
                                 },
-                                child: const Text("Remove"),
+                                child: Text("Remove", style: AppStyles.buttonStyle,),
                               );
                             },
                           ),
@@ -299,8 +300,8 @@ class _UpdateSecondaryStableScreenState
   }
 
   onPressRemove() {
-    cubit.deleteSecondaryStable(DeleteSecondaryStableRequestModel(
-      personStableId: widget.personStableId,
-    ));
+    cubit.deleteSecondaryStable(
+      widget.personStableId,
+    );
   }
 }

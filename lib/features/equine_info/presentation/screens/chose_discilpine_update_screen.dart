@@ -16,7 +16,9 @@ import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/profile_two_lines_list_tile.dart';
 
 class ChooseDisciplineScreen extends StatefulWidget {
-  const ChooseDisciplineScreen({super.key});
+  final int userId;
+
+  const ChooseDisciplineScreen({super.key, required this.userId});
 
   @override
   State<ChooseDisciplineScreen> createState() => _ChooseDisciplineScreenState();
@@ -50,7 +52,7 @@ class _ChooseDisciplineScreenState extends State<ChooseDisciplineScreen> {
         child: Padding(
           padding: const EdgeInsets.all(kPadding),
           child: BlocConsumer<EquineInfoCubit, EquineInfoState>(
-            bloc: cubit..getUserDiscipline(),
+            bloc: cubit..getUserDiscipline(widget.userId),
             listener: (context, state) {
               // TODO: implement listener
             },
@@ -84,19 +86,20 @@ class _ChooseDisciplineScreenState extends State<ChooseDisciplineScreen> {
                         shrinkWrap: true,
                         itemCount: 1,
                         itemBuilder: (context, index) {
-                          int mainDisciplineIndex = state.model!.disciplines!
-                              .indexWhere(
-                                  (stable) => stable.disciplinePriority == "Main");
-                          if (mainDisciplineIndex != -1) {
-                            Print(
-                                "Index of main priority discipline: $mainDisciplineIndex");
-                          } else {
-                            Print("No discipline with 'main' priority found.");
-                          }
+                          // int mainDisciplineIndex = state.model!.rows!
+                          //     .indexWhere(
+                          //         (stable) => stable.disciplinePriority == "Main");
+                          // if (mainDisciplineIndex != -1) {
+                          //   Print(
+                          //       "Index of main priority discipline: $mainDisciplineIndex");
+                          // } else {
+                          //   Print("No discipline with 'main' priority found.");
+                          // }
                           return ProfileTwoLineListTile(
-                            title: state.model!.disciplines![mainDisciplineIndex].disciplineTitle,
-                            subTitle:
-                                "National id: ${state.model!.disciplines![mainDisciplineIndex].nationalId ?? "Not Applicable"} \nFei ID: ${state.model!.disciplines![mainDisciplineIndex].feid ?? "Not Applicable"} ",
+                            title: state.model!.rows![index].discipline!.title,
+                            subTitle: "",
+                            // subTitle:
+                            //     "National id: ${state.model!.rows![index].discipline!.code ?? "Not Applicable"} \nFei ID: ${state.model!.rows![index].discipline! ?? "Not Applicable"} ",
                             onTap: () {
                               Navigator.push(
                                   context,
@@ -105,26 +108,18 @@ class _ChooseDisciplineScreenState extends State<ChooseDisciplineScreen> {
                                           UpdateMainDiscipline(
                                             userDiscipline: state
                                                 .model!
-                                                .disciplines![mainDisciplineIndex]
-                                                .disciplineTitle!,
-                                            userFeId: state
-                                                .model!
-                                                .disciplines![mainDisciplineIndex]
-                                                .feid??'',
-                                            userNationalId: state
-                                                .model!
-                                                .disciplines![mainDisciplineIndex]
-                                                .nationalId??'',
+                                                .rows![index]
+                                                .discipline!
+                                                .title!,
                                           )));
                             },
                             ableToEdit: true,
                           );
                         }),
-                    state.model!.disciplines!.length > 1
+                    state.model!.rows!.length > 1
                         ? Transform.translate(
-                      offset:  Offset(0.0, -2.h
-                      ),
-                          child: Column(
+                            offset: Offset(0.0, -2.h),
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Padding(
@@ -136,44 +131,51 @@ class _ChooseDisciplineScreenState extends State<ChooseDisciplineScreen> {
                                   ),
                                 ),
                                 ListView.builder(
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount:
-                                        state.model!.disciplines!.length - 1,
+                                        state.model!.rows!.length - 1,
                                     itemBuilder: (context, index) {
-                                      List secondaryDisciplines = state.model!.disciplines!.where((discipline) => discipline.disciplinePriority == "Secondary").toList();
+                                      // List secondaryDisciplines = state
+                                      //     .model!.disciplines!
+                                      //     .where((discipline) =>
+                                      //         discipline.disciplinePriority ==
+                                      //         "Secondary")
+                                      //     .toList();
 
                                       return ProfileTwoLineListTile(
-                                        title: secondaryDisciplines[index]
-                                            .disciplineTitle,
-                                        subTitle:
-                                            "National id : ${secondaryDisciplines[index].nationalId ?? ''} \nFei ID : ${secondaryDisciplines[index].feid ?? ''}",
+                                        title:state
+                                            .model!
+                                            .rows![index+1]
+                                            .discipline!
+                                            .title!,
+
+                                        subTitle: "",
                                         onTap: () {
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) => UpdateSecondaryDisciplineScreen(
-                                                      secondaryUserFeId:
-                                                      secondaryDisciplines[index].feid
-                                                                  .toString() ??
-                                                              '',
-                                                      secondaryUserNationalId: secondaryDisciplines[
-                                                                  index]
-                                                              .nationalId
-                                                              .toString() ??
-                                                          '',
-                                                      personDisciplineId:secondaryDisciplines[index]
-                                                          .personDisciplineId!
-                                                          .toString(),
-                                                      secondaryDiscipline:secondaryDisciplines[index]
-                                                          .disciplineTitle!)));
+                                                      disciplineId:
+                                                      state
+                                                          .model!
+                                                          .rows![index+1]
+                                                          .discipline!.id!
+                                                              .toString(),
+                                                      secondaryDiscipline:
+                                                      state
+                                                          .model!
+                                                          .rows![index+1]
+                                                          .discipline!
+                                                              .title!)));
                                         },
                                         ableToEdit: true,
                                       );
                                     }),
                               ],
                             ),
-                        )
+                          )
                         : const SizedBox(),
                   ],
                 );

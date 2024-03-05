@@ -202,29 +202,29 @@ Map<String, List<String>> places = {
   ],
 };
 
- List<String> placesList=[
-   'Add New Place',
-   'Flopster beach Ghantoot',
-   'Dubai Polo & Equestrian Club',
-   'Sustainable City Equestrian Club',
-   'Emirates Equestrian Centre',
-   'Desert Palm Equestrian Centre',
-   ' Ambition Equestrian Club',
-   'Al Ruwayyah Private Livery',
-   'Millennium Equestrian & Racing Club',
-   'Furusiyya Equestrian Club',
-   'Nine Valleys Stable',
-   ' Dubai Equine Hospital',
-   'AL Marmoom Equine Hospital',
-   'Mangroves beach UAQ',
-   'Al Ruwayyah Private Livery',
-   'Ajman Equestrian Club',
-   'Fujairah Shooting and Equestrian Club',
-   'Sharjah Equestrian and Racing Club',
-   ' Sharjah Club Quarantine',
-   'Malath Paddock Paradise',
- ];
-List<String> stables=[
+List<String> placesList = [
+  'Add New Place',
+  'Flopster beach Ghantoot',
+  'Dubai Polo & Equestrian Club',
+  'Sustainable City Equestrian Club',
+  'Emirates Equestrian Centre',
+  'Desert Palm Equestrian Centre',
+  ' Ambition Equestrian Club',
+  'Al Ruwayyah Private Livery',
+  'Millennium Equestrian & Racing Club',
+  'Furusiyya Equestrian Club',
+  'Nine Valleys Stable',
+  ' Dubai Equine Hospital',
+  'AL Marmoom Equine Hospital',
+  'Mangroves beach UAQ',
+  'Al Ruwayyah Private Livery',
+  'Ajman Equestrian Club',
+  'Fujairah Shooting and Equestrian Club',
+  'Sharjah Equestrian and Racing Club',
+  ' Sharjah Club Quarantine',
+  'Malath Paddock Paradise',
+];
+List<String> stables = [
   'Add Your Stable',
   'Dubai Polo & Equestrian Club',
   'Sustainable City Equestrian Club',
@@ -245,3 +245,17 @@ List<String> stables=[
   ' Sharjah Club Quarantine',
   'Malath Paddock Paradise',
 ];
+List<String> interests = [
+  'Show Jumping',
+  'Endurance',
+  'Dressage',
+  'Flat race',
+  'Eventing',
+  'Tent Pegging',
+  'Arabian Show',
+  'Polo',
+  'Cross Country',
+];
+Map<String, int> interestMap = {
+  for (var interest in interests) interest: interests.indexOf(interest)
+};

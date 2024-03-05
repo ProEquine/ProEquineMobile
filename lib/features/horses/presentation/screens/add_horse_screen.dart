@@ -21,19 +21,22 @@ import 'package:proequine/features/horses/domain/horse_cubit.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
+import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/date_time_picker.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
-import '../../../../core/widgets/stables_widget.dart';
+import '../../../stables/presentation/widgets/stables_widget.dart';
 import '../../../equine_info/presentation/widgets/disciplines_widget.dart';
 import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
 import '../../../user/presentation/widgets/selectable_type_container.dart';
 
 class AddHorseScreen extends StatefulWidget {
-  const AddHorseScreen({super.key});
+  final int userId;
+
+  const AddHorseScreen({super.key, required this.userId});
 
   @override
   AddHorseScreenState createState() => AddHorseScreenState();
@@ -70,6 +73,8 @@ class AddHorseScreenState extends State<AddHorseScreen> {
   late int _selectedYear;
   late TextEditingController _yearController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String? horseUrl;
 
   Future getImage(ImageSource src, BuildContext? context) async {
     XFile? image = await picker.pickImage(source: src);
@@ -108,6 +113,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var myCubit = context.watch<HorseCubit>();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
@@ -126,92 +132,151 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                horseImage == null
-                    ? Container(
-                        height: 15.0.h,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                              width: 0.50,
-                              strokeAlign: BorderSide.strokeAlignCenter,
-                              color: Color(0xFFDFD9C9),
-                            ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Center(
-                              child: SvgPicture.asset(
-                                AppIcons.horse,
-                                height: 30,
-                                width: 40,
-                                fit: BoxFit.contain,
+                Row(
+                  children: [
+                    horseImage == null
+                        ? Container(
+                            height: 16.0.h,
+                            width: 50.0.w,
+                            decoration: ShapeDecoration(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                  width: 0.50,
+                                  strokeAlign: BorderSide.strokeAlignCenter,
+                                  color: Color(0xFFDFD9C9),
+                                ),
+                                borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            const SizedBox(
-                              height: 5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: SvgPicture.asset(
+                                    AppIcons.horse,
+                                    height: 30,
+                                    width: 40,
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    showChosePictureBottomSheet(
+                                      context: context,
+                                      onTapCamera: () {
+                                        setState(() {
+                                          getImage(ImageSource.camera, context);
+                                          Navigator.of(context).pop();
+                                        });
+                                      },
+                                      onTapGallery: () async {
+                                        await getImage(
+                                            ImageSource.gallery, context);
+                                        if (mounted) {
+                                          Navigator.of(context).pop();
+                                        }
+                                      },
+                                      title: "Chose the horse picture",
+                                    );
+                                  },
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.camera_alt,
+                                        color: AppColors.grey,
+                                        size: 18,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        "Add a photo",
+                                        style: TextStyle(
+                                            color: AppColors.grey,
+                                            fontSize: 10),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                            InkWell(
-                              onTap: () {
-                                showChosePictureBottomSheet(
-                                  context: context,
-                                  onTapCamera: () {
-                                    setState(() {
-                                      getImage(ImageSource.camera, context);
-                                      Navigator.of(context).pop();
-                                    });
-                                  },
-                                  onTapGallery: () async {
-                                    await getImage(
-                                        ImageSource.gallery, context);
-                                    if (mounted) {
-                                      Navigator.of(context).pop();
-                                    }
-                                  },
-                                  title: "Chose the horse picture",
-                                );
-                              },
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.camera_alt,
-                                    color: AppColors.grey,
-                                    size: 18,
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    "Add a photo",
-                                    style: TextStyle(
-                                        color: AppColors.grey, fontSize: 10),
-                                  )
-                                ],
+                          )
+                        : Container(
+                            height: 16.0.h,
+                            width: 50.0.w,
+                            decoration: ShapeDecoration(
+                              image: DecorationImage(
+                                  image: FileImage(horseImage!),
+                                  fit: BoxFit.cover),
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                  width: 0.50,
+                                  strokeAlign: BorderSide.strokeAlignCenter,
+                                  color: Color(0xFFDFD9C9),
+                                ),
+                                borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                          ],
-                        ),
-                      )
-                    : Container(
-                        height: 15.0.h,
-                        decoration: ShapeDecoration(
-                          image: DecorationImage(
-                              image: FileImage(horseImage!), fit: BoxFit.cover),
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                              width: 0.50,
-                              strokeAlign: BorderSide.strokeAlignCenter,
-                              color: Color(0xFFDFD9C9),
-                            ),
-                            borderRadius: BorderRadius.circular(8),
                           ),
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 7.0, horizontal: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SelectableTypeContainer(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 50, vertical: 10),
+                            label: 'Mare',
+                            index: 0,
+                            isSelected: _isGenderSelected[0],
+                            onSelected: (bool value) {
+                              _handleSelected(0, value, _isGenderSelected);
+                              selectedGender = 'Mare';
+                              Print("Selected gender $selectedGender");
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          SelectableTypeContainer(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 50, vertical: 10),
+                            label: 'Gelding',
+                            index: 1,
+                            isSelected: _isGenderSelected[1],
+                            onSelected: (bool value) {
+                              _handleSelected(1, value, _isGenderSelected);
+                              selectedGender = 'Gelding';
+                              Print("Selected type $selectedGender");
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          SelectableTypeContainer(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 50, vertical: 10),
+                            label: 'Stallion',
+                            index: 2,
+                            isSelected: _isGenderSelected[2],
+                            onSelected: (bool value) {
+                              _handleSelected(2, value, _isGenderSelected);
+                              selectedGender = 'Stallion';
+                              Print("Selected type $selectedGender");
+                            },
+                          ),
+                        ],
                       ),
+                    ),
+                  ],
+                ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -270,10 +335,10 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                             DateTime dateTime = inputFormat.parse(value!);
                             _selectedDay = dateTime;
                           } catch (_) {
-                            RebiMessage.error(
-                                msg:
-                                    "Please Add the date of birth of your horse",
-                                context: context);
+                            // RebiMessage.error(
+                            //     msg:
+                            //         "Please Add the date of birth of your horse",
+                            //     context: context);
                           }
 
                           // return Validator.requiredValidator(_dateOfBirth.text);
@@ -365,60 +430,6 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                         hint: 'Color',
                       ),
                     ),
-                    const Text(
-                      "Gender",
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                        color: AppColors.formsHintFontLight,
-                        fontSize: 14,
-                        fontFamily: 'notosan',
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 7.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SelectableTypeContainer(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 35, vertical: 10),
-                            label: 'Mare',
-                            index: 0,
-                            isSelected: _isGenderSelected[0],
-                            onSelected: (bool value) {
-                              _handleSelected(0, value, _isGenderSelected);
-                              selectedGender = 'Mare';
-                              Print("Selected gender $selectedGender");
-                            },
-                          ),
-                          SelectableTypeContainer(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 35, vertical: 10),
-                            label: 'Gelding',
-                            index: 1,
-                            isSelected: _isGenderSelected[1],
-                            onSelected: (bool value) {
-                              _handleSelected(1, value, _isGenderSelected);
-                              selectedGender = 'Gelding';
-                              Print("Selected type $selectedGender");
-                            },
-                          ),
-                          SelectableTypeContainer(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 35, vertical: 10),
-                            label: 'Stallion',
-                            index: 2,
-                            isSelected: _isGenderSelected[2],
-                            onSelected: (bool value) {
-                              _handleSelected(2, value, _isGenderSelected);
-                              selectedGender = 'Stallion';
-                              Print("Selected type $selectedGender");
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 7),
                       child: DropDownWidget(
@@ -463,6 +474,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                       child: UserStableWidget(
                         stableId: stableId,
                         stableName: stable,
+                        userId: widget.userId,
                       ),
                     ),
                   ],
@@ -475,22 +487,25 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                   child: BlocConsumer<HorseCubit, HorseState>(
                     bloc: cubit,
                     listener: (context, state) {
+                      if (state is UploadFileSuccessful) {
+                        horseUrl = state.fileUrl!.url;
+                        _onPressAddHorse(horseUrl!);
+                      } else if (state is UploadFileError) {
+                        RebiMessage.error(
+                            msg: state.message!, context: context);
+                      }
                       if (state is AddHorseSuccessfully) {
                         RebiMessage.success(
                             msg: "Horse added Successfully", context: context);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const BottomNavigation(
-                                      selectedIndex: 2,
-                                    )));
+                        myCubit.getAllHorses();
+                        Navigator.pop(context);
                       } else if (state is AddHorseError) {
-                         RebiMessage.error(
+                        RebiMessage.error(
                             msg: state.message!, context: context);
                       }
                     },
                     builder: (context, state) {
-                      if (state is AddHorseLoading) {
+                      if (state is AddHorseLoading || state is UploadFileLoading) {
                         return const LoadingCircularWidget();
                       }
                       return RebiButton(
@@ -510,7 +525,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                               selectedColor != null &&
                               disciplineId.text.isNotEmpty &&
                               stable.text.isNotEmpty) {
-                            _onPressAddHorse();
+                            _onPressUpload();
                           } else if (horseImage == null) {
                             RebiMessage.error(
                                 msg: "Please add a picture to your horse",
@@ -521,7 +536,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                                 context: context);
                           }
                         },
-                        child: const Text("Add"),
+                        child:  Text("Add", style: AppStyles.buttonStyle,),
                       );
                     },
                   ),
@@ -546,19 +561,23 @@ class AddHorseScreenState extends State<AddHorseScreen> {
     });
   }
 
-  _onPressAddHorse() {
+  _onPressAddHorse(String horseImage) {
     cubit.addHorse(
-        AddHorseRequestModel(
-          horseColor: selectedColor,
-          horseName: horseName!.text,
-          horseGender: selectedGender,
-          horseCOB: placeOfBirth.text,
-          horseDOB: _dateOfBirth.text,
+      AddHorseRequestModel(
+          color: selectedColor,
+          name: horseName!.text,
+          gender: selectedGender,
+          placeOfBirth: placeOfBirth.text,
+          dateOfBirth: _dateOfBirth.text,
           disciplineId: int.parse(disciplineId.text),
           stableId: int.parse(stableId.text),
-          bloodline: selectedBloodLine,
+          bloodLine: selectedBloodLine,
           breed: selectedBreed,
-        ),
-        horseImage!.path);
+          image: horseImage),
+    );
+  }
+
+  _onPressUpload() {
+    cubit.uploadFile(horseImage!.path.toString());
   }
 }

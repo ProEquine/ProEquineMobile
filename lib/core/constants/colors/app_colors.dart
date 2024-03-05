@@ -30,6 +30,8 @@ class AppColors {
   static const Color unVerifiedContainer = Color(0xFFFDF6B2);
   static const Color unVerifiedText = Color(0xFF723B13);
   static const Color statusBackground = Color(0xFFDEF7EC);
+  static const Color inProgressBackground = Color(0xFFB8DCFF);
+  static const Color inProgressTitle = Color(0xFF1E90FF);
   static const Color statusText = Color(0xFF03543F);
   static const Color disciplineBackground = Color(0xFFF8F3E6);
   static const Color disciplineText = Color(0xFFC48636);

@@ -8,6 +8,7 @@ import 'package:proequine/features/home/data/media_service_model.dart';
 import 'package:proequine/features/home/presentation/screens/media_summary_screen.dart';
 
 import '../../../../core/constants/routes/routes.dart';
+import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/global_functions/global_statics_drop_down.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
@@ -398,7 +399,7 @@ class CreateMediaRequestScreenState extends State<CreateMediaRequestScreen>
                                     context: context);
                               }
                             },
-                            child: const Text("Next")),
+                            child: Text("Next", style: AppStyles.buttonStyle,)),
                       ),
                       const SizedBox(
                         height: 30,

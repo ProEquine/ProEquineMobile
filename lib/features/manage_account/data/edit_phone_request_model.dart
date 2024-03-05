@@ -1,15 +1,15 @@
 class EditPhoneRequestModel {
-  String? newPhoneNumber;
+  String? phoneNumber;
 
-  EditPhoneRequestModel({this.newPhoneNumber});
+  EditPhoneRequestModel({this.phoneNumber});
 
   EditPhoneRequestModel.fromJson(Map<String, dynamic> json) {
-    newPhoneNumber = json['newPhoneNumber'];
+    phoneNumber = json['phoneNumber'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['newPhoneNumber'] = newPhoneNumber;
+    data['phoneNumber'] = phoneNumber;
     return data;
   }
 }

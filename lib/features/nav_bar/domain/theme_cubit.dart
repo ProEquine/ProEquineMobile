@@ -11,30 +11,30 @@ enum ThemeCubitMode { light, dark }
 
 class ThemeCubit extends Cubit<ThemeCubitMode> {
   ThemeCubit() : super(ThemeCubitMode.light){
-    getSavedThemeMode();
+    // getSavedThemeMode();
   }
 
-  void toggleTheme() async {
-    final currentMode = state;
-    final newMode = currentMode == ThemeCubitMode.light ? ThemeCubitMode.dark : ThemeCubitMode.light;
+  // void toggleTheme() async {
+  //   final currentMode = state;
+  //   final newMode = currentMode == ThemeCubitMode.light ? ThemeCubitMode.dark : ThemeCubitMode.light;
+  //
+  //  AppSharedPreferences.setTheme=newMode.toString();
+  //   emit(newMode);
+  // }
 
-   AppSharedPreferences.setTheme=newMode.toString();
-    emit(newMode);
-  }
-
-  Future<void> getSavedThemeMode() async {
-    final savedMode = AppSharedPreferences.getTheme;
-
-    Print("savedMode$savedMode");
-
-    if (savedMode == null) {
-      Print("null");
-      emit(ThemeCubitMode.light);
-    } else {
-      Print(savedMode);
-      final themeMode = ThemeCubitMode.values.firstWhere((mode) => mode.toString() == savedMode);
-      emit(themeMode);
-    }
-  }
+  // Future<void> getSavedThemeMode() async {
+  //   final savedMode = AppSharedPreferences.getTheme;
+  //
+  //   Print("savedMode$savedMode");
+  //
+  //   if (savedMode == null) {
+  //     Print("null");
+  //     emit(ThemeCubitMode.light);
+  //   } else {
+  //     Print(savedMode);
+  //     final themeMode = ThemeCubitMode.values.firstWhere((mode) => mode.toString() == savedMode);
+  //     emit(themeMode);
+  //   }
+  // }
 
 }

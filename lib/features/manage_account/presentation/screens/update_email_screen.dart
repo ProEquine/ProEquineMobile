@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/constants/routes/routes.dart';
 import 'package:proequine/core/utils/extensions.dart';
-import 'package:proequine/features/user/data/send_mail_request_model.dart';
-import 'package:proequine/features/user/data/update_email_request_model.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
@@ -75,7 +74,7 @@ class UpdateEmailScreen extends StatelessWidget {
                           onSendMail();
                         } else {}
                       },
-                      child: const Text("Update"));
+                      child:  Text("Update", style: AppStyles.buttonStyle,));
                 },
                 listener: (context, state) {
                   if (state is SendUpdateMailVerificationSuccessful) {

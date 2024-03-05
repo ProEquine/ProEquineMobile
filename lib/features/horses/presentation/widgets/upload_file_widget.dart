@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:jumping_dot/jumping_dot.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 
 class UploadFileWidget extends StatefulWidget {
   Function onPressUpload;
+  Function? onPressChange;
   String? title;
+  String? buttonTitle;
+  bool isLoading = false;
 
-  UploadFileWidget({Key? key, required this.onPressUpload, this.title})
+  UploadFileWidget(
+      {Key? key,
+      required this.onPressUpload,
+      this.title,
+      this.buttonTitle,
+      this.isLoading = false,
+      this.onPressChange})
       : super(key: key);
 
   @override
@@ -52,13 +62,26 @@ class _UploadFileWidgetState extends State<UploadFileWidget> {
                   )),
               margin: EdgeInsets.zero,
               child: MaterialButton(
-                color: Color(0xFFDFD9C9),
+                color: const Color(0xFFDFD9C9),
                 onPressed: () {
                   setState(() {
-                    widget.onPressUpload();
+                    if (widget.buttonTitle == 'Change') {
+                      widget.onPressChange!();
+                    } else {
+                      widget.onPressUpload();
+                    }
                   });
                 },
-                child: Text("Upload"),
+                child: widget.isLoading
+                    ? Center(
+                        child: JumpingDots(
+                          color: Colors.black,
+                          radius: 4,
+                          numberOfDots: 3,
+                          verticalOffset: -10,
+                        ),
+                      )
+                    : Text(widget.buttonTitle!),
               ),
             ),
           ),
@@ -68,10 +91,9 @@ class _UploadFileWidgetState extends State<UploadFileWidget> {
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: Container(
+                child: SizedBox(
                   width: 150,
                   child: Text(
-
                     widget.title!,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(

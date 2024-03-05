@@ -9,6 +9,7 @@ void showHospitalsAndPlacesBottomSheet({
   required BuildContext context,
   required String title,
   required Widget content,
+  Widget? searchBar,
 }) {
   showModalBottomSheet(
     isScrollControlled: true,
@@ -64,6 +65,7 @@ void showHospitalsAndPlacesBottomSheet({
                     const SizedBox(
                       height: kPadding,
                     ),
+                    searchBar ?? const SizedBox(),
                     content,
                     const SizedBox(
                       height: 50,

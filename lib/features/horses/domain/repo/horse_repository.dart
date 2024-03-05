@@ -1,84 +1,81 @@
-import 'dart:io';
-
 import 'package:proequine/features/horses/data/add_horse_document_request_model.dart';
 import 'package:proequine/features/horses/data/add_horse_request_model.dart';
-import 'package:proequine/features/horses/data/edit_document_request_model.dart';
 import 'package:proequine/features/horses/data/get_horses_documents_response_model.dart';
 import 'package:proequine/features/horses/data/get_user_horses_response_model.dart';
-import 'package:proequine/features/horses/data/remove_horse_request_model.dart';
+import 'package:proequine/features/horses/data/horse_response_model.dart';
+import 'package:proequine/features/horses/data/horse_verify_response_model.dart';
 import 'package:proequine/features/horses/data/update_condition_request_model.dart';
 import 'package:proequine/features/horses/data/update_horse_request_model.dart';
+import 'package:proequine/features/horses/data/verify_horse_request_model.dart';
 
 import '../../../../core/CoreModels/base_result_model.dart';
 import '../../../../core/CoreModels/empty_model.dart';
 import '../../../../core/data_source/remote_data_source.dart';
 import '../../../../core/http/api_urls.dart';
 import '../../../../core/http/http_method.dart';
+import '../../../manage_account/data/upload_file_response_model.dart';
+import '../../data/edit_document_request_model.dart';
 
-class HorseRepository{
-
+class HorseRepository {
   static Future<BaseResultModel?> addHorse(
-      AddHorseRequestModel addHorseRequestModel, String horseImage) async {
-    return await RemoteDataSource.request<EmptyModel>(
-        converter: (json) => EmptyModel.fromJson(json),
+      AddHorseRequestModel addHorseRequestModel) async {
+    return await RemoteDataSource.request<HorseResponseModel>(
+        converter: (json) => HorseResponseModel.fromJson(json),
         method: HttpMethod.POST,
         data: addHorseRequestModel.toJson(),
         withAuthentication: true,
-        files: {
-          "file":horseImage,
-        },
         thereDeviceId: false,
         url: ApiURLs.addHorse);
   }
-  static Future<BaseResultModel?> getHorses() async {
-    return await RemoteDataSource.request<GetAllHorsesResponseModel>(
-        converter: (json) => GetAllHorsesResponseModel.fromJson(json),
+
+  static Future<BaseResultModel?> getHorses({required int limit,required int offset}) async {
+    return await RemoteDataSource.request<HorsesResponseModel>(
+        converter: (json) => HorsesResponseModel.fromJson(json),
         method: HttpMethod.GET,
+        queryParameters: {
+          'limit': limit,
+          'offset': offset,
+        },
         withAuthentication: true,
         thereDeviceId: false,
         url: ApiURLs.getHorses);
   }
-  static Future<BaseResultModel?> getDocuments(int horseId) async {
-    return await RemoteDataSource.request<AllHorsesDocumentsResponseModel>(
-        converter: (json) => AllHorsesDocumentsResponseModel.fromJson(json),
+
+  static Future<BaseResultModel?> getDocuments({required int limit,required int offset, required int horseId}) async {
+    return await RemoteDataSource.request<AllHorseDocumentsResponseModel>(
+        converter: (json) => AllHorseDocumentsResponseModel.fromJson(json),
         method: HttpMethod.GET,
         withAuthentication: true,
         queryParameters: {
-          "horseId":horseId,
+          'limit': limit,
+          'offset': offset,
         },
         thereDeviceId: false,
-        url: ApiURLs.allDocuments);
+        url: '${ApiURLs.allDocuments}/$horseId');
   }
+
   static Future<BaseResultModel?> updateHorse(
-      UpdateHorseRequestModel updateHorseRequestModel , String image) async {
-    return await RemoteDataSource.request<EmptyModel>(
-        converter: (json) => EmptyModel.fromJson(json),
-        method: HttpMethod.PUT,
+      UpdateHorseRequestModel updateHorseRequestModel) async {
+    return await RemoteDataSource.request<HorseResponseModel>(
+        converter: (json) => HorseResponseModel.fromJson(json),
+        method: HttpMethod.POST,
         data: updateHorseRequestModel.toJson(),
         withAuthentication: true,
-        files: {
-          "file":image,
-        },
         thereDeviceId: false,
-        url: ApiURLs.updateHorse);
+        url: ApiURLs.addHorse);
   }
-  static Future<BaseResultModel?> verifyHorse({
-      int? horseId, String? profOwnerFile, String? nationalPassport, String? feiPassport }) async {
-    return await RemoteDataSource.request<EmptyModel>(
-        converter: (json) => EmptyModel.fromJson(json),
+
+  static Future<BaseResultModel?> verifyHorse(
+      {required HorseVerificationRequestModel horseVerificationRequestModel}) async {
+    return await RemoteDataSource.request<HorseVerificationResponseModel>(
+        converter: (json) => HorseVerificationResponseModel.fromJson(json),
         method: HttpMethod.POST,
-        data: {
-          "HorseId":horseId
-        },
+        data: horseVerificationRequestModel.toJson(),
         withAuthentication: true,
-        files: {
-          "ProofOfOwnerFile":profOwnerFile!,
-          "NationalPassportFile":nationalPassport!,
-          "FEIPassportFile":feiPassport!,
-        },
         thereDeviceId: false,
         url: ApiURLs.verifyHorse);
   }
+
   static Future<BaseResultModel?> updateHorseCondition(
       UpdateHorseConditionRequestModel updateHorseConditionRequestModel) async {
     return await RemoteDataSource.request<EmptyModel>(
@@ -89,54 +86,57 @@ class HorseRepository{
         thereDeviceId: false,
         url: ApiURLs.updateHorseCondition);
   }
+  static Future<BaseResultModel?> uploadFile(String? file) async {
+    return await RemoteDataSource.request<UploadFileResponseModel>(
+        converter: (json) => UploadFileResponseModel.fromJson(json),
+        method: HttpMethod.POST,
+        files: {
+          "file":file!,
+        },
+        withAuthentication: true,
+        isLongTime: true,
+        thereDeviceId: false,
+        url: ApiURLs.uploadFile);
+  }
+
   static Future<BaseResultModel?> removeHorse(
-      RemoveHorseRequestModel removeHorseRequestModel) async {
+      int horseId) async {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.DELETE,
-        data: removeHorseRequestModel.toJson(),
         withAuthentication: true,
         thereDeviceId: false,
-        url: ApiURLs.removeHorse);
+        url: '${ApiURLs.removeHorse}/$horseId');
   }
 
   static Future<BaseResultModel?> addHorseDocument(
-      AddHorseDocumentRequestModel addHorseDocumentRequestModel, String file) async {
+      CreateHorseDocumentsRequestModel createHorseDocumentsRequestModel) async {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.POST,
-        data: addHorseDocumentRequestModel.toJson(),
-        files: {
-          "file":file
-        },
+        data: createHorseDocumentsRequestModel.toJson(),
         withAuthentication: true,
         thereDeviceId: false,
         url: ApiURLs.addHorseDocument);
   }
+
   static Future<BaseResultModel?> editHorseDocument(
-      EditHorseDocumentRequestModel editHorseDocumentRequestModel, String file) async {
+      EditHorseDocumentsRequestModel editHorseDocumentRequestModel) async {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
-        method: HttpMethod.PUT,
+        method: HttpMethod.POST,
         data: editHorseDocumentRequestModel.toJson(),
-        files: {
-          "file":file
-        },
         withAuthentication: true,
         thereDeviceId: false,
         url: ApiURLs.editHorseDocument);
   }
 
-  static Future<BaseResultModel?> removeHorseDocument(
-      int docId) async {
+  static Future<BaseResultModel?> removeHorseDocument(int docId) async {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.DELETE,
-        queryParameters:{
-          "HorseDocId":docId,
-        },
         withAuthentication: true,
         thereDeviceId: false,
-        url: ApiURLs.removeHorseDocument);
+        url: '${ApiURLs.removeHorseDocument}/$docId');
   }
 }

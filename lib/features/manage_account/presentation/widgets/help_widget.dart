@@ -341,8 +341,9 @@ class _HelpWidgetState extends State<HelpWidget> {
                                                         context: context);
                                                   }
                                                 },
-                                                child: const Text(
+                                                child: Text(
                                                   "Confirm",
+                                                  style: AppStyles.buttonStyle,
                                                 ),
                                               );
                                             },
@@ -523,8 +524,9 @@ class _HelpWidgetState extends State<HelpWidget> {
                                                         context: context);
                                                   }
                                                 },
-                                                child: const Text(
+                                                child: Text(
                                                   "Confirm",
+                                                  style: AppStyles.buttonStyle,
                                                 ),
                                               );
                                             },
@@ -662,8 +664,9 @@ class _HelpWidgetState extends State<HelpWidget> {
                                                         context: context);
                                                   }
                                                 },
-                                                child: const Text(
+                                                child:Text(
                                                   "Confirm",
+                                                  style: AppStyles.buttonStyle,
                                                 ),
                                               );
                                             },
@@ -673,8 +676,9 @@ class _HelpWidgetState extends State<HelpWidget> {
                                     ));
                               }
                             },
-                            child: const Text(
+                            child:  Text(
                               "Confirm",
+                              style: AppStyles.buttonStyle,
                             ),
                           ),
                         ),
@@ -775,8 +779,9 @@ class _HelpWidgetState extends State<HelpWidget> {
                               AppSharedPreferences.typeSelected = false;
                               AppSharedPreferences.emailVerified = false;
                             },
-                            child: const Text(
+                            child: Text(
                               "Confirm",
+                              style: AppStyles.buttonStyle,
                             ),
                           );
                         },

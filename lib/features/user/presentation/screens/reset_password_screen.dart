@@ -7,7 +7,6 @@ import 'package:pinput/pinput.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/widgets/submit_reset_password_page.dart';
 import 'package:proequine/features/user/data/reset_password_request_model.dart';
-import 'package:proequine/features/user/data/send_mail_request_model.dart';
 import 'package:proequine/features/user/data/send_verify_request_forgot_password.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui' as ui;
@@ -19,12 +18,10 @@ import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/constants/thems/pin_put_theme.dart';
 import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
-import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/divider.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
-import '../../data/send_verification_request_model.dart';
 import '../../domain/user_cubit.dart';
 import '../widgets/register_header.dart';
 import '../widgets/security_cases_widget.dart';
@@ -85,7 +82,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   bool _containsNumber(String value) {
-    return value.contains(RegExp(r'[0-9]'));
+    return value.contains(RegExp(r'\d'));
   }
 
   bool _containsCapitalLetter(String value) {
@@ -327,7 +324,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   ),
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Padding(
@@ -485,7 +482,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       _onPressVerify();
                     } else {}
                   },
-                  child: const Text("Verify"),
+                  child:  Text("Verify", style: AppStyles.buttonStyle,),
                 ),
               ),
             );
@@ -506,8 +503,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   _onPressVerify() {
     return cubit.resetPassword(ResetPasswordRequestModel(
       email: widget.email,
-      verificationCode: _pinPutController.text,
+      otpCode: _pinPutController.text,
       newPassword: _password.text,
+      confirmNewPassword: _confirmPassword.text
     ));
   }
 }

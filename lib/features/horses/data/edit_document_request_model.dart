@@ -1,48 +1,52 @@
-class EditHorseDocumentRequestModel {
-  String? docNumber;
-  int? docId;
-  String? docTitle;
-  String? docType;
-  String? docCategory;
-  String? docRegistrationDate;
-  String? docExpiryDate;
+class EditHorseDocumentsRequestModel {
+  int? id;
   int? horseId;
+  String? docNumber;
+  String? docTitle;
+  String? docCategory;
+  String? docType;
+  String? docRegistrationData;
+  String? docExpiryDate;
+  String? docAttachment;
   String? docNotes;
 
-  EditHorseDocumentRequestModel(
-      {this.docNumber,
+  EditHorseDocumentsRequestModel(
+      {this.id,
+        this.horseId,
+        this.docNumber,
         this.docTitle,
-        this.docId,
         this.docCategory,
-        this.docExpiryDate,
-        this.docNotes,
-        this.docRegistrationDate,
         this.docType,
-        this.horseId,});
+        this.docRegistrationData,
+        this.docExpiryDate,
+        this.docAttachment,
+        this.docNotes});
 
-  EditHorseDocumentRequestModel.fromJson(Map<String, dynamic> json) {
-    docNumber = json['DocNumber'];
-    docId = json['DocId'];
-    docType = json['DocType'];
-    docRegistrationDate = json['DocRegistrationDate'];
-    docTitle = json['DocTitle'];
-    docNotes = json['DocNotes'];
-    docExpiryDate = json['DocExpiryDate'];
-    docCategory = json['DocCategory'];
-    horseId = json['HorseId'];
+  EditHorseDocumentsRequestModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    horseId = json['horseId'];
+    docNumber = json['docNumber'];
+    docTitle = json['docTitle'];
+    docCategory = json['docCategory'];
+    docType = json['docType'];
+    docRegistrationData = json['docRegistrationData'];
+    docExpiryDate = json['docExpiryDate'];
+    docAttachment = json['docAttachment'];
+    docNotes = json['docNotes'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['DocNumber'] = docNumber;
-    data['DocId'] = docId;
-    data['DocType'] = docType;
-    data['DocRegistrationDate'] = docRegistrationDate;
-    data['DocTitle'] = docTitle;
-    data['DocNotes'] = docNotes;
-    data['DocExpiryDate'] = docExpiryDate;
-    data['DocCategory'] = docCategory;
-    data['HorseId'] = horseId;
+    data['id'] = id;
+    data['horseId'] = horseId;
+    data['docNumber'] = docNumber;
+    data['docTitle'] = docTitle;
+    data['docCategory'] = docCategory;
+    data['docType'] = docType;
+    data['docRegistrationData'] = docRegistrationData;
+    data['docExpiryDate'] = docExpiryDate;
+    data['docAttachment'] = docAttachment;
+    data['docNotes'] = docNotes;
     return data;
   }
 }

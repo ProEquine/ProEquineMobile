@@ -18,7 +18,6 @@ void showUnverifiedAccountDialog(
       context: context,
       builder: (context) {
         return BackdropFilter(
-
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Padding(
             padding: const EdgeInsets.all(40),
@@ -40,9 +39,11 @@ void showUnverifiedAccountDialog(
                     Row(
                       children: [
                         SvgPicture.asset(AppIcons.email),
-                        const SizedBox(width: 10,),
+                        const SizedBox(
+                          width: 10,
+                        ),
                         const Text(
-                           "Verification Required",
+                          "Verification Required",
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
@@ -67,7 +68,10 @@ void showUnverifiedAccountDialog(
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const BottomNavigation(selectedIndex: 0,)));
+                                    builder: (context) =>
+                                        const BottomNavigation(
+                                          selectedIndex: 0,
+                                        )));
                           },
                           style: OutlinedButton.styleFrom(
                             minimumSize: const Size(100, 33),

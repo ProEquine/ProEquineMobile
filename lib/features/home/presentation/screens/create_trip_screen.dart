@@ -16,6 +16,7 @@ import 'package:proequine/features/home/presentation/widgets/select_date_time_wi
 import 'package:proequine/features/home/presentation/widgets/select_place_widget.dart';
 
 import '../../../../core/constants/routes/routes.dart';
+import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
@@ -87,7 +88,8 @@ class CreateTripScreenState extends State<CreateTripScreen>
   @override
   void initState() {
     checkVerificationStatus().then((verified) {
-      if (!verified) {
+      //here just add ! before verified
+      if (verified) {
         // If the account is not verified, show a dialog after a delay.
         Future.delayed(const Duration(milliseconds: 50), () {
           showUnverifiedAccountDialog(
@@ -95,9 +97,9 @@ class CreateTripScreenState extends State<CreateTripScreen>
             isThereNavigationBar: true,
             onPressVerify: () {
               Navigator.pushNamed(context, verifyEmail,
-                  arguments: VerifyEmailRoute(
-                      type: 'createTrip',
-                      email: AppSharedPreferences.userEmailAddress))
+                      arguments: VerifyEmailRoute(
+                          type: 'createTrip',
+                          email: AppSharedPreferences.userEmailAddress))
                   .then((value) {});
             },
           );
@@ -740,7 +742,10 @@ class CreateTripScreenState extends State<CreateTripScreen>
                                 }
                               }
                             },
-                            child: const Text("Next")),
+                            child: Text(
+                              "Next",
+                              style: AppStyles.buttonStyle,
+                            )),
                       ),
                       const SizedBox(
                         height: 30,

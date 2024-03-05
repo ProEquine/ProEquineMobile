@@ -41,6 +41,8 @@ class AppIcons {
 
   static const location2 = 'assets/icons/location2.svg';
   static const horse = 'assets/icons/horse.svg';
+  static const dateIcon = 'assets/icons/date_icon.svg';
+  static const emptySupports = 'assets/icons/contact_support.svg';
   static const date = 'assets/icons/calendar_month.svg';
   static const confirmed = 'assets/icons/check.svg';
   static const completed = 'assets/icons/check.svg';
@@ -78,15 +80,20 @@ class AppIcons {
   static const errorIcon = 'assets/icons/error.svg';
   static const logo = "assets/icons/PE-primary-logo.png";
   static const logoLight = 'assets/icons/PE Primary Logo.svg';
-  static const verifiedHorse = 'assets/icons/verifed_horse.svg';
+  static const verifiedHorse = 'assets/icons/verified_horse_icon.svg';
+  static const unverifiedHorse = 'assets/icons/unverified_horse_icon.svg';
   static const horizontalLogo = 'assets/icons/logo-light.svg';
   static const unSelectedBookingIcon = 'assets/icons/unselected_booking.svg';
+  static const notificationIcon = 'assets/icons/notification_icon.svg';
 
   static const homeIconLight = 'assets/icons/home.svg';
   static const selectedHome = 'assets/icons/selected_home.svg';
   static const unSelectedHome = 'assets/icons/unselected_home.svg';
   static const unSelectedBooking = 'assets/icons/unselected_booking.svg';
   static const selectedBookingIcon = 'assets/icons/selected_booking.svg';
+  static const bookingNavbar = 'assets/icons/booking_navbar.svg';
+  static const selectedBookingNavbar = 'assets/icons/selected_booking_navbar.svg';
+  static const shippingNavbar = 'assets/icons/shipping_navabr.svg';
   static const selectedInbox = 'assets/icons/selected_inbox.svg';
   static const unSelectedInbox = 'assets/icons/unselected_inbox.svg';
   static const selectedProfile = 'assets/icons/selected_profile.svg';

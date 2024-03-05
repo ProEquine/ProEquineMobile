@@ -16,7 +16,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   font_awesome_flutter: ^10.2.1
-  video_player: ^2.4.7
   intl: ^0.18.1
   http: ^0.13.5
   flutter_dash: ^1.0.0
@@ -27,11 +26,13 @@ dependencies:
   dio:
   flutter_bloc: ^8.0.1
   sizer: ^2.0.15
+  cached_network_image: ^3.3.1
   shared_preferences: ^2.0.15
   easy_localization: ^3.0.0
   flutter_svg: ^1.1.1+1
 
   toastification: ^1.1.0
+  jumping_dot: ^0.0.6
   logger: ^1.1.0
   readmore: ^2.2.0
   fluttertoast: ^8.0.9

@@ -1,18 +1,15 @@
 class CheckMailVerificationRequestModel {
-  String? email;
-  String? code;
+  String? otpCode;
 
-  CheckMailVerificationRequestModel({this.email, this.code});
+  CheckMailVerificationRequestModel({this.otpCode});
 
   CheckMailVerificationRequestModel.fromJson(Map<String, dynamic> json) {
-    email = json['Email'];
-    code = json['VerificationCode'];
+    otpCode = json['otpCode'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['Email'] = email;
-    data['VerificationCode'] = code;
+    data['otpCode'] = otpCode;
     return data;
   }
 }

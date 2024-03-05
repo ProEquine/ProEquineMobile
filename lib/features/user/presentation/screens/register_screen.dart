@@ -129,12 +129,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 7),
                                       child: RebiInput(
+                                        capitalization: true,
                                         hintText: 'First Name'.tra,
                                         controller: _firstName,
                                         keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.done,
                                         isOptional: false,
                                         color: AppColors.formsLabel,
+                                        onFieldSubmitted: (value){
+                                          if(value!=null){
+                                            setState(() {
+                                              Print("sadasdasd");
+                                              value.capitalize();
+                                              _firstName.text.capitalize!();
+                                            });
+
+                                          }
+                                        },
                                         readOnly: false,
                                         contentPadding:
                                             const EdgeInsets.symmetric(
@@ -161,17 +172,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                             logoHeight = 15.h;
                                           });
                                         },
-                                        onFieldSubmitted: (size) {
-                                          setState(() {
-                                            logoHeight = 18.h;
-                                          });
-                                        },
                                         hintText: 'Middle Name'.tra,
                                         controller: _middleName,
+                                        capitalization: true,
                                         keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.done,
                                         isOptional: false,
                                         color: AppColors.formsLabel,
+                                        onFieldSubmitted: (value){
+                                          if(value!=null){
+                                            value.capitalize();
+                                            _middleName.text.capitalize!();
+                                          }
+
+                                        },
                                         readOnly: false,
                                         contentPadding:
                                             const EdgeInsets.symmetric(
@@ -192,11 +206,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 child: RebiInput(
                                   hintText: 'Last Name'.tra,
                                   controller: _lastName,
+                                  capitalization: true,
                                   keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.done,
                                   isOptional: false,
                                   color: AppColors.formsLabel,
                                   readOnly: false,
+                                  onFieldSubmitted: (value){
+                                    if(value!=null){
+                                      value.capitalize();
+                                      _lastName.text.capitalize!();
+                                    }
+                                  },
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 13),
                                   obscureText: false,
@@ -384,7 +405,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                       )));
                                         } else {}
                                       },
-                                      child: const Text("Continue"))
+                                      child:  Text("Continue", style: AppStyles.buttonStyle,))
                                   : Padding(
                                       padding: const EdgeInsets.symmetric(),
                                       child: RebiButton(
@@ -396,7 +417,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                 context: context);
                                           },
                                           backgroundColor: AppColors.formsLabel,
-                                          child: const Text("Continue")),
+                                          child:  Text("Continue", style: AppStyles.buttonStyle,)),
                                     ),
                               const SizedBox(
                                 height: 20,

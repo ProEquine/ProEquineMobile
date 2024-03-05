@@ -23,13 +23,9 @@ import '../widgets/disciplines_widget.dart';
 
 class UpdateMainDiscipline extends StatefulWidget {
   String userDiscipline;
-  String? userFeId;
-  String? userNationalId;
 
   UpdateMainDiscipline({Key? key,
-    required this.userDiscipline,
-    this.userFeId,
-    this.userNationalId})
+    required this.userDiscipline,})
       : super(key: key);
 
   @override
@@ -53,10 +49,7 @@ class _UpdateMainDisciplineState extends State<UpdateMainDiscipline> {
     discipline = TextEditingController(text: widget.userDiscipline);
     disciplineId = TextEditingController();
     selectedDiscipline = widget.userDiscipline;
-    if (widget.userFeId != null && widget.userNationalId != null) {
-      _feId.text = widget.userFeId!;
-      _nationalId.text = widget.userNationalId!;
-    }
+
 
     super.initState();
   }
@@ -127,8 +120,8 @@ class _UpdateMainDisciplineState extends State<UpdateMainDiscipline> {
                                 height: 5,
                               ),
                               DisciplinesWidget(
-                                discipline: discipline,
                                 disciplineId: disciplineId,
+                                discipline: discipline,
                               ),
                               Padding(
                                 padding:
@@ -205,7 +198,7 @@ class _UpdateMainDisciplineState extends State<UpdateMainDiscipline> {
                                 },
                                 child: Text(
                                   "Submit",
-                                  style: AppStyles.buttonTitle,
+                                  style: AppStyles.buttonStyle,
                                 ),
                               );
                             },

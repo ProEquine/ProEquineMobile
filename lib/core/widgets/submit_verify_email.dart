@@ -7,6 +7,7 @@ import 'package:sizer/sizer.dart';
 import '../../features/manage_account/data/verify_email_route.dart';
 import '../constants/colors/app_colors.dart';
 import '../constants/constants.dart';
+import '../constants/thems/app_styles.dart';
 
 class SubmitVerifyEmail extends StatefulWidget {
   String? title;
@@ -153,7 +154,7 @@ class _SubmitVerifyEmailState extends State<SubmitVerifyEmail>
                   onPressed: () {
                     widget.onButtonPressed!();
                   },
-                  child: Text(widget.buttonText!)))
+                  child: Text(widget.buttonText!, style: AppStyles.buttonStyle,)))
               : const SizedBox(
             height: 2,
           ),

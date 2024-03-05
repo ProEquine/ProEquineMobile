@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
-import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/features/support/presentation/widgets/support_custom_dialog.dart';
 
@@ -17,19 +16,18 @@ import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/rebi_input.dart';
-import '../../../../core/widgets/thank_widget.dart';
 
 import '../../data/support_request_model.dart';
 import '../../domain/support_cubit.dart';
 
-class Support extends StatefulWidget {
-  const Support({super.key});
+class SupportScreen extends StatefulWidget {
+  const SupportScreen({super.key});
 
   @override
-  State<Support> createState() => _SupportState();
+  State<SupportScreen> createState() => _SupportScreenState();
 }
 
-class _SupportState extends State<Support> {
+class _SupportScreenState extends State<SupportScreen> {
   final TextEditingController referenceNumber = TextEditingController();
 
   final TextEditingController descriptionIssue = TextEditingController();
@@ -44,6 +42,7 @@ class _SupportState extends State<Support> {
 
   @override
   Widget build(BuildContext context) {
+    var myCubit=context.watch<SupportCubit>();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.h),
@@ -179,8 +178,11 @@ class _SupportState extends State<Support> {
                                 //         builder: (context) =>
                                 //             const ThanksWidget()));
                                 showThanksSupportDialog(
-                                    context: context,
-                                    onPressHome: () {});
+                                    context: context, onPressHome: () {
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                      myCubit.getAllRequests(limit: 1000);
+                                });
                               } else if (state is ContactSupportError) {
                                 RebiMessage.error(
                                     msg: state.message!, context: context);
@@ -208,7 +210,10 @@ class _SupportState extends State<Support> {
                                           context: context);
                                     }
                                   },
-                                  child: const Text("Send"));
+                                  child: Text(
+                                    "Send",
+                                    style: AppStyles.buttonStyle,
+                                  ));
                             },
                           ),
                         ),
@@ -228,10 +233,14 @@ class _SupportState extends State<Support> {
   }
 
   onPressSend() {
-    return cubit.contactSupport(CreateSupportRequestModel(
-        referenceNumber: referenceNumber.text,
+    return cubit.contactSupport(
+      CreateSupportRequestModel(
+        applicableReference: referenceNumber.text,
         subject: selectedSubject,
         division: selectedDivision,
-        inquiry: descriptionIssue.text));
+        supportInquiry: descriptionIssue.text,
+        sourceIsApp: true,
+      ),
+    );
   }
 }

@@ -22,7 +22,7 @@ class UpdatePhoneScreen extends StatelessWidget {
   final TextEditingController _countryCode =
       TextEditingController(text: "+971");
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  UserCubit cubit = UserCubit();
+  ManageAccountCubit cubit = ManageAccountCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +62,10 @@ class UpdatePhoneScreen extends StatelessWidget {
             const Spacer(),
             Padding(
               padding: const EdgeInsets.all(kPadding),
-              child: BlocConsumer<UserCubit, UserState>(
+              child: BlocConsumer<ManageAccountCubit, ManageAccountState>(
                 bloc: cubit,
                 builder: (context, state) {
-                  if (state is SendVerificationLoading) {
+                  if (state is SendPhoneLoading) {
                     return const LoadingCircularWidget();
                   }
                   return RebiButton(
@@ -76,14 +76,14 @@ class UpdatePhoneScreen extends StatelessWidget {
                           onSendPhone();
                         } else {}
                       },
-                      child: const Text("Update"));
+                      child:  Text("Update", style: AppStyles.buttonStyle,));
                 },
                 listener: (context, state) {
-                  if (state is SendVerificationSuccessful) {
+                  if (state is SendPhoneSuccessful) {
                     Navigator.pushReplacementNamed(context, verifyUpdatePhone,
                         arguments: _countryCode.text + _phone.text);
 
-                  } else if (state is SendVerificationError) {
+                  } else if (state is SendPhoneError) {
                     RebiMessage.error(msg: state.message!, context: context);
                   }
                 },
@@ -99,8 +99,11 @@ class UpdatePhoneScreen extends StatelessWidget {
   }
 
   onSendPhone() {
-    return cubit.sendVerificationCode(SendVerificationRequestModel(
-      phoneNumber: _countryCode.text + _phone.text,
-    ));
+    return cubit.sendPhoneNumber(
+      EditPhoneRequestModel(
+        phoneNumber: _countryCode.text + _phone.text,
+      )
+
+    );
   }
 }

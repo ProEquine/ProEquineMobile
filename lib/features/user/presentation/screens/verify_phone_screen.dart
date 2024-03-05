@@ -11,6 +11,7 @@ import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/rebi_message.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/widgets/rebi_button.dart';
+import '../../data/register_request_model.dart';
 import '../../data/send_verification_request_model.dart';
 import '../widgets/register_header.dart';
 
@@ -113,7 +114,7 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                 child: BlocConsumer<UserCubit, UserState>(
                                   bloc: cubit,
                                   builder: (context, state) {
-                                    if (state is SendVerificationLoading) {
+                                    if (state is RegisterLoading) {
                                       return const LoadingCircularWidget();
                                     }
                                     return RebiButton(
@@ -125,38 +126,38 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                               .validate()) {
                                             FocusManager.instance.primaryFocus
                                                 ?.unfocus();
-                                            cubit.sendVerificationCode(
-                                                SendVerificationRequestModel(
-                                              phoneNumber: _countryCode.text +
+                                            _sendRegisterData(
+                                              email: widget.email,
+                                              phone: _countryCode.text +
                                                   _phone.text,
-                                            ));
+                                              firstName: widget.firstName,
+                                              lastName: widget.lastName,
+                                              middleName: widget.middleName,
+                                              gender: widget.gender,
+                                              nationality: widget.nationality,
+                                              password: widget.password,
+                                              confirmPassword:
+                                                  widget.confirmPassword,
+                                              dob: widget.dob,
+                                            );
+                                            // cubit.sendVerificationCode(
+                                            //     SendVerificationRequestModel(
+                                            //   phoneNumber: _countryCode.text +
+                                            //       _phone.text,
+                                            // ));
                                           } else {}
                                         },
-                                        child: const Text("Verify"));
+                                        child:  Text("Verify", style: AppStyles.buttonStyle,));
                                   },
                                   listener: (context, state) {
-                                    if (state is SendVerificationSuccessful) {
+                                    if (state is RegisterSuccessful) {
                                       AppSharedPreferences.inputPhoneNumber =
                                           _countryCode.text + _phone.text;
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  VerificationScreen(
-                                                      email: widget.email,
-                                                      gender: widget.gender,
-                                                      nationality:
-                                                          widget.nationality,
-                                                      confirmPassword: widget
-                                                          .confirmPassword,
-                                                      firstName:
-                                                          widget.firstName,
-                                                      middleName:
-                                                          widget.middleName,
-                                                      lastName: widget.lastName,
-                                                      phone: phoneNumber,
-                                                      password: widget.password,
-                                                      dob: widget.dob)));
+                                                  VerificationScreen()));
                                     } else if (state is SendVerificationError) {
                                       RebiMessage.error(
                                           msg: state.message!,
@@ -181,5 +182,31 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
         ),
       ),
     );
+  }
+
+  _sendRegisterData(
+      {String? email,
+      String? firstName,
+      String? middleName,
+      String? lastName,
+      String? phone,
+      String? gender,
+      String? nationality,
+      String? password,
+      String? confirmPassword,
+      String? dob}) {
+    return cubit.register(RegisterRequestModel(
+      email: email,
+      firstName: firstName,
+      middleName: middleName,
+      lastName: lastName,
+      password: password,
+      dateOfBirth: dob,
+      confirmPassword: confirmPassword,
+      gender: gender,
+      nationality: nationality,
+      phoneNumber: phone,
+      // dob: dob,
+    ));
   }
 }

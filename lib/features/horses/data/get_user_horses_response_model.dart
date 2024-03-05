@@ -1,15 +1,17 @@
 import 'package:proequine/core/CoreModels/base_result_model.dart';
 
-class GetAllHorsesResponseModel extends BaseResultModel {
-  List<UserHorseList>? userHorseList;
+class HorsesResponseModel extends BaseResultModel{
+  int? count;
+  List<Horse>? rows;
 
-  GetAllHorsesResponseModel({this.userHorseList});
+  HorsesResponseModel({this.count, this.rows});
 
-  GetAllHorsesResponseModel.fromJson(Map<String, dynamic> json) {
-    if (json['userHorseList'] != null) {
-      userHorseList = <UserHorseList>[];
-      json['userHorseList'].forEach((v) {
-        userHorseList!.add(UserHorseList.fromJson(v));
+  HorsesResponseModel.fromJson(Map<String, dynamic> json) {
+    count = json['count'];
+    if (json['rows'] != null) {
+      rows = <Horse>[];
+      json['rows'].forEach((v) {
+        rows!.add(Horse.fromJson(v));
       });
     }
   }
@@ -17,124 +19,331 @@ class GetAllHorsesResponseModel extends BaseResultModel {
   @override
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (userHorseList != null) {
-      data['userHorseList'] = userHorseList!.map((v) => v.toJson()).toList();
+    data['count'] = count;
+    if (rows != null) {
+      data['rows'] = rows!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class UserHorseList {
-  int? horseId;
-  String? horseName;
-  String? horseGender;
-  int? horseAge;
-  String? horseCondition;
-  bool? horseIsVerified;
-  String? horseImage;
-  String? breed;
-  String? bloodline;
-  String? horseCOB;
-  String? horseDOB;
-  String? horseColor;
-  DisciplineDetails? disciplineDetails;
-  StableDetails? stableDetails;
-
-  UserHorseList(
-      {this.horseId,
-      this.horseName,
-      this.horseGender,
-      this.horseAge,
-      this.horseCondition,
-      this.horseIsVerified,
-      this.horseImage,
-      this.breed,
-      this.horseCOB,
-        this.horseDOB,
-        this.horseColor,
-      this.bloodline,
-      this.disciplineDetails,
-      this.stableDetails});
-
-  UserHorseList.fromJson(Map<String, dynamic> json) {
-    horseId = json['horseId'];
-    horseName = json['horseName'];
-    horseGender = json['horseGender'];
-    horseAge = json['horseAge'];
-    horseCondition = json['horseCondition'];
-    horseIsVerified = json['horseIsVerified'];
-    horseImage = json['horseImage'];
-    breed = json['breed'];
-    horseCOB = json['horseCOB'];
-    horseDOB = json['horseDOB'];
-    horseColor = json['horseColor'];
-    bloodline = json['bloodline'];
-    disciplineDetails = json['disciplineDetails'] != null
-        ? DisciplineDetails.fromJson(json['disciplineDetails'])
-        : null;
-    stableDetails = json['stableDetails'] != null
-        ? StableDetails.fromJson(json['stableDetails'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['horseId'] = horseId;
-    data['horseName'] = horseName;
-    data['horseGender'] = horseGender;
-    data['horseAge'] = horseAge;
-    data['horseCondition'] = horseCondition;
-    data['horseIsVerified'] = horseIsVerified;
-    data['horseImage'] = horseImage;
-    data['breed'] = breed;
-    data['horseCOB'] = horseCOB;
-    data['horseDOB'] = horseDOB;
-    data['horseColor'] = horseColor;
-    data['bloodline'] = bloodline;
-    if (disciplineDetails != null) {
-      data['disciplineDetails'] = disciplineDetails!.toJson();
-    }
-    if (stableDetails != null) {
-      data['stableDetails'] = stableDetails!.toJson();
-    }
-    return data;
-  }
-}
-
-class DisciplineDetails {
+class Horse {
+  int? id;
+  int? userId;
+  User? user;
   int? disciplineId;
-  String? disciplineTitle;
+  MainDiscipline? discipline;
+  int? stableId;
+  MainStable? stable;
+  String? name;
+  int? age;
+  String? image;
+  String? status;
+  String? dateOfBirth;
+  String? placeOfBirth;
+  String? color;
+  String? gender;
+  String? bloodLine;
+  String? breed;
 
-  DisciplineDetails({this.disciplineId, this.disciplineTitle});
+  Horse(
+      {this.id,
+        this.userId,
+        this.user,
+        this.disciplineId,
+        this.discipline,
+        this.stableId,
+        this.stable,
+        this.name,
+        this.age,
+        this.image,
+        this.status,
+        this.dateOfBirth,
+        this.placeOfBirth,
+        this.color,
+        this.gender,
+        this.bloodLine,
+        this.breed});
 
-  DisciplineDetails.fromJson(Map<String, dynamic> json) {
+  Horse.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['userId'];
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
     disciplineId = json['disciplineId'];
-    disciplineTitle = json['disciplineTitle'];
+    discipline = json['discipline'] != null
+        ? MainDiscipline.fromJson(json['discipline'])
+        : null;
+    stableId = json['stableId'];
+    stable =
+    json['stable'] != null ? MainStable.fromJson(json['stable']) : null;
+    name = json['name'];
+    age = json['age'];
+    image = json['image'];
+    status = json['status'];
+    dateOfBirth = json['dateOfBirth'];
+    placeOfBirth = json['placeOfBirth'];
+    color = json['color'];
+    gender = json['gender'];
+    bloodLine = json['bloodLine'];
+    breed = json['breed'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['userId'] = userId;
+    if (user != null) {
+      data['user'] = user!.toJson();
+    }
     data['disciplineId'] = disciplineId;
-    data['disciplineTitle'] = disciplineTitle;
+    if (discipline != null) {
+      data['discipline'] = discipline!.toJson();
+    }
+    data['stableId'] = stableId;
+    if (stable != null) {
+      data['stable'] = stable!.toJson();
+    }
+    data['name'] = name;
+    data['age'] = age;
+    data['image'] = image;
+    data['status'] = status;
+    data['dateOfBirth'] = dateOfBirth;
+    data['placeOfBirth'] = placeOfBirth;
+    data['color'] = color;
+    data['gender'] = gender;
+    data['bloodLine'] = bloodLine;
+    data['breed'] = breed;
     return data;
   }
 }
 
-class StableDetails {
-  int? stableId;
-  String? stableName;
+class User {
+  int? id;
+  String? email;
+  String? phoneNumber;
+  List<String>? roles;
+  String? firstName;
+  String? lastName;
+  String? middleName;
+  String? gender;
+  String? nationality;
+  String? accessToken;
+  String? refreshToken;
+  Steps? steps;
+  String? userName;
+  bool? verifiedEmail;
+  bool? verifiedPhoneNumber;
+  bool? isBlocked;
+  String? image;
+  int? mainStableId;
+  MainStable? mainStable;
+  int? mainDisciplineId;
+  MainDiscipline? mainDiscipline;
+  String? displayName;
+  String? address;
+  String? country;
+  String? state;
+  String? city;
+  String? secondNumber;
 
-  StableDetails({this.stableId, this.stableName});
+  User(
+      {this.id,
+        this.email,
+        this.phoneNumber,
+        this.roles,
+        this.firstName,
+        this.lastName,
+        this.middleName,
+        this.gender,
+        this.nationality,
+        this.accessToken,
+        this.refreshToken,
+        this.steps,
+        this.userName,
+        this.verifiedEmail,
+        this.verifiedPhoneNumber,
+        this.isBlocked,
+        this.image,
+        this.mainStableId,
+        this.mainStable,
+        this.mainDisciplineId,
+        this.mainDiscipline,
+        this.displayName,
+        this.address,
+        this.country,
+        this.state,
+        this.city,
+        this.secondNumber});
 
-  StableDetails.fromJson(Map<String, dynamic> json) {
-    stableId = json['stableId'];
-    stableName = json['stableName'];
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    email = json['email'];
+    phoneNumber = json['phoneNumber'];
+    roles = json['roles'].cast<String>();
+    firstName = json['firstName'];
+    lastName = json['lastName'];
+    middleName = json['middleName'];
+    gender = json['gender'];
+    nationality = json['nationality'];
+    accessToken = json['accessToken'];
+    refreshToken = json['refreshToken'];
+    steps = json['steps'] != null ? Steps.fromJson(json['steps']) : null;
+    userName = json['userName'];
+    verifiedEmail = json['verifiedEmail'];
+    verifiedPhoneNumber = json['verifiedPhoneNumber'];
+    isBlocked = json['isBlocked'];
+    image = json['image'];
+    mainStableId = json['mainStableId'];
+    mainStable = json['mainStable'] != null
+        ? MainStable.fromJson(json['mainStable'])
+        : null;
+    mainDisciplineId = json['mainDisciplineId'];
+    mainDiscipline = json['mainDiscipline'] != null
+        ? MainDiscipline.fromJson(json['mainDiscipline'])
+        : null;
+    displayName = json['displayName'];
+    address = json['address'];
+    country = json['country'];
+    state = json['state'];
+    city = json['city'];
+    secondNumber = json['secondNumber'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['stableId'] = stableId;
-    data['stableName'] = stableName;
+    data['id'] = id;
+    data['email'] = email;
+    data['phoneNumber'] = phoneNumber;
+    data['roles'] = roles;
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
+    data['middleName'] = middleName;
+    data['gender'] = gender;
+    data['nationality'] = nationality;
+    data['accessToken'] = accessToken;
+    data['refreshToken'] = refreshToken;
+    if (steps != null) {
+      data['steps'] = steps!.toJson();
+    }
+    data['userName'] = userName;
+    data['verifiedEmail'] = verifiedEmail;
+    data['verifiedPhoneNumber'] = verifiedPhoneNumber;
+    data['isBlocked'] = isBlocked;
+    data['image'] = image;
+    data['mainStableId'] = mainStableId;
+    if (mainStable != null) {
+      data['mainStable'] = mainStable!.toJson();
+    }
+    data['mainDisciplineId'] = mainDisciplineId;
+    if (mainDiscipline != null) {
+      data['mainDiscipline'] = mainDiscipline!.toJson();
+    }
+    data['displayName'] = displayName;
+    data['address'] = address;
+    data['country'] = country;
+    data['state'] = state;
+    data['city'] = city;
+    data['secondNumber'] = secondNumber;
+    return data;
+  }
+}
+
+class Steps {
+  bool? isAddMainDiscipline;
+  bool? isAddMainStable;
+  bool? isAddUserName;
+  bool? isAddRole;
+  bool? isVerifiedPhoneNumber;
+  bool? isVerifiedEmail;
+
+  Steps(
+      {this.isAddMainDiscipline,
+        this.isAddMainStable,
+        this.isAddUserName,
+        this.isAddRole,
+        this.isVerifiedPhoneNumber,
+        this.isVerifiedEmail});
+
+  Steps.fromJson(Map<String, dynamic> json) {
+    isAddMainDiscipline = json['isAddMainDiscipline'];
+    isAddMainStable = json['isAddMainStable'];
+    isAddUserName = json['isAddUserName'];
+    isAddRole = json['isAddRole'];
+    isVerifiedPhoneNumber = json['isVerifiedPhoneNumber'];
+    isVerifiedEmail = json['isVerifiedEmail'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['isAddMainDiscipline'] = isAddMainDiscipline;
+    data['isAddMainStable'] = isAddMainStable;
+    data['isAddUserName'] =isAddUserName;
+    data['isAddRole'] = isAddRole;
+    data['isVerifiedPhoneNumber'] = isVerifiedPhoneNumber;
+    data['isVerifiedEmail'] = isVerifiedEmail;
+    return data;
+  }
+}
+
+class MainStable {
+  int? id;
+  String? name;
+  String? emirate;
+  String? pinLocation;
+  String? status;
+  bool? showOnApp;
+  int? createdBy;
+
+  MainStable(
+      {this.id,
+        this.name,
+        this.emirate,
+        this.pinLocation,
+        this.status,
+        this.showOnApp,
+        this.createdBy});
+
+  MainStable.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    emirate = json['emirate'];
+    pinLocation = json['pinLocation'];
+    status = json['status'];
+    showOnApp = json['showOnApp'];
+    createdBy = json['createdBy'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['emirate'] = emirate;
+    data['pinLocation'] = pinLocation;
+    data['status'] = status;
+    data['showOnApp'] = showOnApp;
+    data['createdBy'] = createdBy;
+    return data;
+  }
+}
+
+class MainDiscipline {
+  int? id;
+  String? title;
+  String? code;
+
+  MainDiscipline({this.id, this.title, this.code});
+
+  MainDiscipline.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    code = json['code'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['code'] = code;
     return data;
   }
 }

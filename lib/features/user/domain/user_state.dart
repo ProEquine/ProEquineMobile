@@ -49,27 +49,6 @@ class SendVerificationError extends UserState{
   final String? message;
   SendVerificationError({this.message});
 }
-
-class GetStablesSuccessful extends UserState{
-  final List<Stable> getStablesResponseModel;
-  GetStablesSuccessful({required this.getStablesResponseModel});
-}
-class GetStablesLoading extends UserState{}
-class GetStablesError extends UserState{
-  final String? message;
-  GetStablesError({this.message});
-}
-
-class GetAllDisciplinesSuccessful extends UserState{
-  final List<AllDiscipline> disciplines;
-  GetAllDisciplinesSuccessful({required this.disciplines});
-}
-class GetAllDisciplinesLoading extends UserState{}
-class GetAllDisciplinesError extends UserState{
-  final String? message;
-  GetAllDisciplinesError({this.message});
-}
-
 class CheckVerificationSuccessful extends UserState{
   final String? message;
   CheckVerificationSuccessful({required this.message});
@@ -91,7 +70,7 @@ class ForgotPasswordError extends UserState{
 }
 
 class ResetPasswordSuccessful extends UserState{
-  final ResetPasswordResponseModel? responseModel;
+  final RegisterResponseModel? responseModel;
   ResetPasswordSuccessful({required this.responseModel});
 }
 class ResetPasswordLoading extends UserState{}
@@ -156,16 +135,5 @@ class CheckUpdateMailLoading extends UserState{}
 class CheckUpdateMailError extends UserState{
   final String? message;
   CheckUpdateMailError({this.message});
-}
-class ChoseStableSuccessful extends UserState {
-  final String? message;
-  ChoseStableSuccessful({required this.message});
-}
-
-class ChoseStableLoading extends UserState {}
-
-class ChoseStableError extends UserState {
-  final String? message;
-  ChoseStableError({this.message});
 }
 

@@ -156,7 +156,7 @@ class _AddNewPlaceScreenState extends State<AddNewPlaceScreen> {
                                   context: context);
                             }
                           },
-                          child: const Text("Next")),
+                          child:  Text("Next", style: AppStyles.buttonStyle,),),
                     ),
                     const SizedBox(
                       height: 30,

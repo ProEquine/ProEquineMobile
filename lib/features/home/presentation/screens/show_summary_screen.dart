@@ -122,7 +122,7 @@ class ShowSummaryScreen extends StatelessWidget {
                             )),
                   );
                 },
-                child: const Text("Close")),
+                child:  Text("Close", style: AppStyles.buttonStyle,)),
             const SizedBox(
               height: 30,
             ),

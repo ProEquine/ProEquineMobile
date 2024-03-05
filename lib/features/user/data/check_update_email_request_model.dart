@@ -1,18 +1,16 @@
 class CheckUpdateEmailRequestModel {
-  String? newEmail;
-  String? code;
 
-  CheckUpdateEmailRequestModel({this.newEmail, this.code});
+  String? otpCode;
+
+  CheckUpdateEmailRequestModel({this.otpCode});
 
   CheckUpdateEmailRequestModel.fromJson(Map<String, dynamic> json) {
-    newEmail = json['emailAddress'];
-    code = json['verificationCode'];
+    otpCode = json['otpCode'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['emailAddress'] = newEmail;
-    data['verificationCode'] = code;
+    data['otpCode'] = otpCode;
     return data;
   }
 }

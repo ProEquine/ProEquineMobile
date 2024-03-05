@@ -7,6 +7,7 @@ import 'package:proequine/core/widgets/rebi_button.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/images/app_images.dart';
+import '../../../../core/constants/thems/app_styles.dart';
 
 void showThanksSupportDialog(
     {required BuildContext context,
@@ -56,9 +57,9 @@ void showThanksSupportDialog(
                   const SizedBox(height: 19),
                   RebiButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, homeRoute);
+                      onPressHome();
                       },
-                      child: Text("Home")),
+                      child: Text("Submit", style: AppStyles.buttonStyle,)),
                 ],
               ),
             ),

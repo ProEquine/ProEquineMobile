@@ -14,6 +14,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/routes/routes.dart';
+import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
@@ -163,10 +164,13 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                         ),
                                       ),
                                       onSelect: (Country selectedCountry) {
-                                        country.text = selectedCountry.name;
-                                        countryState.text = '';
+                                        setState(() {
+                                          country.text = selectedCountry.name;
+                                          countryState.text = '';
 
-                                        city.text = '';
+                                          city.text = '';
+                                        });
+
 
 
                                       });
@@ -187,225 +191,225 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                               child: Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 7),
-                                // child: country.text == 'United Arab Emirates'
-                                //     ? RebiInput(
-                                //         hintText: 'State'.tra,
-                                //         controller: countryState,
-                                //         keyboardType: TextInputType.text,
-                                //         textInputAction: TextInputAction.done,
-                                //         onTap: () {
-                                //           Variables.country =
-                                //               'United Arab Emirates';
-                                //           showModalBottomSheet(
-                                //             isScrollControlled: true,
-                                //             shape: const RoundedRectangleBorder(
-                                //               borderRadius: BorderRadius.only(
-                                //                 topLeft: Radius.circular(40.0),
-                                //                 topRight: Radius.circular(40.0),
-                                //               ),
-                                //             ),
-                                //             context: context,
-                                //             isDismissible: false,
-                                //             builder: (context) => SizedBox(
-                                //               height: MediaQuery.of(context)
-                                //                       .size
-                                //                       .height *
-                                //                   0.8,
-                                //               child: StateDialog(
-                                //                 stateHeaderStyle:
-                                //                     const TextStyle(
-                                //                         color: AppColors
-                                //                             .blackLight,
-                                //                         fontWeight:
-                                //                             FontWeight.w500),
-                                //                 style: const TextStyle(
-                                //                     color: AppColors.blackLight,
-                                //                     fontWeight:
-                                //                         FontWeight.w500),
-                                //                 subStringStyle: const TextStyle(
-                                //                     color:
-                                //                         AppColors.blackLight),
-                                //                 substringBackground:
-                                //                     Colors.transparent,
-                                //                 selectedStateBackgroundColor:
-                                //                     AppColors
-                                //                         .backgroundColorLight,
-                                //                 notSelectedStateBackgroundColor:
-                                //                     Colors.transparent,
-                                //                 onSelectedState: () {
-                                //                   setState(() {
-                                //                     countryState.text =
-                                //                         Variables.state;
-                                //                     city.text = '';
-                                //                     Print(
-                                //                         "choosed state ${countryState.text}");
-                                //                   });
-                                //                 },
-                                //               ),
-                                //             ),
-                                //           );
-                                //         },
-                                //         autoValidateMode:
-                                //             AutovalidateMode.onUserInteraction,
-                                //         isOptional: false,
-                                //         color: AppColors.formsLabel,
-                                //         readOnly: true,
-                                //         contentPadding:
-                                //             const EdgeInsets.symmetric(
-                                //                 horizontal: 20, vertical: 13),
-                                //         obscureText: false,
-                                //         validator: (value) {},
-                                //       )
-                                //     : RebiInput(
-                                //         hintText: 'State'.tra,
-                                //         controller: countryState,
-                                //         keyboardType: TextInputType.text,
-                                //         textInputAction: TextInputAction.done,
-                                //         autoValidateMode:
-                                //             AutovalidateMode.onUserInteraction,
-                                //         isOptional: false,
-                                //         onChanged: (value) {
-                                //           setState(() {});
-                                //         },
-                                //         color: AppColors.formsLabel,
-                                //         readOnly: false,
-                                //         contentPadding:
-                                //             const EdgeInsets.symmetric(
-                                //                 horizontal: 20, vertical: 13),
-                                //         obscureText: false,
-                                //         validator: (value) {
-                                //           return Validator.requiredValidator(
-                                //               countryState.text);
-                                //         },
-                                //       ),
-                                child: RebiInput(
-                                  hintText: 'State'.tra,
-                                  controller: countryState,
-                                  keyboardType: TextInputType.text,
-                                  textInputAction: TextInputAction.done,
-                                  onTap: () {
-                                    showHospitalsAndPlacesBottomSheet(
-                                      context: context,
-                                      title: "States",
-                                      content: BlocConsumer<ManageAccountCubit,
-                                          ManageAccountState>(
-                                        bloc: cubit..getAllStates(country.text),
-                                        listener: (context, state) {
-                                          // TODO: implement listener
-                                        },
-                                        builder: (context, state) {
-                                          if (state
-                                              is GetAllStatesSuccessfully) {
-                                            return SingleChildScrollView(
-                                              child: StatefulBuilder(
-                                                  builder: (context, setState) {
-                                                if (state.responseModel!.states!
-                                                    .isNotEmpty) {
-                                                  return ListView.separated(
-                                                    shrinkWrap: true,
-                                                    physics:
-                                                        const NeverScrollableScrollPhysics(),
-                                                    itemCount: state
-                                                        .responseModel!
-                                                        .states!
-                                                        .length,
-                                                    separatorBuilder:
-                                                        (context, index) {
-                                                      return const CustomDivider();
-                                                    },
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      return GestureDetector(
-                                                        onTap: () {
-                                                          countryState.text =
-                                                              state.responseModel!
-                                                                      .states![
-                                                                  index];
-                                                          city.text = '';
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              countryState
-                                                                  .text = state
-                                                                      .responseModel!
-                                                                      .states![
-                                                                  index],
-                                                              style: const TextStyle(
-                                                                  color: AppColors
-                                                                      .blackLight),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      );
-                                                    },
-                                                  );
-                                                } else {
-                                                  return const Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      SizedBox(
-                                                        height: 100,
-                                                      ),
-                                                      Center(
-                                                        child:
-                                                            Text("No States"),
-                                                      ),
-                                                    ],
-                                                  );
-                                                }
-                                              }),
-                                            );
-                                          } else if (state
-                                              is GetAllStatesError) {
-                                            const Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Center(
-                                                  child:
-                                                      LoadingCircularWidget(),
-                                                )
-                                              ],
-                                            );
-                                          }
-                                          return const Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Center(
-                                                child: LoadingCircularWidget(),
-                                              )
-                                            ],
+                                child: country.text == 'United Arab Emirates'
+                                    ? RebiInput(
+                                        hintText: 'State'.tra,
+                                        controller: countryState,
+                                        keyboardType: TextInputType.text,
+                                        textInputAction: TextInputAction.done,
+                                        onTap: () {
+                                          Variables.country =
+                                              'United Arab Emirates';
+                                          showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(40.0),
+                                                topRight: Radius.circular(40.0),
+                                              ),
+                                            ),
+                                            context: context,
+                                            isDismissible: false,
+                                            builder: (context) => SizedBox(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.8,
+                                              child: StateDialog(
+                                                stateHeaderStyle:
+                                                    const TextStyle(
+                                                        color: AppColors
+                                                            .blackLight,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                style: const TextStyle(
+                                                    color: AppColors.blackLight,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                subStringStyle: const TextStyle(
+                                                    color:
+                                                        AppColors.blackLight),
+                                                substringBackground:
+                                                    Colors.transparent,
+                                                selectedStateBackgroundColor:
+                                                    AppColors
+                                                        .backgroundColorLight,
+                                                notSelectedStateBackgroundColor:
+                                                    Colors.transparent,
+                                                onSelectedState: () {
+                                                  setState(() {
+                                                    countryState.text =
+                                                        Variables.state;
+                                                    city.text = '';
+                                                    Print(
+                                                        "choosed state ${countryState.text}");
+                                                  });
+                                                },
+                                              ),
+                                            ),
                                           );
                                         },
+                                        autoValidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        isOptional: false,
+                                        color: AppColors.formsLabel,
+                                        readOnly: true,
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 13),
+                                        obscureText: false,
+                                        validator: (value) {},
+                                      )
+                                    : RebiInput(
+                                        hintText: 'State'.tra,
+                                        controller: countryState,
+                                        keyboardType: TextInputType.text,
+                                        textInputAction: TextInputAction.done,
+                                        autoValidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        isOptional: false,
+                                        onChanged: (value) {
+                                          setState(() {});
+                                        },
+                                        color: AppColors.formsLabel,
+                                        readOnly: false,
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 13),
+                                        obscureText: false,
+                                        validator: (value) {
+                                          return Validator.requiredValidator(
+                                              countryState.text);
+                                        },
                                       ),
-                                    );
-                                  },
-                                  autoValidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  isOptional: false,
-                                  color: AppColors.formsLabel,
-                                  readOnly: true,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 13),
-                                  obscureText: false,
-                                  validator: (value) {},
-                                ),
+                                // child: RebiInput(
+                                //   hintText: 'State'.tra,
+                                //   controller: countryState,
+                                //   keyboardType: TextInputType.text,
+                                //   textInputAction: TextInputAction.done,
+                                //   onTap: () {
+                                //     showHospitalsAndPlacesBottomSheet(
+                                //       context: context,
+                                //       title: "States",
+                                //       content: BlocConsumer<ManageAccountCubit,
+                                //           ManageAccountState>(
+                                //         bloc: cubit..getAllStates(country.text),
+                                //         listener: (context, state) {
+                                //           // TODO: implement listener
+                                //         },
+                                //         builder: (context, state) {
+                                //           if (state
+                                //               is GetAllStatesSuccessfully) {
+                                //             return SingleChildScrollView(
+                                //               child: StatefulBuilder(
+                                //                   builder: (context, setState) {
+                                //                 if (state.responseModel!.states!
+                                //                     .isNotEmpty) {
+                                //                   return ListView.separated(
+                                //                     shrinkWrap: true,
+                                //                     physics:
+                                //                         const NeverScrollableScrollPhysics(),
+                                //                     itemCount: state
+                                //                         .responseModel!
+                                //                         .states!
+                                //                         .length,
+                                //                     separatorBuilder:
+                                //                         (context, index) {
+                                //                       return const CustomDivider();
+                                //                     },
+                                //                     itemBuilder:
+                                //                         (context, index) {
+                                //                       return GestureDetector(
+                                //                         onTap: () {
+                                //                           countryState.text =
+                                //                               state.responseModel!
+                                //                                       .states![
+                                //                                   index];
+                                //                           city.text = '';
+                                //                           Navigator.pop(
+                                //                               context);
+                                //                         },
+                                //                         child: Column(
+                                //                           crossAxisAlignment:
+                                //                               CrossAxisAlignment
+                                //                                   .start,
+                                //                           children: [
+                                //                             Text(
+                                //                               countryState
+                                //                                   .text = state
+                                //                                       .responseModel!
+                                //                                       .states![
+                                //                                   index],
+                                //                               style: const TextStyle(
+                                //                                   color: AppColors
+                                //                                       .blackLight),
+                                //                             )
+                                //                           ],
+                                //                         ),
+                                //                       );
+                                //                     },
+                                //                   );
+                                //                 } else {
+                                //                   return const Column(
+                                //                     mainAxisAlignment:
+                                //                         MainAxisAlignment
+                                //                             .center,
+                                //                     crossAxisAlignment:
+                                //                         CrossAxisAlignment
+                                //                             .center,
+                                //                     children: [
+                                //                       SizedBox(
+                                //                         height: 100,
+                                //                       ),
+                                //                       Center(
+                                //                         child:
+                                //                             Text("No States"),
+                                //                       ),
+                                //                     ],
+                                //                   );
+                                //                 }
+                                //               }),
+                                //             );
+                                //           } else if (state
+                                //               is GetAllStatesError) {
+                                //             const Column(
+                                //               mainAxisAlignment:
+                                //                   MainAxisAlignment.center,
+                                //               crossAxisAlignment:
+                                //                   CrossAxisAlignment.center,
+                                //               children: [
+                                //                 Center(
+                                //                   child:
+                                //                       LoadingCircularWidget(),
+                                //                 )
+                                //               ],
+                                //             );
+                                //           }
+                                //           return const Column(
+                                //             mainAxisAlignment:
+                                //                 MainAxisAlignment.center,
+                                //             crossAxisAlignment:
+                                //                 CrossAxisAlignment.center,
+                                //             children: [
+                                //               Center(
+                                //                 child: LoadingCircularWidget(),
+                                //               )
+                                //             ],
+                                //           );
+                                //         },
+                                //       ),
+                                //     );
+                                //   },
+                                //   autoValidateMode:
+                                //       AutovalidateMode.onUserInteraction,
+                                //   isOptional: false,
+                                //   color: AppColors.formsLabel,
+                                //   readOnly: true,
+                                //   contentPadding: const EdgeInsets.symmetric(
+                                //       horizontal: 20, vertical: 13),
+                                //   obscureText: false,
+                                //   validator: (value) {},
+                                // ),
                               ),
                             ),
                             Visibility(
@@ -418,123 +422,123 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                   controller: city,
                                   keyboardType: TextInputType.text,
                                   textInputAction: TextInputAction.done,
-                                  onTap: () {
-                                    showHospitalsAndPlacesBottomSheet(
-                                      context: context,
-                                      title: "Cities",
-                                      content: BlocConsumer<ManageAccountCubit,
-                                          ManageAccountState>(
-                                        bloc: cubit
-                                          ..getALlCities(countryState.text),
-                                        listener: (context, state) {
-                                          // TODO: implement listener
-                                        },
-                                        builder: (context, state) {
-                                          if (state
-                                              is GetAllCitiesSuccessfully) {
-                                            return SingleChildScrollView(
-                                              child: StatefulBuilder(
-                                                  builder: (context, setState) {
-                                                if (state.responseModel!.cities!
-                                                    .isNotEmpty) {
-                                                  return ListView.separated(
-                                                    shrinkWrap: true,
-                                                    physics:
-                                                        const NeverScrollableScrollPhysics(),
-                                                    itemCount: state
-                                                        .responseModel!
-                                                        .cities!
-                                                        .length,
-                                                    separatorBuilder:
-                                                        (context, index) {
-                                                      return const CustomDivider();
-                                                    },
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      return GestureDetector(
-                                                        onTap: () {
-                                                          city.text = state
-                                                              .responseModel!
-                                                              .cities![index];
-
-                                                          Navigator.pop(context);
-                                                        },
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              city
-                                                                  .text = state
-                                                                      .responseModel!
-                                                                      .cities![
-                                                                  index],
-                                                              style: const TextStyle(
-                                                                  color: AppColors
-                                                                      .blackLight),
-                                                            )
-                                                          ],
-                                                        ),
-                                                      );
-                                                    },
-                                                  );
-                                                } else {
-                                                  return const Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      SizedBox(
-                                                        height: 100,
-                                                      ),
-                                                      Center(
-                                                        child:
-                                                            Text("No Cities"),
-                                                      ),
-                                                    ],
-                                                  );
-                                                }
-                                              }),
-                                            );
-                                          } else if (state
-                                              is GetAllCitiesError) {
-                                            const Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Center(
-                                                  child:
-                                                      LoadingCircularWidget(),
-                                                )
-                                              ],
-                                            );
-                                          }
-                                          return const Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Center(
-                                                child: LoadingCircularWidget(),
-                                              )
-                                            ],
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  },
+                                  // onTap: () {
+                                  //   showHospitalsAndPlacesBottomSheet(
+                                  //     context: context,
+                                  //     title: "Cities",
+                                  //     content: BlocConsumer<ManageAccountCubit,
+                                  //         ManageAccountState>(
+                                  //       bloc: cubit
+                                  //         ..getALlCities(countryState.text),
+                                  //       listener: (context, state) {
+                                  //         // TODO: implement listener
+                                  //       },
+                                  //       builder: (context, state) {
+                                  //         if (state
+                                  //             is GetAllCitiesSuccessfully) {
+                                  //           return SingleChildScrollView(
+                                  //             child: StatefulBuilder(
+                                  //                 builder: (context, setState) {
+                                  //               if (state.responseModel!.cities!
+                                  //                   .isNotEmpty) {
+                                  //                 return ListView.separated(
+                                  //                   shrinkWrap: true,
+                                  //                   physics:
+                                  //                       const NeverScrollableScrollPhysics(),
+                                  //                   itemCount: state
+                                  //                       .responseModel!
+                                  //                       .cities!
+                                  //                       .length,
+                                  //                   separatorBuilder:
+                                  //                       (context, index) {
+                                  //                     return const CustomDivider();
+                                  //                   },
+                                  //                   itemBuilder:
+                                  //                       (context, index) {
+                                  //                     return GestureDetector(
+                                  //                       onTap: () {
+                                  //                         city.text = state
+                                  //                             .responseModel!
+                                  //                             .cities![index];
+                                  //
+                                  //                         Navigator.pop(context);
+                                  //                       },
+                                  //                       child: Column(
+                                  //                         crossAxisAlignment:
+                                  //                             CrossAxisAlignment
+                                  //                                 .start,
+                                  //                         children: [
+                                  //                           Text(
+                                  //                             city
+                                  //                                 .text = state
+                                  //                                     .responseModel!
+                                  //                                     .cities![
+                                  //                                 index],
+                                  //                             style: const TextStyle(
+                                  //                                 color: AppColors
+                                  //                                     .blackLight),
+                                  //                           )
+                                  //                         ],
+                                  //                       ),
+                                  //                     );
+                                  //                   },
+                                  //                 );
+                                  //               } else {
+                                  //                 return const Column(
+                                  //                   mainAxisAlignment:
+                                  //                       MainAxisAlignment
+                                  //                           .center,
+                                  //                   crossAxisAlignment:
+                                  //                       CrossAxisAlignment
+                                  //                           .center,
+                                  //                   children: [
+                                  //                     SizedBox(
+                                  //                       height: 100,
+                                  //                     ),
+                                  //                     Center(
+                                  //                       child:
+                                  //                           Text("No Cities"),
+                                  //                     ),
+                                  //                   ],
+                                  //                 );
+                                  //               }
+                                  //             }),
+                                  //           );
+                                  //         } else if (state
+                                  //             is GetAllCitiesError) {
+                                  //           const Column(
+                                  //             mainAxisAlignment:
+                                  //                 MainAxisAlignment.center,
+                                  //             crossAxisAlignment:
+                                  //                 CrossAxisAlignment.center,
+                                  //             children: [
+                                  //               Center(
+                                  //                 child:
+                                  //                     LoadingCircularWidget(),
+                                  //               )
+                                  //             ],
+                                  //           );
+                                  //         }
+                                  //         return const Column(
+                                  //           mainAxisAlignment:
+                                  //               MainAxisAlignment.center,
+                                  //           crossAxisAlignment:
+                                  //               CrossAxisAlignment.center,
+                                  //           children: [
+                                  //             Center(
+                                  //               child: LoadingCircularWidget(),
+                                  //             )
+                                  //           ],
+                                  //         );
+                                  //       },
+                                  //     ),
+                                  //   );
+                                  // },
                                   autoValidateMode:
                                       AutovalidateMode.onUserInteraction,
                                   isOptional: false,
                                   color: AppColors.formsLabel,
-                                  readOnly: true,
+                                  readOnly: false,
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 20, vertical: 13),
                                   obscureText: false,
@@ -607,7 +611,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                 }
                               },
                               child: Text(
-                                widget.country == null ? "Add" : "Update",
+                                widget.country == null ? "Add" : "Update", style: AppStyles.buttonStyle,
                               ),
                             );
                           },

@@ -1,8 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proequine/core/utils/secure_storage/secure_storage_helper.dart';
 import 'package:proequine/core/widgets/custom_error_widget.dart';
 import 'package:proequine/features/horses/domain/horse_cubit.dart';
 import 'package:proequine/features/horses/presentation/screens/add_horse_screen.dart';
@@ -14,10 +13,6 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
-import '../../../../core/constants/routes/routes.dart';
-import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
-import '../../../../core/widgets/verify_dialog.dart';
-import '../../../manage_account/data/verify_email_route.dart';
 
 class MainHorsesScreen extends StatefulWidget {
   const MainHorsesScreen({Key? key}) : super(key: key);
@@ -30,47 +25,19 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
   ScrollController scrollController = ScrollController();
   bool isScrolled = false;
 
-  Future<bool> checkVerificationStatus() async {
-    if (AppSharedPreferences.getEmailVerified!) {
-      return true;
-    } else {
-      await Future.delayed(
-          const Duration(milliseconds: 50)); // Simulating an asynchronous call
-      return false;
-    }
-  }
-
   @override
   void initState() {
+    context.read<HorseCubit>().getAllHorses(limit: 100);
     super.initState();
-    checkVerificationStatus().then((verified) {
-      if (!verified) {
-        Future.delayed(const Duration(milliseconds: 50), () {
-          showUnverifiedAccountDialog(
-            context: context,
-            isThereNavigationBar: true,
-            onPressVerify: () {
-              Navigator.pushNamed(context, verifyEmail,
-                      arguments: VerifyEmailRoute(
-                          type: 'Horses',
-                          email: AppSharedPreferences.userEmailAddress))
-                  .then((value) {});
-            },
-          );
-        });
-      }
-    });
     // Set a timer for 3 seconds
     scrollController.addListener(() {
-      if (scrollController.offset > 30) {
-        if (!isScrolled) {
+      setState(() {
+        if (scrollController.offset > 30) {
           isScrolled = true;
-        }
-      } else {
-        if (isScrolled) {
+        } else {
           isScrolled = false;
         }
-      }
+      });
     });
   }
 
@@ -85,7 +52,7 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-            child:MediaQuery(
+        child: MediaQuery(
       data: const MediaQueryData(
           viewInsets: EdgeInsets.only(top: 100, bottom: 0)),
       child: CupertinoPageScaffold(
@@ -101,137 +68,130 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
                         color: isScrolled
                             ? AppColors.borderColor
                             : Colors.transparent)),
-                trailing: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const AddHorseScreen()));
-                  },
-                  child: const Text(
-                    "Add Horse",
-                    style: TextStyle(
-                      color: Color(0xFFC48636),
-                      fontSize: 14,
-                      fontFamily: 'notosans',
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
                 alwaysShowMiddle: false,
-                padding: const EdgeInsetsDirectional.only(bottom: 1),
+                padding: const EdgeInsetsDirectional.only(bottom: 0),
                 backgroundColor: AppColors.backgroundColorLight,
-                largeTitle: const Text(
-                  'Horses',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 30,
-                      fontFamily: 'notosan'),
-                ),
-                middle: const Text(
-                  'Horses',
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                largeTitle: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: isScrolled ? kPadding : 0,
+                          vertical: isScrolled ? 0 : 0),
+                      child: Text(
+                        'Horses',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: isScrolled ? 15 : 30,
+                            fontFamily: 'notosan'),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: kPadding),
+                      child: TextButton(
+                        onPressed: () async {
+                          String? userId = await SecureStorage().getUserId();
+                          if (context.mounted) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AddHorseScreen(
+                                          userId: int.parse(userId!),
+                                        )));
+                          }
+                        },
+                        child: const Text(
+                          "Add Horse",
+                          style: TextStyle(
+                            color: Color(0xFFC48636),
+                            fontSize: 15,
+                            fontFamily: 'notosans',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ];
           },
-          body: BlocProvider(
-            create: (context) => cubit..getAllHorses(),
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: BlocBuilder<HorseCubit, HorseState>(
-                  // bloc: cubit,
-                  builder: (context, state) {
-                    if (state is GetUserHorsesSuccessfully) {
-                      if (state
-                          .getAllHorsesResponseModel.userHorseList!.isEmpty) {
-                        return Container(
-                            height: 100.0.h,
-                            width: 200,
-                            child: const EmptyHorsesWidget());
-                      } else {
-                        return Column(
-                          children: [
-                            ListView.builder(
-                                shrinkWrap: true,
-                                primary: false,
-                                itemCount: state.getAllHorsesResponseModel
-                                    .userHorseList!.length,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: kPadding, vertical: 10),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    HorseProfileScreen(
-                                                      response: state
-                                                          .getAllHorsesResponseModel
-                                                          .userHorseList![index],
-                                                    )));
-                                      },
-                                      child: HorseCardWidget(
-                                        age: state.getAllHorsesResponseModel
-                                            .userHorseList![index].horseAge.toString()??"NA",
-                                        gender: state.getAllHorsesResponseModel
-                                            .userHorseList![index].horseGender!,
-                                        breed: state.getAllHorsesResponseModel
-                                            .userHorseList![index].breed!,
-                                        // placeOfBirth: state.getAllHorsesResponseModel.userHorseList![index].,
-                                        horseName: state
-                                            .getAllHorsesResponseModel
-                                            .userHorseList![index]
-                                            .horseName!,
-                                        discipline: state
-                                            .getAllHorsesResponseModel
-                                            .userHorseList![index]
-                                            .disciplineDetails!
-                                            .disciplineTitle!,
-                                        horsePic: state
-                                                .getAllHorsesResponseModel
-                                                .userHorseList![index]
-                                                .horseImage ??
-                                            '',
-                                        isVerified: state
-                                            .getAllHorsesResponseModel
-                                            .userHorseList![index]
-                                            .horseIsVerified!,
-                                        horseStable: state
-                                            .getAllHorsesResponseModel
-                                            .userHorseList![index]
-                                            .stableDetails!
-                                            .stableName!,
-                                        horseStatus: state
-                                                .getAllHorsesResponseModel
-                                                .userHorseList![index]
-                                                .horseCondition ??
-                                            '',
-                                      ),
-                                    ),
-                                  );
-                                }),
-                            const SizedBox(
-                              height: 80,
+          body: SingleChildScrollView(
+            child: BlocBuilder<HorseCubit, HorseState>(
+              // bloc: cubit,
+              builder: (context, state) {
+                if (state is GetUserHorsesSuccessfully) {
+                  if (state.horses.isEmpty) {
+                    return SizedBox(
+                        height: 100.0.h,
+                        width: 200,
+                        child:  EmptyHorsesWidget());
+                  } else {
+                    return Column(
+                      children: [
+                        GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              mainAxisSpacing: 8,
+                              childAspectRatio: 1,
+
+                              crossAxisCount: 2, // Adjust the number of columns
                             ),
-                          ],
-                        );
-                      }
-                    }
-                    if (state is GetUserHorsesError) {
-                      return CustomErrorWidget(onRetry: () {
-                        cubit.getAllHorses();
-                      });
-                    } else if (state is GetUserHorsesLoading) {
-                      return const MainHorsesLoadingWidget();
-                    }
-                    return Container();
-                  },
-                ),
-              ),
+                            shrinkWrap: true,
+                            primary: false,
+                            itemCount: state.horses.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: kPadding, vertical: 10),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HorseProfileScreen(
+                                                  response: state.horses[index],
+                                                )));
+                                  },
+                                  child: HorseCardWidget(
+                                    age: state.horses[index].dateOfBirth
+                                            .toString() ??
+                                        "NA",
+                                    gender: state.horses[index].gender!,
+                                    breed: state.horses[index].breed!,
+                                    horseName: state.horses[index].name!,
+                                    discipline:
+                                        state.horses[index].discipline!.title!,
+                                    horsePic: state.horses[index].image ?? '',
+                                    isVerified:
+                                        state.horses[index].status == 'verifed'
+                                            ? true
+                                            : false,
+                                    horseStable:
+                                        state.horses[index].stable!.name!,
+                                    horseStatus:
+                                        state.horses[index].status ?? '',
+                                  ),
+                                ),
+                              );
+                            }),
+                        const SizedBox(
+                          height: 80,
+                        ),
+                      ],
+                    );
+                  }
+                }
+                if (state is GetUserHorsesError) {
+                  return CustomErrorWidget(onRetry: () {
+                    cubit.getAllHorses();
+                  });
+                } else if (state is GetUserHorsesLoading) {
+                  return const MainHorsesLoadingWidget();
+                }
+                return Container();
+              },
             ),
           ),
         ),

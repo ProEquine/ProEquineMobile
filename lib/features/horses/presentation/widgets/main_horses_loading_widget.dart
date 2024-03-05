@@ -19,29 +19,31 @@ class _MainHorsesLoadingWidgetState extends State<MainHorsesLoadingWidget> {
       child: Column(
         children: [
          const SizedBox(height: 7,),
-          ListView.builder(
+          GridView.builder(
+                gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisSpacing: 8,
+                  childAspectRatio: 1,
+
+                  crossAxisCount: 2, // Adjust the number of columns
+                ),
               shrinkWrap: true,
               primary: false,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: 6,
+              itemCount: 12,
               itemBuilder: (context, index) {
                 return Padding(
                   padding:  const EdgeInsets.symmetric(
                       horizontal: kPadding, vertical: 10),
                   child: ShimmerLoading(
                     isLoading: true,
-                    child: HorseCardWidget(
-                      age: 'ages[index]',
-                      gender: 'Mare',
-                      breed: "Selle",
-                      isLoading: true,
-                      placeOfBirth: "Français",
-                      horseName: 'names[index]',
-                      discipline: "Show jumping",
-                      horsePic: AppImages.stormy,
-                      isVerified: false,
-                      horseStable: "Malath",
-                      horseStatus: 'status[index]',
+                    child: Container(
+                      height: 180,
+                      width: 200,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
                 );

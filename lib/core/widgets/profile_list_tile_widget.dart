@@ -37,7 +37,7 @@ class ProfileListTileWidgetState extends State<ProfileListTileWidget> {
             widget.title!,
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w500,
                 color: widget.isDeleteAccount
                     ? AppColors.red
                     : AppColors.blackLight,

@@ -23,6 +23,47 @@ class UpdateHorseError extends HorseState{
   final String? message;
   UpdateHorseError({this.message});
 }
+class UploadFileSuccessful extends HorseState {
+  final UploadFileResponseModel? fileUrl;
+
+  UploadFileSuccessful({required this.fileUrl});
+}
+
+class UploadFileLoading extends HorseState {}
+
+class UploadFileError extends HorseState {
+  final String? message;
+
+  UploadFileError({this.message});
+}
+
+class UploadOwnerShipFileSuccessful extends HorseState {
+  final UploadFileResponseModel? fileUrl;
+
+  UploadOwnerShipFileSuccessful({required this.fileUrl});
+}
+
+class UploadOwnerShipFileLoading extends HorseState {}
+
+class UploadOwnerShipFileError extends HorseState {
+  final String? message;
+
+  UploadOwnerShipFileError({this.message});
+}
+
+class UploadNationalPassportFileSuccessful extends HorseState {
+  final UploadFileResponseModel? fileUrl;
+
+  UploadNationalPassportFileSuccessful({required this.fileUrl});
+}
+
+class UploadNationalPassportFileLoading extends HorseState {}
+
+class UploadNationalPassportFileError extends HorseState {
+  final String? message;
+
+  UploadNationalPassportFileError({this.message});
+}
 class RemoveHorseSuccessfully extends HorseState{
   final String message;
   RemoveHorseSuccessfully({required this.message});
@@ -82,8 +123,10 @@ class VerifyHorseError extends HorseState{
 }
 
 class GetUserHorsesSuccessfully extends HorseState{
-  final GetAllHorsesResponseModel getAllHorsesResponseModel;
-  GetUserHorsesSuccessfully({required this.getAllHorsesResponseModel});
+  final List<Horse> horses;
+  final int offset;
+  final int count;
+  GetUserHorsesSuccessfully({required this.horses,required this.offset,required this.count});
 }
 class GetUserHorsesLoading extends HorseState{}
 class GetUserHorsesError extends HorseState{
@@ -92,12 +135,16 @@ class GetUserHorsesError extends HorseState{
 }
 
 class GetHorsesDocumentsSuccessfully extends HorseState{
-  final AllHorsesDocumentsResponseModel responseModel;
-  GetHorsesDocumentsSuccessfully({required this.responseModel});
+  final List<HorseDocuments> documents;
+  final int offset;
+  final int count;
+  GetHorsesDocumentsSuccessfully({required this.documents,required this.offset,required this.count});
 }
 class GetHorsesDocumentsLoading extends HorseState{}
 class GetHorsesDocumentsError extends HorseState{
   final String? message;
   GetHorsesDocumentsError({this.message});
 }
+
+
 

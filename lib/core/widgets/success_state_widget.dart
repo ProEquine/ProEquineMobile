@@ -9,6 +9,7 @@ import 'package:sizer/sizer.dart';
 import '../../features/manage_account/data/basic_account_management_route.dart';
 import '../constants/colors/app_colors.dart';
 import '../constants/constants.dart';
+import '../constants/thems/app_styles.dart';
 
 class SuccessStateScreen extends StatefulWidget {
   String? title;
@@ -89,7 +90,9 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const BottomNavigation(selectedIndex: 4,))));
+                                        const BottomNavigation(
+                                          selectedIndex: 4,
+                                        ))));
                     }
                     if (verifyPhoneRoute?.type == 'profileImage') {
                       _controller
@@ -128,10 +131,14 @@ class _SuccessStateScreenState extends State<SuccessStateScreen>
                   padding: const EdgeInsets.symmetric(
                       horizontal: kPadding, vertical: 10),
                   child: RebiButton(
-                      onPressed: () {
-                        widget.onButtonPressed!();
-                      },
-                      child: Text(widget.buttonText!)))
+                    onPressed: () {
+                      widget.onButtonPressed!();
+                    },
+                    child: Text(
+                      widget.buttonText!,
+                      style: AppStyles.buttonStyle,
+                    ),
+                  ))
               : const SizedBox(
                   height: 2,
                 ),

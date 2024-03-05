@@ -1,4 +1,5 @@
 import 'package:proequine/features/splash/data/env_response_model.dart';
+import 'package:proequine/features/user/data/register_response_model.dart';
 
 import '../../../../core/CoreModels/base_result_model.dart';
 import '../../../../core/data_source/remote_data_source.dart';
@@ -9,11 +10,13 @@ import '../../data/refresh_token_response.dart';
 
 class SplashRepository {
   static Future<BaseResultModel?> refreshToken(
-      RefreshRequestModel refreshRequestModel) async {
-    return await RemoteDataSource.request<RefreshTokenResponse>(
-        converter: (json) => RefreshTokenResponse.fromJson(json),
+      String refreshToken) async {
+    return await RemoteDataSource.request<RegisterResponseModel>(
+        converter: (json) => RegisterResponseModel.fromJson(json),
         method: HttpMethod.POST,
-        queryParameters: refreshRequestModel.toJson(),
+        data: {
+          "refreshToken":refreshToken,
+        },
         withAuthentication: true,
         thereDeviceId: false,
         url: ApiURLs.getNewToken);

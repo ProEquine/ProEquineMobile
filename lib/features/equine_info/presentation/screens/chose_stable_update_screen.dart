@@ -16,7 +16,8 @@ import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/profile_two_lines_list_tile.dart';
 
 class ChooseUpdateStableScreen extends StatefulWidget {
-  const ChooseUpdateStableScreen({super.key});
+  final int userId;
+  const ChooseUpdateStableScreen({super.key, required this.userId});
 
   @override
   State<ChooseUpdateStableScreen> createState() =>
@@ -25,7 +26,14 @@ class ChooseUpdateStableScreen extends StatefulWidget {
 
 class _ChooseUpdateStableScreenState extends State<ChooseUpdateStableScreen> {
   EquineInfoCubit cubit = EquineInfoCubit();
+
   bool isThereAdd = true;
+
+  @override
+  void initState() {
+   Print("user id is ${widget.userId}");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +61,7 @@ class _ChooseUpdateStableScreenState extends State<ChooseUpdateStableScreen> {
         child: Padding(
           padding: const EdgeInsets.all(kPadding),
           child: BlocConsumer<EquineInfoCubit, EquineInfoState>(
-            bloc: cubit..getUserStables(),
+            bloc: cubit..getUserStables(widget.userId),
             listener: (context, state) {
               // TODO: implement listener
             },
@@ -70,7 +78,7 @@ class _ChooseUpdateStableScreenState extends State<ChooseUpdateStableScreen> {
                 );
               }
               if (state is GetUserStablesSuccessful) {
-                if (state.model!.stables!.isEmpty) {
+                if (state.model!.rows!.isEmpty) {
                   isThereAdd = false;
                   return const Center(
                       child: Text(
@@ -96,23 +104,23 @@ class _ChooseUpdateStableScreenState extends State<ChooseUpdateStableScreen> {
                         itemCount: 1,
                         itemBuilder:
                        (context,index) {
-                         int mainStableIndex = state.model!.stables!.indexWhere((stable) => stable.stablePriority == "Main");
-                         if (mainStableIndex != -1) {
-                           Print("Index of main priority stable: $mainStableIndex");
-                         } else {
-                           Print("No stable with 'main' priority found.");
-                         }
+                         // int mainStableIndex = state.model!.rows!.indexWhere((stable) => stable.stablePriority == "Main");
+                         // if (mainStableIndex != -1) {
+                         //   Print("Index of main priority stable: $mainStableIndex");
+                         // } else {
+                         //   Print("No stable with 'main' priority found.");
+                         // }
                         return ProfileTwoLineListTile(
-                          title: state.model!.stables![mainStableIndex].stableName,
+                          title: state.model!.rows![index].stable!.name,
                           subTitle:
-                              '${state.model!.stables![mainStableIndex].stableCountry}, ${state.model!.stables![mainStableIndex].stableState}',
+                              'UAE, ${state.model!.rows![index].stable!.emirate}',
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => UpdateMainStableScreen(
                                           mainStable:
-                                              state.model!.stables![mainStableIndex].stableName!,
+                                          state.model!.rows![index].stable!.name!,
                                         )));
                           },
                           ableToEdit: true,
@@ -122,7 +130,7 @@ class _ChooseUpdateStableScreenState extends State<ChooseUpdateStableScreen> {
                     // const SizedBox(
                     //   height: 15,
                     // ),
-                    state.model!.stables!.length > 1
+                    state.model!.rows!.length > 1
                         ? Transform.translate(
                       offset:  Offset(0.0,-2.h),
                           child: Column(
@@ -139,24 +147,21 @@ class _ChooseUpdateStableScreenState extends State<ChooseUpdateStableScreen> {
                                 ListView.builder(
                                     physics: const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
-                                    itemCount: state.model!.stables!.length - 1,
+                                    itemCount: state.model!.rows!.length - 1,
                                     itemBuilder: (context, index) {
-                                      List secondaryStables = state.model!.stables!.where((stable) => stable.stablePriority == "Secondery").toList();
+                                      // List secondaryStables = state.model!.stables!.where((stable) => stable.stablePriority == "Secondery").toList();
                                       return ProfileTwoLineListTile(
-                                        title: secondaryStables[index]
-                                            .stableName,
+                                        title:state.model!.rows![index+1].stable!.name!,
                                         subTitle:
-                                            '${secondaryStables[index].stableCountry}, ${secondaryStables[index].stableState}',
+                                            'UAE, ${state.model!.rows![index+1].stable!.emirate??''}',
                                         onTap: () {
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      UpdateSecondaryStableScreen(
-                                                        personStableId: secondaryStables[index]
-                                                            .personStableId!,
-                                                        secondaryStable: secondaryStables[index]
-                                                            .stableName!,
+                                                      DeleteSecondaryStableScreen(
+                                                        personStableId: state.model!.rows![index+1].id!,
+                                                        secondaryStable: state.model!.rows![index+1].stable!.name!,
                                                       )));
                                         },
                                         ableToEdit: true,
@@ -172,7 +177,7 @@ class _ChooseUpdateStableScreenState extends State<ChooseUpdateStableScreen> {
                 return CustomErrorWidget(
                     errorMessage: state.message!,
                     onRetry: () {
-                      cubit.getUserStables();
+                      cubit.getUserStables(widget.userId);
                     });
               }
               return Container();

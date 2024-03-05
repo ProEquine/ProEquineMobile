@@ -8,6 +8,7 @@ import 'package:proequine/features/manage_account/data/delete_account_request_mo
 import 'package:proequine/features/manage_account/data/get_all_cities_response_model.dart';
 import 'package:proequine/features/manage_account/data/get_all_states_response_model.dart';
 import 'package:proequine/features/manage_account/data/update_dob_request_model.dart';
+import 'package:proequine/features/manage_account/data/update_image_response_model.dart';
 import 'package:proequine/features/manage_account/data/update_name_request_model.dart';
 import 'package:proequine/features/manage_account/data/update_nationality_request_model.dart';
 import 'package:proequine/features/manage_account/data/update_password_response_model.dart';
@@ -17,18 +18,20 @@ import '../../../../core/CoreModels/base_result_model.dart';
 import '../../../../core/data_source/remote_data_source.dart';
 import '../../../../core/http/api_urls.dart';
 import '../../../../core/http/http_method.dart';
+import '../../../user/data/register_response_model.dart';
 import '../../data/change_password_request_model.dart';
 import '../../data/edit_phone_request_model.dart';
 import '../../data/update_main_number_request_model.dart';
 import '../../data/update_phone_request_model.dart';
+import '../../data/upload_file_response_model.dart';
 import '../../data/user_data_response_model.dart';
 
 class ManageAccountRepository {
   static Future<BaseResultModel?> changePassword(
-      UpdatePasswordRequestModel updatePasswordRequestModel) async {
-    return await RemoteDataSource.request<UpdatePasswordResponseModel>(
-        converter: (json) => UpdatePasswordResponseModel.fromJson(json),
-        method: HttpMethod.PUT,
+      ChangePasswordRequestModel updatePasswordRequestModel) async {
+    return await RemoteDataSource.request<RegisterResponseModel>(
+        converter: (json) => RegisterResponseModel.fromJson(json),
+        method: HttpMethod.POST,
         data: updatePasswordRequestModel.toJson(),
         withAuthentication: true,
         thereDeviceId: false,
@@ -44,17 +47,30 @@ class ManageAccountRepository {
         thereDeviceId: false,
         url: ApiURLs.addBio);
   }
-  static Future<BaseResultModel?> uploadUserImage(
-      String image) async {
-    return await RemoteDataSource.request<EmptyModel>(
-        converter: (json) => EmptyModel.fromJson(json),
+  static Future<BaseResultModel?> uploadFile(String? file) async {
+    return await RemoteDataSource.request<UploadFileResponseModel>(
+        converter: (json) => UploadFileResponseModel.fromJson(json),
         method: HttpMethod.POST,
-        files:{
-          "file": image,
+        files: {
+          "file":file!,
+
+        },
+        withAuthentication: true,
+        isLongTime: true,
+        thereDeviceId: false,
+        url: ApiURLs.uploadFile);
+  }
+  static Future<BaseResultModel?> updateUserImage(
+      String image) async {
+    return await RemoteDataSource.request<UserDataResponseModel>(
+        converter: (json) => UserDataResponseModel.fromJson(json),
+        method: HttpMethod.POST,
+        data:{
+          "image": image,
         },
         withAuthentication: true,
         thereDeviceId: false,
-        url: ApiURLs.uploadImage);
+        url: ApiURLs.updateImage);
   }
   static Future<BaseResultModel?> sendPhoneNumber(
       EditPhoneRequestModel editPhoneRequestModel) async {
@@ -70,7 +86,7 @@ class ManageAccountRepository {
       UpdateMainNumberRequestModel updatePhoneRequestModel) async {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
-        method: HttpMethod.PUT,
+        method: HttpMethod.POST,
         // policy: CachePolicy.refresh,
         data: updatePhoneRequestModel.toJson(),
         withAuthentication: true,
@@ -79,8 +95,8 @@ class ManageAccountRepository {
   }
   static Future<BaseResultModel?> updateSecondaryPhoneNumber(
       UpdateSecondaryNumberRequestModel updateSecondaryNumberRequestModel) async {
-    return await RemoteDataSource.request<EmptyModel>(
-        converter: (json) => EmptyModel.fromJson(json),
+    return await RemoteDataSource.request<UserDataResponseModel>(
+        converter: (json) => UserDataResponseModel.fromJson(json),
         method: HttpMethod.POST,
         // policy: CachePolicy.refresh,
         data: updateSecondaryNumberRequestModel.toJson(),
@@ -94,7 +110,6 @@ class ManageAccountRepository {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.POST,
-        policy: CachePolicy.refresh,
         data: addAddressRequestModel.toJson(),
         withAuthentication: true,
         thereDeviceId: false,

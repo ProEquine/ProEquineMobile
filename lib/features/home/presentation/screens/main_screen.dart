@@ -71,20 +71,53 @@ class _MainScreenState extends State<MainScreen> {
                               ? AppColors.borderColor
                               : Colors.transparent)),
                   alwaysShowMiddle: false,
+
                   padding: const EdgeInsetsDirectional.only(bottom: 1),
                   backgroundColor: AppColors.backgroundColorLight,
-                  largeTitle: SvgPicture.asset(
-                    AppIcons.proEquineLight,
-                    alignment: Alignment.centerLeft,
-                    height: 28,
-                    width: 38,
-                    fit: BoxFit.contain,
+                  largeTitle: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: isScrolled ? kPadding : 0,
+                            vertical: isScrolled ? 10 : 0),
+                        child: SvgPicture.asset(
+                          AppIcons.proEquineLight,
+                          alignment: Alignment.centerLeft,
+                          height: isScrolled ? 20 : 28,
+                          width: isScrolled ? 25 : 38,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: kPadding, vertical: 10),
+                        child: SvgPicture.asset(
+                          AppIcons.notificationIcon,
+                          alignment: Alignment.centerRight,
+                          height: isScrolled ? 20 : 28,
+                          width: isScrolled ? 25 : 38,
+                        ),
+                      ),
+                    ],
                   ),
-                  middle: SvgPicture.asset(
-                    AppIcons.proEquineLight,
-                    height: 20,
-                    width: 30,
-                  ),
+
+                  // trailing: Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: kPadding),
+                  //   child: SvgPicture.asset(
+                  //     AppIcons.notificationIcon,
+                  //     alignment: Alignment.centerRight,
+                  //     height: 20,
+                  //     width: 25,
+                  //   ),
+                  // ),
+                  // middle: SvgPicture.asset(
+                  //   AppIcons.proEquineLight,
+                  //
+                  //   alignment: Alignment.centerLeft,
+                  //   height: 20,
+                  //   width: 30,
+                  // ),
                 ),
               ];
             },
@@ -182,7 +215,6 @@ class _MainScreenState extends State<MainScreen> {
                                         ShippingListScreen(type: "Import")));
                           },
                         ),
-
                         ShippingWidget(
                           image: AppImages.import,
                           title: 'Export',
@@ -224,8 +256,7 @@ class _MainScreenState extends State<MainScreen> {
                         style: TextStyle(
                             fontFamily: 'notosan',
                             fontWeight: FontWeight.w400,
-                            fontSize: 15.0
-                      ),
+                            fontSize: 15.0),
                       ),
                     ),
                     const SizedBox(
@@ -239,5 +270,178 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+
+    // child: Scaffold(
+    //   appBar: PreferredSize(
+    //     preferredSize: Size.fromHeight(20.h),
+    //     child: Padding(
+    //       padding: const EdgeInsets.symmetric(horizontal: kPadding,vertical: 20),
+    //       child: Row(
+    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //         children: [
+    //           SvgPicture.asset(
+    //             AppIcons.proEquineLight,
+    //             alignment: Alignment.centerLeft,
+    //             height: 28,
+    //             width: 38,
+    //             fit: BoxFit.contain,
+    //           ),
+    //           SvgPicture.asset(
+    //             AppIcons.notificationIcon,
+    //             alignment: Alignment.centerRight,
+    //             height: 28,
+    //             width: 35,
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    //   body: SingleChildScrollView(
+    //     child: Padding(
+    //       padding: const EdgeInsets.symmetric(horizontal: kPadding),
+    //       child: Column(
+    //         mainAxisAlignment: MainAxisAlignment.start,
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         children: <Widget>[
+    //           const SizedBox(
+    //             height: 10,
+    //           ),
+    //           const HomeCardFull(),
+    //           const SizedBox(
+    //             height: 16,
+    //           ),
+    //           const Text(
+    //             'Transportation',
+    //             textAlign: TextAlign.start,
+    //             style: TextStyle(
+    //               fontSize: 24.0,
+    //               fontWeight: FontWeight.w500,
+    //             ),
+    //           ),
+    //           Padding(
+    //               padding: const EdgeInsets.only(top: 10.0),
+    //               child: Row(
+    //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //                 children: [
+    //                   ServiceWidget(
+    //                     image: AppImages.local,
+    //                     title: 'Local',
+    //                     onTap: () {
+    //                       Navigator.push(
+    //                           context,
+    //                           MaterialPageRoute(
+    //                               builder: (context) =>
+    //                                   const CreateTripScreen()));
+    //                     },
+    //                   ),
+    //                   ServiceWidget(
+    //                     image: AppImages.hospital,
+    //                     title: 'Hospital',
+    //                     onTap: () {
+    //                       Navigator.push(
+    //                           context,
+    //                           MaterialPageRoute(
+    //                               builder: (context) =>
+    //                                   const CreateTripScreen(
+    //                                     type: 'hospital',
+    //                                   )));
+    //                     },
+    //                   ),
+    //                   // const EventComingSoon(),
+    //                   ServiceWidget(
+    //                     image: AppImages.shows,
+    //                     isItDisable: false,
+    //                     title: 'Shows',
+    //                     onTap: () {
+    //                       Navigator.push(
+    //                           context,
+    //                           MaterialPageRoute(
+    //                               builder: (context) =>
+    //                                   ShowsScreen(type: "type")));
+    //                     },
+    //                   ),
+    //                 ],
+    //               )),
+    //           const Padding(
+    //             padding: EdgeInsets.only(top: 20, bottom: 10),
+    //             child: Text(
+    //               'Shipping',
+    //               textAlign: TextAlign.start,
+    //               style: TextStyle(
+    //                 fontSize: 24.0,
+    //                 fontWeight: FontWeight.w500,
+    //               ),
+    //             ),
+    //           ),
+    //           const SizedBox(
+    //             height: 8,
+    //           ),
+    //           Row(
+    //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //             children: [
+    //               ShippingWidget(
+    //                 image: AppImages.export,
+    //                 title: 'Import',
+    //                 onTap: () {
+    //                   Navigator.push(
+    //                       context,
+    //                       MaterialPageRoute(
+    //                           builder: (context) =>
+    //                               ShippingListScreen(type: "Import")));
+    //                 },
+    //               ),
+    //               ShippingWidget(
+    //                 image: AppImages.import,
+    //                 title: 'Export',
+    //                 onTap: () {
+    //                   Navigator.push(
+    //                       context,
+    //                       MaterialPageRoute(
+    //                           builder: (context) =>
+    //                               ShippingListScreen(type: "Export")));
+    //                 },
+    //               ),
+    //             ],
+    //           ),
+    //           const Padding(
+    //             padding: EdgeInsets.only(top: 20, bottom: 10),
+    //             child: Text(
+    //               'Media',
+    //               textAlign: TextAlign.start,
+    //               style: TextStyle(
+    //                 fontSize: 24.0,
+    //                 fontWeight: FontWeight.w500,
+    //               ),
+    //             ),
+    //           ),
+    //           GestureDetector(
+    //             onTap: () {
+    //               Navigator.push(
+    //                   context,
+    //                   MaterialPageRoute(
+    //                       builder: (context) =>
+    //                           MediaListScreen(type: "Media Services")));
+    //             },
+    //             child: Image.asset(AppImages.mediaPics),
+    //           ),
+    //           const Padding(
+    //             padding: EdgeInsets.only(top: 10, bottom: 7),
+    //             child: Text(
+    //               'Photos and videos ',
+    //               style: TextStyle(
+    //                   fontFamily: 'notosan',
+    //                   fontWeight: FontWeight.w400,
+    //                   fontSize: 15.0),
+    //             ),
+    //           ),
+    //           const SizedBox(
+    //             height: 70,
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // ),
+    // );
   }
 }

@@ -24,9 +24,11 @@ import '../../../user/domain/user_cubit.dart';
 import '../../data/basic_account_management_route.dart';
 
 class VerifyUpdatedPhoneScreen extends StatefulWidget {
- final String? phoneNumber;
+  final String? phoneNumber;
+
   const VerifyUpdatedPhoneScreen({
-    super.key, this.phoneNumber,
+    super.key,
+    this.phoneNumber,
   });
 
   @override
@@ -63,10 +65,11 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
     String seconds = twoDigits(duration.inSeconds.remainder(60));
     return "$minutes:$seconds";
   }
+
   @override
   void dispose() {
-   cubit.close();
-   _pinPutController.dispose();
+    cubit.close();
+    _pinPutController.dispose();
     super.dispose();
   }
 
@@ -88,13 +91,14 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: kPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 20,),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       Text(
                         "A 4 digit verification code has been sent to your registered phone number.",
                         style: AppStyles.descriptions,
@@ -111,41 +115,36 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
                             preFilledWidget: Container(
                               width: 30,
                               height: 5,
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: 15),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 15),
                               decoration: BoxDecoration(
                                 border: Border(
                                   bottom: BorderSide(
                                     width: 2.0,
-                                    color:
-                                    AppSharedPreferences.getTheme ==
-                                        'ThemeCubitMode.dark'
+                                    color: AppSharedPreferences.getTheme ==
+                                            'ThemeCubitMode.dark'
                                         ? AppColors.greyLight
                                         : AppColors.blackLight,
                                   ),
                                 ),
                                 color: AppSharedPreferences.getTheme ==
-                                    'ThemeCubitMode.dark'
+                                        'ThemeCubitMode.dark'
                                     ? AppColors.formsBackground
                                     : AppColors.formsBackgroundLight,
                               ),
                             ),
                             androidSmsAutofillMethod:
-                            AndroidSmsAutofillMethod
-                                .smsUserConsentApi,
+                                AndroidSmsAutofillMethod.smsUserConsentApi,
                             length: 4,
                             closeKeyboardWhenCompleted: true,
                             isCursorAnimationEnabled: true,
                             controller: _pinPutController,
-                            defaultPinTheme:
-                            PinThemeConst.defaultPinTheme,
-                            focusedPinTheme:
-                            PinThemeConst.focusedPinTheme,
-                            submittedPinTheme:
-                            PinThemeConst.submittedPinTheme,
+                            defaultPinTheme: PinThemeConst.defaultPinTheme,
+                            focusedPinTheme: PinThemeConst.focusedPinTheme,
+                            submittedPinTheme: PinThemeConst.submittedPinTheme,
                             pinAnimationType: PinAnimationType.rotation,
                             pinputAutovalidateMode:
-                            PinputAutovalidateMode.onSubmit,
+                                PinputAutovalidateMode.onSubmit,
                             validator: (value) {
                               if (value!.isEmpty || value.length < 4) {
                                 return 'please enter your code';
@@ -177,65 +176,59 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
                       ),
                       isResendCode
                           ? Center(
-                          child: Text(
-                            _formatDuration(
-                                Duration(seconds: _secondsLeft))
-                                .toString(),
-                            style: const TextStyle(
-                                fontSize: 16,
-                                color: AppColors.yellow,
-                                fontWeight: FontWeight.w700),
-                          ))
+                              child: Text(
+                              _formatDuration(Duration(seconds: _secondsLeft))
+                                  .toString(),
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.yellow,
+                                  fontWeight: FontWeight.w700),
+                            ))
                           : Center(
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              context
-                                  .read<UserCubit>()
-                                  .sendVerificationCode(
-                                  SendVerificationRequestModel(
-                                    phoneNumber: phone
-                                  ));
-                              isResendCode = true;
-                            });
+                              child: InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    context
+                                        .read<UserCubit>()
+                                        .sendVerificationCode();
+                                    isResendCode = true;
+                                  });
 
-                            _startTimer();
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 7),
-                            clipBehavior: Clip.antiAlias,
-                            decoration: ShapeDecoration(
-                              shape: RoundedRectangleBorder(
-                                side: const BorderSide(
-                                    width: 0.50,
-                                    color: AppColors.yellow),
-                                borderRadius:
-                                BorderRadius.circular(8),
+                                  _startTimer();
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 7),
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: ShapeDecoration(
+                                    shape: RoundedRectangleBorder(
+                                      side: const BorderSide(
+                                          width: 0.50, color: AppColors.yellow),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "Resend Code",
+                                        style: TextStyle(
+                                            color: AppColors.yellow,
+                                            fontFamily: "notosan"),
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Icon(
+                                        Icons.refresh,
+                                        size: 20,
+                                        color: AppColors.yellow,
+                                      )
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
-                            child: const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "Resend Code",
-                                  style: TextStyle(
-                                      color: AppColors.yellow,
-                                      fontFamily: "notosan"),
-                                ),
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Icon(
-                                  Icons.refresh,
-                                  size: 20,
-                                  color: AppColors.yellow,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
                       const SizedBox(
                         height: 30,
                       ),
@@ -250,7 +243,8 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
                                     type: 'manageAccount',
                                     title: "Phone Updated Successfully"));
                           } else if (state is UpdatePhoneError) {
-                            RebiMessage.error(msg: state.message!,context: context);
+                            RebiMessage.error(
+                                msg: state.message!, context: context);
                           }
                         },
                         builder: (context, state) {
@@ -264,8 +258,7 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
                                 onPressVerify(phone);
                               } else {}
                             },
-
-                            child: const Text("Confirm"),
+                            child:  Text("Confirm", style: AppStyles.buttonStyle,),
                           );
                         },
                       ),
@@ -286,8 +279,7 @@ class _VerifyUpdatedPhoneScreenState extends State<VerifyUpdatedPhoneScreen> {
   onPressVerify(String phone) {
     return cubit
       ..updatePhoneNumber(UpdateMainNumberRequestModel(
-        phoneNumber: phone,
-        verificationCode: _pinPutController.text,
+        otpCode: _pinPutController.text,
       ));
   }
 }

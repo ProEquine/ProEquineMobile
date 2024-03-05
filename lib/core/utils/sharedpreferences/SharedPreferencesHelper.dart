@@ -12,6 +12,7 @@ class AppSharedPreferences {
   static const keyPersonId = "PREF_KEY_PERSON_ID";
   static const keyEnv = "PREF_KEY_ENV";
   static const keyUserName = "PREF_KEY_NAME";
+  static const keyUserAccountName = "PREF_KEY_USER_ACCOUNT_NAME";
   static const keyUserType = "PREF_KEY_USER_TYPE";
   static const keyUserInterests = "PREF_KEY_INTERESTS";
 
@@ -49,7 +50,7 @@ class AppSharedPreferences {
 
   static removePhoneNumber() => _pref?.remove(keyUserPhoneNumber);
 
-  ///  Store User Name
+  ///  Store Name
   static String get getName => _pref?.read(keyUserName) ?? '';
 
   static set inputName(String name) =>
@@ -58,6 +59,16 @@ class AppSharedPreferences {
   static bool get hasName => _pref?.contains(keyUserName);
 
   static removeName() => _pref?.remove(keyUserName);
+
+  ///  Store User Name
+  static String get getUserName => _pref?.read(keyUserAccountName) ?? '';
+
+  static set inputUserName(String name) =>
+      _pref?.save(keyUserAccountName, name);
+
+  static bool get hasUserName => _pref?.contains(keyUserAccountName);
+
+  static removeUserName() => _pref?.remove(keyUserAccountName);
   ///  Store person id
   static String get personId => _pref?.read(keyPersonId) ?? '';
 
@@ -131,6 +142,20 @@ class AppSharedPreferences {
       _pref?.saveBoolean(keyIsPhoneVerified, verified) ?? false;
 
   static removePhoneVerified() => _pref?.remove(keyIsPhoneVerified);
+
+  /// is has userName
+  static bool? get isHasUserName {
+    if (_pref?.readBoolean(keyUserAccountName) == null) hasUserAccountName = false;
+
+    return _pref?.readBoolean(keyUserAccountName) ?? false;
+  }
+
+  static set hasUserAccountName(bool? verified) =>
+      _pref?.saveBoolean(keyUserAccountName, verified) ?? false;
+
+  static removeUserAccountName() => _pref?.remove(keyUserAccountName);
+
+
 
   /// is email number verified
   static bool? get getEmailVerified {

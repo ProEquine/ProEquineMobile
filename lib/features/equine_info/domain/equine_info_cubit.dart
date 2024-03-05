@@ -2,10 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/CoreModels/empty_model.dart';
 import 'package:proequine/core/errors/base_error.dart';
-import 'package:proequine/features/equine_info/data/add_new_role_request_model.dart';
+import 'package:proequine/features/equine_info/data/add_new_stable_request_model.dart';
+import 'package:proequine/features/equine_info/data/add_new_stable_response_model.dart';
 import 'package:proequine/features/equine_info/data/add_secondary_discipline_request_model.dart';
-import 'package:proequine/features/equine_info/data/add_secondary_stable_request_model.dart';
-import 'package:proequine/features/equine_info/data/delete_secondary_stable_request_model.dart';
 import 'package:proequine/features/equine_info/data/get_user_disciplines_response_model.dart';
 import 'package:proequine/features/equine_info/data/get_user_roles_response_model.dart';
 import 'package:proequine/features/equine_info/data/get_user_stables_response_model.dart';
@@ -15,6 +14,7 @@ import 'package:proequine/features/equine_info/data/update_secondary_discipline_
 import 'package:proequine/features/equine_info/domain/equine_info_repository/equine_info_repository.dart';
 
 import '../../../core/CoreModels/base_response_model.dart';
+import '../data/add_secondary_interests_response_model.dart';
 import '../data/delete_discipline_request_model.dart';
 
 part 'equine_info_state.dart';
@@ -22,11 +22,11 @@ part 'equine_info_state.dart';
 class EquineInfoCubit extends Cubit<EquineInfoState> {
   EquineInfoCubit() : super(EquineInfoInitial());
 
-  Future<void> getUserDiscipline() async {
+  Future<void> getUserDiscipline(int userId) async {
     emit(GetUserDisciplineLoading());
-    var response = await EquineInfoRepository.getUserDiscipline();
+    var response = await EquineInfoRepository.getUserDiscipline(userId);
 
-    if (response is GetUserDisciplinesResponseModel) {
+    if (response is GetUserInterestsResponseModel) {
       emit(GetUserDisciplineSuccessful(model: response));
     } else if (response is BaseError) {
       emit(GetUserDisciplineError(message: response.message));
@@ -35,9 +35,9 @@ class EquineInfoCubit extends Cubit<EquineInfoState> {
     }
   }
 
-  Future<void> getUserStables() async {
+  Future<void> getUserStables(int userId) async {
     emit(GetUserStablesLoading());
-    var response = await EquineInfoRepository.getUserStables();
+    var response = await EquineInfoRepository.getUserStables(userId);
 
     if (response is GetUserStablesResponseModel) {
       emit(GetUserStablesSuccessful(model: response));
@@ -45,18 +45,6 @@ class EquineInfoCubit extends Cubit<EquineInfoState> {
       emit(GetUserStablesError(message: response.message));
     } else if (response is Message) {
       emit(GetUserStablesError(message: response.content));
-    }
-  }
-  Future<void> getUserRoles() async {
-    emit(GetUserRolesLoading());
-    var response = await EquineInfoRepository.getUserRoles();
-
-    if (response is GetUserRolesResponseModel) {
-      emit(GetUserRolesSuccessful(model: response));
-    } else if (response is BaseError) {
-      emit(GetUserRolesError(message: response.message));
-    } else if (response is Message) {
-      emit(GetUserRolesError(message: response.content));
     }
   }
 
@@ -98,7 +86,7 @@ class EquineInfoCubit extends Cubit<EquineInfoState> {
     var response = await EquineInfoRepository.addSecondaryDiscipline(
         addSecondaryDisciplineRequestModel);
 
-    if (response is EmptyModel) {
+    if (response is AddSecondaryInterestResponseModel) {
       emit(AddSecondaryDisciplineSuccessful(
           message: "Discipline Added Successfully"));
     } else if (response is BaseError) {
@@ -107,12 +95,12 @@ class EquineInfoCubit extends Cubit<EquineInfoState> {
       emit(AddSecondaryDisciplineError(message: response.content));
     }
   }
+  // this one for stables already exist in public stables
   Future<void> addSecondaryStable(
-      AddSecondaryStableRequestModel
-      addSecondaryStableRequestModel) async {
+      int stableId) async {
     emit(AddSecondaryStableLoading());
     var response = await EquineInfoRepository.addSecondaryStable(
-        addSecondaryStableRequestModel);
+        stableId);
 
     if (response is EmptyModel) {
       emit(AddSecondaryStableSuccessful(
@@ -124,39 +112,22 @@ class EquineInfoCubit extends Cubit<EquineInfoState> {
     }
   }
 
-  Future<void> addRole(
-      AddRoleRequestModel
-      addRoleRequestModel) async {
-    emit(AddSecondaryRoleLoading());
-    var response = await EquineInfoRepository.addNewRole(
-        addRoleRequestModel);
+  // this one for the stables which doesn't exist in the public
+  Future<void> addNewStable(
+      AddNewStablesRequestModel addNewStablesRequestModel) async {
+    emit(AddNewStableLoading());
+    var response = await EquineInfoRepository.addNewStable(
+        addNewStablesRequestModel);
 
-    if (response is EmptyModel) {
-      emit(AddSecondaryRoleSuccessful(
-          message: "New Role Added Successfully"));
+    if (response is AddNewStablesResponseModel) {
+      emit(AddNewStableSuccessful(
+          message: "Stable Added Successfully"));
     } else if (response is BaseError) {
-      emit(AddSecondaryRoleError(message: response.message));
+      emit(AddNewStableError(message: response.message));
     } else if (response is Message) {
-      emit(AddSecondaryRoleError(message: response.content));
+      emit(AddNewStableError(message: response.content));
     }
   }
-  Future<void> deleteRole(
-      AddRoleRequestModel
-      addRoleRequestModel) async {
-    emit(DeleteRoleLoading());
-    var response = await EquineInfoRepository.deleteRole(
-        addRoleRequestModel);
-
-    if (response is EmptyModel) {
-      emit(DeleteRoleSuccessful(
-          message: "Your Role Removed Successfully"));
-    } else if (response is BaseError) {
-      emit(DeleteRoleError(message: response.message));
-    } else if (response is Message) {
-      emit(DeleteRoleError(message: response.content));
-    }
-  }
-
   Future<void> updateSecondaryDiscipline(
       UpdateSecondaryDisciplineRequestModel
           updateSecondaryDisciplineRequestModel) async {
@@ -175,10 +146,10 @@ class EquineInfoCubit extends Cubit<EquineInfoState> {
   }
 
   Future<void> deleteSecondaryDiscipline(
-      DeleteDisciplineResponseModel deleteDisciplineResponseModel) async {
+      int interestId ) async {
     emit(DeleteSecondaryDisciplineLoading());
     var response = await EquineInfoRepository.deleteDiscipline(
-        deleteDisciplineResponseModel);
+        interestId);
 
     if (response is EmptyModel) {
       emit(DeleteSecondaryDisciplineSuccessful(
@@ -189,19 +160,17 @@ class EquineInfoCubit extends Cubit<EquineInfoState> {
       emit(DeleteSecondaryDisciplineError(message: response.content));
     }
   }
-  Future<void> deleteSecondaryStable(
-      DeleteSecondaryStableRequestModel deleteSecondaryStableRequestModel) async {
+  Future<void> deleteSecondaryStable(int id) async {
     emit(DeleteSecondaryStableLoading());
-    var response = await EquineInfoRepository.deleteSecondaryStable(
-        deleteSecondaryStableRequestModel);
+    var response = await EquineInfoRepository.deleteSecondaryStable(id);
 
     if (response is EmptyModel) {
       emit(DeleteSecondaryStableSuccessful(
           message: "Stable Deleted Successfully"));
     } else if (response is BaseError) {
-      emit(DeleteSecondaryStableSuccessful(message: response.message));
+      emit(DeleteSecondaryStableError(message: response.message));
     } else if (response is Message) {
-      emit(DeleteSecondaryStableSuccessful(message: response.content));
+      emit(DeleteSecondaryStableError(message: response.content));
     }
   }
 }

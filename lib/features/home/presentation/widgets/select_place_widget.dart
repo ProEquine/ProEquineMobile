@@ -86,20 +86,7 @@ class _SelectPlaceWidgetState extends State<SelectPlaceWidget> {
                               selectedPlace = result!.name;
                               widget.location.text = result!.name;
                               widget.newPlaceUrl!.text = result!.locationUrl;
-
-                              Print(
-                                  "Received data from add New place: ${result!.name}");
-
-                              Print("selected place: ${result!.name}");
-                              Print(
-                                  "selected  location url: ${result!.locationUrl}");
                             });
-
-                            // Handle the received data
-                            Print(
-                                "Received data from add New place: ${result!.name}");
-                            Print(
-                                "Received data from add New place: ${result!.locationUrl}");
                           } else {
                             setState(() {
                               selectedPlace = widget.showingList[index];
@@ -107,8 +94,6 @@ class _SelectPlaceWidgetState extends State<SelectPlaceWidget> {
                               widget.location.text = widget.showingList[index];
 
                               Navigator.pop(context);
-                              Print("Selected Place ${places[index]}");
-                              Print("Place Name $selectedPlace");
                             });
                           }
                         },

@@ -532,7 +532,7 @@ class _ChoseShowsHorseScreenState extends State<ChoseShowsHorseScreen> {
                                               .joinShowTransportRequestModel)));
                         }
                       },
-                      child: const Text("Next"),
+                      child:  Text("Next", style: AppStyles.buttonStyle,),
                     ),
                   ),
                   const SizedBox(

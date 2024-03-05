@@ -1,18 +1,15 @@
-class CheckVerificationRequestModel {
-  String? phoneNumber;
-  String? code;
+class CheckVerificationCodeRequestModel {
+  String? otpCode;
 
-  CheckVerificationRequestModel({this.phoneNumber, this.code});
+  CheckVerificationCodeRequestModel({this.otpCode});
 
-  CheckVerificationRequestModel.fromJson(Map<String, dynamic> json) {
-    phoneNumber = json['phoneNumber'];
-    code = json['code'];
+  CheckVerificationCodeRequestModel.fromJson(Map<String, dynamic> json) {
+    otpCode = json['otpCode'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  <String, dynamic>{};
-    data['phoneNumber'] = phoneNumber;
-    data['code'] = code;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['otpCode'] = otpCode;
     return data;
   }
 }

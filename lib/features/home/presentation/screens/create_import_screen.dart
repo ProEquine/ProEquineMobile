@@ -16,6 +16,7 @@ import 'package:sizer/sizer.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/constants/routes/routes.dart';
+import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../../../../core/utils/validator.dart';
@@ -533,7 +534,8 @@ class CreateImportScreenState extends State<CreateImportScreen> {
                                             )));
                               }
                             },
-                            child: const Text("Next")),
+                            child:
+                            Text("Next", style: AppStyles.buttonStyle,)),
                       ),
                       const SizedBox(
                         height: 30,

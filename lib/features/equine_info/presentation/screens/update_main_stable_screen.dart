@@ -18,7 +18,9 @@ import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
-import '../../../../core/widgets/stables_widget.dart';
+import '../../../stables/data/chose_stable_request_model.dart';
+import '../../../stables/domain/stable_cubit.dart';
+import '../../../stables/presentation/widgets/stables_widget.dart';
 import '../../../manage_account/data/basic_account_management_route.dart';
 
 class UpdateMainStableScreen extends StatefulWidget {
@@ -32,7 +34,7 @@ class UpdateMainStableScreen extends StatefulWidget {
 }
 
 class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
-  EquineInfoCubit cubit = EquineInfoCubit();
+  StableCubit cubit = StableCubit();
 
   // final UserCubit cubit = UserCubit();
   void changeToTrueValue() {
@@ -246,53 +248,7 @@ class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
                           padding: const EdgeInsets.symmetric(
                             horizontal: 20,
                           ),
-                          child: BlocConsumer<EquineInfoCubit, EquineInfoState>(
-                            bloc: cubit,
-                            listener: (context, state) {
-                            if(state is UpdateMainStableSuccessful){
-                              Navigator.pushReplacementNamed(
-                                  context, successScreen,
-                                  arguments: BasicAccountManagementRoute(
-                                      type: 'manageAccount',
-                                      title:
-                                          isChooseToAddStable?
-                                      "Support Request has been created.":"Main Stable Updated Successfully"));
-                            }else if(state is UpdateMainStableError){
-                              RebiMessage.error(msg: state.message!, context: context);
-                            }
-                            },
-                            builder: (context, state) {
-                              if(state is UpdateMainStableLoading){
-                                return LoadingCircularWidget();
-                              }
-                              return RebiButton(
-                                backgroundColor: (stable.text.isNotEmpty &&
-                                            stable.text != 'Add Your Stable') ||
-                                        (selectedEmirate != null &&
-                                            _mainStableName.text.isNotEmpty &&
-                                            _mainStableLocation.text.isNotEmpty)
-                                    ? AppColors.yellow
-                                    : AppColors.formsLabel,
-                                onPressed: () {
-                                  if ((stable.text.isNotEmpty &&
-                                          stable.text != 'Add Your Stable') ||
-                                      (selectedEmirate != null &&
-                                          _mainStableName.text.isNotEmpty &&
-                                          _mainStableLocation
-                                              .text.isNotEmpty)) {
-                                    _onPressUpdate();
-
-                                    // Navigator.pop(context);
-                                  } else {
-                                    RebiMessage.error(
-                                        msg: 'Please select your main stable',
-                                        context: context);
-                                  }
-                                },
-                                child: const Text("Submit"),
-                              );
-                            },
-                          ),
+                          child: _buildChooseStableConsumer(),
                         ),
                         const SizedBox(
                           height: 20,
@@ -309,13 +265,61 @@ class _UpdateMainStableScreenState extends State<UpdateMainStableScreen> {
     );
   }
 
-  _onPressUpdate() {
-    cubit.updateMainStable(UpdateMainStableRequestModel(
-      stableId: int.parse(stableId.text),
-      stableName: stable.text,
-      isNewStable: isChooseToAddStable,
-      emirate: selectedEmirate,
-      location: _mainStableLocation.text,
-    ));
+  _buildChooseStableConsumer() {
+    return BlocConsumer<StableCubit, StableState>(
+        bloc: cubit,
+        builder: (context, state) {
+          if (state is ChoseStableLoading) {
+            return const LoadingCircularWidget();
+          }
+          {
+            final isButtonEnabled =
+                (stable.text.isNotEmpty && stable.text != 'Add Main Stable') ||
+                    (selectedEmirate != null &&
+                        _mainStableName.text.isNotEmpty &&
+                        _mainStableLocation.text.isNotEmpty);
+            return RebiButton(
+              backgroundColor:
+              isButtonEnabled ? AppColors.yellow : AppColors.formsLabel,
+              onPressed: () {
+                if ((stable.text.isNotEmpty &&
+                    stable.text != 'Add Main Stable') ||
+                    (selectedEmirate != null &&
+                        _mainStableName.text.isNotEmpty &&
+                        _mainStableLocation.text.isNotEmpty)) {
+                  _onPressConfirm();
+                } else {
+                  Print("chose add stable $isChooseToAddStable");
+                  RebiMessage.error(
+                      msg: 'Please select your main stable', context: context);
+                }
+              },
+              child: Text("Next", style: AppStyles.buttonStyle,),
+            );
+          }
+        },
+        listener: (context, state) {
+          if (state is ChoseStableSuccessful) {
+            Navigator.pushReplacementNamed(
+                context, successScreen,
+                arguments: BasicAccountManagementRoute(
+                    type: 'manageAccount',
+                    title:
+                    isChooseToAddStable?
+                    "Support Request has been created.":"Main Stable Updated Successfully"));
+          } else if (state is ChoseStableError) {
+            RebiMessage.error(msg: state.message!, context: context);
+          }
+        });
+  }
+
+  _onPressConfirm() {
+    return cubit
+      ..choseStable(ChoseMainStableRequestModel(
+        id: int.parse(stableId.text),
+        name: isChooseToAddStable?_mainStableName.text:stable.text,
+        emirate: selectedEmirate,
+        pinLocation: _mainStableLocation.text,
+      ));
   }
 }

@@ -10,9 +10,12 @@ import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.d
 import 'package:proequine/features/equine_info/presentation/screens/equine_info_screen.dart';
 import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
 import 'package:proequine/features/splash/presentation/screens/splash_screen.dart';
+import 'package:proequine/features/wallet/presentation/screens/main_wallet_screen.dart';
 
 import '../../../../core/constants/routes/routes.dart';
 
+import '../../../associations/presentation/screens/horse_invites_association_screen.dart';
+import '../../../support/presentation/screens/all_support_requests_screen.dart';
 import '../../../support/presentation/screens/legal.dart';
 import '../../../support/presentation/screens/social_media_screen.dart';
 import '../../../support/presentation/screens/support.dart';
@@ -84,6 +87,29 @@ class _UserProfileState extends State<UserProfile> {
               notificationList: false,
               isThereNewNotification: false,
             ),
+            ProfileListTileWidget(
+              title: "Associated Horses ",
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const HorseRequestAssociationScreen()));
+              },
+              notificationList: false,
+              isThereNewNotification: false,
+            ),
+            ProfileListTileWidget(
+              title: "Wallet",
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MainWalletScreen()));
+              },
+              notificationList: false,
+              isThereNewNotification: false,
+            ),
             const SizedBox(
               height: 5,
             ),
@@ -99,7 +125,7 @@ class _UserProfileState extends State<UserProfile> {
               title: "Support",
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Support()));
+                    MaterialPageRoute(builder: (context) => const AllSupportRequestsModel()));
               },
               notificationList: false,
               isThereNewNotification: false,

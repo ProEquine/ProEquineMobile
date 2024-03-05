@@ -9,12 +9,14 @@ import 'package:proequine/features/manage_account/data/delete_account_request_mo
 import 'package:proequine/features/manage_account/data/get_all_cities_response_model.dart';
 import 'package:proequine/features/manage_account/data/get_all_states_response_model.dart';
 import 'package:proequine/features/manage_account/data/update_dob_request_model.dart';
+import 'package:proequine/features/manage_account/data/update_image_response_model.dart';
 import 'package:proequine/features/manage_account/data/update_main_number_request_model.dart';
 import 'package:proequine/features/manage_account/data/update_name_request_model.dart';
 import 'package:proequine/features/manage_account/data/update_nationality_request_model.dart';
 import 'package:proequine/features/manage_account/data/update_password_response_model.dart';
 import 'package:proequine/features/manage_account/data/update_secondary_number_request_model.dart';
 import 'package:proequine/features/manage_account/domain/repo/manage_account_repository.dart';
+import 'package:proequine/features/user/data/register_response_model.dart';
 import '../../../core/CoreModels/base_response_model.dart';
 import '../../../core/CoreModels/empty_model.dart';
 import '../../../core/errors/base_error.dart';
@@ -23,6 +25,7 @@ import '../../../core/utils/secure_storage/secure_storage_helper.dart';
 import '../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import '../data/change_password_request_model.dart';
 import '../data/edit_phone_request_model.dart';
+import '../data/upload_file_response_model.dart';
 import '../data/user_data_response_model.dart';
 
 part 'manage_account_state.dart';
@@ -31,17 +34,12 @@ class ManageAccountCubit extends Cubit<ManageAccountState> {
   ManageAccountCubit() : super(ManageAccountInitial());
 
   Future<void> changePassword(
-      UpdatePasswordRequestModel updatePasswordRequestModel) async {
+      ChangePasswordRequestModel updatePasswordRequestModel) async {
     emit(ChangePasswordLoading());
     var response = await ManageAccountRepository.changePassword(
         updatePasswordRequestModel);
-    if (response is UpdatePasswordResponseModel) {
-      await SecureStorage().setRefreshToken(
-          response.authenticationResponse!.refreshToken!.token!);
-      await SecureStorage()
-          .setToken(response.authenticationResponse!.accessToken!);
-      await SecureStorage().setUserId(response.authenticationResponse!.userId!);
-      AppSharedPreferences.setPersonId = response.authenticationResponse!.personId.toString();
+    if (response is RegisterResponseModel) {
+      // AppSharedPreferences.setPersonId = response.authenticationResponse!.personId.toString();
       emit(ChangePasswordSuccessful(
           message: "Password changed successfully".tra));
     } else if (response is BaseError) {
@@ -49,6 +47,30 @@ class ManageAccountCubit extends Cubit<ManageAccountState> {
       emit(ChangePasswordError(message: response.message));
     } else if (response is Message) {
       emit(ChangePasswordError(message: response.content));
+    }
+  }
+  Future<void> uploadFile(String file) async {
+    emit(UploadFileLoading());
+    var response = await ManageAccountRepository.uploadFile(file);
+    if (response is UploadFileResponseModel) {
+      emit(UploadFileSuccessful(fileUrl: response));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(UploadFileError(message: response.message));
+    } else if (response is Message) {
+      emit(UploadFileError(message: response.content));
+    }
+  }
+  Future<void> updateProfileImage(String imageUrl) async {
+    emit(UpdateImageLoading());
+    var response = await ManageAccountRepository.updateUserImage(imageUrl);
+    if (response is UserDataResponseModel) {
+      emit(UpdateImageSuccessful(response: response));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(UpdateImageError(message: response.message));
+    } else if (response is Message) {
+      emit(UpdateImageError(message: response.content));
     }
   }
 
@@ -143,7 +165,7 @@ class ManageAccountCubit extends Cubit<ManageAccountState> {
     emit(UpdateSecondaryPhoneLoading());
     var response = await ManageAccountRepository.updateSecondaryPhoneNumber(
         updateSecondaryNumberRequestModel);
-    if (response is EmptyModel) {
+    if (response is UserDataResponseModel) {
       //
       emit(UpdatePhoneSecondarySuccessful(message: "Phone Updated successfully ".tra));
     } else if (response is BaseError) {
@@ -188,8 +210,6 @@ class ManageAccountCubit extends Cubit<ManageAccountState> {
     emit(GetUserLoading());
     var response = await ManageAccountRepository.getUserData();
     if (response is UserDataResponseModel) {
-      String firstName = response.name!.split(' ')[0];
-      AppSharedPreferences.inputName = firstName;
       emit(GetUserSuccessful(responseModel: response));
     } else if (response is BaseError) {
       Print("messaggeeeeeeeee${response.message}");
@@ -236,20 +256,6 @@ class ManageAccountCubit extends Cubit<ManageAccountState> {
       emit(AddBioError(message: response.message));
     } else if (response is Message) {
       emit(AddBioError(message: response.content));
-    }
-  }
-
-  Future<void> uploadUserImage(String image) async {
-    emit(UploadImageLoading());
-    var response = await ManageAccountRepository.uploadUserImage(image);
-    if (response is EmptyModel) {
-      emit(UploadImageSuccessful(
-          message: "Profile picture has been added successfully".tra));
-    } else if (response is BaseError) {
-      Print("messaggeeeeeeeee${response.message}");
-      emit(UploadImageError(message: response.message));
-    } else if (response is Message) {
-      emit(UploadImageError(message: response.content));
     }
   }
 }

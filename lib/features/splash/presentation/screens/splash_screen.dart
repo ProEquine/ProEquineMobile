@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:proequine/features/notifications/domain/notifications_cubit.dart';
-import 'package:proequine/features/splash/data/refresh_request_model.dart';
 import 'package:proequine/features/splash/domain/splash_cubit.dart';
+import 'package:proequine/features/stables/presentation/screens/choose_stable_screen.dart';
+import 'package:proequine/features/user/presentation/screens/create_user_name_screen.dart';
+import 'package:proequine/features/user/presentation/screens/verification_screen.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/utils/printer.dart';
@@ -23,7 +25,8 @@ class SplashScreen extends StatefulWidget {
   SplashScreenState createState() => SplashScreenState();
 }
 
-class SplashScreenState extends State<SplashScreen>  with TickerProviderStateMixin {
+class SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
   late final AnimationController _controller;
   final String _appUrl = Platform.isAndroid
       ? 'https://play.google.com/store/apps/details?id=com.findyourteam.mobile'
@@ -59,19 +62,48 @@ class SplashScreenState extends State<SplashScreen>  with TickerProviderStateMix
       Print("render from splash screen");
     } else {
       if (await SecureStorage().hasToken()) {
-        if (AppSharedPreferences.getIsITypeSelected!) {
+        if (AppSharedPreferences.getPhoneVerified!) {
+          Print("get phone verified");
+          if (AppSharedPreferences.isHasUserName!) {
+            Print("get has user Name");
+            if (AppSharedPreferences.getIsITypeSelected!) {
+              if (AppSharedPreferences.isStableChosen!) {
+                if (context.mounted) {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BottomNavigation()));
+                }
+              } else {
+                if (context.mounted) {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ChoseStableScreen()));
+                }
+              }
+            } else {
+              if (context.mounted) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const InterestsScreen()));
+              }
+            }
+          } else {
+            if (context.mounted) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CreateUserNameScreen()));
+            }
+          }
+        } else {
           if (context.mounted) {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const BottomNavigation()));
-          }
-        } else {
-          if (context.mounted) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const UserInfoScreen()));
+                    builder: (context) => const VerificationScreen()));
           }
         }
       } else {
@@ -98,19 +130,18 @@ class SplashScreenState extends State<SplashScreen>  with TickerProviderStateMix
     userId = await SecureStorage().getUserId();
     Print("User Id $userId");
     Print("Refresh Token $refreshToken");
-    splashCubit.refreshToken(
-        RefreshRequestModel(refreshToken: refreshToken, userId: userId));
+    splashCubit.refreshToken(refreshToken!);
   }
 
-  deleteSecureStorage() async {
-    if (!AppSharedPreferences.getFirstTime!) {
-      await SecureStorage().deleteToken();
-      await SecureStorage().deleteRefreshToken();
-      await SecureStorage().deleteDeviceId();
-      await SecureStorage().deleteUserId();
-      Print("All Deleted");
-    }
-  }
+  // deleteSecureStorage() async {
+  //   if (!AppSharedPreferences.getFirstTime!) {
+  //     await SecureStorage().deleteToken();
+  //     await SecureStorage().deleteRefreshToken();
+  //     await SecureStorage().deleteDeviceId();
+  //     await SecureStorage().deleteUserId();
+  //     Print("All Deleted");
+  //   }
+  // }
 
   @override
   void initState() {
@@ -153,24 +184,16 @@ class SplashScreenState extends State<SplashScreen>  with TickerProviderStateMix
           // const BackgroundImage(),
           Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0.w,),
+              padding: EdgeInsets.symmetric(
+                horizontal: 15.0.w,
+              ),
               child: Lottie.asset(
-
-
                 'assets/animation/splash.json',
-
                 controller: _controller,
                 onLoaded: (composition) {
-                  // Configure the AnimationController with the duration of the
-                  // Lottie file and start the animation.
-
-                      _controller
-                  ..duration = composition.duration
-                  ..forward().whenComplete(() =>
-                  startTimer());
-
-
-
+                  _controller
+                    ..duration = composition.duration
+                    ..forward().whenComplete(() => startTimer());
                 },
               ),
             ),

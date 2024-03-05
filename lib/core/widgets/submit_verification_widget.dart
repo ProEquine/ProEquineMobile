@@ -63,7 +63,7 @@ class _VerificationSubmitState extends State<VerificationSubmit>
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w),
               child: const Text(
-                "Your account has been created successfully",
+                "Your account has been verified successfully",
                 textAlign: TextAlign.center,
                 style:  TextStyle(
 

@@ -1,48 +1,53 @@
 class AddHorseRequestModel {
-  String? horseName;
-  String? horseColor;
-  String? horseGender;
-  String? horseDOB;
-  String? horseCOB;
-  String? breed;
-  String? bloodline;
   int? disciplineId;
   int? stableId;
+  String? name;
+  String? image;
+  String? dateOfBirth;
+  String? placeOfBirth;
+  String? color;
+  String? gender;
+  String? bloodLine;
+  String? breed;
 
   AddHorseRequestModel(
-      {this.horseName,
-        this.horseColor,
-        this.horseGender,
-        this.horseDOB,
-        this.horseCOB,
-        this.breed,
-        this.bloodline,
+      {
         this.disciplineId,
-        this.stableId});
+        this.stableId,
+        this.name,
+        this.image,
+        this.dateOfBirth,
+        this.placeOfBirth,
+        this.color,
+        this.gender,
+        this.bloodLine,
+        this.breed});
 
   AddHorseRequestModel.fromJson(Map<String, dynamic> json) {
-    horseName = json['HorseName'];
-    horseColor = json['HorseColor'];
-    horseGender = json['HorseGender'];
-    horseDOB = json['HorseDOB'];
-    horseCOB = json['HorseCOB'];
-    breed = json['Breed'];
-    bloodline = json['Bloodline'];
-    disciplineId = json['DisciplineId'];
-    stableId = json['StableId'];
+    disciplineId = json['disciplineId'];
+    stableId = json['stableId'];
+    name = json['name'];
+    image = json['image'];
+    dateOfBirth = json['dateOfBirth'];
+    placeOfBirth = json['placeOfBirth'];
+    color = json['color'];
+    gender = json['gender'];
+    bloodLine = json['bloodLine'];
+    breed = json['breed'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['HorseName'] = horseName;
-    data['HorseColor'] = horseColor;
-    data['HorseGender'] = horseGender;
-    data['HorseDOB'] = horseDOB;
-    data['HorseCOB'] = horseCOB;
-    data['Breed'] = breed;
-    data['Bloodline'] = bloodline;
-    data['DisciplineId'] = disciplineId;
-    data['StableId'] = stableId;
+    data['disciplineId'] = disciplineId;
+    data['stableId'] = stableId;
+    data['name'] = name;
+    data['image'] = image;
+    data['dateOfBirth'] = dateOfBirth;
+    data['placeOfBirth'] = placeOfBirth;
+    data['color'] = color;
+    data['gender'] = gender;
+    data['bloodLine'] = bloodLine;
+    data['breed'] = breed;
     return data;
   }
 }

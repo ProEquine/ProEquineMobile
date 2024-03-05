@@ -13,6 +13,7 @@ import 'package:sizer/sizer.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
+import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/validator.dart';
 import '../../../../core/widgets/custom_header.dart';
@@ -339,7 +340,7 @@ class _ChoseShippingHorseScreenState extends State<ChoseShippingHorseScreen> {
                                     //     Map.fromIterables(selectedHorse, selectedGender);
                                     // Print(theMap);
                                   },
-                                  child: const Text("Next"),
+                                  child:  Text("Next", style: AppStyles.buttonStyle,),
                                 ),
                               ),
                               const SizedBox(
@@ -522,7 +523,7 @@ class _ChoseShippingHorseScreenState extends State<ChoseShippingHorseScreen> {
 
 
                             },
-                            child: const Text("Next"),
+                            child:  Text("Next", style: AppStyles.buttonStyle,),
                           ),
                         ),
                         const SizedBox(

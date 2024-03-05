@@ -1,21 +1,18 @@
 class InterestsRequestModel {
-  String? discipline;
-  String? userType;
-  int? personId;
+  int? mainDisciplineId;
+  List<String>? roles;
 
-  InterestsRequestModel({this.discipline, this.userType, this.personId});
+  InterestsRequestModel({this.mainDisciplineId, this.roles});
 
   InterestsRequestModel.fromJson(Map<String, dynamic> json) {
-    discipline = json['Discipline'];
-    userType = json['UserType'];
-    personId = json['PersonId'];
+    mainDisciplineId = json['mainDisciplineId'];
+    roles = json['roles'].cast<String>();
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['Discipline'] = discipline;
-    data['UserType'] = userType;
-    data['PersonId'] = personId;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['mainDisciplineId'] = this.mainDisciplineId;
+    data['roles'] = this.roles;
     return data;
   }
 }

@@ -1,12 +1,10 @@
 import 'dart:io';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_picker/country_picker.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:proequine/core/constants/constants.dart';
@@ -17,7 +15,6 @@ import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/core/widgets/rebi_input.dart';
-import 'package:proequine/features/horses/data/remove_horse_request_model.dart';
 import 'package:proequine/features/horses/data/update_horse_request_model.dart';
 import 'package:proequine/features/horses/domain/horse_cubit.dart';
 import 'package:sizer/sizer.dart';
@@ -25,13 +22,10 @@ import 'package:sizer/sizer.dart';
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/validator.dart';
-import '../../../../core/widgets/base_64_image.dart';
 import '../../../../core/widgets/chose_picture_bottom_sheet.dart';
 import '../../../../core/widgets/custom_header.dart';
-import '../../../../core/widgets/date_time_picker.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
-import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
 import '../../../user/presentation/widgets/selectable_type_container.dart';
 import '../widgets/delete_horse_bottom_sheet.dart';
 
@@ -46,6 +40,8 @@ class EditHorseScreen extends StatefulWidget {
   final String? selectedBreed;
   final String? selectedBloodLine;
   final String? birthOfDate;
+  final int? disciplineId;
+  final int? stableId;
 
   const EditHorseScreen(
       {super.key,
@@ -58,7 +54,9 @@ class EditHorseScreen extends StatefulWidget {
       this.placeOfBirth,
       this.image,
       this.birthOfDate,
-      this.selectedYear});
+      this.selectedYear,
+      required this.disciplineId,
+      required this.stableId});
 
   @override
   EditHorseScreenState createState() => EditHorseScreenState();
@@ -89,6 +87,7 @@ class EditHorseScreenState extends State<EditHorseScreen> {
   late int _selectedYear;
   late TextEditingController _yearController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String? horseUrl;
 
   Future getImage(ImageSource src, BuildContext? context) async {
     XFile? image = await picker.pickImage(source: src);
@@ -135,6 +134,7 @@ class EditHorseScreenState extends State<EditHorseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var myCubit = context.watch<HorseCubit>();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.h),
@@ -151,9 +151,13 @@ class EditHorseScreenState extends State<EditHorseScreen> {
               title: 'Remove Horse ',
               content: Column(
                 children: [
-                  Text(
-                    "For verified horses a removal request must submitted ",
-                    style: AppStyles.descriptions,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Text(
+                      "For verified horses a removal request must submitted ",
+                      textAlign: TextAlign.center,
+                      style: AppStyles.descriptions,
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
@@ -167,12 +171,10 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                       } else if (state is RemoveHorseSuccessfully) {
                         RebiMessage.success(
                             msg: state.message, context: context);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const BottomNavigation(
-                                      selectedIndex: 2,
-                                    )));
+                        myCubit.getAllHorses();
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
                       }
                     },
                     builder: (context, state) {
@@ -183,8 +185,7 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                       }
                       return MaterialButton(
                         onPressed: () {
-                          cubit.removeHorse(
-                              RemoveHorseRequestModel(horseId: widget.horseId));
+                          cubit.removeHorse(widget.horseId!);
                         },
                         child: const Text(
                           "Submit",
@@ -207,154 +208,214 @@ class EditHorseScreenState extends State<EditHorseScreen> {
               const SizedBox(
                 height: 20,
               ),
-              horseImage == null
-                  ? SizedBox(
-                      height: 17.5.h,
-                      child: Stack(
-                        children: [
-                          // Container(
-                          //   height: 15.0.h,
-                          //   margin: EdgeInsets.symmetric(horizontal: kPadding),
-                          //   decoration: ShapeDecoration(
-                          //     color: Colors.white,
-                          //     image: DecorationImage(
-                          //         image: AssetImage(widget.image!),
-                          //         fit: BoxFit.cover),
-                          //     shape: RoundedRectangleBorder(
-                          //       side: const BorderSide(
-                          //         width: 0.50,
-                          //         strokeAlign: BorderSide.strokeAlignCenter,
-                          //         color: Color(0xFFDFD9C9),
-                          //       ),
-                          //       borderRadius: BorderRadius.circular(8),
-                          //     ),
-                          //   ),
-                          // ),
-                          widget.image == ''
-                              ? Container(
-                                  width: 340,
-                                  height: 130,
-                                  decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.only(
+              Row(
+                children: [
+                  horseImage == null
+                      ? SizedBox(
+                          height: 18.h,
+                          width: 55.0.w,
+                          child: Stack(
+                            children: [
+                              // Container(
+                              //   height: 15.0.h,
+                              //   margin: EdgeInsets.symmetric(horizontal: kPadding),
+                              //   decoration: ShapeDecoration(
+                              //     color: Colors.white,
+                              //     image: DecorationImage(
+                              //         image: AssetImage(widget.image!),
+                              //         fit: BoxFit.cover),
+                              //     shape: RoundedRectangleBorder(
+                              //       side: const BorderSide(
+                              //         width: 0.50,
+                              //         strokeAlign: BorderSide.strokeAlignCenter,
+                              //         color: Color(0xFFDFD9C9),
+                              //       ),
+                              //       borderRadius: BorderRadius.circular(8),
+                              //     ),
+                              //   ),
+                              // ),
+                              widget.image == ''
+                                  ? Container(
+                                      height: 16.h,
+                                      width: 50.0.w,
+                                      decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(8),
+                                              topLeft: Radius.circular(8))),
+                                      child: SvgPicture.asset(AppIcons.horse))
+                                  : ClipRRect(
+                                      borderRadius: const BorderRadius.only(
                                           topRight: Radius.circular(8),
-                                          topLeft: Radius.circular(8))),
-                                  child: SvgPicture.asset(AppIcons.horse))
-                              : ClipRRect(
-                                  borderRadius: const BorderRadius.only(
-                                      topRight: Radius.circular(8),
-                                      topLeft: Radius.circular(8)),
-                                  child: Base64Image(
-                                    width: 340,
-                                    height: 130,
-                                    base64Image: widget.image!,
-                                  ),
-                                ),
-                          Positioned(
-                              top: 115.5,
-                              left: 77.5.w,
-                              child: GestureDetector(
-                                onTap: () {
-                                  showChosePictureBottomSheet(
-                                    context: context,
-                                    onTapCamera: () {
-                                      setState(() {
-                                        getImage(ImageSource.camera, context);
-                                        Navigator.of(context).pop();
-                                      });
-                                    },
-                                    onTapGallery: () async {
-                                      await getImage(
-                                          ImageSource.gallery, context);
-                                      if (mounted) {
-                                        Navigator.of(context).pop();
-                                      }
-                                    },
-                                    title: "Chose the horse picture",
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.yellow,
-                                  ),
-                                  child: const Center(
-                                    child: Icon(
-                                      Icons.edit,
-                                      size: 13,
-                                      color: AppColors.backgroundColorLight,
+                                          topLeft: Radius.circular(8)),
+                                      child: CachedNetworkImage(
+                                        width: 340,
+                                        height: 130,
+                                        imageUrl: widget.image!,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ))
-                        ],
-                      ),
-                    )
-                  : SizedBox(
-                      height: 17.5.h,
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: 340,
-                            height: 130,
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: kPadding),
-                            decoration: ShapeDecoration(
-                              image: DecorationImage(
-                                  image: FileImage(horseImage!),
-                                  fit: BoxFit.cover),
-                              color: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                side: const BorderSide(
-                                  width: 0.50,
-                                  strokeAlign: BorderSide.strokeAlignCenter,
-                                  color: Color(0xFFDFD9C9),
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
+                              Positioned(
+                                  top: 115.5,
+                                  left: 45.5.w,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      showChosePictureBottomSheet(
+                                        context: context,
+                                        onTapCamera: () {
+                                          setState(() {
+                                            getImage(
+                                                ImageSource.camera, context);
+                                            Navigator.of(context).pop();
+                                          });
+                                        },
+                                        onTapGallery: () async {
+                                          await getImage(
+                                              ImageSource.gallery, context);
+                                          if (mounted) {
+                                            Navigator.of(context).pop();
+                                          }
+                                        },
+                                        title: "Chose the horse picture",
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: AppColors.yellow,
+                                      ),
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.edit,
+                                          size: 13,
+                                          color: AppColors.backgroundColorLight,
+                                        ),
+                                      ),
+                                    ),
+                                  ))
+                            ],
                           ),
-                          Positioned(
-                              top: 115.5,
-                              left: 77.5.w,
-                              child: GestureDetector(
-                                onTap: () {
-                                  showChosePictureBottomSheet(
-                                    context: context,
-                                    onTapCamera: () {
-                                      setState(() {
-                                        getImage(ImageSource.camera, context);
-                                        Navigator.of(context).pop();
-                                      });
-                                    },
-                                    onTapGallery: () async {
-                                      await getImage(
-                                          ImageSource.gallery, context);
-                                      if (mounted) {
-                                        Navigator.of(context).pop();
-                                      }
-                                    },
-                                    title: "Chose the horse picture",
-                                  );
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(8),
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: AppColors.yellow,
-                                  ),
-                                  child: const Center(
-                                    child: Icon(
-                                      Icons.edit,
-                                      size: 13,
-                                      color: AppColors.backgroundColorLight,
+                        )
+                      : SizedBox(
+                          height: 18.h,
+                          width: 55.0.w,
+                          child: Stack(
+                            children: [
+                              Container(
+                                height: 16.h,
+                                width: 50.0.w,
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: kPadding),
+                                decoration: ShapeDecoration(
+                                  image: DecorationImage(
+                                      image: FileImage(horseImage!),
+                                      fit: BoxFit.cover),
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide(
+                                      width: 0.50,
+                                      strokeAlign: BorderSide.strokeAlignCenter,
+                                      color: Color(0xFFDFD9C9),
                                     ),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                              ))
-                        ],
-                      ),
+                              ),
+                              Positioned(
+                                  top: 115.5,
+                                  left: 45.5.w,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      showChosePictureBottomSheet(
+                                        context: context,
+                                        onTapCamera: () {
+                                          setState(() {
+                                            getImage(
+                                                ImageSource.camera, context);
+                                            Navigator.of(context).pop();
+                                          });
+                                        },
+                                        onTapGallery: () async {
+                                          await getImage(
+                                              ImageSource.gallery, context);
+                                          if (mounted) {
+                                            Navigator.of(context).pop();
+                                          }
+                                        },
+                                        title: "Chose the horse picture",
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(8),
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: AppColors.yellow,
+                                      ),
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.edit,
+                                          size: 13,
+                                          color: AppColors.backgroundColorLight,
+                                        ),
+                                      ),
+                                    ),
+                                  ))
+                            ],
+                          ),
+                        ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 7.0, horizontal: 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SelectableTypeContainer(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 10),
+                          label: 'Mare',
+                          index: 0,
+                          isSelected: isGenderSelected[0],
+                          onSelected: (bool value) {
+                            _handleSelected(0, value, isGenderSelected);
+                            selectedGender = 'Mare';
+                            Print("Selected gender $selectedGender");
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        SelectableTypeContainer(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 10),
+                          label: 'Gelding',
+                          index: 1,
+                          isSelected: isGenderSelected[1],
+                          onSelected: (bool value) {
+                            _handleSelected(1, value, isGenderSelected);
+                            selectedGender = 'Gelding';
+                            Print("Selected type $selectedGender");
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        SelectableTypeContainer(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 10),
+                          label: 'Stallion',
+                          index: 2,
+                          isSelected: isGenderSelected[2],
+                          onSelected: (bool value) {
+                            _handleSelected(2, value, isGenderSelected);
+                            selectedGender = 'Stallion';
+                            Print("Selected type $selectedGender");
+                          },
+                        ),
+                      ],
                     ),
+                  ),
+                ],
+              ),
               const SizedBox(
                 height: 10,
               ),
@@ -467,60 +528,6 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                         hint: 'Color',
                       ),
                     ),
-                    const Text(
-                      "Gender",
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                        color: AppColors.formsHintFontLight,
-                        fontSize: 14,
-                        fontFamily: 'notosan',
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 7.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SelectableTypeContainer(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 35, vertical: 10),
-                            label: 'Mare',
-                            index: 0,
-                            isSelected: isGenderSelected[0],
-                            onSelected: (bool value) {
-                              _handleSelected(0, value, isGenderSelected);
-                              selectedGender = 'Mare';
-                              Print("Selected gender $selectedGender");
-                            },
-                          ),
-                          SelectableTypeContainer(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 35, vertical: 10),
-                            label: 'Gelding',
-                            index: 1,
-                            isSelected: isGenderSelected[1],
-                            onSelected: (bool value) {
-                              _handleSelected(1, value, isGenderSelected);
-                              selectedGender = 'Gelding';
-                              Print("Selected type $selectedGender");
-                            },
-                          ),
-                          SelectableTypeContainer(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 35, vertical: 10),
-                            label: 'Stallion',
-                            index: 2,
-                            isSelected: isGenderSelected[2],
-                            onSelected: (bool value) {
-                              _handleSelected(2, value, isGenderSelected);
-                              selectedGender = 'Stallion';
-                              Print("Selected type $selectedGender");
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 7),
                       child: DropDownWidget(
@@ -566,32 +573,40 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                   child: BlocConsumer<HorseCubit, HorseState>(
                     bloc: cubit,
                     listener: (context, state) {
+                      if (state is UploadFileSuccessful) {
+                        horseUrl = state.fileUrl!.url;
+                        _onPressUpdate(horseUrl!);
+                      } else if (state is UploadFileError) {
+                        RebiMessage.error(
+                            msg: state.message!, context: context);
+                      }
                       if (state is UpdateHorseSuccessfully) {
                         RebiMessage.success(
                             msg: state.message, context: context);
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const BottomNavigation(
-                                      selectedIndex: 2,
-                                    )));
+                        myCubit.getAllHorses();
+                        Navigator.pop(context);
+                        Navigator.pop(context);
                       } else if (state is UpdateHorseError) {
                         RebiMessage.error(
                             msg: state.message!, context: context);
                       }
                     },
                     builder: (context, state) {
-                      if (state is UpdateHorseLoading) {
-                        return LoadingCircularWidget();
+                      if (state is UpdateHorseLoading ||
+                          state is UploadFileLoading) {
+                        return const LoadingCircularWidget();
                       }
                       return RebiButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            _onPressUpdate();
-                            Print("Saved");
+                            if (horseImage != null) {
+                              _onPressUpload();
+                            } else {
+                              _onPressUpdate(image);
+                            }
                           } else {}
                         },
-                        child: const Text("Save"),
+                        child: Text("Save", style: AppStyles.buttonStyle,),
                       );
                     },
                   ),
@@ -616,18 +631,25 @@ class EditHorseScreenState extends State<EditHorseScreen> {
     });
   }
 
-  _onPressUpdate() {
+  _onPressUpdate(String image) {
     cubit.updateHorse(
-        UpdateHorseRequestModel(
-            horseName: horseName!.text,
-            horseColor: selectedColor,
-            horseDOB: widget.birthOfDate,
-            horseCOB: placeOfBirth.text,
-            breed: selectedBreed,
-            bloodline: selectedBloodLine,
-            horseImage: widget.image,
-            horseGender: selectedGender,
-            horseID: widget.horseId),
-        horseImage == null ? widget.image! : horseImage!.path);
+      UpdateHorseRequestModel(
+        id: widget.horseId,
+        name: horseName!.text,
+        color: selectedColor,
+        dateOfBirth: widget.birthOfDate,
+        placeOfBirth: placeOfBirth.text,
+        breed: selectedBreed,
+        disciplineId: widget.disciplineId,
+        stableId: widget.stableId,
+        bloodLine: selectedBloodLine,
+        image: horseImage == null ? widget.image! : image,
+        gender: selectedGender,
+      ),
+    );
+  }
+
+  _onPressUpload() {
+    cubit.uploadFile(horseImage!.path.toString());
   }
 }

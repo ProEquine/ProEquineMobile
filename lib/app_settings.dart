@@ -3,6 +3,6 @@ import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.d
 
 class AppSettings {
 
-  static String baseUrl ='https://pet-webapi-uaeno-devtest.azurewebsites.net/';
+  static String baseUrl ='https://api.proequine.tech';
   static const String version = '1.0.0.6';
 }

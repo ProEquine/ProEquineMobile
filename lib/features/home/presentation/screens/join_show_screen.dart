@@ -10,6 +10,7 @@ import 'package:proequine/features/home/presentation/widgets/select_date_time_wi
 import 'package:proequine/features/home/presentation/widgets/select_place_form_widget.dart';
 
 import '../../../../core/constants/routes/routes.dart';
+import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/global_functions/global_statics_drop_down.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
@@ -288,7 +289,7 @@ class JoinShowScreenState extends State<JoinShowScreen>
                                   context: context);
                             }
                           },
-                          child: const Text("Next")),
+                          child:  Text("Next", style: AppStyles.buttonStyle,)),
                     ),
                     const SizedBox(
                       height: 30,

@@ -44,21 +44,21 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ProfileListTileWidget(
-                title: "Discipline",
+                title: "Equine Interests",
                 onTap: () {
                   Navigator.pushNamed(context, choseDiscipline);
                 },
                 notificationList: false,
                 isThereNewNotification: false,
               ),
-              ProfileListTileWidget(
-                title: "Role",
-                onTap: () {
-                  Navigator.pushNamed(context, allRoles);
-                },
-                notificationList: false,
-                isThereNewNotification: false,
-              ),
+              // ProfileListTileWidget(
+              //   title: "Role",
+              //   onTap: () {
+              //     Navigator.pushNamed(context, allRoles);
+              //   },
+              //   notificationList: false,
+              //   isThereNewNotification: false,
+              // ),
               ProfileListTileWidget(
                 title: "Stables",
                 onTap: () {

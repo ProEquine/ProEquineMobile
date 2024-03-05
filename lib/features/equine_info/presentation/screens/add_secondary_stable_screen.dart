@@ -4,6 +4,7 @@ import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/utils/rebi_message.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/core/widgets/rebi_button.dart';
+import 'package:proequine/features/equine_info/data/add_new_stable_request_model.dart';
 import 'package:proequine/features/equine_info/data/add_secondary_stable_request_model.dart';
 import 'package:proequine/features/equine_info/domain/equine_info_cubit.dart';
 import 'package:sizer/sizer.dart';
@@ -18,7 +19,7 @@ import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/loading_widget.dart';
 import '../../../../core/widgets/rebi_input.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
-import '../../../../core/widgets/stables_widget.dart';
+import '../../../stables/presentation/widgets/stables_widget.dart';
 import '../../../manage_account/data/basic_account_management_route.dart';
 import '../../../nav_bar/domain/navbar_cubit.dart';
 import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
@@ -234,61 +235,126 @@ class _AddSecondaryStableScreenState extends State<AddSecondaryStableScreen> {
                           ),
                         ),
                         const Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                          ),
-                          child: BlocConsumer<EquineInfoCubit, EquineInfoState>(
-                            bloc: cubit,
-                            listener: (context, state) {
-                              if (state is AddSecondaryStableSuccessful) {
-                                Navigator.pushReplacementNamed(
-                                    context, successScreen,
-                                    arguments: BasicAccountManagementRoute(
-                                        type: 'manageAccount',
-                                        title: isChooseToAddStable
-                                            ? 'Add New Stable Request has Sent Successfully'
-                                            : 'New Stable Added Successfully'));
-                              } else if (state is AddSecondaryStableError) {
-                                RebiMessage.error(
-                                    msg: state.message!, context: context);
-                              }
-                            },
-                            builder: (context, state) {
-                              if (state is AddSecondaryStableLoading) {
-                                return const LoadingCircularWidget();
-                              }
-                              return RebiButton(
-                                backgroundColor: (stable.text.isNotEmpty &&
-                                            stable.text != 'Add Your Stable') ||
-                                        (selectedEmirate != null &&
-                                            _secondaryStableName
-                                                .text.isNotEmpty &&
-                                            _secondaryStableLocation
-                                                .text.isNotEmpty)
-                                    ? AppColors.yellow
-                                    : AppColors.formsLabel,
-                                onPressed: () {
-                                  if ((stable.text.isNotEmpty &&
-                                          stable.text != 'Add Your Stable') ||
-                                      (selectedEmirate != null &&
-                                          _secondaryStableLocation
-                                              .text.isNotEmpty &&
-                                          _secondaryStableName
-                                              .text.isNotEmpty)) {
-                                    onPressAdd();
-                                  } else {
-                                    RebiMessage.error(
-                                        msg:
-                                            'Please select your secondary stable',
-                                        context: context);
-                                  }
-                                },
-                                child: const Text("Save"),
-                              );
-                            },
-                          ),
-                        ),
+                        isChooseToAddStable
+                            ? Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                ),
+                                child: BlocConsumer<EquineInfoCubit,
+                                    EquineInfoState>(
+                                  bloc: cubit,
+                                  listener: (context, state) {
+                                    if (state is AddNewStableSuccessful) {
+                                      Navigator.pushReplacementNamed(
+                                          context, successScreen,
+                                          arguments: BasicAccountManagementRoute(
+                                              type: 'manageAccount',
+                                              title:
+                                                  'Add New Stable Request has Sent Successfully'));
+                                    } else if (state
+                                        is AddNewStableError) {
+                                      RebiMessage.error(
+                                          msg: state.message!,
+                                          context: context);
+                                    }
+                                  },
+                                  builder: (context, state) {
+                                    if (state is AddNewStableError) {
+                                      return const LoadingCircularWidget();
+                                    }
+                                    return RebiButton(
+                                      backgroundColor:
+                                          (stable.text.isNotEmpty &&
+                                                      stable.text !=
+                                                          'Add your stable') ||
+                                                  (selectedEmirate != null &&
+                                                      _secondaryStableName
+                                                          .text.isNotEmpty &&
+                                                      _secondaryStableLocation
+                                                          .text.isNotEmpty)
+                                              ? AppColors.yellow
+                                              : AppColors.formsLabel,
+                                      onPressed: () {
+                                        if ((stable.text.isNotEmpty &&
+                                                stable.text !=
+                                                    'Add your stable') ||
+                                            (selectedEmirate != null &&
+                                                _secondaryStableLocation
+                                                    .text.isNotEmpty &&
+                                                _secondaryStableName
+                                                    .text.isNotEmpty)) {
+                                          onPressAddNew();
+                                        } else {
+                                          RebiMessage.error(
+                                              msg:
+                                                  'Please select your secondary stable',
+                                              context: context);
+                                        }
+                                      },
+                                      child: Text("Save", style: AppStyles.buttonStyle,),
+                                    );
+                                  },
+                                ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                ),
+                                child: BlocConsumer<EquineInfoCubit,
+                                    EquineInfoState>(
+                                  bloc: cubit,
+                                  listener: (context, state) {
+                                    if (state is AddSecondaryStableSuccessful) {
+                                      Navigator.pushReplacementNamed(
+                                          context, successScreen,
+                                          arguments: BasicAccountManagementRoute(
+                                              type: 'manageAccount',
+                                              title: 'New Stable Added Successfully'));
+                                    } else if (state
+                                        is AddSecondaryStableError) {
+                                      RebiMessage.error(
+                                          msg: state.message!,
+                                          context: context);
+                                    }
+                                  },
+                                  builder: (context, state) {
+                                    if (state is AddSecondaryStableLoading) {
+                                      return const LoadingCircularWidget();
+                                    }
+                                    return RebiButton(
+                                      backgroundColor:
+                                          (stable.text.isNotEmpty &&
+                                                      stable.text !=
+                                                          'Add Your Stable') ||
+                                                  (selectedEmirate != null &&
+                                                      _secondaryStableName
+                                                          .text.isNotEmpty &&
+                                                      _secondaryStableLocation
+                                                          .text.isNotEmpty)
+                                              ? AppColors.yellow
+                                              : AppColors.formsLabel,
+                                      onPressed: () {
+                                        if ((stable.text.isNotEmpty &&
+                                                stable.text !=
+                                                    'Add Your Stable') ||
+                                            (selectedEmirate != null &&
+                                                _secondaryStableLocation
+                                                    .text.isNotEmpty &&
+                                                _secondaryStableName
+                                                    .text.isNotEmpty)) {
+                                          onPressAddSecondary();
+                                        } else {
+                                          RebiMessage.error(
+                                              msg:
+                                                  'Please select your secondary stable',
+                                              context: context);
+                                        }
+                                      },
+                                      child:  Text("Save", style: AppStyles.buttonStyle,),
+                                    );
+                                  },
+                                ),
+                              ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -304,13 +370,16 @@ class _AddSecondaryStableScreenState extends State<AddSecondaryStableScreen> {
     );
   }
 
-  onPressAdd() {
-    cubit.addSecondaryStable(AddSecondaryStableRequestModel(
-      stableName: isChooseToAddStable ? _secondaryStableName.text : stable.text,
-      stableId: int.parse(stableId.text),
-      isNewStable: isChooseToAddStable,
+  onPressAddSecondary() {
+    cubit.addSecondaryStable(int.parse(stableId.text));
+  }
+  onPressAddNew() {
+    cubit.addNewStable(
+    AddNewStablesRequestModel(
+      name: _secondaryStableName.text,
+      pinLocation: _secondaryStableLocation.text,
       emirate: selectedEmirate,
-      location: _secondaryStableLocation.text,
+
     ));
   }
 }

@@ -16,12 +16,9 @@ import '../../data/basic_account_management_route.dart';
 import '../../data/edit_phone_request_model.dart';
 
 class UpdateSecondaryPhoneScreen extends StatelessWidget {
-  final String type;
-  final String phoneNumber;
 
   UpdateSecondaryPhoneScreen(
-      {Key? key, required this.type, required this.phoneNumber})
-      : super(key: key);
+      {super.key,});
 
   final TextEditingController _phone = TextEditingController();
   final TextEditingController _countryCode =
@@ -35,7 +32,7 @@ class UpdateSecondaryPhoneScreen extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.0.h),
         child: CustomHeader(
-          title: "Update $type Number",
+          title: "Update Second Number",
           isThereBackButton: true,
         ),
       ),
@@ -47,7 +44,7 @@ class UpdateSecondaryPhoneScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: kPadding),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text("$type number ", style: AppStyles.mainTitle),
+                child: Text("Second number ", style: AppStyles.mainTitle),
               ),
             ),
             const SizedBox(
@@ -82,7 +79,7 @@ class UpdateSecondaryPhoneScreen extends StatelessWidget {
                           onUpdatePhoneNumber();
                         } else {}
                       },
-                      child: const Text("Update"));
+                      child:  Text("Update", style: AppStyles.buttonStyle,));
                 },
                 listener: (context, state) {
                   if (state is UpdatePhoneSecondarySuccessful) {
@@ -91,7 +88,7 @@ class UpdateSecondaryPhoneScreen extends StatelessWidget {
                         arguments: BasicAccountManagementRoute(
                             type: 'manageAccount',
                             title:
-                            "Phone number has been updated successfully"));
+                            "Phone number has been added successfully"));
                   } else if (state is UpdatePhoneSecondaryError) {
                     RebiMessage.error(msg: state.message!, context: context);
                   }
@@ -109,8 +106,7 @@ class UpdateSecondaryPhoneScreen extends StatelessWidget {
 
   onUpdatePhoneNumber() {
     return cubit.updateSecondaryNumber(UpdateSecondaryNumberRequestModel(
-        phoneNumberType: type,
-        newSecondaryNumber: _countryCode.text + _phone.text,
-        oldSecondaryNumber: phoneNumber));
+        secondNumber: _countryCode.text + _phone.text,
+    ));
   }
 }
