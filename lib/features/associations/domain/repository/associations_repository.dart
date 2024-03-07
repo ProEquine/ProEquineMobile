@@ -23,13 +23,13 @@ class AssociationRepository {
         thereDeviceId: false,
         url: ApiURLs.invitesAssociations);
   }
-  static Future<BaseResultModel?> getRequestsAssociations() async {
+  static Future<BaseResultModel?> getRequestsAssociations(int horseId) async {
     return await RemoteDataSource.request<GetHorseRequestResponseModel>(
         converter: (json) => GetHorseRequestResponseModel.fromJson(json),
         method: HttpMethod.GET,
         withAuthentication: true,
         thereDeviceId: false,
-        url: ApiURLs.requestAssociations);
+        url:'${ ApiURLs.requestAssociations}/$horseId');
   }
 
   static Future<BaseResultModel?> createHorseAssociation(

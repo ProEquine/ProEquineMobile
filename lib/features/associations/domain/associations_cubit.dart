@@ -28,9 +28,9 @@ class AssociationsCubit extends Cubit<AssociationsState> {
     }
   }
 
-  Future<void> getRequestsAssociations() async {
+  Future<void> getRequestsAssociations(int horseId) async {
     emit(GetRequestsAssociationsLoading());
-    var response = await AssociationRepository.getRequestsAssociations();
+    var response = await AssociationRepository.getRequestsAssociations(horseId);
     if (response is GetHorseRequestResponseModel) {
       emit(GetRequestsAssociationsSuccessfully(model: response));
     } else if (response is BaseError) {

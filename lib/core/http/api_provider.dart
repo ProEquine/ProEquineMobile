@@ -32,7 +32,7 @@ class ApiProvider {
       required String url,
       Map<String, dynamic>? data,
       CachePolicy policy = CachePolicy.refreshForceCache,
-      Duration refreshDuration = const Duration(days: 1),
+      Duration refreshDuration = const Duration(minutes:1 ),
       Map<String, String>? headers,
       Map<String, dynamic>? queryParameters,
       Map<String, String>? files,
@@ -48,6 +48,7 @@ class ApiProvider {
     var cacheInterceptor = DioCacheInterceptor(
       options: CacheOptions(
         store: cacheStore,
+
         policy: policy,
         hitCacheOnErrorExcept: [401, 403, 302],
         maxStale: refreshDuration,

@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:proequine/core/CoreModels/base_result_model.dart';
 
-class HorsesResponseModel extends BaseResultModel{
+class HorsesResponseModel extends BaseResultModel {
   int? count;
   List<Horse>? rows;
 
@@ -27,7 +28,7 @@ class HorsesResponseModel extends BaseResultModel{
   }
 }
 
-class Horse {
+class Horse extends Equatable {
   int? id;
   int? userId;
   User? user;
@@ -48,22 +49,22 @@ class Horse {
 
   Horse(
       {this.id,
-        this.userId,
-        this.user,
-        this.disciplineId,
-        this.discipline,
-        this.stableId,
-        this.stable,
-        this.name,
-        this.age,
-        this.image,
-        this.status,
-        this.dateOfBirth,
-        this.placeOfBirth,
-        this.color,
-        this.gender,
-        this.bloodLine,
-        this.breed});
+      this.userId,
+      this.user,
+      this.disciplineId,
+      this.discipline,
+      this.stableId,
+      this.stable,
+      this.name,
+      this.age,
+      this.image,
+      this.status,
+      this.dateOfBirth,
+      this.placeOfBirth,
+      this.color,
+      this.gender,
+      this.bloodLine,
+      this.breed});
 
   Horse.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -75,7 +76,7 @@ class Horse {
         : null;
     stableId = json['stableId'];
     stable =
-    json['stable'] != null ? MainStable.fromJson(json['stable']) : null;
+        json['stable'] != null ? MainStable.fromJson(json['stable']) : null;
     name = json['name'];
     age = json['age'];
     image = json['image'];
@@ -115,7 +116,14 @@ class Horse {
     data['breed'] = breed;
     return data;
   }
+
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id, name, image, status];
+
 }
+
 
 class User {
   int? id;
@@ -148,32 +156,32 @@ class User {
 
   User(
       {this.id,
-        this.email,
-        this.phoneNumber,
-        this.roles,
-        this.firstName,
-        this.lastName,
-        this.middleName,
-        this.gender,
-        this.nationality,
-        this.accessToken,
-        this.refreshToken,
-        this.steps,
-        this.userName,
-        this.verifiedEmail,
-        this.verifiedPhoneNumber,
-        this.isBlocked,
-        this.image,
-        this.mainStableId,
-        this.mainStable,
-        this.mainDisciplineId,
-        this.mainDiscipline,
-        this.displayName,
-        this.address,
-        this.country,
-        this.state,
-        this.city,
-        this.secondNumber});
+      this.email,
+      this.phoneNumber,
+      this.roles,
+      this.firstName,
+      this.lastName,
+      this.middleName,
+      this.gender,
+      this.nationality,
+      this.accessToken,
+      this.refreshToken,
+      this.steps,
+      this.userName,
+      this.verifiedEmail,
+      this.verifiedPhoneNumber,
+      this.isBlocked,
+      this.image,
+      this.mainStableId,
+      this.mainStable,
+      this.mainDisciplineId,
+      this.mainDiscipline,
+      this.displayName,
+      this.address,
+      this.country,
+      this.state,
+      this.city,
+      this.secondNumber});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -258,11 +266,11 @@ class Steps {
 
   Steps(
       {this.isAddMainDiscipline,
-        this.isAddMainStable,
-        this.isAddUserName,
-        this.isAddRole,
-        this.isVerifiedPhoneNumber,
-        this.isVerifiedEmail});
+      this.isAddMainStable,
+      this.isAddUserName,
+      this.isAddRole,
+      this.isVerifiedPhoneNumber,
+      this.isVerifiedEmail});
 
   Steps.fromJson(Map<String, dynamic> json) {
     isAddMainDiscipline = json['isAddMainDiscipline'];
@@ -277,7 +285,7 @@ class Steps {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['isAddMainDiscipline'] = isAddMainDiscipline;
     data['isAddMainStable'] = isAddMainStable;
-    data['isAddUserName'] =isAddUserName;
+    data['isAddUserName'] = isAddUserName;
     data['isAddRole'] = isAddRole;
     data['isVerifiedPhoneNumber'] = isVerifiedPhoneNumber;
     data['isVerifiedEmail'] = isVerifiedEmail;
@@ -296,12 +304,12 @@ class MainStable {
 
   MainStable(
       {this.id,
-        this.name,
-        this.emirate,
-        this.pinLocation,
-        this.status,
-        this.showOnApp,
-        this.createdBy});
+      this.name,
+      this.emirate,
+      this.pinLocation,
+      this.status,
+      this.showOnApp,
+      this.createdBy});
 
   MainStable.fromJson(Map<String, dynamic> json) {
     id = json['id'];

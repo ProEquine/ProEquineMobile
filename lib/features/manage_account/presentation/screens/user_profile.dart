@@ -9,6 +9,7 @@ import 'package:proequine/core/utils/secure_storage/secure_storage_helper.dart';
 import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/features/equine_info/presentation/screens/equine_info_screen.dart';
 import 'package:proequine/features/manage_account/domain/manage_account_cubit.dart';
+import 'package:proequine/features/manage_account/presentation/screens/manage_account_screen.dart';
 import 'package:proequine/features/splash/presentation/screens/splash_screen.dart';
 import 'package:proequine/features/wallet/presentation/screens/main_wallet_screen.dart';
 
@@ -69,8 +70,12 @@ class _UserProfileState extends State<UserProfile> {
             ProfileListTileWidget(
               title: "Manage Account",
               onTap: () async {
-                Navigator.pushNamed(context, manageAccount, arguments: false)
-                    .then((value) => email = value.toString());
+                String? userId = await SecureStorage().getUserId();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            ManageAccountScreen(userId: int.parse(userId!))));
                 Print(email);
               },
               notificationList: false,
@@ -124,8 +129,10 @@ class _UserProfileState extends State<UserProfile> {
             ProfileListTileWidget(
               title: "Support",
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const AllSupportRequestsModel()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AllSupportRequestsModel()));
               },
               notificationList: false,
               isThereNewNotification: false,

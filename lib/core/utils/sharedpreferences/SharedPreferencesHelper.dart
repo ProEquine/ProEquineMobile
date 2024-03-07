@@ -189,4 +189,60 @@ class AppSharedPreferences {
 
   static set typeSelected(bool? type) =>
       _pref?.saveBoolean(keyUserType, type) ?? false;
+
+  static const String _keyData = 'myData';
+  static const String _keyExpiration = 'expirationTime';
+
+  // Function to save data with an expiration date to SharedPreferences
+  static Future<bool> saveDataWithExpiration(String data, Duration expirationDuration) async {
+    try {
+      DateTime expirationTime = DateTime.now().add(expirationDuration);
+      await _pref?.save(_keyData, data);
+      await _pref?.save(_keyExpiration, expirationTime.toIso8601String());
+      print('Data saved to SharedPreferences.');
+      return true;
+    } catch (e) {
+      print('Error saving data to SharedPreferences: $e');
+      return false;
+    }
+  }
+
+  // Function to get data from SharedPreferences if it's not expired
+  static Future<String?> getDataIfNotExpired() async {
+    try {
+      String? data = _pref?.read(_keyData);
+      String? expirationTimeStr = _pref?.read(_keyExpiration);
+      if (data == null || expirationTimeStr == null) {
+        print('No data or expiration time found in SharedPreferences.');
+        return null; // No data or expiration time found.
+      }
+
+      DateTime expirationTime = DateTime.parse(expirationTimeStr);
+      if (expirationTime.isAfter(DateTime.now())) {
+        print('Data has not expired.');
+        // The data has not expired.
+        return data;
+      } else {
+        // Data has expired. Remove it from SharedPreferences.
+        await _pref?.remove(_keyData);
+        await _pref?.remove(_keyExpiration);
+        print('Data has expired. Removed from SharedPreferences.');
+        return null;
+      }
+    } catch (e) {
+      print('Error retrieving data from SharedPreferences: $e');
+      return null;
+    }
+  }
+
+  // Function to clear data from SharedPreferences
+  static Future<void> clearData() async {
+    try {
+      await _pref?.remove(_keyData);
+      await _pref?.remove(_keyExpiration);
+      print('Data cleared from SharedPreferences.');
+    } catch (e) {
+      print('Error clearing data from SharedPreferences: $e');
+    }
+  }
 }

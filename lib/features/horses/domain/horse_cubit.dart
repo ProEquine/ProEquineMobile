@@ -1,7 +1,7 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
 import 'package:proequine/features/horses/data/add_horse_document_request_model.dart';
 import 'package:proequine/features/horses/data/add_horse_request_model.dart';
 import 'package:proequine/features/horses/data/edit_document_request_model.dart';
@@ -36,11 +36,9 @@ class HorseCubit extends Cubit<HorseState> {
   int documentsOffset = 0;
   late RefreshController refreshController;
 
-  Future<void> addHorse(
-      AddHorseRequestModel addHorseRequestModel) async {
+  Future<void> addHorse(AddHorseRequestModel addHorseRequestModel) async {
     emit(AddHorseLoading());
-    var response =
-        await HorseRepository.addHorse(addHorseRequestModel);
+    var response = await HorseRepository.addHorse(addHorseRequestModel);
     if (response is HorseResponseModel) {
       emit(AddHorseSuccessfully(message: "Your horse added successfully".tra));
     } else if (response is BaseError) {
@@ -52,8 +50,7 @@ class HorseCubit extends Cubit<HorseState> {
   }
 
   Future<void> updateHorse(
-    UpdateHorseRequestModel updateHorseRequestModel
-  ) async {
+      UpdateHorseRequestModel updateHorseRequestModel) async {
     emit(UpdateHorseLoading());
     var response = await HorseRepository.updateHorse(updateHorseRequestModel);
     if (response is HorseResponseModel) {
@@ -66,6 +63,7 @@ class HorseCubit extends Cubit<HorseState> {
       emit(UpdateHorseError(message: response.content));
     }
   }
+
   Future<void> uploadFile(String file) async {
     emit(UploadFileLoading());
     var response = await HorseRepository.uploadFile(file);
@@ -78,6 +76,7 @@ class HorseCubit extends Cubit<HorseState> {
       emit(UploadFileError(message: response.content));
     }
   }
+
   Future<void> uploadOwnerShipFile(String file) async {
     emit(UploadOwnerShipFileLoading());
     var response = await HorseRepository.uploadFile(file);
@@ -90,6 +89,7 @@ class HorseCubit extends Cubit<HorseState> {
       emit(UploadOwnerShipFileError(message: response.content));
     }
   }
+
   Future<void> uploadNationalFileFile(String file) async {
     emit(UploadNationalPassportFileLoading());
     var response = await HorseRepository.uploadFile(file);
@@ -103,9 +103,7 @@ class HorseCubit extends Cubit<HorseState> {
     }
   }
 
-
-  Future<void> removeHorse(
-      int horseId) async {
+  Future<void> removeHorse(int horseId) async {
     emit(RemoveHorseLoading());
     var response = await HorseRepository.removeHorse(horseId);
     if (response is EmptyModel) {
@@ -118,7 +116,6 @@ class HorseCubit extends Cubit<HorseState> {
       emit(RemoveHorseError(message: response.content));
     }
   }
-
 
   Future<void> addHorseDocument(
       CreateHorseDocumentsRequestModel createHorseDocumentsRequestModel) async {
@@ -135,11 +132,12 @@ class HorseCubit extends Cubit<HorseState> {
       emit(AddHorseDocumentError(message: response.content));
     }
   }
+
   Future<void> editHorseDocument(
       EditHorseDocumentsRequestModel editHorseDocumentRequestModel) async {
     emit(EditHorseDocumentLoading());
-    var response = await HorseRepository.editHorseDocument(
-        editHorseDocumentRequestModel);
+    var response =
+        await HorseRepository.editHorseDocument(editHorseDocumentRequestModel);
     if (response is EmptyModel) {
       emit(EditHorseDocumentSuccessfully(
           message: "Your Horse Documents has been sent successfully".tra));
@@ -150,11 +148,10 @@ class HorseCubit extends Cubit<HorseState> {
       emit(EditHorseDocumentError(message: response.content));
     }
   }
-  Future<void> removeHorseDocument(
-      int docId) async {
+
+  Future<void> removeHorseDocument(int docId) async {
     emit(RemoveHorseDocumentLoading());
-    var response = await HorseRepository.removeHorseDocument(
-        docId);
+    var response = await HorseRepository.removeHorseDocument(docId);
     if (response is EmptyModel) {
       emit(RemoveHorseDocumentSuccessfully(
           message: "Your Horse Documents has been Removed successfully".tra));
@@ -166,9 +163,11 @@ class HorseCubit extends Cubit<HorseState> {
     }
   }
 
-  Future<void> verifyHorse(HorseVerificationRequestModel horseVerificationRequestModel) async {
+  Future<void> verifyHorse(
+      HorseVerificationRequestModel horseVerificationRequestModel) async {
     emit(VerifyHorseLoading());
-    var response = await HorseRepository.verifyHorse(horseVerificationRequestModel: horseVerificationRequestModel);
+    var response = await HorseRepository.verifyHorse(
+        horseVerificationRequestModel: horseVerificationRequestModel);
     if (response is HorseVerificationResponseModel) {
       emit(VerifyHorseSuccessfully(
           message: "Your Horse Files has been sent successfully".tra));
@@ -179,13 +178,12 @@ class HorseCubit extends Cubit<HorseState> {
       emit(VerifyHorseError(message: response.content));
     }
   }
-  Future<void> getAllHorses({
-    int limit = 8,
 
-    bool loadMore = false,
-    bool isRefreshing = false,
-    String? fullName
-  }) async {
+  Future<void> getAllHorses(
+      {int limit = 8,
+      bool loadMore = false,
+      bool isRefreshing = false,
+      String? fullName}) async {
     if (isRefreshing) {
       limit = 8;
       offset = 0;
@@ -201,7 +199,8 @@ class HorseCubit extends Cubit<HorseState> {
       offset = 0;
       emit(GetUserHorsesLoading());
     }
-    var response = await HorseRepository.getHorses(offset:offset, limit:limit);
+    var response =
+        await HorseRepository.getHorses(offset: offset, limit: limit);
     if (response is HorsesResponseModel) {
       Print("Offset is $offset");
       count = response.count!;
@@ -220,10 +219,10 @@ class HorseCubit extends Cubit<HorseState> {
       } else {
         horses = horsesAsList;
       }
+      // AppSharedPreferences.saveDataWithExpiration(
+      //     horses[1], Duration(minutes: 1));
       emit(GetUserHorsesSuccessfully(
-          horses: List<Horse>.from(horses),
-          offset: offset,
-          count: count));
+          horses: List<Horse>.from(horses), offset: offset, count: count));
     } else if (response is BaseError) {
       if (offset > 0) offset = 0;
       emit(GetUserHorsesError(message: response.message));
@@ -231,10 +230,10 @@ class HorseCubit extends Cubit<HorseState> {
       emit(GetUserHorsesError(message: response.content));
     }
   }
+
   Future<void> getAllHorseDocuments({
     int limit = 8,
     required int horseId,
-
     bool loadMore = false,
     bool isRefreshing = false,
   }) async {
@@ -253,7 +252,8 @@ class HorseCubit extends Cubit<HorseState> {
       documentsOffset = 0;
       emit(GetHorsesDocumentsLoading());
     }
-    var response = await HorseRepository.getDocuments(offset:documentsOffset, limit:limit,horseId: horseId);
+    var response = await HorseRepository.getDocuments(
+        offset: documentsOffset, limit: limit, horseId: horseId);
     if (response is AllHorseDocumentsResponseModel) {
       Print("Offset is $documentsOffset");
       documentsCount = response.count!;

@@ -62,7 +62,7 @@ class _HorseInvitesAssociationsState extends State<HorseInvitesAssociations> {
 
   @override
   void initState() {
-    context.read<AssociationsCubit>().getRequestsAssociations();
+    context.read<AssociationsCubit>().getRequestsAssociations(int.parse(widget.horseId));
 
     super.initState();
   }
@@ -143,7 +143,7 @@ class _HorseInvitesAssociationsState extends State<HorseInvitesAssociations> {
                         },
                         listener: (context, state) {
                           if (state is AssociateHorseSuccessfully) {
-                            myCubit.getInvitesAssociations();
+                            myCubit.getRequestsAssociations(int.parse(widget.horseId));
                             Navigator.pop(context);
                           } else if (state is AssociateHorseError) {
                             RebiMessage.error(
@@ -232,7 +232,7 @@ class _HorseInvitesAssociationsState extends State<HorseInvitesAssociations> {
                                                     msg: state.message,
                                                     context: context);
                                                 myCubit
-                                                    .getRequestsAssociations();
+                                                    .getRequestsAssociations(int.parse(widget.horseId));
                                                 Navigator.pop(context);
                                               } else if (state
                                                   is CancelAssociateHorseError) {
@@ -282,7 +282,7 @@ class _HorseInvitesAssociationsState extends State<HorseInvitesAssociations> {
                     }
                   } else if (state is GetRequestsAssociationsError) {
                     return CustomErrorWidget(onRetry: () {
-                      cubit.getRequestsAssociations();
+                      cubit.getRequestsAssociations(int.parse(widget.horseId));
                     });
                   } else if (state is GetRequestsAssociationsLoading) {
                     return LoadingCircularWidget();

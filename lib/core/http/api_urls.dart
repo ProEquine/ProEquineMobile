@@ -69,7 +69,7 @@ class ApiURLs {
 
   static  String addHorse = "$basicApiUrl/horses";
   static  String invitesAssociations = "$basicApiUrl/horseAssociations/user/invite";
-  static  String requestAssociations = "$basicApiUrl/horseAssociations/user/request";
+  static  String requestAssociations = "$basicApiUrl/horseAssociations/horse";
   static  String horseAssociation = "$basicApiUrl/horseAssociations";
   static  String horseAssociationApprove = "$basicApiUrl/horseAssociations/approve";
   static  String horseAssociationReject = "$basicApiUrl/horseAssociations/reject";

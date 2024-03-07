@@ -33,6 +33,7 @@ dependencies:
 
   toastification: ^1.1.0
   jumping_dot: ^0.0.6
+
   logger: ^1.1.0
   readmore: ^2.2.0
   fluttertoast: ^8.0.9

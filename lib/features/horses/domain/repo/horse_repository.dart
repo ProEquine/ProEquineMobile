@@ -23,15 +23,20 @@ class HorseRepository {
         converter: (json) => HorseResponseModel.fromJson(json),
         method: HttpMethod.POST,
         data: addHorseRequestModel.toJson(),
+        // policy: CachePolicy.refreshForceCache,
+        // refreshDuration: const Duration(microseconds: 1),
         withAuthentication: true,
         thereDeviceId: false,
         url: ApiURLs.addHorse);
   }
 
-  static Future<BaseResultModel?> getHorses({required int limit,required int offset}) async {
+  static Future<BaseResultModel?> getHorses(
+      {required int limit, required int offset}) async {
     return await RemoteDataSource.request<HorsesResponseModel>(
         converter: (json) => HorsesResponseModel.fromJson(json),
         method: HttpMethod.GET,
+        // policy: CachePolicy.forceCache,
+        // refreshDuration: const Duration(seconds: 5),
         queryParameters: {
           'limit': limit,
           'offset': offset,
@@ -41,7 +46,8 @@ class HorseRepository {
         url: ApiURLs.getHorses);
   }
 
-  static Future<BaseResultModel?> getDocuments({required int limit,required int offset, required int horseId}) async {
+  static Future<BaseResultModel?> getDocuments(
+      {required int limit, required int offset, required int horseId}) async {
     return await RemoteDataSource.request<AllHorseDocumentsResponseModel>(
         converter: (json) => AllHorseDocumentsResponseModel.fromJson(json),
         method: HttpMethod.GET,
@@ -66,7 +72,8 @@ class HorseRepository {
   }
 
   static Future<BaseResultModel?> verifyHorse(
-      {required HorseVerificationRequestModel horseVerificationRequestModel}) async {
+      {required HorseVerificationRequestModel
+          horseVerificationRequestModel}) async {
     return await RemoteDataSource.request<HorseVerificationResponseModel>(
         converter: (json) => HorseVerificationResponseModel.fromJson(json),
         method: HttpMethod.POST,
@@ -86,12 +93,13 @@ class HorseRepository {
         thereDeviceId: false,
         url: ApiURLs.updateHorseCondition);
   }
+
   static Future<BaseResultModel?> uploadFile(String? file) async {
     return await RemoteDataSource.request<UploadFileResponseModel>(
         converter: (json) => UploadFileResponseModel.fromJson(json),
         method: HttpMethod.POST,
         files: {
-          "file":file!,
+          "file": file!,
         },
         withAuthentication: true,
         isLongTime: true,
@@ -99,8 +107,7 @@ class HorseRepository {
         url: ApiURLs.uploadFile);
   }
 
-  static Future<BaseResultModel?> removeHorse(
-      int horseId) async {
+  static Future<BaseResultModel?> removeHorse(int horseId) async {
     return await RemoteDataSource.request<EmptyModel>(
         converter: (json) => EmptyModel.fromJson(json),
         method: HttpMethod.DELETE,

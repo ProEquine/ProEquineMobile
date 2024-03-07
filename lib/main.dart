@@ -39,7 +39,6 @@ import 'package:proequine/features/splash/presentation/screens/splash_screen.dar
 import 'package:proequine/features/stables/domain/stable_cubit.dart';
 import 'package:proequine/features/user/domain/user_cubit.dart';
 import 'package:proequine/features/stables/presentation/screens/choose_stable_screen.dart';
-import 'package:proequine/features/user/presentation/screens/interests_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
@@ -55,7 +54,6 @@ import 'features/manage_account/presentation/screens/update_phone_screen.dart';
 import 'features/manage_account/presentation/screens/verify_updated_phone_screen.dart';
 import 'features/nav_bar/domain/navbar_cubit.dart';
 import 'features/nav_bar/presentation/screens/bottomnavigation.dart';
-import 'features/manage_account/presentation/screens/chose_phone_update_screen.dart';
 import 'features/payment/domain/payment_cubit.dart';
 import 'features/support/domain/support_cubit.dart';
 import 'features/user/presentation/screens/login_screen.dart';
@@ -241,15 +239,15 @@ class MyAppState extends State<MyApp> {
         createEvent: ((context) => const JoinShowScreen()),
         import: ((context) => CreateImportScreen()),
         export: ((context) => CreateExportScreen()),
-        manageAccount: (context) =>  ManageAccountScreen(userId: int.parse(userId!),),
+        // manageAccount: (context) =>  ManageAccountScreen(userId: int.parse(userId!),),
         userProfile: (context) => const UserProfile(),
         updatePhone: (context) => UpdatePhoneScreen(),
-        choseDiscipline: (context) => ChooseDisciplineScreen(
-              userId: int.parse(userId!),
-            ),
+        // choseDiscipline: (context) => ChooseDisciplineScreen(
+        //       userId: int.parse(userId!),
+        //     ),
         choseStable: (context) => const ChoseStableScreen(),
-        choseUpdateStable: (context) =>
-            ChooseUpdateStableScreen(userId: int.parse(userId!)),
+        // choseUpdateStable: (context) =>
+        //     ChooseUpdateStableScreen(userId: int.parse(userId!)),
         // addNewRole: (context) => const AddNewRoleScreen(),
         // allRoles: (context) => const AllRolesScreen(),
         addSecondaryPhone: (context) => AddSecondaryPhoneScreen(),

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:proequine/core/constants/constants.dart';
+import 'package:proequine/features/equine_info/presentation/screens/chose_stable_update_screen.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/routes/routes.dart';
+import '../../../../core/utils/secure_storage/secure_storage_helper.dart';
 import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/profile_list_tile_widget.dart';
-
+import 'chose_discilpine_update_screen.dart';
 
 class EquineInfoScreen extends StatefulWidget {
   const EquineInfoScreen({super.key});
@@ -16,8 +18,6 @@ class EquineInfoScreen extends StatefulWidget {
 }
 
 class _EquineInfoScreenState extends State<EquineInfoScreen> {
-
-
   @override
   void dispose() {
     super.dispose();
@@ -30,11 +30,10 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(20.h),
         child: CustomHeader(
-          title: "Equine Info",
-          isThereBackButton: true,
-          isThereChangeWithNavigate: false,
-          isThereThirdOption: false
-        ),
+            title: "Equine Info",
+            isThereBackButton: true,
+            isThereChangeWithNavigate: false,
+            isThereThirdOption: false),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -45,8 +44,13 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
             children: [
               ProfileListTileWidget(
                 title: "Equine Interests",
-                onTap: () {
-                  Navigator.pushNamed(context, choseDiscipline);
+                onTap: () async {
+                  String? userId = await SecureStorage().getUserId();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ChooseDisciplineScreen(
+                              userId: int.parse(userId!))));
                 },
                 notificationList: false,
                 isThereNewNotification: false,
@@ -61,13 +65,17 @@ class _EquineInfoScreenState extends State<EquineInfoScreen> {
               // ),
               ProfileListTileWidget(
                 title: "Stables",
-                onTap: () {
-                  Navigator.pushNamed(context, choseUpdateStable);
+                onTap: () async {
+                  String? userId = await SecureStorage().getUserId();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ChooseUpdateStableScreen(
+                              userId: int.parse(userId!))));
                 },
                 notificationList: false,
                 isThereNewNotification: false,
               ),
-
             ],
           ),
         ),
