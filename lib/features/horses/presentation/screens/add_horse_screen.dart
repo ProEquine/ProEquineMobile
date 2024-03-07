@@ -497,7 +497,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                       if (state is AddHorseSuccessfully) {
                         RebiMessage.success(
                             msg: "Horse added Successfully", context: context);
-                        myCubit.getAllHorses();
+                        myCubit.getAllHorses(limit: 1000);
                         Navigator.pop(context);
                       } else if (state is AddHorseError) {
                         RebiMessage.error(
@@ -527,9 +527,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                               stable.text.isNotEmpty) {
                             _onPressUpload();
                           } else if (horseImage == null) {
-                            RebiMessage.error(
-                                msg: "Please add a picture to your horse",
-                                context: context);
+                   _onPressAddHorse('');
                           } else {
                             RebiMessage.error(
                                 msg: "Please fill all of the fields",
@@ -561,7 +559,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
     });
   }
 
-  _onPressAddHorse(String horseImage) {
+  _onPressAddHorse(String? horseImage) {
     cubit.addHorse(
       AddHorseRequestModel(
           color: selectedColor,
