@@ -133,6 +133,17 @@ class GetUserHorsesError extends HorseState{
   final String? message;
   GetUserHorsesError({this.message});
 }
+class GetAcceptedHorsesSuccessfully extends HorseState{
+  final List<InviteResponseModel> horses;
+  final int offset;
+  final int count;
+  GetAcceptedHorsesSuccessfully({required this.horses,required this.offset,required this.count});
+}
+class GetAcceptedHorsesLoading extends HorseState{}
+class GetAcceptedHorsesError extends HorseState{
+  final String? message;
+  GetAcceptedHorsesError({this.message});
+}
 
 class GetHorsesDocumentsSuccessfully extends HorseState{
   final List<HorseDocuments> documents;

@@ -17,7 +17,7 @@ class StableRepository{
         method: HttpMethod.POST,
         data: choseStableRequestModel.toJson(),
         withAuthentication: true,
-        thereDeviceId: true,
+        thereDeviceId: false,
         url: ApiURLs.choseStables);
   }
 

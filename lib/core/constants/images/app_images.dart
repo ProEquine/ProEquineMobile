@@ -57,6 +57,8 @@ class AppIcons {
   static const takePic = 'assets/icons/take_pic.svg';
   static const applePay = 'assets/icons/apple_pay.svg';
   static const creditCard = 'assets/icons/credit-card.svg';
+  static const successPayment = 'assets/icons/success_payment_icon.svg';
+  static const failedPayment = 'assets/icons/error_payment_icon.svg';
 
   static const event = 'assets/icons/calendar.svg';
   static const events = 'assets/icons/events.svg';
@@ -78,6 +80,9 @@ class AppIcons {
 /// Light Theme
   static const proEquineLight = 'assets/icons/pro-equine-light.svg';
   static const errorIcon = 'assets/icons/error.svg';
+  static const cardIcon = 'assets/icons/card_icon.svg';
+  static const bankIcon = 'assets/icons/bank_icon.svg';
+  static const removeIcon = 'assets/icons/remove_icon.svg';
   static const logo = "assets/icons/PE-primary-logo.png";
   static const logoLight = 'assets/icons/PE Primary Logo.svg';
   static const verifiedHorse = 'assets/icons/verified_horse_icon.svg';
@@ -109,8 +114,14 @@ class AppIcons {
   static const tikTokMedia = 'assets/icons/tiktok_media.svg';
   static const canceled = 'assets/icons/canceled.svg';
   static const completedHistory = 'assets/icons/completed.svg';
+  static const bankTransfer1 = 'assets/icons/proEquine_transfer_1.svg';
+  static const bankTransfer2 = 'assets/icons/proEquine_transfer_2.svg';
+  static const bankTransfer3 = 'assets/icons/proEquine_transfer_3.svg';
+  static const copyIcon = 'assets/icons/copy_icon.svg';
+  static const exclaimationMark = 'assets/icons/exclaimation-circle.svg';
 
   static const emptyMedia = 'assets/icons/empty_media.svg';
   static const emptyShipping = 'assets/icons/empty_shipping.svg';
   static const emptyTransport = 'assets/icons/empty_transport.svg';
+  static const emptyTransfers = 'assets/icons/empty_bank_transfers.svg';
 }

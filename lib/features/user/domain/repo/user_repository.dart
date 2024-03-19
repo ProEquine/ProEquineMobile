@@ -1,7 +1,6 @@
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:proequine/core/CoreModels/empty_model.dart';
 import 'package:proequine/features/user/data/check_mail_request_model.dart';
-import 'package:proequine/features/user/data/check_update_email_request_model.dart';
 import 'package:proequine/features/user/data/check_verification_request_model.dart';
 import 'package:proequine/features/user/data/interests_request_model.dart';
 import 'package:proequine/features/user/data/login_request_model.dart';

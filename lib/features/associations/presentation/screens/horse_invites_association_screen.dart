@@ -29,7 +29,7 @@ class _HorseRequestAssociationScreenState
     extends State<HorseRequestAssociationScreen> {
   @override
   void initState() {
-    context.read<AssociationsCubit>().getInvitesAssociations();
+    context.read<AssociationsCubit>().getInvitesAssociations('pending');
     super.initState();
   }
 
@@ -70,7 +70,7 @@ class _HorseRequestAssociationScreenState
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                           mainAxisSpacing: 8,
-                          childAspectRatio: 0.9,
+                          childAspectRatio: 0.8,
 
                           crossAxisCount: 2, // Adjust the number of columns
                         ),
@@ -149,7 +149,7 @@ class _HorseRequestAssociationScreenState
                                               RebiMessage.success(
                                                   msg: state.message,
                                                   context: context);
-                                              myCubit.getInvitesAssociations();
+                                              myCubit.getInvitesAssociations('pending');
                                               Navigator.pop(context);
                                             } else if (state
                                                 is ApproveAssociateHorseError) {
@@ -185,7 +185,7 @@ class _HorseRequestAssociationScreenState
                                               RebiMessage.success(
                                                   msg: state.message,
                                                   context: context);
-                                              myCubit.getInvitesAssociations();
+                                              myCubit.getInvitesAssociations('pending');
                                               Navigator.pop(context);
                                             } else if (state
                                                 is RejectAssociateHorseError) {
@@ -252,7 +252,7 @@ class _HorseRequestAssociationScreenState
             }
             if (state is GetInviteAssociationsError) {
               return CustomErrorWidget(onRetry: () {
-                cubit.getInvitesAssociations();
+                cubit.getInvitesAssociations('pending');
               });
             } else if (state is GetInviteAssociationsLoading) {
               return const Column(

@@ -13,13 +13,10 @@ import 'package:proequine/features/manage_account/presentation/screens/manage_ac
 import 'package:proequine/features/splash/presentation/screens/splash_screen.dart';
 import 'package:proequine/features/wallet/presentation/screens/main_wallet_screen.dart';
 
-import '../../../../core/constants/routes/routes.dart';
-
 import '../../../associations/presentation/screens/horse_invites_association_screen.dart';
 import '../../../support/presentation/screens/all_support_requests_screen.dart';
 import '../../../support/presentation/screens/legal.dart';
 import '../../../support/presentation/screens/social_media_screen.dart';
-import '../../../support/presentation/screens/support.dart';
 import '../../../../core/widgets/profile_list_tile_widget.dart';
 
 class UserProfile extends StatefulWidget {
@@ -132,7 +129,7 @@ class _UserProfileState extends State<UserProfile> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const AllSupportRequestsModel()));
+                        builder: (context) => const AllSupportRequestsScreen()));
               },
               notificationList: false,
               isThereNewNotification: false,

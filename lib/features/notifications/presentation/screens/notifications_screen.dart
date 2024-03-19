@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:proequine/features/notifications/data/booking_details_response_model.dart';
 import 'package:proequine/features/notifications/presentation/widgets/notification_widget.dart';
-import 'package:proequine/features/payment/presesntation/screens/payment_screen.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
@@ -154,33 +153,6 @@ class NotificationsScreenState extends State<NotificationsScreen> {
                             child: InboxWidget(
                               status: statuses[index],
                               onTapPay: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => PaymentScreen(
-                                              bookingDetailsResponseModel:
-                                                  BookingDetailsResponseModel(
-                                                      pickupLocation: 'DEC',
-                                                      tripType:
-                                                          "Event Transport",
-                                                      tripStatus:
-                                                          statuses[index],
-                                                      pickupContactName:
-                                                          "Bahaa",
-                                                      pickupContactNumber:
-                                                          "+971 545049937",
-                                                      pickupDate: "17/8/2023",
-                                                      pickupTime: '13:00 pm',
-                                                      dropContactName: 'Hussam',
-                                                      dropContactNumber:
-                                                          '+971 541323453',
-                                                      dropLocation: "DEH",
-                                                      bookingId: "LT9677",
-                                                      horsesNumber: '3',
-                                                      total: '13000',
-                                                      subtotal: '12,684',
-                                                      tax: '368'),
-                                            )));
                               },
                               isTherePay: statusesBool[index],
                               date: '10 min ago',

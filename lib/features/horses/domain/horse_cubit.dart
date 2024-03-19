@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proequine/core/utils/extensions.dart';
-import 'package:proequine/core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import 'package:proequine/features/horses/data/accepted_invites_response_model.dart';
 import 'package:proequine/features/horses/data/add_horse_document_request_model.dart';
 import 'package:proequine/features/horses/data/add_horse_request_model.dart';
 import 'package:proequine/features/horses/data/edit_document_request_model.dart';
@@ -29,11 +29,14 @@ class HorseCubit extends Cubit<HorseState> {
   int? limit = 8;
   List<dynamic> horses = [];
   List<dynamic> horsesDocuments = [];
+  List<dynamic> acceptedHorses = [];
   int count = 0;
   int documentsCount = 0;
+  int acceptedCount = 0;
   int total = 0;
   int offset = 0;
   int documentsOffset = 0;
+  int acceptedOffset = 0;
   late RefreshController refreshController;
 
   Future<void> addHorse(AddHorseRequestModel addHorseRequestModel) async {
@@ -228,6 +231,58 @@ class HorseCubit extends Cubit<HorseState> {
       emit(GetUserHorsesError(message: response.message));
     } else if (response is Message) {
       emit(GetUserHorsesError(message: response.content));
+    }
+  }
+
+  Future<void> getAllAcceptedHorses(
+      {int limit = 8,
+        bool loadMore = false,
+        bool isRefreshing = false,
+        String? fullName}) async {
+    if (isRefreshing) {
+      limit = 8;
+      acceptedOffset = 0;
+    }
+    if (loadMore) {
+      acceptedOffset = limit + acceptedOffset;
+      Print('offset1 $acceptedOffset');
+      if (acceptedCount <= acceptedOffset) {
+        Print("Done");
+        return;
+      }
+    } else {
+      acceptedOffset = 0;
+      emit(GetAcceptedHorsesLoading());
+    }
+    var response =
+    await HorseRepository.getAcceptedHorses(offset: acceptedOffset, limit: limit);
+    if (response is AcceptedInvitesResponseModel) {
+      Print("Offset is $acceptedOffset");
+      acceptedCount = response.count!;
+      List<InviteResponseModel> acceptedHorsesAsList = <InviteResponseModel>[];
+      acceptedHorsesAsList = response.rows!;
+
+      if (loadMore) {
+        Print("Load More Now");
+        if (horses.length < count) {
+          acceptedHorses.addAll(acceptedHorsesAsList);
+          Print("Case 1");
+        } else {
+          Print("Case 2");
+          return;
+        }
+      } else {
+        acceptedHorses = acceptedHorsesAsList;
+      }
+      // AppSharedPreferences.saveDataWithExpiration(
+      //     horses[1], Duration(minutes: 1));
+      emit(GetAcceptedHorsesSuccessfully(
+          horses: List<InviteResponseModel>.from(acceptedHorses), offset: acceptedOffset, count: acceptedCount));
+    } else if (response is BaseError) {
+      if (acceptedOffset > 0) acceptedOffset = 0;
+      emit(GetAcceptedHorsesError(message: response.message));
+    } else if (response is Message) {
+      emit(GetAcceptedHorsesError(message: response.content));
     }
   }
 

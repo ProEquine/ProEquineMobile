@@ -1,3 +1,4 @@
+import 'package:proequine/features/horses/data/accepted_invites_response_model.dart';
 import 'package:proequine/features/horses/data/add_horse_document_request_model.dart';
 import 'package:proequine/features/horses/data/add_horse_request_model.dart';
 import 'package:proequine/features/horses/data/get_horses_documents_response_model.dart';
@@ -44,6 +45,21 @@ class HorseRepository {
         withAuthentication: true,
         thereDeviceId: false,
         url: ApiURLs.getHorses);
+  }
+  static Future<BaseResultModel?> getAcceptedHorses(
+      {required int limit, required int offset}) async {
+    return await RemoteDataSource.request<AcceptedInvitesResponseModel>(
+        converter: (json) => AcceptedInvitesResponseModel.fromJson(json),
+        method: HttpMethod.GET,
+        // policy: CachePolicy.forceCache,
+        // refreshDuration: const Duration(seconds: 5),
+        queryParameters: {
+          'limit': limit,
+          'offset': offset,
+        },
+        withAuthentication: true,
+        thereDeviceId: false,
+        url: ApiURLs.getAcceptedHorses);
   }
 
   static Future<BaseResultModel?> getDocuments(

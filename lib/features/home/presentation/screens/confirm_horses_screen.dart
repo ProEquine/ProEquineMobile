@@ -654,8 +654,12 @@ class _ConfirmHorsesScreenState extends State<ConfirmHorsesScreen> {
                                                                           }
                                                                         }
                                                                       },
-                                                                      child: Text(
-                                                                          "Save", style: AppStyles.buttonStyle,)),
+                                                                      child:
+                                                                          Text(
+                                                                        "Save",
+                                                                        style: AppStyles
+                                                                            .buttonStyle,
+                                                                      )),
                                                                 ],
                                                               ),
                                                               const SizedBox(
@@ -1387,7 +1391,10 @@ class _ConfirmHorsesScreenState extends State<ConfirmHorsesScreen> {
                                     )),
                           );
                         },
-                        child:  Text("Submit", style: AppStyles.buttonStyle,)),
+                        child: Text(
+                          "Submit",
+                          style: AppStyles.buttonStyle,
+                        )),
                     const SizedBox(
                       height: 30,
                     ),

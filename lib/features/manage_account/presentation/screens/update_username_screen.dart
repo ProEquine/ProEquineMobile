@@ -192,6 +192,6 @@ class _UpdateUserNameScreenState extends State<UpdateUserNameScreen> {
   }
 
   onPressUpdateUserName() {
-    cubit.checkUsername(_userName.text);
+    cubit.checkUsername('@${_userName.text}');
   }
 }

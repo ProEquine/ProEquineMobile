@@ -37,6 +37,7 @@ class HorseInvitesAssociations extends StatefulWidget {
 
 class _HorseInvitesAssociationsState extends State<HorseInvitesAssociations> {
   final TextEditingController? userName = TextEditingController();
+  final TextEditingController? peIdController = TextEditingController();
   final TextEditingController? associationType = TextEditingController();
   List<DropdownMenuItem<String>> role = [
     const DropdownMenuItem(
@@ -59,6 +60,7 @@ class _HorseInvitesAssociationsState extends State<HorseInvitesAssociations> {
   String? selectedRole;
 
   AssociationsCubit cubit = AssociationsCubit();
+  bool isUsernameVisible = true;
 
   @override
   void initState() {
@@ -83,74 +85,123 @@ class _HorseInvitesAssociationsState extends State<HorseInvitesAssociations> {
             showGlobalBottomSheet(
                 context: context,
                 title: "${widget.horseList.name} Association",
-                content: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 7),
-                      child: RebiInput(
-                        hintText: 'Username'.tra,
-                        controller: userName,
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.done,
-                        isOptional: false,
-                        color: AppColors.formsLabel,
-                        readOnly: false,
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 13),
-                        obscureText: false,
-                        validator: (value) {
-                          return Validator.requiredValidator(userName!.text);
-                        },
-                      ),
-                    ),
-                    StatefulBuilder(builder: (context, setState) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 7),
-                        child: DropDownWidget(
-                          items: role,
-                          selected: selectedRole,
-                          onChanged: (role1) {
-                            setState(() {
-                              selectedRole = role1;
-                              Print('selected role $selectedRole');
-                            });
-                          },
-                          validator: (value) {
-                            // return Validator.requiredValidator(selectedNumber);
-                          },
-                          hint: 'Association Type',
+                content: StatefulBuilder(
+                  builder: (context,setState) {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 7),
+                          child: Row(
+                            children: [
+                              Text('Association By: Username',style: TextStyle(color: AppColors.blackLight,fontWeight: FontWeight.w400),),
+                              Switch(
+                                value: isUsernameVisible,
+                                activeColor: AppColors.yellow,
+                                onChanged: (newValue) {
+                                  Print(newValue);
+                                  setState(() {
+                                    isUsernameVisible = newValue;
+                                  });
+                                },
+                              ),
+                              Text(' PEID'),
+                            ],
+                          ),
                         ),
-                      );
-                    }),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    BlocConsumer(
-                        bloc: cubit,
-                        builder: (context, state) {
-                          if (state is AssociateHorseLoading) {
-                            return const LoadingCircularWidget();
-                          }
-                          return RebiButton(
-                            onPressed: () {
-                              _onPressAdd();
-                            },
-                            child: Text(
-                              "Submit",
-                              style: AppStyles.buttonStyle,
+                        Visibility(
+                          visible: !isUsernameVisible,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 7),
+                            child: RebiInput(
+                              hintText: 'Username'.tra,
+                              controller: userName,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              isOptional: false,
+                              color: AppColors.formsLabel,
+                              readOnly: false,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 13),
+                              obscureText: false,
+                              validator: (value) {
+                                peIdController!.text='';
+                              },
+                            ),
+                          ),
+                        ),
+                        Visibility(
+                          visible: isUsernameVisible,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 7),
+                            child: RebiInput(
+                              hintText: 'PEID'.tra,
+                              controller: peIdController,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.done,
+                              isOptional: false,
+                              color: AppColors.formsLabel,
+                              readOnly: false,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 13),
+                              obscureText: false,
+                              validator: (value) {
+                                setState(() {
+                                  userName!.text='';
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                        StatefulBuilder(builder: (context, setState) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 7),
+                            child: DropDownWidget(
+                              items: role,
+                              selected: selectedRole,
+                              onChanged: (role1) {
+                                setState(() {
+                                  selectedRole = role1;
+                                  Print('selected role $selectedRole');
+                                });
+                              },
+                              validator: (value) {
+                                // return Validator.requiredValidator(selectedNumber);
+                              },
+                              hint: 'Association Type',
                             ),
                           );
-                        },
-                        listener: (context, state) {
-                          if (state is AssociateHorseSuccessfully) {
-                            myCubit.getRequestsAssociations(int.parse(widget.horseId));
-                            Navigator.pop(context);
-                          } else if (state is AssociateHorseError) {
-                            RebiMessage.error(
-                                msg: state.message!, context: context);
-                          }
-                        })
-                  ],
+                        }),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        BlocConsumer(
+                            bloc: cubit,
+                            builder: (context, state) {
+                              if (state is AssociateHorseLoading) {
+                                return const LoadingCircularWidget();
+                              }
+                              return RebiButton(
+                                onPressed: () {
+                                  _onPressAdd();
+                                },
+                                child: Text(
+                                  "Submit",
+                                  style: AppStyles.buttonStyle,
+                                ),
+                              );
+                            },
+                            listener: (context, state) {
+                              if (state is AssociateHorseSuccessfully) {
+                                myCubit.getRequestsAssociations(int.parse(widget.horseId));
+                                Navigator.pop(context);
+                              } else if (state is AssociateHorseError) {
+                                RebiMessage.error(
+                                    msg: state.message!, context: context);
+                              }
+                            })
+                      ],
+                    );
+                  }
                 ));
           },
         ),
@@ -300,6 +351,7 @@ class _HorseInvitesAssociationsState extends State<HorseInvitesAssociations> {
   _onPressAdd() {
     cubit.createHorseAssociation(AssociateHorseRequestModel(
       horseId: int.parse(widget.horseId),
+      peId: int.parse(peIdController!.text) ,
       userName: userName!.text,
       type: selectedRole,
     ));

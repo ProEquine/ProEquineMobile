@@ -15,9 +15,9 @@ part 'associations_state.dart';
 class AssociationsCubit extends Cubit<AssociationsState> {
   AssociationsCubit() : super(AssociationsInitial());
 
-  Future<void> getInvitesAssociations() async {
+  Future<void> getInvitesAssociations(String? status) async {
     emit(GetInviteAssociationsLoading());
-    var response = await AssociationRepository.getInvitesAssociations();
+    var response = await AssociationRepository.getInvitesAssociations(status);
     if (response is GetHorseRequestResponseModel) {
       emit(GetInviteAssociationsSuccessfully(invites: response));
     } else if (response is BaseError) {

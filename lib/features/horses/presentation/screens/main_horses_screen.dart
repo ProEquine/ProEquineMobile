@@ -13,6 +13,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/constants.dart';
+import '../widgets/associated_horses_widget.dart';
 
 class MainHorsesScreen extends StatefulWidget {
   const MainHorsesScreen({Key? key}) : super(key: key);
@@ -116,83 +117,172 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
               ),
             ];
           },
-          body: SingleChildScrollView(
-            child: BlocBuilder<HorseCubit, HorseState>(
-              // bloc: cubit,
-              builder: (context, state) {
-                if (state is GetUserHorsesSuccessfully) {
-                  if (state.horses.isEmpty) {
-                    return SizedBox(
-                        height: 100.0.h,
-                        width: 200,
-                        child:  EmptyHorsesWidget());
-                  } else {
-                    return Column(
-                      children: [
-                        GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              mainAxisSpacing: 8,
-                              childAspectRatio: 1,
-
-                              crossAxisCount: 2, // Adjust the number of columns
+          body: DefaultTabController(
+            length: 2,
+            child:
+                // body:Padding(
+                //     padding:
+                //         EdgeInsets.only(left: kPadding, right: kPadding, bottom: 20),
+                //     child: Booking(),
+                //   ),
+                Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                  SizedBox(
+                    height: isScrolled ? 30 : 2,
+                  ),
+                  Theme(
+                    data: ThemeData().copyWith(splashColor: Colors.transparent),
+                    child: Container(
+                      width: 90.0.w,
+                      margin: const EdgeInsets.only(bottom: 10, left: 20),
+                      decoration: BoxDecoration(
+                          //This is for background color
+                          color: Colors.white.withOpacity(0.0),
+                          //This is for bottom border that is needed
+                          border: const Border(
+                              bottom: BorderSide(
+                                  color: Color(0XFFDFD9C9), width: 0.8))),
+                      child: const TabBar(
+                          labelColor: AppColors.blackLight,
+                          indicatorColor: Colors.yellow,
+                          labelStyle: TextStyle(
+                            color: AppColors.blackLight,
+                            fontSize: 18,
+                            fontFamily: 'notosan',
+                            fontWeight: FontWeight.w500,
+                          ),
+                          unselectedLabelColor: AppColors.blackLight,
+                          indicatorSize: TabBarIndicatorSize.label,
+                          indicator: BoxDecoration(
+                            color: AppColors.yellow,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5),
                             ),
-                            shrinkWrap: true,
-                            primary: false,
-                            itemCount: state.horses.length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: kPadding, vertical: 10),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                HorseProfileScreen(
-                                                  response: state.horses[index],
-                                                )));
-                                  },
-                                  child: HorseCardWidget(
-                                    age: state.horses[index].dateOfBirth
-                                            .toString() ??
-                                        "NA",
-                                    gender: state.horses[index].gender!,
-                                    breed: state.horses[index].breed!,
-                                    horseName: state.horses[index].name!,
-                                    discipline:
-                                        state.horses[index].discipline!.title!,
-                                    horsePic: state.horses[index].image ?? '',
-                                    isVerified:
-                                        state.horses[index].status == 'verifed'
-                                            ? true
-                                            : false,
-                                    horseStable:
-                                        state.horses[index].stable!.name!,
-                                    horseStatus:
-                                        state.horses[index].status ?? '',
-                                  ),
-                                ),
-                              );
-                            }),
-                        const SizedBox(
-                          height: 80,
-                        ),
-                      ],
-                    );
-                  }
-                }
-                if (state is GetUserHorsesError) {
-                  return CustomErrorWidget(onRetry: () {
-                    cubit.getAllHorses();
-                  });
-                } else if (state is GetUserHorsesLoading) {
-                  return const MainHorsesLoadingWidget();
-                }
-                return Container();
-              },
-            ),
+                          ),
+                          indicatorPadding: EdgeInsets.only(top: 47),
+                          indicatorWeight: 4,
+                          isScrollable: true,
+                          labelPadding: EdgeInsets.only(right: 35),
+                          tabs: [
+                            Tab(
+                              text: "My Horses",
+                            ),
+                            Tab(
+                              text: "Associated Horses",
+                            ),
+                          ]),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: kPadding),
+                      child: TabBarView(
+                        children: [
+                          SingleChildScrollView(
+                            child: BlocBuilder<HorseCubit, HorseState>(
+                              // bloc: cubit,
+                              builder: (context, state) {
+                                if (state is GetUserHorsesSuccessfully) {
+                                  if (state.horses.isEmpty) {
+                                    return SizedBox(
+                                        height: 100.0.h,
+                                        width: 200,
+                                        child: EmptyHorsesWidget());
+                                  } else {
+                                    return Column(
+                                      children: [
+                                        GridView.builder(
+                                            gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                              mainAxisSpacing: 8,
+                                              childAspectRatio: 0.9,
+
+                                              crossAxisCount:
+                                                  2, // Adjust the number of columns
+                                            ),
+                                            shrinkWrap: true,
+                                            primary: false,
+                                            itemCount: state.horses.length,
+                                            itemBuilder: (context, index) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: kPadding,
+                                                        vertical: 10),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                HorseProfileScreen(
+                                                                  response: state
+                                                                          .horses[
+                                                                      index],
+                                                                )));
+                                                  },
+                                                  child: HorseCardWidget(
+                                                    age: state.horses[index]
+                                                            .dateOfBirth
+                                                            .toString(),
+                                                    gender: state
+                                                        .horses[index].gender!,
+                                                    breed: state
+                                                        .horses[index].breed!,
+                                                    horseName: state
+                                                        .horses[index].name!,
+                                                    discipline: state
+                                                        .horses[index]
+                                                        .discipline!
+                                                        .title!,
+                                                    horsePic: state
+                                                            .horses[index]
+                                                            .image ??
+                                                        '',
+                                                    isVerified: state
+                                                                .horses[index]
+                                                                .status ==
+                                                            'verifed'
+                                                        ? true
+                                                        : false,
+                                                    horseStable: state
+                                                        .horses[index]
+                                                        .stable!
+                                                        .name!,
+                                                    horseStatus: state
+                                                            .horses[index]
+                                                            .status ??
+                                                        '',
+                                                  ),
+                                                ),
+                                              );
+                                            }),
+                                        const SizedBox(
+                                          height: 80,
+                                        ),
+                                      ],
+                                    );
+                                  }
+                                }
+                                if (state is GetUserHorsesError) {
+                                  return CustomErrorWidget(onRetry: () {
+                                    cubit.getAllHorses(limit: 1000);
+                                  });
+                                } else if (state is GetUserHorsesLoading) {
+                                  return const MainHorsesLoadingWidget();
+                                }
+                                return Container();
+                              },
+                            ),
+                          ),
+                          const AssociatedHorsesWidget(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ]),
           ),
         ),
       ),

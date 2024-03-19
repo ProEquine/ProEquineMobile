@@ -17,15 +17,15 @@ import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/divider.dart';
 import '../../../../core/widgets/global_bottom_sheet.dart';
 
-class AllSupportRequestsModel extends StatefulWidget {
-  const AllSupportRequestsModel({super.key});
+class AllSupportRequestsScreen extends StatefulWidget {
+  const AllSupportRequestsScreen({super.key});
 
   @override
-  State<AllSupportRequestsModel> createState() =>
-      _AllSupportRequestsModelState();
+  State<AllSupportRequestsScreen> createState() =>
+      _AllSupportRequestsScreenState();
 }
 
-class _AllSupportRequestsModelState extends State<AllSupportRequestsModel> {
+class _AllSupportRequestsScreenState extends State<AllSupportRequestsScreen> {
   @override
   void initState() {
     context.read<SupportCubit>().getAllRequests(limit: 1000);

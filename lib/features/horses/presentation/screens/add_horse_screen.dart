@@ -28,9 +28,7 @@ import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/date_time_picker.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
-import '../../../stables/presentation/widgets/stables_widget.dart';
 import '../../../equine_info/presentation/widgets/disciplines_widget.dart';
-import '../../../nav_bar/presentation/screens/bottomnavigation.dart';
 import '../../../user/presentation/widgets/selectable_type_container.dart';
 
 class AddHorseScreen extends StatefulWidget {
@@ -242,7 +240,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                               Print("Selected gender $selectedGender");
                             },
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           SelectableTypeContainer(
@@ -257,7 +255,7 @@ class AddHorseScreenState extends State<AddHorseScreen> {
                               Print("Selected type $selectedGender");
                             },
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           SelectableTypeContainer(

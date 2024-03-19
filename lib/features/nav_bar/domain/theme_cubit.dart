@@ -22,19 +22,19 @@ class ThemeCubit extends Cubit<ThemeCubitMode> {
   //   emit(newMode);
   // }
 
-  // Future<void> getSavedThemeMode() async {
-  //   final savedMode = AppSharedPreferences.getTheme;
-  //
-  //   Print("savedMode$savedMode");
-  //
-  //   if (savedMode == null) {
-  //     Print("null");
-  //     emit(ThemeCubitMode.light);
-  //   } else {
-  //     Print(savedMode);
-  //     final themeMode = ThemeCubitMode.values.firstWhere((mode) => mode.toString() == savedMode);
-  //     emit(themeMode);
-  //   }
-  // }
+  Future<void> getSavedThemeMode() async {
+    final savedMode = AppSharedPreferences.getTheme;
+
+    Print("savedMode$savedMode");
+
+    if (savedMode == null) {
+      Print("null");
+      emit(ThemeCubitMode.light);
+    } else {
+      Print(savedMode);
+      final themeMode = ThemeCubitMode.values.firstWhere((mode) => mode.toString() == savedMode);
+      emit(themeMode);
+    }
+  }
 
 }

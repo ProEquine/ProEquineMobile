@@ -15,10 +15,13 @@ class AssociationRepository {
 
 
 
-  static Future<BaseResultModel?> getInvitesAssociations() async {
+  static Future<BaseResultModel?> getInvitesAssociations(String? status) async {
     return await RemoteDataSource.request<GetHorseRequestResponseModel>(
         converter: (json) => GetHorseRequestResponseModel.fromJson(json),
         method: HttpMethod.GET,
+        queryParameters: {
+          "status":status,
+        },
         withAuthentication: true,
         thereDeviceId: false,
         url: ApiURLs.invitesAssociations);

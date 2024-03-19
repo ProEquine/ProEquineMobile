@@ -158,7 +158,9 @@ class _VerifyPhoneScreenState extends State<VerifyPhoneScreen> {
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   VerificationScreen()));
-                                    } else if (state is SendVerificationError) {
+                                    } else if (state is RegisterError){
+                                      RebiMessage.error(msg: state.message!, context: context);
+                                    }else if (state is SendVerificationError) {
                                       RebiMessage.error(
                                           msg: state.message!,
                                           context: context);
