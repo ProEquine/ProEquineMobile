@@ -27,7 +27,7 @@ class ThemeCubit extends Cubit<ThemeCubitMode> {
 
     Print("savedMode$savedMode");
 
-    if (savedMode == null) {
+    if (savedMode=='') {
       Print("null");
       emit(ThemeCubitMode.light);
     } else {

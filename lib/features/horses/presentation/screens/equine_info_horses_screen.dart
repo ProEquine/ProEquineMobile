@@ -186,7 +186,7 @@ class _EquineInfoHorsesScreenState extends State<EquineInfoHorsesScreen> {
                     } else if (state is UpdateHorseSuccessfully) {
                       RebiMessage.success(
                           msg: "Equine Info updated Successfully", context: context);
-                      myCubit.getAllHorses();
+                      myCubit.getAllHorses(limit: 1000);
                       Navigator.pop(context);
                       Navigator.pop(context);
                     }

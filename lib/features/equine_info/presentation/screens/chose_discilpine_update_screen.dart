@@ -101,17 +101,17 @@ class _ChooseDisciplineScreenState extends State<ChooseDisciplineScreen> {
                             // subTitle:
                             //     "National id: ${state.model!.rows![index].discipline!.code ?? "Not Applicable"} \nFei ID: ${state.model!.rows![index].discipline! ?? "Not Applicable"} ",
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          UpdateMainDiscipline(
-                                            userDiscipline: state
-                                                .model!
-                                                .rows![index]
-                                                .discipline!
-                                                .title!,
-                                          )));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             UpdateMainDiscipline(
+                              //               userDiscipline: state
+                              //                   .model!
+                              //                   .rows![index]
+                              //                   .discipline!
+                              //                   .title!,
+                              //             )));
                             },
                             ableToEdit: true,
                           );

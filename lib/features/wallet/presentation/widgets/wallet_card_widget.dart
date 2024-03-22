@@ -9,11 +9,15 @@ import '../../../../core/constants/constants.dart';
 import '../../../../core/utils/Printer.dart';
 import '../../../../core/widgets/custom_error_widget.dart';
 import '../../../../core/widgets/shimmer.dart';
+import '../../../bank_transfer/data/all_bank_transfers_response_model.dart';
 import '../../domain/wallet_cubit.dart';
 
 class WalletCardWidget extends StatefulWidget {
-  const WalletCardWidget({
+  Account bankAccountDetails;
+
+  WalletCardWidget({
     Key? key,
+    required this.bankAccountDetails,
   }) : super(key: key);
 
   @override
@@ -41,6 +45,13 @@ class _WalletCardWidgetState extends State<WalletCardWidget> {
         bloc: cubit..getWallet(),
         listener: (context, state) {
           if (state is GetWalletSuccessfully) {
+            widget.bankAccountDetails = Account(
+              bankName: state.model.bankName,
+              iBAN: state.model.iBAN,
+              accountHolderName: state.model.accountHolderName,
+              swiftCode: state.model.swiftCode,
+              accountNumber: state.model.accountNumber,
+            );
 
             // context.read<WalletCubit>().getAllTransactions(
             //     limit: 10,

@@ -2,6 +2,7 @@ import 'package:proequine/core/CoreModels/empty_model.dart';
 import 'package:proequine/features/bank_transfer/data/all_bank_transfers_response_model.dart';
 import 'package:proequine/features/bank_transfer/data/create_bank_transfer_request_model.dart';
 import 'package:proequine/features/bank_transfer/data/create_bank_transfer_response_model.dart';
+import 'package:proequine/features/bank_transfer/data/get_bank-account_response_model.dart';
 import 'package:proequine/features/bank_transfer/data/save_bank_account_request_model.dart';
 import 'package:proequine/features/bank_transfer/data/save_bank_account_response_model.dart';
 
@@ -59,6 +60,16 @@ class BankTransferRepository {
         data: saveBankAccountRequestModel.toJson(),
         thereDeviceId: false,
         url: ApiURLs.saveBankAccount);
+  }
+
+  static Future<BaseResultModel?> getBankAccount(
+       ) async {
+    return await RemoteDataSource.request<GetBankAccountResponseModel>(
+        converter: (json) => GetBankAccountResponseModel.fromJson(json),
+        method: HttpMethod.GET,
+        withAuthentication: true,
+        thereDeviceId: false,
+        url: ApiURLs.getWallet);
   }
   static Future<BaseResultModel?> uploadFile(String? file) async {
     return await RemoteDataSource.request<UploadFileResponseModel>(

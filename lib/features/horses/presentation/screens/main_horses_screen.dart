@@ -130,7 +130,7 @@ class _MainHorsesScreenState extends State<MainHorsesScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                   SizedBox(
-                    height: isScrolled ? 30 : 2,
+                    height: isScrolled ? 50 : 2,
                   ),
                   Theme(
                     data: ThemeData().copyWith(splashColor: Colors.transparent),

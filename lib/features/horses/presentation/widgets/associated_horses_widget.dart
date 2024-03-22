@@ -76,7 +76,7 @@ class _AssociatedHorsesWidgetState extends State<AssociatedHorsesWidget> {
                               associateRole: state.invites.rows![index].type!,
                               type: 'Approved',
                               age: state.invites.rows![index].horse!.age!
-                                  .toString(),
+                                  .toString()??'1',
                               gender:
                               state.invites.rows![index].horse!.gender!,
                               breed: state.invites.rows![index].horse!.breed!,

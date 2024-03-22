@@ -77,3 +77,18 @@ class UploadTransferProofError extends BankTransferState {
 
   UploadTransferProofError({this.message});
 }
+
+
+class GetBankAccountSuccessfully extends BankTransferState {
+  final GetBankAccountResponseModel? model;
+
+  GetBankAccountSuccessfully({required this.model});
+}
+
+class GetBankAccountLoading extends BankTransferState {}
+
+class GetBankAccountError extends BankTransferState {
+  final String? message;
+
+  GetBankAccountError({this.message});
+}

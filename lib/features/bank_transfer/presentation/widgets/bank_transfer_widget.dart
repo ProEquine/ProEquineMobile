@@ -7,6 +7,7 @@ import 'package:proequine/features/support/presentation/widgets/support_status_w
 import '../../../../core/constants/colors/app_colors.dart';
 import '../../../../core/constants/thems/app_styles.dart';
 import '../../../../core/utils/sharedpreferences/SharedPreferencesHelper.dart';
+import '../../data/all_bank_transfers_response_model.dart';
 
 class BankTransferWidget extends StatefulWidget {
   final String? status;

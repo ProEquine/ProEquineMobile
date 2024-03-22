@@ -7,6 +7,7 @@ import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/core/widgets/loading_widget.dart';
 import 'package:proequine/features/bank_transfer/data/create_bank_transfer_request_model.dart';
 import 'package:proequine/features/bank_transfer/domain/bank_transfer_cubit.dart';
+import 'package:proequine/features/bank_transfer/presentation/screens/my_bank_details_screen.dart';
 import 'package:proequine/features/bank_transfer/presentation/screens/transfer_summary_screen.dart';
 import 'package:sizer/sizer.dart';
 
@@ -18,11 +19,13 @@ import '../../../../core/widgets/custom_header.dart';
 import '../../../../core/widgets/drop_down_menu_widget.dart';
 import '../../../../core/widgets/rebi_button.dart';
 import '../../../horses/presentation/widgets/upload_file_widget.dart';
+import '../../data/all_bank_transfers_response_model.dart';
 
 class BankDepositScreen extends StatefulWidget {
+  final Account? account;
   final int userId;
 
-  const BankDepositScreen({super.key, required this.userId});
+  const BankDepositScreen({super.key, required this.userId, this.account});
 
   @override
   State<BankDepositScreen> createState() => _BankDepositScreenState();
@@ -75,7 +78,7 @@ class _BankDepositScreenState extends State<BankDepositScreen> {
   uploadFile(String title) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc','jpeg','png','jpg'],
+      allowedExtensions: ['pdf', 'doc', 'jpeg', 'png', 'jpg'],
     );
 
     if (result != null) {
@@ -94,7 +97,7 @@ class _BankDepositScreenState extends State<BankDepositScreen> {
   String? selectedType;
 
   List<DropdownMenuItem<String>> transferType = [
-    const DropdownMenuItem(
+    DropdownMenuItem(
       value: "My bank account",
       child: Text("My bank account"),
     ),
@@ -307,7 +310,7 @@ class _BankDepositScreenState extends State<BankDepositScreen> {
                     height: 10,
                   ),
                   Visibility(
-                    visible: selectedType == 'Other Bank Account' ||
+                    visible: selectedType == 'Other bank account' ||
                             selectedType == 'Cash Deposit'
                         ? true
                         : false,
@@ -374,6 +377,13 @@ class _BankDepositScreenState extends State<BankDepositScreen> {
                       if (state is CreateBankPayError) {
                         RebiMessage.error(
                             msg: state.message!, context: context);
+                        if (state.message ==
+                            'please add your bank account first') {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const MyBankDetailsScreen()));
+                        }
                       } else if (state is CreateBankPaySuccessfully) {
                         if (selectedType == 'Other bank account' ||
                             selectedType == 'Cash Deposit') {
@@ -392,23 +402,25 @@ class _BankDepositScreenState extends State<BankDepositScreen> {
                       }
                     },
                     builder: (context, state) {
-                      if(state is PushTransferLoading || state is CreateBankPayLoading){
+                      if (state is PushTransferLoading ||
+                          state is CreateBankPayLoading) {
                         return const LoadingCircularWidget();
-                      }else {
+                      } else {
                         return Padding(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: kPadding),
-                          child: RebiButton(
-                              onPressed: () {
-                                if (controller.text.isEmpty) {
-                                  RebiMessage.error(
-                                      msg: "Please Enter the amount to deposit",
-                                      context: context);
-                                }
-                                int totalAmount = int.parse(controller.text);
-                                _onPressMakeTransfer(totalAmount);
-                              },
-                              child: Text("Next".tra)));
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: kPadding),
+                            child: RebiButton(
+                                onPressed: () {
+                                  if (controller.text.isEmpty) {
+                                    RebiMessage.error(
+                                        msg:
+                                            "Please Enter the amount to deposit",
+                                        context: context);
+                                  }
+                                  int totalAmount = int.parse(controller.text);
+                                  _onPressMakeTransfer(totalAmount);
+                                },
+                                child: Text("Next".tra)));
                       }
                     },
                   ),

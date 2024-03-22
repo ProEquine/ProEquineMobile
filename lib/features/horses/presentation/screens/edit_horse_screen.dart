@@ -171,7 +171,7 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                       } else if (state is RemoveHorseSuccessfully) {
                         RebiMessage.success(
                             msg: state.message, context: context);
-                        myCubit.getAllHorses();
+                        myCubit.getAllHorses(limit: 1000);
                         Navigator.pop(context);
                         Navigator.pop(context);
                         Navigator.pop(context);
@@ -583,7 +583,7 @@ class EditHorseScreenState extends State<EditHorseScreen> {
                       if (state is UpdateHorseSuccessfully) {
                         RebiMessage.success(
                             msg: state.message, context: context);
-                        myCubit.getAllHorses();
+                        myCubit.getAllHorses(limit: 1000);
                         Navigator.pop(context);
                         Navigator.pop(context);
                       } else if (state is UpdateHorseError) {

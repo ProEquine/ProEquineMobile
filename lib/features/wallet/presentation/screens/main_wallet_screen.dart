@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proequine/core/utils/extensions.dart';
+import 'package:proequine/features/bank_transfer/data/all_bank_transfers_response_model.dart';
 import 'package:proequine/features/bank_transfer/presentation/screens/bank_transfers_screen.dart';
 import 'package:proequine/features/wallet/presentation/screens/card_deposit_screen.dart';
 import 'package:sizer/sizer.dart';
@@ -20,6 +21,8 @@ class MainWalletScreen extends StatefulWidget {
 }
 
 class _MainWalletScreenState extends State<MainWalletScreen> {
+  Account account = Account();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,9 +46,11 @@ class _MainWalletScreenState extends State<MainWalletScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
-                    child: WalletCardWidget(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: WalletCardWidget(
+                      bankAccountDetails: account,
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
@@ -62,7 +67,8 @@ class _MainWalletScreenState extends State<MainWalletScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const CardDepositScreen(type: 'Card')));
+                                            const CardDepositScreen(
+                                                type: 'Card')));
                               },
                               title: "Card".tra,
                               icon: AppIcons.cardIcon,
@@ -78,7 +84,7 @@ class _MainWalletScreenState extends State<MainWalletScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const BankTransfersScreen()));
+                                             BankTransfersScreen()));
                               },
                               title: "Bank".tra,
                               icon: AppIcons.bankIcon,
@@ -98,7 +104,7 @@ class _MainWalletScreenState extends State<MainWalletScreen> {
                       child: Text(
                         "Recent transactions".tra,
                         textAlign: TextAlign.start,
-                        style: const  TextStyle(
+                        style: const TextStyle(
                           color: Color(0xFFC48636),
                           fontSize: 16,
                           fontFamily: 'Noto Sans',
@@ -108,7 +114,6 @@ class _MainWalletScreenState extends State<MainWalletScreen> {
                       ),
                     ),
                   ),
-
                   const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 30),
                       child: AllTransactionsWidget()),

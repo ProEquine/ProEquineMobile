@@ -126,11 +126,13 @@ class SplashScreenState extends State<SplashScreen>
   String? userId = '';
 
   sendRefreshToken() async {
-    refreshToken = await SecureStorage().getRefreshToken();
-    userId = await SecureStorage().getUserId();
-    Print("User Id $userId");
-    Print("Refresh Token $refreshToken");
-    splashCubit.refreshToken(refreshToken!);
+    if (refreshToken != null) {
+      refreshToken = await SecureStorage().getRefreshToken();
+      userId = await SecureStorage().getUserId();
+      Print("User Id $userId");
+      Print("Refresh Token $refreshToken");
+      splashCubit.refreshToken(refreshToken ?? '');
+    } else {}
   }
 
   // deleteSecureStorage() async {

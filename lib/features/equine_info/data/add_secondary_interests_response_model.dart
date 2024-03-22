@@ -1,5 +1,7 @@
 import 'package:proequine/core/CoreModels/base_result_model.dart';
 
+import '../../bank_transfer/data/all_bank_transfers_response_model.dart';
+
 class AddSecondaryInterestResponseModel extends BaseResultModel{
   int? id;
   int? userId;
@@ -58,6 +60,7 @@ class User {
   int? mainDisciplineId;
   MainDiscipline? mainDiscipline;
   String? displayName;
+  Account? account;
 
   User(
       {this.id,
@@ -81,7 +84,8 @@ class User {
         this.mainStable,
         this.mainDisciplineId,
         this.mainDiscipline,
-        this.displayName});
+        this.displayName,
+      this.account});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -110,6 +114,8 @@ class User {
         ? new MainDiscipline.fromJson(json['mainDiscipline'])
         : null;
     displayName = json['displayName'];
+    account =
+    json['account'] != null ?  Account.fromJson(json['account']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -142,6 +148,9 @@ class User {
       data['mainDiscipline'] = this.mainDiscipline!.toJson();
     }
     data['displayName'] = this.displayName;
+    if (account != null) {
+      data['account'] = account!.toJson();
+    }
     return data;
   }
 }

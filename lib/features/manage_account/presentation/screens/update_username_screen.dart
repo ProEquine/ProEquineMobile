@@ -18,8 +18,11 @@ import '../../../../core/widgets/rebi_input.dart';
 import '../../data/basic_account_management_route.dart';
 
 class UpdateUserNameScreen extends StatefulWidget {
-  UpdateUserNameScreen({
+  final String userName;
+
+  const UpdateUserNameScreen({
     super.key,
+    required this.userName,
   });
 
   @override
@@ -34,7 +37,7 @@ class _UpdateUserNameScreenState extends State<UpdateUserNameScreen> {
 
   @override
   void initState() {
-    _userName = TextEditingController();
+    _userName = TextEditingController(text: widget.userName);
 
     super.initState();
   }
@@ -154,7 +157,10 @@ class _UpdateUserNameScreenState extends State<UpdateUserNameScreen> {
                                               onPressUpdateUserName();
                                             } else {}
                                           },
-                                          child:  Text("Update", style: AppStyles.buttonStyle,));
+                                          child: Text(
+                                            "Update",
+                                            style: AppStyles.buttonStyle,
+                                          ));
                                     },
                                     listener: (context, state) {
                                       if (state is CheckUsernameSuccessful) {

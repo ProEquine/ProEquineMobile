@@ -183,12 +183,12 @@ class HorseCubit extends Cubit<HorseState> {
   }
 
   Future<void> getAllHorses(
-      {int limit = 8,
+      {int limit = 1000,
       bool loadMore = false,
       bool isRefreshing = false,
       String? fullName}) async {
     if (isRefreshing) {
-      limit = 8;
+      limit = 1000;
       offset = 0;
     }
     if (loadMore) {

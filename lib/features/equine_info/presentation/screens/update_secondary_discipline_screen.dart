@@ -166,47 +166,6 @@ class _UpdateSecondaryDisciplineScreenState
                           ),
                         ),
                         const Spacer(),
-                        Padding(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: kPadding),
-                          child: BlocConsumer<EquineInfoCubit, EquineInfoState>(
-                            bloc: cubit,
-                            listener: (context, state) {
-                              if (state
-                                  is UpdateSecondaryDisciplineSuccessful) {
-                                Navigator.pushReplacementNamed(
-                                    context, successScreen,
-                                    arguments: BasicAccountManagementRoute(
-                                        type: 'manageAccount',
-                                        title:
-                                            "Secondary Discipline Updated Successfully"));
-                              } else if (state
-                                  is UpdateSecondaryDisciplineError) {
-                                RebiMessage.error(
-                                    msg: state.message!, context: context);
-                              }
-                            },
-                            builder: (context, state) {
-                              if (state is UpdateSecondaryDisciplineLoading) {
-                                return const LoadingCircularWidget();
-                              }
-                              return RebiButton(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    _onPressSubmit();
-                                  }
-                                },
-                                child: Text(
-                                  "Submit",
-                                  style: AppStyles.buttonStyle,
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
                       ],
                     ),
                   ),
@@ -219,12 +178,6 @@ class _UpdateSecondaryDisciplineScreenState
     );
   }
 
-  _onPressSubmit() {
-    cubit.updateSecondaryDiscipline(UpdateSecondaryDisciplineRequestModel(
-      disciplineId: int.parse(disciplineId.text),
-      // personDisciplineId: int.parse(widget.personDisciplineId!),
-    ));
-  }
 
   _onPressDelete() {
     cubit.deleteSecondaryDiscipline(

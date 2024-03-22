@@ -106,6 +106,7 @@ class ApiURLs {
   /// wallet
   static String getWallet = "$basicApiUrl/accounts/my-account";
   static String saveBankAccount = "$basicApiUrl/accounts/update-bank-account";
+  static String getBankAccount = "$basicApiUrl/accounts/my-account";
   static String getTransactions = "$basicApiUrl/accounts/my-transactions";
   static String getPaymentDetails = "$basicApiUrl/payment";
 

@@ -182,7 +182,12 @@ class _HorseInvitesAssociationsState extends State<HorseInvitesAssociations> {
                               }
                               return RebiButton(
                                 onPressed: () {
-                                  _onPressAdd();
+                                  if(isUsernameVisible){
+                                    _onPressAdd(int.parse(peIdController!.text));
+                                  }else{
+                                    _onPressAdd(0);
+                                  }
+
                                 },
                                 child: Text(
                                   "Submit",
@@ -348,10 +353,10 @@ class _HorseInvitesAssociationsState extends State<HorseInvitesAssociations> {
     );
   }
 
-  _onPressAdd() {
+  _onPressAdd(int peId) {
     cubit.createHorseAssociation(AssociateHorseRequestModel(
       horseId: int.parse(widget.horseId),
-      peId: int.parse(peIdController!.text) ,
+      peId: peId ,
       userName: userName!.text,
       type: selectedRole,
     ));

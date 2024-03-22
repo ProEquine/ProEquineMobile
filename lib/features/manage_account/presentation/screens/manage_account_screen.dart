@@ -143,7 +143,7 @@ class _ManageAccountScreenState extends State<ManageAccountScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      UpdateUserNameScreen()));
+                                      UpdateUserNameScreen(userName:state.responseModel!.userName! ,)));
                         },
                         ableToEdit: true,
                       ),

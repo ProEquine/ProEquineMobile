@@ -5,6 +5,7 @@ import 'package:proequine/core/utils/extensions.dart';
 import 'package:proequine/features/bank_transfer/data/all_bank_transfers_response_model.dart';
 import 'package:proequine/features/bank_transfer/data/create_bank_transfer_request_model.dart';
 import 'package:proequine/features/bank_transfer/data/create_bank_transfer_response_model.dart';
+import 'package:proequine/features/bank_transfer/data/get_bank-account_response_model.dart';
 import 'package:proequine/features/bank_transfer/data/save_bank_account_request_model.dart';
 import 'package:proequine/features/bank_transfer/data/save_bank_account_response_model.dart';
 import 'package:proequine/features/bank_transfer/domain/repo/bank_transfers_repository.dart';
@@ -109,6 +110,19 @@ class BankTransferCubit extends Cubit<BankTransferState> {
       emit(UploadTransferProofError(message: response.message));
     } else if (response is Message) {
       emit(UploadTransferProofError(message: response.content));
+    }
+  }
+
+  Future<void> getBankAccount() async {
+    emit(GetBankAccountLoading());
+    var response = await BankTransferRepository.getBankAccount();
+    if (response is GetBankAccountResponseModel) {
+      emit(GetBankAccountSuccessfully(model: response));
+    } else if (response is BaseError) {
+      Print("messaggeeeeeeeee${response.message}");
+      emit(GetBankAccountError(message: response.message));
+    } else if (response is Message) {
+      emit(GetBankAccountError(message: response.content));
     }
   }
 

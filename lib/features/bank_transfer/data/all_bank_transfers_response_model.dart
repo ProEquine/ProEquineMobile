@@ -37,8 +37,9 @@ class BankTransfer {
   String? status;
   int? amount;
   int? userId;
-  User? user;
+  // User? user;
   String? createdAt;
+
 
   BankTransfer(
       {this.id,
@@ -48,8 +49,8 @@ class BankTransfer {
       this.status,
       this.amount,
       this.userId,
-      this.user,
-      this.createdAt});
+      // this.user,
+      this.createdAt,});
 
   BankTransfer.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -59,8 +60,9 @@ class BankTransfer {
     status = json['status'];
     amount = json['amount'];
     userId = json['userId'];
-    user = json['user'] != null ? User.fromJson(json['user']) : null;
+    // user = json['user'] != null ? User.fromJson(json['user']) : null;
     createdAt = json['createdAt'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -72,10 +74,67 @@ class BankTransfer {
     data['status'] = status;
     data['amount'] = amount;
     data['userId'] = userId;
-    if (user != null) {
-      data['user'] = user!.toJson();
-    }
+    // if (user != null) {
+    //   data['user'] = user!.toJson();
+    // }
     data['createdAt'] = createdAt;
+
+    return data;
+  }
+}
+class Account {
+  int? id;
+  int? totalAmount;
+  int? blockedAmount;
+  int? availableAmount;
+  int? userId;
+  String? user;
+  String? bankName;
+  String? accountNumber;
+  String? iBAN;
+  String? swiftCode;
+  String? accountHolderName;
+
+  Account(
+      {this.id,
+        this.totalAmount,
+        this.blockedAmount,
+        this.availableAmount,
+        this.userId,
+        this.user,
+        this.bankName,
+        this.accountNumber,
+        this.iBAN,
+        this.swiftCode,
+        this.accountHolderName});
+
+  Account.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    totalAmount = json['totalAmount'];
+    blockedAmount = json['blockedAmount'];
+    availableAmount = json['availableAmount'];
+    userId = json['userId'];
+    user = json['user'];
+    bankName = json['bankName'];
+    accountNumber = json['accountNumber'];
+    iBAN = json['IBAN'];
+    swiftCode = json['swiftCode'];
+    accountHolderName = json['accountHolderName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['totalAmount'] = totalAmount;
+    data['blockedAmount'] = blockedAmount;
+    data['availableAmount'] = availableAmount;
+    data['userId'] = userId;
+    data['user'] = user;
+    data['bankName'] = bankName;
+    data['accountNumber'] = accountNumber;
+    data['IBAN'] = iBAN;
+    data['swiftCode'] = swiftCode;
+    data['accountHolderName'] = accountHolderName;
     return data;
   }
 }
